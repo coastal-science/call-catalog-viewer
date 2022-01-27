@@ -37,9 +37,9 @@ var GridPanel = undefined;
                 <h5> <a class="play_btn" href="#"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play" viewBox="0 0 16 16">\
                 <path fill="currentColor" d="M10.804 8 5 4.633v6.734L10.804 8zm.792-.696a.802.802 0 0 1 0 1.392l-6.363 3.692C4.713 12.69 4 12.345 4 11.692V4.308c0-.653.713-.998 1.233-.696l6.363 3.692z"/>\
               </svg><span class="text-dark">'+callname+'</span></a></h5>\
-                <p class="small mb-0"><span class="font-weight-bold">Pods: '+pod+'</span></p>\
-                <p class="small text-muted mb-0">Matrilines: <br>'+matrilines+'</p>\
-                <div class="d-flex align-items-center justify-content-between rounded-pill bg-light px-3 py-2 mt-4">\
+                <p class="small mb-0 meta-p"><span class="font-weight-bold">Pods: '+pod+'</span></p>\
+                <!--<p class="small text-muted mb-0">Matrilines: <br>'+matrilines+'</p>-->\
+                <div class="meta-p d-flex align-items-center justify-content-between rounded-pill bg-light px-3 py-2 mt-4">\
                 <div class="badge badge-warning px-3 rounded-pill font-weight-normal"><span class="font-weight-bold  text-dark">Clan: '+clan+'</span></div>\
                 </div>\
             </div>\
@@ -136,7 +136,7 @@ var GridPanel = undefined;
         Panel = $('#resultgrid');
         $('#sort').selectpicker('val', sort_by);
         $('#sort_a').selectpicker('val', sort_asc);
-        
+        $('#show_meta').prop('checked', metadata_show);
         bindEvents();
         getData();
     };
@@ -147,6 +147,14 @@ var GridPanel = undefined;
         getData();
     };
     panel.get_new = get_new;
+    function propagate_meta(){
+        if (metadata_show){
+            $('#gi-area .meta-p').removeClass('hidden');
+        }
+        else{
+            $('#gi-area .meta-p').addClass('hidden');
+        }
+    }
 
     function append_items(){
         var i = next_drawn;
@@ -161,6 +169,8 @@ var GridPanel = undefined;
             grid.append(obj);
             
         }
+        propagate_meta();
+
         if (i !== 0){
             next_drawn = i;
         }
@@ -232,7 +242,15 @@ var GridPanel = undefined;
             }
             poped = undefined;
         });
-        
+        $('#show_meta').change(function(){
+            if ($(this).prop('checked')){
+				metadata_show = true;
+			}
+			else{
+				metadata_show = false;
+			}
+            propagate_meta();
+		});
         $('#sort').on('changed.bs.select',(e, clickedIndex, isSelected, previousValue)=>{
             sort_by = $('#sort').selectpicker('val');
             getData();
