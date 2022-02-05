@@ -9,6 +9,11 @@ var GridPanel = undefined;
     var id_to_seq = undefined;
     var next_drawn = undefined;
 
+    var current_page = undefined;
+    var page_size = 12;
+    var total_result = undefined;
+    var total_page = undefined;
+
     var poped = undefined;
     var audio_element = undefined;
 
@@ -93,6 +98,76 @@ var GridPanel = undefined;
             return false;
         });
 
+        total_result = resultData.length;
+
+        $("#total").text(total_result);
+        total_page = Math.floor((total_result-1) / page_size) +1;
+        if (total_page <= 0){
+            total_page = 1;
+        }
+        if (current_page > total_page){
+            current_page = total_page;
+        }
+        if (current_page < 1){
+            current_page = 1;
+        }
+
+        $('#paging > ul > li').removeClass('hidden active disabled');
+        if (total_page >= 3){
+            if (current_page === 1){
+                $('#paging > ul > li:nth-child(1)').addClass('disabled');
+                $('#paging > ul > li:nth-child(2)').addClass('active').attr('data-flow', '1');
+                $('#paging > ul > li:nth-child(2) a').text('1');
+                $('#paging > ul > li:nth-child(3) a').text('2');
+                $('#paging > ul > li:nth-child(3)').attr('data-flow', '2');
+                $('#paging > ul > li:nth-child(4) a').text('3');
+                $('#paging > ul > li:nth-child(4)').attr('data-flow', '3');
+                
+            }
+            else if (current_page >= total_page){
+                //at foremost
+                $('#paging > ul > li:nth-child(2) a').text(total_page-2);
+                $('#paging > ul > li:nth-child(2)').attr('data-flow', total_page-2);
+                $('#paging > ul > li:nth-child(3) a').text(total_page-1);
+                $('#paging > ul > li:nth-child(3)').attr('data-flow', total_page-1);
+                $('#paging > ul > li:nth-child(4) a').text(total_page);
+                $('#paging > ul > li:nth-child(4)').addClass('active').attr('data-flow', total_page);
+                $('#paging > ul > li:nth-child(5)').addClass('disabled');
+            }
+            else{
+                //middle
+                $('#paging > ul > li:nth-child(2) a').text(current_page-1);
+                $('#paging > ul > li:nth-child(2)').attr('data-flow', current_page-1);
+                $('#paging > ul > li:nth-child(3) a').text(current_page);
+                $('#paging > ul > li:nth-child(3)').addClass('active').attr('data-flow', current_page);
+                $('#paging > ul > li:nth-child(4) a').text(current_page+1);
+                $('#paging > ul > li:nth-child(4)').attr('data-flow', current_page+1);
+                
+            }
+        }
+        else if (total_page === 2){
+            $('#paging > ul > li:nth-child(2)').attr('data-flow','1');
+            $('#paging > ul > li:nth-child(3)').attr('data-flow','2');
+            $('#paging > ul > li:nth-child(2) a').text('1');
+            $('#paging > ul > li:nth-child(3) a').text('2');
+            $('#paging > ul > li:nth-child(4)').addClass('hidden');
+            if (current_page === 1){
+                $('#paging > ul > li:nth-child(1)').addClass('disabled');
+                $('#paging > ul > li:nth-child(2)').addClass('active');
+            }
+            else{
+                $('#paging > ul > li:nth-child(3)').addClass('active');
+                $('#paging > ul > li:nth-child(5)').addClass('disabled');
+            }
+        }
+        else if (total_page === 1){
+            $('#paging > ul > li:nth-child(1)').addClass('disabled');
+            $('#paging > ul > li:nth-child(2)').addClass('active').attr('data-flow', '1');
+            $('#paging > ul > li:nth-child(2) a').text('1');
+            $('#paging > ul > li:nth-child(3)').addClass('hidden');
+            $('#paging > ul > li:nth-child(4)').addClass('hidden');
+            $('#paging > ul > li:nth-child(5)').addClass('disabled');
+        }
         //Sort by: sort_by, sort_asc
         current_sort = (a, b)=>{
             if (Array.isArray(a)){
@@ -114,6 +189,8 @@ var GridPanel = undefined;
             }
         };
         resultData.sort(current_sort);
+
+        resultData = resultData.splice((current_page-1)*page_size, page_size);
         redraw_items();
         return;
         return $.ajax({});
@@ -134,6 +211,12 @@ var GridPanel = undefined;
         sort_asc = 'as';
         poped = false;
         Panel = $('#resultgrid');
+
+        total_result = 1;
+        total_page = 1;
+        current_page = 1;
+
+
         $('#sort').selectpicker('val', sort_by);
         $('#sort_a').selectpicker('val', sort_asc);
         $('#show_meta').prop('checked', metadata_show);
@@ -144,6 +227,8 @@ var GridPanel = undefined;
 
     function get_new(para){
         searching_para = para;
+        total_result = undefined;
+        current_page = 1;
         getData();
     };
     panel.get_new = get_new;
@@ -210,6 +295,29 @@ var GridPanel = undefined;
             audio_element.setAttribute('autoplay', 'autoplay');
             audio_element.load();
         });
+        $('#paging > ul > li').click(function(e){
+            e.stopPropagation();
+            e.preventDefault();
+            if ($(this).hasClass('disabled') || $(this).hasClass('hidden')  || $(this).hasClass('active')){
+                return;
+            }
+            var data_flow = $(this).attr('data-flow');
+            if (data_flow === 'n'){
+                current_page += 1;
+            }
+            else if (data_flow === 'p'){
+                current_page -= 1;
+            }
+            else{
+                current_page = parseInt(data_flow);
+                if (isNaN(current_page)){
+                    current_page = 1;
+                }
+            }
+            $('#resultgrid > div.container > div.row.justify-content-md-center > div.col.col-12.col-sm-12.col-md-12.col-lg-8.col-xl-6.col-xxl-6.row.align-items-center.align-middle > span').focus();
+            getData();
+        });
+
         $(document).on('lity:open', function(event, instance) {
             $('.lity-container').append('<div class="container"><div class="row"><button id="play" class="col btn btn-primary"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play" viewBox="0 0 16 16">\
             <path d="M10.804 8 5 4.633v6.734L10.804 8zm.792-.696a.802.802 0 0 1 0 1.392l-6.363 3.692C4.713 12.69 4 12.345 4 11.692V4.308c0-.653.713-.998 1.233-.696l6.363 3.692z"/>\
