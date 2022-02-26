@@ -89,7 +89,6 @@ var SearchPanel = undefined;
             tmpResult['s3'] = $('#s3').selectpicker('val');
         });
         Panel.find('#search_now').off('click').click(function(e){
-            e.stopPropagation();
             dirty = false;
             originalData = $.extend(true, {}, tmpResult);
             GridPanel.get_new(originalData);
