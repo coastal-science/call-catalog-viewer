@@ -21,7 +21,15 @@
         }
         .page-link:focus {
             box-shadow: none !important;
-            border-color: transparent !important;
+            background-color: #fff !important;
+        }
+        .page-item.active .page-link {
+            color: #fff !important;
+            background-color: #0d6efd !important;
+            border-color: #0d6efd !important;
+        }
+        .row{
+            padding-top: 3px;
         }
     </style>
 </head>
@@ -41,18 +49,18 @@
 	<div class="row"><div class="col">
     <div class="panel container-fluid" id="search_panel">
         <div class="row justify-content-md-center">
-            <div class="col col-12 col-sm-12 col-md-12 col-lg-4 col-xl-4 col-xxl-3 align-items-center align-right d-flex flex-nowrap">
+            <div class="col col-12 col-sm-12 col-md-12 col-lg-6 col-xl-3 col-xxl-3 align-items-center align-right d-flex flex-nowrap">
                 <span class="col text-end">Population(s): </span>
                 <select id="s1" class="col" multiple aria-label="size 3 select">
                 </select>
             </div>
-            <div class="col col-12 col-sm-12 col-md-12 col-lg-4 col-xl-4 col-xxl-3 align-items-center align-middle d-flex flex-nowrap">
+            <div class="col col-12 col-sm-12 col-md-12 col-lg-6 col-xl-3 col-xxl-3 align-items-center align-middle d-flex flex-nowrap">
                 <span class="col text-end">Clan(s): </span>
                 <select id="s2" class="col align-self-center" multiple aria-label="size 3 select">
                 </select>
             </div>
 
-            <div class="col col-12 col-sm-12 col-md-12 col-lg-4 col-xl-4 col-xxl-3   align-items-center align-left d-flex flex-nowrap">
+            <div class="col col-12 col-sm-12 col-md-12 col-lg-6 col-xl-3 col-xxl-3 align-items-center align-left d-flex flex-nowrap">
                 <span class="col text-end">Pod(s): </span>
                 <select id="s3" class="col align-self-center" multiple aria-label="size 3 select">
                 </select>
@@ -89,15 +97,16 @@
                 </div>
             </div>
             <div class="row justify-content-md-center">
-                <div class="col col-12 col-sm-8 col-md-8 col-lg-4 col-xl-3 col-xxl-3 row align-middle d-flex flex-nowrap align-items-center">
-                    <span>
-                        <span>
-                            Total Number of Results: 
-                        </span>
-                        <span id="total">
-
-                        </span>
-                    </span>
+                <div class="col col-12 col-sm-8 col-md-8 col-lg-4 col-xl-4 col-xxl-3 row align-items-center align-middle">
+                    <select id="page_size"  aria-label="size 3 select" class=" selectpicker col">
+                        <option value="12">12 items per page</option>
+                        <option value="24">24 items per page</option>
+                        <option value="36">36 items per page</option>
+                        <option value="48">48 items per page</option>
+                        <option value="60">60 items per page</option>
+                        <option value="120">120 items per page</option>
+                        <option value="240">240 items per page</option>
+                    </select>
                 </div>
                 <div class="col col-12 col-sm-4 col-md-4 col-lg-3 col-xl-2 col-xxl-2 row align-middle d-flex flex-nowrap align-items-center">
                     <nav id="paging" aria-label="Page navigation">
@@ -117,6 +126,16 @@
                           </li>
                         </ul>
                       </nav>
+                </div>
+                <div class="col col-12 col-sm-12 col-md-12 col-lg-4 col-xl-3 col-xxl-3 row align-middle d-flex flex-nowrap align-items-center">
+                    <span>
+                        <span>
+                            Total Number of Results: 
+                        </span>
+                        <span id="total">
+
+                        </span>
+                    </span>
                 </div>
             </div>
             <div class="row"><div class="col"><span>&nbsp;</span></div> </div>
