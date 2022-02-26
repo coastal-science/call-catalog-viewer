@@ -16,6 +16,7 @@ var GridPanel = undefined;
 
     var poped = undefined;
     var audio_element = undefined;
+    var page_link = 'index.html';
 
     function pack_option(id, thumb, callname, matrilines, pod, clan, full){
         if (Array.isArray(pod)){
@@ -39,7 +40,7 @@ var GridPanel = undefined;
             <div class="bg-white rounded shadow-sm"><a href="'+full+'" data-toggle="lightbox" class="image_pop_source text-decoration-none" data-type="image" data-gallery="gallery">\
             <img src="'+thumb+'" alt="" class="img-fluid card-img-top"></a>\
             <div class="p-4">\
-                <h5> <a class="play_btn" href="#"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play" viewBox="0 0 16 16">\
+                <h5> <a class="play_btn" href="#"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-play" viewBox="0 0 16 16">\
                 <path fill="currentColor" d="M10.804 8 5 4.633v6.734L10.804 8zm.792-.696a.802.802 0 0 1 0 1.392l-6.363 3.692C4.713 12.69 4 12.345 4 11.692V4.308c0-.653.713-.998 1.233-.696l6.363 3.692z"/>\
               </svg><span class="text-dark">'+callname+'</span></a></h5>\
                 <p class="small mb-0 meta-p"><span class="font-weight-bold">Pods: '+pod+'</span></p>\
@@ -192,6 +193,15 @@ var GridPanel = undefined;
 
         resultData = resultData.splice((current_page-1)*page_size, page_size);
         redraw_items();
+
+        var encoded = btoa(JSON.stringify(searching_para));
+        const state = {'f': encoded, 'p':current_page, 's':sort_by, 'sa':sort_asc};
+        const title = '';
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+        var url = page_link+'?f='+encoded+"&p="+current_page+"&s="+sort_by+"&sa="+sort_asc+"&ps="+page_size;
+
+        history.pushState(state, title, url)
         return;
         return $.ajax({});
     }
@@ -320,25 +330,33 @@ var GridPanel = undefined;
         });
 
         $(document).on('lity:open', function(event, instance) {
-            $('.lity-container').append('<div class="container"><div class="row"><button id="play" class="col btn btn-primary"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play" viewBox="0 0 16 16">\
-            <path d="M10.804 8 5 4.633v6.734L10.804 8zm.792-.696a.802.802 0 0 1 0 1.392l-6.363 3.692C4.713 12.69 4 12.345 4 11.692V4.308c0-.653.713-.998 1.233-.696l6.363 3.692z"/>\
-          </svg>Play</button></div></div>');
-            $("#play").off('click').on('click', function(){
-                audio_element = document.createElement('audio');
+            var lity_data = [];
                 var data_target_seq = id_to_seq[poped];
                 var data_target = resultData[data_target_seq];
-                $(this).html('<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play" viewBox="0 0 16 16">\
+                lity_data = data_target;
+                var encoded_data = btoa(JSON.stringify(data_target));
+                var encoded = btoa(JSON.stringify(searching_para));
+                const state = {'f': encoded, 'p':current_page, 's':sort_by, 'sa':sort_asc, 'popup':encoded_data};
+                const title = 'Details: '+lity_data.cn+' (Call Name)';//For Safari only
+                const url = page_link+'?f='+encoded+"&p="+current_page+"&s="+sort_by+"&sa="+sort_asc+"&ps="+page_size+"&popup="+encoded_data;
+                history.pushState(state, title, url);
+            $('.lity-container').append('<div class="container"><div class="row"><button id="play" class="col btn btn-primary"><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-play" viewBox="0 0 16 16">\
+            <path d="M10.804 8 5 4.633v6.734L10.804 8zm.792-.696a.802.802 0 0 1 0 1.392l-6.363 3.692C4.713 12.69 4 12.345 4 11.692V4.308c0-.653.713-.998 1.233-.696l6.363 3.692z"/>\
+          </svg>Play (Call Name: '+lity_data.cn+') </button></div></div>');
+            $("#play").off('click').on('click', function(){
+                audio_element = document.createElement('audio');
+                $(this).html('<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-play" viewBox="0 0 16 16">\
                 <path d="M10.804 8 5 4.633v6.734L10.804 8zm.792-.696a.802.802 0 0 1 0 1.392l-6.363 3.692C4.713 12.69 4 12.345 4 11.692V4.308c0-.653.713-.998 1.233-.696l6.363 3.692z"/>\
-              </svg>Playing');
+              </svg>Playing  (Call Name: '+lity_data.cn+')');
                 $(this).removeClass('btn-primary').addClass('btn-success');
                 audio_element.setAttribute('src', '');
-                audio_element.setAttribute('src', './simple/'+data_target.filename+'.wav');
+                audio_element.setAttribute('src', './simple/'+lity_data.filename+'.wav');
                 audio_element.setAttribute('autoplay', 'autoplay');
                 audio_element.load();
                 audio_element.addEventListener('ended', function(){
-                    $("#play").html('<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play" viewBox="0 0 16 16">\
+                    $("#play").html('<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-play" viewBox="0 0 16 16">\
                     <path d="M10.804 8 5 4.633v6.734L10.804 8zm.792-.696a.802.802 0 0 1 0 1.392l-6.363 3.692C4.713 12.69 4 12.345 4 11.692V4.308c0-.653.713-.998 1.233-.696l6.363 3.692z"/>\
-                  </svg>Play').addClass('btn-primary').removeClass('btn-success');
+                  </svg>Play  (Call Name: '+lity_data.cn+')').addClass('btn-primary').removeClass('btn-success');
                 
                 })
             });
