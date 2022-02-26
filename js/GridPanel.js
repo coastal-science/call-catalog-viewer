@@ -16,7 +16,25 @@ var GridPanel = undefined;
 
     var poped = undefined;
     var audio_element = undefined;
+    const play_icon = '<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-play" width="32" height="32" viewBox="0 0 24 24"><path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm-3 17v-10l9 5.146-9 4.854z"/></svg>';
+    /*
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-play" viewBox="0 0 16 16">\
+            <path fill="currentColor" d="M10.804 8 5 4.633v6.734L10.804 8zm.792-.696a.802.802 0 0 1 0 1.392l-6.363 3.692C4.713 12.69 4 12.345 4 11.692V4.308c0-.653.713-.998 1.233-.696l6.363 3.692z"/>\
+        </svg>
 
+        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="40" viewBox="0 0 490 245" x="0px" y="0px" style="enable-background:new 0 0 490 490;" xml:space="preserve">\
+                        <g>\
+                        <path d="M460.123,0H29.877C13.406,0,0,13.406,0,29.877v131.771c0,16.479,13.406,29.885,29.877,29.885h430.245 c16.471,0,29.877-13.406,29.877-29.885V29.877C490,13.406,476.594,0,460.123,0z M474.688,161.649 c0,8.037-6.535,14.572-14.565,14.572H29.877c-8.03,0-14.565-6.535-14.565-14.572V29.877c0-8.03,6.535-14.565,14.565-14.565h430.245 c8.03,0,14.565,6.535,14.565,14.565V161.649z"/>\
+                        <path d="M113.333,47.59c-13.466,0-23.014,0.867-29.817,2.026v96.256h21.855v-34.887c2.026,0.292,4.628,0.434,7.529,0.434\
+                            c13.025,0,24.172-3.178,31.694-10.273c5.795-5.503,8.98-13.608,8.98-23.163c0-9.548-4.202-17.653-10.423-22.58\
+                            C136.639,50.192,126.941,47.59,113.333,47.59z M112.75,94.484c-3.185,0-5.495-0.142-7.38-0.576V65.101\
+                            c1.593-0.434,4.628-0.867,9.122-0.867c10.998,0,17.219,5.361,17.219,14.333C131.711,88.555,124.474,94.484,112.75,94.484z"/>\
+                            <polygon points="189.754,48.315 167.608,48.315 167.608,145.872 228.544,145.872 228.544,127.345 189.754,127.345 	"/>\
+                            <path d="M265.158,48.315l-29.818,97.557h22.871l6.946-25.04h27.941l7.522,25.04h23.739l-30.251-97.557H265.158z M268.343,104.331 l5.787-20.703c1.593-5.645,3.043-13.025,4.494-18.812h0.284c1.451,5.787,3.185,13.025,4.92,18.812l6.086,20.703H268.343z"/>\
+                            <path d="M365.75,71.762c-2.893,6.946-5.211,12.591-7.38,18.67h-0.292c-2.46-6.363-4.486-11.574-7.522-18.67l-9.989-23.447h-25.189 l30.834,57.609v39.949h21.997v-40.674l32.135-56.884h-24.748L365.75,71.762z"/>\
+                        </g>\
+                    </svg>
+    */
     function pack_option(id, thumb, callname, matrilines, pod, clan, full){
         if (Array.isArray(pod)){
             if (pod.length >= 1){
@@ -39,9 +57,7 @@ var GridPanel = undefined;
             <div class="bg-white rounded shadow-sm"><a href="'+full+'" data-toggle="lightbox" class="image_pop_source text-decoration-none" data-type="image" data-gallery="gallery">\
             <img src="'+thumb+'" alt="" class="img-fluid card-img-top"></a>\
             <div class="p-4">\
-                <h5> <a class="play_btn" href="#"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-play" viewBox="0 0 16 16">\
-                <path fill="currentColor" d="M10.804 8 5 4.633v6.734L10.804 8zm.792-.696a.802.802 0 0 1 0 1.392l-6.363 3.692C4.713 12.69 4 12.345 4 11.692V4.308c0-.653.713-.998 1.233-.696l6.363 3.692z"/>\
-              </svg><span class="text-dark">'+callname+'</span></a></h5>\
+                <h5> <a class="play_btn" href="#">'+play_icon+'<span class="text-dark">'+callname+'</span></a></h5>\
                 <p class="small mb-0 meta-p"><span class="font-weight-bold">Pods: '+pod+'</span></p>\
                 <!--<p class="small text-muted mb-0">Matrilines: <br>'+matrilines+'</p>-->\
                 <div class="meta-p d-flex align-items-center justify-content-between rounded-pill bg-light px-3 py-2 mt-4">\
