@@ -16,7 +16,6 @@ var GridPanel = undefined;
 
     var poped = undefined;
     var audio_element = undefined;
-    var page_link = 'index.html';
 
     function pack_option(id, thumb, callname, matrilines, pod, clan, full){
         if (Array.isArray(pod)){
@@ -198,13 +197,18 @@ var GridPanel = undefined;
         const state = {'f': encoded, 'p':current_page, 's':sort_by, 'sa':sort_asc};
         const title = '';
         const queryString = window.location.search;
+        const params = new URLSearchParams('');
+        params.set('f', encoded);
+        params.set('p', current_page);
+        params.set('s', sort_by);
+        params.set('sa', sort_asc);
+        params.set('ps', page_size.toString());
         const urlParams = new URLSearchParams(queryString);
-        var url = page_link+'?f='+encoded+"&p="+current_page+"&s="+sort_by+"&sa="+sort_asc+"&ps="+page_size;
         if (urlParams.has('popup')){
-            url += "&popup="+urlParams.get('popup');
+            params.set('popup', urlParams.get('popup'));
         }
 
-        history.pushState(state, title, url)
+        history.pushState(state, title, `${window.location.pathname}?${params}`);
         return;
         return $.ajax({});
     }
@@ -401,8 +405,15 @@ var GridPanel = undefined;
                 var encoded = btoa(JSON.stringify(searching_para));
                 const state = {'f': encoded, 'p':current_page, 's':sort_by, 'sa':sort_asc, 'popup':encoded_data};
                 const title = 'Details: '+lity_data.cn+' (Call Name)';//For Safari only
-                const url = page_link+'?f='+encoded+"&p="+current_page+"&s="+sort_by+"&sa="+sort_asc+"&ps="+page_size+"&popup="+encoded_data;
-                history.pushState(state, title, url);
+                const params = new URLSearchParams('');
+                params.set('f', encoded);
+                params.set('p', current_page);
+                params.set('s', sort_by);
+                params.set('sa', sort_asc);
+                params.set('ps', page_size.toString());
+                params.set('popup', encoded_data);
+        
+                history.pushState(state, title, `${window.location.pathname}?${params}`);
             }
             else if (urlParams.has('popup')){
                 //may be generated from link
@@ -451,9 +462,13 @@ var GridPanel = undefined;
             var encoded = btoa(JSON.stringify(searching_para));
             const state = {'f': encoded, 'p':current_page, 's':sort_by, 'sa':sort_asc};
             const title = '';
-            const url = page_link+'?f='+encoded+"&p="+current_page+"&s="+sort_by+"&sa="+sort_asc+"&ps="+page_size;
-    
-            history.pushState(state, title, url)
+            const params = new URLSearchParams('');
+            params.set('f', encoded);
+            params.set('p', current_page);
+            params.set('s', sort_by);
+            params.set('sa', sort_asc);
+            params.set('ps', page_size.toString());
+            history.pushState(state, title, `${window.location.pathname}?${params}`)
 
         });
         $('#show_meta').change(function(){
