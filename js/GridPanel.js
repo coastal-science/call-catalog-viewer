@@ -200,6 +200,9 @@ var GridPanel = undefined;
         const queryString = window.location.search;
         const urlParams = new URLSearchParams(queryString);
         var url = page_link+'?f='+encoded+"&p="+current_page+"&s="+sort_by+"&sa="+sort_asc+"&ps="+page_size;
+        if (urlParams.has('popup')){
+            url += "&popup="+urlParams.get('popup');
+        }
 
         history.pushState(state, title, url)
         return;
@@ -219,19 +222,75 @@ var GridPanel = undefined;
         };
         sort_by = 'cn';
         sort_asc = 'as';
+
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+        if (urlParams.has('f')){
+            const filter = urlParams.get('f');
+            const obj = atob(filter);
+            if (obj !== undefined){
+                try{
+                    const ev = eval('('+obj+')');
+                    ['s1','s2','s3'].forEach((v)=>{
+                        if (ev[v] !== undefined){
+                            searching_para[v] = ev[v];
+                        }
+                    });
+                }catch (e){
+
+                }
+            }
+        }
+        current_page = 1;
+        if (urlParams.has('p')){
+            const filter = urlParams.get('p');
+            current_page = parseInt(filter);
+        }
+        if (urlParams.has('s') && urlParams.has('sa')){
+            const filter = urlParams.get('s');
+            sort_by = filter;
+            const as = urlParams.get('sa');
+            sort_asc = as;
+        }
+        if (urlParams.has('ps')){
+            const filter = urlParams.get('ps');
+            const tmp_ps = parseInt(filter);
+            if (tmp_ps > 0 && tmp_ps%12 === 0){
+                page_size = tmp_ps;
+            }
+        }
+
         poped = false;
         Panel = $('#resultgrid');
 
         total_result = 1;
         total_page = 1;
-        current_page = 1;
-
 
         $('#sort').selectpicker('val', sort_by);
         $('#sort_a').selectpicker('val', sort_asc);
         $('#page_size').selectpicker('val', ""+page_size);
         $('#show_meta').prop('checked', metadata_show);
         bindEvents();
+        if (urlParams.has('popup')){
+            const queryString = window.location.search;
+            const urlParams = new URLSearchParams(queryString);
+            if (urlParams.has('popup')){
+                const filter = urlParams.get('popup');
+                try{
+                    const obj = atob(filter);
+                    if (obj !== undefined){
+                            const data = eval('('+obj+')');
+                            if (data['filename']==undefined){
+                                throw new Exception ('Parse Error');
+                            }
+                            var instance = lity('./simple/'+data['filename']+'.jpg');
+                            var template = instance.options('template');
+                    }
+                }catch (e){
+                    document.location.href = page_link;
+                }
+            }
+        }
         getData();
     };
     panel.init = init;
@@ -243,6 +302,7 @@ var GridPanel = undefined;
         getData();
     };
     panel.get_new = get_new;
+
     function propagate_meta(){
         if (metadata_show){
             $('#gi-area .meta-p').removeClass('hidden');
@@ -331,6 +391,9 @@ var GridPanel = undefined;
 
         $(document).on('lity:open', function(event, instance) {
             var lity_data = [];
+            const queryString = window.location.search;
+            const urlParams = new URLSearchParams(queryString);
+            if (poped != undefined && !urlParams.has('popup')){
                 var data_target_seq = id_to_seq[poped];
                 var data_target = resultData[data_target_seq];
                 lity_data = data_target;
@@ -340,6 +403,23 @@ var GridPanel = undefined;
                 const title = 'Details: '+lity_data.cn+' (Call Name)';//For Safari only
                 const url = page_link+'?f='+encoded+"&p="+current_page+"&s="+sort_by+"&sa="+sort_asc+"&ps="+page_size+"&popup="+encoded_data;
                 history.pushState(state, title, url);
+            }
+            else if (urlParams.has('popup')){
+                //may be generated from link
+                const filter = urlParams.get('popup');
+                const obj = atob(filter);
+                if (obj !== undefined){
+                    try{
+                        lity_data = eval('('+obj+')');
+                    }catch (e){
+                        document.location.href = page_link;
+                    }
+                }
+            }
+            else{
+                //something went wrong
+                document.location.href = page_link;
+            }
             $('.lity-container').append('<div class="container"><div class="row"><button id="play" class="col btn btn-primary"><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-play" viewBox="0 0 16 16">\
             <path d="M10.804 8 5 4.633v6.734L10.804 8zm.792-.696a.802.802 0 0 1 0 1.392l-6.363 3.692C4.713 12.69 4 12.345 4 11.692V4.308c0-.653.713-.998 1.233-.696l6.363 3.692z"/>\
           </svg>Play (Call Name: '+lity_data.cn+') </button></div></div>');
@@ -368,6 +448,13 @@ var GridPanel = undefined;
                 audio_element.pause();
             }
             poped = undefined;
+            var encoded = btoa(JSON.stringify(searching_para));
+            const state = {'f': encoded, 'p':current_page, 's':sort_by, 'sa':sort_asc};
+            const title = '';
+            const url = page_link+'?f='+encoded+"&p="+current_page+"&s="+sort_by+"&sa="+sort_asc+"&ps="+page_size;
+    
+            history.pushState(state, title, url)
+
         });
         $('#show_meta').change(function(){
             if ($(this).prop('checked')){
