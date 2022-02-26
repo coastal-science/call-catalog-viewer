@@ -8,7 +8,7 @@ var SearchPanel = undefined;
             "s": "s1",
             "b": "b1",
             "option":[
-                {"v":"S", "text":"Southern Resident", "default":true},
+                {"v":"S", "text":"Southern Resident"},
                 {"v":"N", "text":"Northern Resident"},
                 {"v":"T", "text":"Transient"},
             ]
@@ -17,18 +17,18 @@ var SearchPanel = undefined;
             "s": "s2",
             "b": "b2",
             "option":[
-                {"v":"J", "text":"J", "default":true}
+                {"v":"J", "text":"J"}
             ]
         },
         {
             "s": "s3",
             "b": "b3",
             "option":[
-                {"v":"J", "text":"J", "default":true},
-                {"v":"K", "text":"K", "default":true},
-                {"v":"L", "text":"L", "default":true},
+                {"v":"J", "text":"J"},
+                {"v":"K", "text":"K"},
+                {"v":"L", "text":"L"},
             ]
-        },
+        }
     ];
     var dirty = false;
     function pack_option(v, a){
@@ -40,6 +40,25 @@ var SearchPanel = undefined;
             s2: ["J"],
             s3: ["J", "K", "L"],
         };
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+        if (urlParams.has('f')){
+            const filter = urlParams.get('f');
+            const obj = atob(filter);
+            if (obj !== undefined){
+                try{
+                    const ev = eval('('+obj+')');
+                    ['s1','s2','s3'].forEach((v)=>{
+                        if (ev[v] !== undefined){
+                            originalData[v] = ev[v];
+                        }
+                    });
+                }catch (e){
+
+                }
+            }
+        }
+
         tmpResult = $.extend(true, {}, originalData);
         Panel = $('.panel');
 
@@ -48,12 +67,11 @@ var SearchPanel = undefined;
             var default_option = [];
             value.option.forEach((op_val)=>{
                 Panel.find('#'+value.s).append(pack_option(op_val.v, op_val.text));
-                if (op_val.default !== undefined && op_val.default){
+                if (originalData[value.s].indexOf(op_val.v) >= 0){
                     default_option.push(op_val.v);
                 }
             });
             $('#'+value.s).selectpicker();
-            //mobile only //$('#'+value.s).selectpicker('mobile', true);
             $('#'+value.s).selectpicker('val', default_option);
         });
         bindEvents();
