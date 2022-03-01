@@ -4,14 +4,18 @@ The script expects a folder "SRKW catalogue - J clan"
 under the parent folder of this script's folder.
 """
 
+import sys
+assert sys.version_info >= (3, 5) # make sure we have Python 3.5+
 import pandas as pd
 import os
+import yaml
 
 try:
     script_folder = os.path.dirname(__file__)
 except NameError:
     script_folder = "."
-data_folder = f"{script_folder}SRKW catalogue - J clan"
+data_folder = f"{script_folder}simple"
+file_name = "call-catalog"
 
 def get_filenames(folder):
     print(folder)
@@ -47,11 +51,65 @@ def read_data_folder(data_folder):
     df['pod_cat'] =  df['pod'].str.findall(r'[J|K|L]')
     #df['html'] = df.apply(make_row_html, axis=1)
     return df
+    
+def generate_yaml(data_folder, df):
+    
+    #generate array
+    new_df = df.rename(columns={"thumb": "image-file", "cn": "call-type", "mar": "matrilines", "clan": "clan", "pod": "pod", "filename": "wav-file"})
+    new_df['population'] = "SRKW"
+    new_df['wav-file'] = data_folder + "/" + new_df['wav-file'] + ".wav"
+    new_df['image-file'] = data_folder + "/" + new_df['image-file']
+    new_df = new_df.drop(['pod_cat'], axis=1)
+    
+    yaml_dict = { "calls" : new_df.to_dict('records') }
+   
+    return yaml_dict
 
-df = read_data_folder(data_folder)
-df.to_csv('srkw_call_data.csv')
-with open('srkw_call_data.json', 'w') as f:
-    f.write(df.to_json(orient='records'))
+def read_yaml(yaml_file):
+    with open(yaml_file) as file:
+    # The FullLoader parameter handles the conversion from YAML
+    # scalar values to Python the dictionary format
+        resource_list = yaml.safe_load(file)
+        print(resource_list)
+        df = pd.DataFrame.from_dict(resource_list['calls'])
+    #pre-processing and convert to original JSON format
+        df['call-type'] = df['call-type'].str[2:]
+        df['pod_cat'] =  df['pod'].str.findall(r'[J|K|L]')
+        df['filename'] =  df['image-file'].str.split(".", expand=True)[0]
+        df['filename'] =  [x.split("/")[-1] for x in df['filename']]
+        df['thumb'] = df['image-file']
+        df = df.rename(columns={"call-type": "cn", "matrilines": "mar", "clan": "clan", "pod": "pod", "image-file":"image_file", "wav-file": "wav_file" })
+        print(df)
+    return df
+
+def export_file(df, data_folder, file_name, file_format = 'json'):
+    if (file_format == 'json'):
+        with open(file_name+'.json', 'w') as f:
+            f.write(df.to_json(orient='records'))
+    elif (file_format == 'csv'):
+            df.to_csv(file_name+'.csv')
+    else:
+        with open(file_name+'.yaml', 'w') as file:
+            yaml_dict = generate_yaml(data_folder, df)
+            documents = yaml.dump(yaml_dict, file)
 
 
-print("\n".join(df.apply(make_row_html, axis=1)))
+if __name__ == '__main__':
+    """
+    example:
+        python3 read_files.py call-catalog.yaml <--read resources info from yaml file
+        python3 read_files.py simple <--read resources info from the directory containing resources
+    """
+    inputs = sys.argv[1]
+    if len(sys.argv) == 3:
+        output = sys.argv[2]
+    else:
+        output = file_name
+
+    if inputs.endswith('.yaml'):    #read yaml file
+        df = read_yaml(inputs)
+        export_file(df, data_folder, output, file_format = 'json')
+    else:   #read resource directory
+        df = read_data_folder(inputs)
+        export_file(df, data_folder, output, file_format = 'json')
+        #print("\n".join(df.apply(make_row_html, axis=1)))
