@@ -79,7 +79,7 @@ def read_yaml(yaml_file):
         df['filename'] =  [x.split("/")[-1] for x in df['filename']]
         df['thumb'] = df['image-file']
         df = df.rename(columns={"call-type": "cn", "matrilines": "mar", "clan": "clan", "pod": "pod", "image-file":"image_file", "wav-file": "wav_file" })
-        print(df)
+        #print(df)
     return df
 
 def export_file(df, data_folder, file_name, file_format = 'json'):
