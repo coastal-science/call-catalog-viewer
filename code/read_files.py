@@ -93,7 +93,6 @@ def export_file(df, data_folder, file_name, file_format = 'json'):
             yaml_dict = generate_yaml(data_folder, df)
             documents = yaml.dump(yaml_dict, file)
 
-
 if __name__ == '__main__':
     """
     example:
