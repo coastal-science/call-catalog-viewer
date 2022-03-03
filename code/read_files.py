@@ -70,7 +70,7 @@ def read_yaml(yaml_file):
     # The FullLoader parameter handles the conversion from YAML
     # scalar values to Python the dictionary format
         resource_list = yaml.safe_load(file)
-        print(resource_list)
+        #print(resource_list)
         df = pd.DataFrame.from_dict(resource_list['calls'])
     #pre-processing and convert to original JSON format
         df['call-type'] = df['call-type'].str[2:]
@@ -79,7 +79,7 @@ def read_yaml(yaml_file):
         df['filename'] =  [x.split("/")[-1] for x in df['filename']]
         df['thumb'] = df['image-file']
         df = df.rename(columns={"call-type": "cn", "matrilines": "mar", "clan": "clan", "pod": "pod", "image-file":"image_file", "wav-file": "wav_file" })
-        print(df)
+        #print(df)
     return df
 
 def export_file(df, data_folder, file_name, file_format = 'json'):
@@ -108,7 +108,9 @@ if __name__ == '__main__':
     if inputs.endswith('.yaml'):    #read yaml file
         df = read_yaml(inputs)
         export_file(df, data_folder, output, file_format = 'json')
+        print("read_files.py: Completed reading yaml file...")
     else:   #read resource directory
         df = read_data_folder(inputs)
         export_file(df, data_folder, output, file_format = 'json')
+        print("read_files.py: Completed reading resource directory...")
         #print("\n".join(df.apply(make_row_html, axis=1)))
