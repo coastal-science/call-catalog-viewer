@@ -1,3 +1,3 @@
-[submodule "media_orca"]
-	path = media_orca
-	url = https://github.com/rovenna2021/media_orca.git
+[submodule "srkw-call-catalogue-files"]
+	path = srkw-call-catalogue-files
+	url = https://github.com/sfu-bigdata/srkw-call-catalogue-files.git
