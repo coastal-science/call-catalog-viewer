@@ -1,0 +1,26 @@
+#!/bin/bash
+while read oldrev newrev ref
+do
+if [[ $ref =~ .*/main$ ]];
+then
+echo "Main ref received.  Deploying main branch to production..."
+DIR="/usr/share/nginx/html/srkw-call-catalogue-files"
+if [ -d "$DIR" ]; then
+  ### Take action if $DIR exists ###
+  echo "Updating..."
+else
+  ### First time initialization ###
+  echo "Creating..."
+  git --work-tree=/usr/share/nginx/html --git-dir=$HOME/proj submodule add https://github.com/sfu-bigdata/srkw-call-catalogue-files.git "$DIR"
+  git --work-tree=/usr/share/nginx/html --git-dir=$HOME/proj submodule update --init "$DIR"
+  exit 1
+fi
+git --work-tree=/usr/share/nginx/html --git-dir=$HOME/proj submodule update --init "$DIR"
+git --work-tree=/usr/share/nginx/html --git-dir=$HOME/proj checkout -f
+git --work-tree=/usr/share/nginx/html --git-dir=$HOME/proj submodule update --remote --merge "$DIR"
+cp /usr/share/nginx/html/srkw-call-catalogue-files/call-catalog.yaml /usr/share/nginx/html/resources_config/call-catalog.yaml
+python3 /usr/share/nginx/html/code/read_files.py /usr/share/nginx/html/resources_config/call-catalog.yaml /usr/share/nginx/html/resources_config/call-catalog
+else
+echo "Ref $ref successfully received.  Doing nothing: only the main branch may be deployed on this server."
+fi
+done
