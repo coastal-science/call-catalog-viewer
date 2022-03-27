@@ -10,6 +10,13 @@ import pandas as pd
 import os
 import yaml
 
+from yaml.representer import Representer
+from yaml.dumper import Dumper
+from yaml.emitter import Emitter
+from yaml.serializer import Serializer
+from yaml.resolver import Resolver
+
+
 try:
     script_folder = os.path.dirname(__file__)
 except NameError:
@@ -82,15 +89,19 @@ def read_yaml(yaml_file):
         #print(df)
     return df
 
+def represent_none(self, _):
+    return self.represent_scalar('tag:yaml.org,2002:null', '')
+
 def export_file(df, data_folder, file_name, file_format = 'json'):
     if (file_format == 'json'):
         with open(file_name+'.json', 'w') as f:
             f.write(df.to_json(orient='records'))
     elif (file_format == 'csv'):
             df.to_csv(file_name+'.csv')
-    else:
+    elif (file_format == 'yaml'):
         with open(file_name+'.yaml', 'w') as file:
             yaml_dict = generate_yaml(data_folder, df)
+            yaml.add_representer(type(None), represent_none)
             documents = yaml.dump(yaml_dict, file)
 
 if __name__ == '__main__':
@@ -111,6 +122,6 @@ if __name__ == '__main__':
         print("read_files.py: Completed reading yaml file...")
     else:   #read resource directory
         df = read_data_folder(inputs)
-        export_file(df, data_folder, output, file_format = 'json')
+        export_file(df, data_folder, output, file_format = 'yaml')
         print("read_files.py: Completed reading resource directory...")
         #print("\n".join(df.apply(make_row_html, axis=1)))
