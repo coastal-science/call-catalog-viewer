@@ -80,7 +80,7 @@ def read_yaml(yaml_file):
         #print(resource_list)
         df = pd.DataFrame.from_dict(resource_list['calls'])
     #pre-processing and convert to original JSON format
-        df['call-type'] = df['call-type'].str[2:]
+        df['call-type'] = df['call-type']       #assuming call-type now becomes S01 instead of BCS01
         df['pod_cat'] =  df['pod'].str.findall(r'[J|K|L]')
         df['filename'] =  df['image-file'].str.split(".", expand=True)[0]
         df['filename'] =  [x.split("/")[-1] for x in df['filename']]
