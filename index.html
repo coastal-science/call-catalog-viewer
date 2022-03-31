@@ -74,122 +74,159 @@
         .lity {
             overflow: auto;
         }
+        .selecting{
+            border: 0.5em solid;
+            border-color:#0d6efd;
+        }
+        .toast{
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 9999;
+        }
+        kbd{
+            font-size: 1.2rem;
+        }
     </style>
 </head>
 
 <body>
+    <div class="toast">
+        <div class="toast-header">
+            URL is newly opened. You are reading from last cache.<br/>
+            Arrow Keys are not available. Close the current detail and choose another data from the list again.
+        </div>
+      </div>
     <h1 class="text-center text-capitalize font-weight-bold">SRKW Call Catalogue</h1>
 	<div class="container">
-	<div class="row">
-		<div class="col-md-6 text-center">
-            
-        </div>
-        <div class="col-md-6 text-center">
-			<span class="float-md-right">Please provide your feedback --></span>
-            <a class="btn btn-success float-md-right" target="_blank" href="https://docs.google.com/document/d/15ld2tYWpc3sSIs42RlNjMchv0ICXg1fbEz3999SFijg/edit?usp=sharing" role="button">Feedback</a>
-        </div>
-    </div>
-	<div class="row"><div class="col">
-    <div class="panel container-fluid" id="search_panel">
-        <div class="row justify-content-md-center">
-            <div class="col col-12 col-sm-12 col-md-12 col-lg-6 col-xl-3 col-xxl-3 align-items-center align-right d-flex flex-nowrap">
-                <span class="col text-end">Population(s): </span>
-                <select id="s1" class="col" multiple aria-label="size 3 select">
-                </select>
+        <div class="row">
+            <div class="col-md-6 text-center">
+                
             </div>
-            <div class="col col-12 col-sm-12 col-md-12 col-lg-6 col-xl-3 col-xxl-3 align-items-center align-middle d-flex flex-nowrap">
-                <span class="col text-end">Clan(s): </span>
-                <select id="s2" class="col align-self-center" multiple aria-label="size 3 select">
-                </select>
-            </div>
-
-            <div class="col col-12 col-sm-12 col-md-12 col-lg-6 col-xl-3 col-xxl-3 align-items-center align-left d-flex flex-nowrap">
-                <span class="col text-end">Pod(s): </span>
-                <select id="s3" class="col align-self-center" multiple aria-label="size 3 select">
-                </select>
+            <div class="col-md-6 text-center">
+                <span class="float-md-right">Please provide your feedback --></span>
+                <a class="btn btn-success float-md-right" target="_blank" href="https://docs.google.com/document/d/15ld2tYWpc3sSIs42RlNjMchv0ICXg1fbEz3999SFijg/edit?usp=sharing" role="button">Feedback</a>
             </div>
         </div>
-        <div class="row"><div class="col"><span>&nbsp;</span></div> </div>
-        <div class="row justify-content-md-center">
-            <button id="search_now" class="btn col col-12 col-sm-12 col-md-4 col-lg-2 btn-primary">Filter</button>
-        </div>
-    </div>
-    <div class="row"><div class="col"><span>&nbsp;</span></div> </div>
-    <div class="container-fluid" id="resultgrid">
-        <div class="container">
+        <div class="row"><div class="col">
+        <div class="panel container-fluid" id="search_panel">
             <div class="row justify-content-md-center">
-                <div class="col col-8 col-sm-8 col-md-4 col-lg-4 col-xl-3 col-xxl-3 row align-middle d-flex flex-nowrap align-items-center">
-                    <div class="form-check form-switch align-middle d-flex flex-nowrap">
-                        <input class="form-check-input" type="checkbox" role="switch" id="show_meta">
-                        <label class="form-check-label" for="show_meta">&nbsp; Metadata</label>
-                    </div>
-                </div>
-                <div class="col col-12 col-sm-12 col-md-12 col-lg-8 col-xl-6 col-xxl-6 row align-items-center align-middle">
-                    <span class="col col-4 col-sm-4 col-md-2 col-lg-2 col-xl-2 col-xxl-2">
-                        Sort By: 
-                    </span>
-                    <select id="sort" class="col col-8 col-sm-8 col-md-5 col-lg-5 col-xl-5 col-xxl-5 selectpicker" aria-label="size 3 select">
-                        <option value="clan">Clan</option>
-                        <option value="pod">Pod</option>
-                        <option value="cn">Call Name</option>
-                    </select>
-                    <select id="sort_a" class="col col-12 col-sm-12 col-md-5 col-lg-5 col-xl-5 col-xxl-5 selectpicker" aria-label="size 3 select">
-                        <option value="as">Ascending</option>
-                        <option value="de">Descending</option>
+                <div class="col col-12 col-sm-12 col-md-12 col-lg-6 col-xl-3 col-xxl-3 align-items-center align-right d-flex flex-nowrap">
+                    <span class="col text-end">Population(s): </span>
+                    <select id="s1" class="col" multiple aria-label="size 3 select">
                     </select>
                 </div>
-            </div>
-            <div class="row justify-content-md-center">
-                <div class="col col-12 col-sm-8 col-md-8 col-lg-4 col-xl-4 col-xxl-3 row align-items-center align-middle">
-                    <select id="page_size"  aria-label="size 3 select" class=" selectpicker col">
-                        <option value="12">12 items per page</option>
-                        <option value="24">24 items per page</option>
-                        <option value="36">36 items per page</option>
-                        <option value="48">48 items per page</option>
-                        <option value="60">60 items per page</option>
-                        <option value="120">120 items per page</option>
-                        <option value="240">240 items per page</option>
+                <div class="col col-12 col-sm-12 col-md-12 col-lg-6 col-xl-3 col-xxl-3 align-items-center align-middle d-flex flex-nowrap">
+                    <span class="col text-end">Clan(s): </span>
+                    <select id="s2" class="col align-self-center" multiple aria-label="size 3 select">
                     </select>
                 </div>
-                <div class="col col-12 col-sm-4 col-md-4 col-lg-4 col-xl-3 col-xxl-2 row align-middle d-flex flex-nowrap align-items-center">
-                    <nav id="paging" aria-label="Page navigation" class=" align-middle align-items-center">
-                        <ul class="pagination align-middle align-items-center" style="margin:1rem 0">
-                          <li class="page-item" data-flow="p">
-                            <a class="page-link" href="#" aria-label="Previous">
-                              <span aria-hidden="true">&laquo;</span>
-                            </a>
-                          </li>
-                          <li class="page-item" data-flow="1"><a class="page-link" href="#">1</a></li>
-                          <li class="page-item" data-flow="2"><a class="page-link" href="#">2</a></li>
-                          <li class="page-item" data-flow="3"><a class="page-link" href="#">3</a></li>
-                          <li class="page-item" data-flow="n">
-                            <a class="page-link" href="#" aria-label="Next">
-                              <span aria-hidden="true">&raquo;</span>
-                            </a>
-                          </li>
-                        </ul>
-                      </nav>
-                </div>
-                <div class="col col-12 col-sm-12 col-md-12 col-lg-4 col-xl-4 col-xxl-3 row align-middle d-flex flex-nowrap align-items-center">
-                    <span>
-                        <span>
-                            Total Number of Results: 
-                        </span>
-                        <span id="total">
 
-                        </span>
-                    </span>
+                <div class="col col-12 col-sm-12 col-md-12 col-lg-6 col-xl-3 col-xxl-3 align-items-center align-left d-flex flex-nowrap">
+                    <span class="col text-end">Pod(s): </span>
+                    <select id="s3" class="col align-self-center" multiple aria-label="size 3 select">
+                    </select>
                 </div>
             </div>
             <div class="row"><div class="col"><span>&nbsp;</span></div> </div>
-        </div>
-        <div class="px-lg-5">
-            <div id="gi-area" class="row">
-                <!-- Gallery item -->
-                
+            <div class="row justify-content-md-center">
+                <button id="search_now" class="btn col col-12 col-sm-12 col-md-4 col-lg-2 btn-primary">Filter</button>
             </div>
         </div>
-    </div>
+        <div class="row"><div class="col"><span>
+            &nbsp;
+        </span></div> </div>
+        <div class="container-fluid" id="resultgrid">
+            <div class="container">
+                <div class="row justify-content-md-center">
+                    <div class="col col-8 col-sm-8 col-md-4 col-lg-4 col-xl-3 col-xxl-3 row align-middle d-flex flex-nowrap align-items-center">
+                        <div class="form-check form-switch align-middle d-flex flex-nowrap">
+                            <input class="form-check-input" type="checkbox" role="switch" id="show_meta">
+                            <label class="form-check-label" for="show_meta">&nbsp; Metadata</label>
+                        </div>
+                    </div>
+                    <div class="col col-12 col-sm-12 col-md-12 col-lg-8 col-xl-6 col-xxl-6 row align-items-center align-middle">
+                        <span class="col col-4 col-sm-4 col-md-2 col-lg-2 col-xl-2 col-xxl-2">
+                            Sort By: 
+                        </span>
+                        <select id="sort" class="col col-8 col-sm-8 col-md-5 col-lg-5 col-xl-5 col-xxl-5 selectpicker" aria-label="size 3 select">
+                            <option value="clan">Clan</option>
+                            <option value="pod">Pod</option>
+                            <option value="cn">Call Name</option>
+                        </select>
+                        <select id="sort_a" class="col col-12 col-sm-12 col-md-5 col-lg-5 col-xl-5 col-xxl-5 selectpicker" aria-label="size 3 select">
+                            <option value="as">Ascending</option>
+                            <option value="de">Descending</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row justify-content-md-center">
+                    <div class="col col-12 col-sm-8 col-md-8 col-lg-4 col-xl-4 col-xxl-3 row align-items-center align-middle">
+                        <select id="page_size"  aria-label="size 3 select" class=" selectpicker col">
+                            <option value="12">12 items per page</option>
+                            <option value="24">24 items per page</option>
+                            <option value="36">36 items per page</option>
+                            <option value="48">48 items per page</option>
+                            <option value="60">60 items per page</option>
+                            <option value="120">120 items per page</option>
+                            <option value="240">240 items per page</option>
+                        </select>
+                    </div>
+                    <div class="col col-12 col-sm-4 col-md-4 col-lg-4 col-xl-3 col-xxl-2 row align-middle d-flex flex-nowrap align-items-center">
+                        <nav id="paging" aria-label="Page navigation" class=" align-middle align-items-center">
+                            <ul class="pagination align-middle align-items-center" style="margin:1rem 0">
+                            <li class="page-item" data-flow="p">
+                                <a class="page-link" href="#" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                            <li class="page-item" data-flow="1"><a class="page-link" href="#">1</a></li>
+                            <li class="page-item" data-flow="2"><a class="page-link" href="#">2</a></li>
+                            <li class="page-item" data-flow="3"><a class="page-link" href="#">3</a></li>
+                            <li class="page-item" data-flow="n">
+                                <a class="page-link" href="#" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                            </ul>
+                        </nav>
+                    </div>
+                    <div class="col col-12 col-sm-12 col-md-12 col-lg-4 col-xl-4 col-xxl-3 row align-middle d-flex flex-nowrap align-items-center">
+                        <span>
+                            <span>
+                                Total Number of Results: 
+                            </span>
+                            <span id="total">
+
+                            </span>
+                        </span>
+                    </div>
+                </div>
+                <div class="row toast-header">
+                    <div class="col-12 col-lg-4 align-items-center text-center">
+                        <span class="toast-body col-12">
+                            <kbd>&#8593;</kbd> <kbd>&#8595;</kbd> <kbd>&#8592;</kbd> <kbd>&#8594;</kbd> to navigate; 
+                        </span>
+                    </div> 
+                    <div class="col-12 col-lg-4 align-items-center text-center">
+                        <span class="toast-body col-12">
+                            <kbd>&#8626;</kbd> to open zoom-in;
+                        </span>
+                    </div>
+                    <div class="col-12 col-lg-4 align-items-center text-center">
+                        <span class="toast-body col-12">
+                            <kbd>&blank;</kbd> to play sound track;
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="px-lg-5">
+                <div id="gi-area" class="row">
+                    <!-- Gallery item -->
+                    
+                </div>
+            </div>
+        </div>
 	</div>
 </body>
 <script>

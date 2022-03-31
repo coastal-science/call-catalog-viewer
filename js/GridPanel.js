@@ -10,12 +10,16 @@ var GridPanel = undefined;
     var next_drawn = undefined;
 
     var current_page = undefined;
-    var page_size = 12;
+    var page_size = 120;
     var total_result = undefined;
     var total_page = undefined;
 
     var poped = undefined;
+    var pop_opening = undefined;
+    var lity_data = undefined;
     var audio_element = undefined;
+    var selecting = undefined;
+    const media_folder_path = '';
     const play_icon = '<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-play" width="32" height="32" viewBox="0 0 24 24"><path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm-3 17v-10l9 5.146-9 4.854z"/></svg>';
     /*
         <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-play" viewBox="0 0 16 16">\
@@ -35,6 +39,25 @@ var GridPanel = undefined;
                         </g>\
                     </svg>
     */
+    function num_of_item_per_row(){
+        if (window.matchMedia('(min-width: 1400px)').matches){
+            return 6;
+        }
+        if (window.matchMedia('(min-width: 1200px)').matches){
+            return 6;
+        }
+        if (window.matchMedia('(min-width: 992px)').matches){
+            return 4;
+        }
+        if (window.matchMedia('(min-width: 768px)').matches){
+            return 4;
+        }
+        if (window.matchMedia('(min-width: 576px)').matches){
+            return 3;
+        }
+        return 1;
+    }
+
     function pack_option(id, thumb, callname, matrilines, pod, clan, full){
         if (Array.isArray(pod)){
             if (pod.length >= 1){
@@ -54,8 +77,8 @@ var GridPanel = undefined;
             matrilines = "N/A";
         }
         return '<div class="col-xxl-2 col-xl-2 col-lg-3 col-md-3 col-sm-4 mb-4 itemblock" id="gi-'+id+'">\
-            <div class="bg-white rounded shadow-sm"><a href="'+full+'" data-toggle="lightbox" class="image_pop_source text-decoration-none" data-type="image" data-gallery="gallery">\
-            <img src="'+thumb+'" alt="" class="img-fluid card-img-top"></a>\
+            <div class="bg-white rounded shadow-sm"><a href="'+media_folder_path+full+'" data-toggle="lightbox" class="image_pop_source text-decoration-none" data-type="image" data-gallery="gallery">\
+            <img src="'+media_folder_path+thumb+'" alt="" class="img-fluid card-img-top"></a>\
             <div class="p-4">\
                 <h5> <a class="play_btn" href="#">'+play_icon+'<span class="text-dark">'+callname+'</span></a></h5>\
                 <p class="small mb-0 meta-p"><span class="font-weight-bold">Pods: '+pod+'</span></p>\
@@ -100,8 +123,6 @@ var GridPanel = undefined;
 		// only proceed once promise is resolved
 		let data = await response.text();
 		// only proceed once second promise is resolved
-		console.log('hello');
-		console.log(data);
 		
         var simple_datasource = JSON.parse(data);
         var s1 = searching_para['s1'];
@@ -230,6 +251,7 @@ var GridPanel = undefined;
         const urlParams = new URLSearchParams(queryString);
         if (urlParams.has('popup')){
             params.set('popup', urlParams.get('popup'));
+            $('.selecting').removeClass('selecting');
         }
 
         history.pushState(state, title, `${window.location.pathname}?${params}`);
@@ -240,8 +262,11 @@ var GridPanel = undefined;
 
     function init(){
         resultData = [];
+        lity_data = [];
         id_to_seq = {};
         next_drawn = 0;
+        selecting = 0;
+        pop_opening = false;
         metadata_show = true;
         searching_para = {
             s1: ["S"],
@@ -353,8 +378,10 @@ var GridPanel = undefined;
             grid.append(obj);
             
         }
+        selecting = 0;
         propagate_meta();
-
+        $('#gi-area .itemblock:nth(0)').click();
+        
         if (i !== 0){
             next_drawn = i;
         }
@@ -370,10 +397,12 @@ var GridPanel = undefined;
         $('#gi-area').off('click').on('click', '.itemblock .image_pop_source', function(e){
             e.stopPropagation();
             e.preventDefault();
+            let parent_itemblock = $(this).parents('.itemblock');
+            $(parent_itemblock).click();
             var obj_id = $(this).parents('.itemblock').attr('id').substring(3);
             poped = obj_id;
-            var data_target_seq = id_to_seq[obj_id];
-            var data_target = resultData[data_target_seq];
+            //var data_target_seq = id_to_seq[obj_id];
+            //var data_target = resultData[data_target_seq];
             
             var instance = lity($(this).attr('href'));
             var template = instance.options('template');
@@ -382,7 +411,6 @@ var GridPanel = undefined;
             e.stopPropagation();
             e.preventDefault();
             var obj_id = $(this).parents('.itemblock').attr('id').substring(3);
-            poped = obj_id;
             var data_target_seq = id_to_seq[obj_id];
             var data_target = resultData[data_target_seq];
             if (audio_element !== undefined && audio_element !== null && audio_element.pause !== undefined){
@@ -393,6 +421,91 @@ var GridPanel = undefined;
             audio_element.setAttribute('src', './'+data_target.wav_file);
             audio_element.setAttribute('autoplay', 'autoplay');
             audio_element.load();
+        });
+        $('#gi-area').on('click', '.itemblock', function(e){
+            $(this).siblings('.itemblock').removeClass('selecting');
+            $(this).addClass('selecting');
+            selecting = $(this).index();
+        });
+        var delayed_pop = undefined;
+        var keyboard_threshold = 200;
+        var keyboard_block = undefined;
+        window.addEventListener('keydown', (e)=>{
+            let diff = 0;
+            let prevent_d = true;
+            if (keyboard_block === undefined){
+                keyboard_block = setTimeout(()=>{
+                    keyboard_block = undefined;
+                }, keyboard_threshold);
+            }
+            else{
+                return;
+            }
+            switch (e.key){
+                case 'ArrowUp':
+                    diff = -num_of_item_per_row();
+                    break;
+                case 'ArrowDown':
+                    diff = num_of_item_per_row();
+                    break;
+                case 'ArrowLeft':
+                    diff = -1;
+                    break;
+                case 'ArrowRight':
+                    diff = 1;
+                    break;
+                case ' ':
+                    if (pop_opening){
+                        $('#play').click();
+                    }
+                    else{
+                        $('.selecting .play_btn').click();
+                    }
+                    break;
+                case 'Enter':
+                    if (!pop_opening){
+                        $('.selecting.itemblock .image_pop_source').click();
+                    }
+                    break;
+                default:
+                    prevent_d = false;
+                    break;
+            }
+            if (prevent_d){
+                e.preventDefault();
+            }
+            if (diff !== 0 && $('.selecting').length > 0){
+                if (selecting + diff >= 0 && selecting + diff < resultData.length){
+                    selecting += diff;
+                    let target = $('#gi-area .itemblock:nth('+selecting+')');
+                    if (target.length >= 0){
+                        $(target).siblings().removeClass('selecting');
+                        $(target).addClass('selecting');
+                        target[0].scrollIntoView({block: "end"});
+                        if (poped){
+                            if (delayed_pop !== undefined){
+                                clearTimeout(delayed_pop);
+                            }
+                            $('.lity-close').click();
+                            delayed_pop = setTimeout(()=>{
+                                $('.selecting.itemblock .image_pop_source').click();
+                                $('.selecting')[0].scrollIntoView({block: "end"});
+                                delayed_pop = undefined;
+                            }, 100);
+                        }
+                    }
+                    else{
+                        selecting -= diff;
+                    }
+                }
+            }
+            else if (diff !== 0){
+                //toast
+                $('.toast').addClass('show');
+                setTimeout(()=>{
+                    $('.toast').removeClass('show');
+                }, 800);
+            }
         });
         $('#paging > ul > li').click(function(e){
             e.stopPropagation();
@@ -418,7 +531,7 @@ var GridPanel = undefined;
         });
 
         $(document).on('lity:open', function(event, instance) {
-            var lity_data = [];
+            lity_data = [];
             const queryString = window.location.search;
             const urlParams = new URLSearchParams(queryString);
             if (poped != undefined && !urlParams.has('popup')){
@@ -446,9 +559,13 @@ var GridPanel = undefined;
                 if (obj !== undefined){
                     try{
                         lity_data = eval('('+obj+')');
+                        $('.selecting').removeClass('selecting');
                     }catch (e){
                         document.location.href = page_link;
                     }
+                }
+                else{
+                    document.location.href = page_link;
                 }
             }
             else{
@@ -456,25 +573,27 @@ var GridPanel = undefined;
                 document.location.href = page_link;
             }
             $('.lity-container').append('<div class="container litybottom"><div class="row"><button id="play" class="col btn btn-primary"><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-play" viewBox="0 0 16 16">\
-            <path d="M10.804 8 5 4.633v6.734L10.804 8zm.792-.696a.802.802 0 0 1 0 1.392l-6.363 3.692C4.713 12.69 4 12.345 4 11.692V4.308c0-.653.713-.998 1.233-.696l6.363 3.692z"/>\
-          </svg>Play (Call Name: '+lity_data.cn+') </button></div></div>');
-            $("#play").off('click').on('click', function(){
-                audio_element = document.createElement('audio');
-                $(this).html('<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-play" viewBox="0 0 16 16">\
                 <path d="M10.804 8 5 4.633v6.734L10.804 8zm.792-.696a.802.802 0 0 1 0 1.392l-6.363 3.692C4.713 12.69 4 12.345 4 11.692V4.308c0-.653.713-.998 1.233-.696l6.363 3.692z"/>\
-              </svg>Playing  (Call Name: '+lity_data.cn+')');
-                $(this).removeClass('btn-primary').addClass('btn-success');
-                audio_element.setAttribute('src', '');
-                audio_element.setAttribute('src', './'+lity_data.wav_file);
-                audio_element.setAttribute('autoplay', 'autoplay');
-                audio_element.load();
-                audio_element.addEventListener('ended', function(){
-                    $("#play").html('<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-play" viewBox="0 0 16 16">\
-                    <path d="M10.804 8 5 4.633v6.734L10.804 8zm.792-.696a.802.802 0 0 1 0 1.392l-6.363 3.692C4.713 12.69 4 12.345 4 11.692V4.308c0-.653.713-.998 1.233-.696l6.363 3.692z"/>\
-                  </svg>Play  (Call Name: '+lity_data.cn+')').addClass('btn-primary').removeClass('btn-success');
-                
-                })
-            });
+            </svg>Play (Call Name: '+lity_data.cn+') </button></div></div>');
+            
+            pop_opening = true;
+        });
+        $(document).on('click', '.lity-container #play', function(){
+            audio_element = document.createElement('audio');
+            $(this).html('<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-play" viewBox="0 0 16 16">\
+            <path d="M10.804 8 5 4.633v6.734L10.804 8zm.792-.696a.802.802 0 0 1 0 1.392l-6.363 3.692C4.713 12.69 4 12.345 4 11.692V4.308c0-.653.713-.998 1.233-.696l6.363 3.692z"/>\
+          </svg>Playing  (Call Name: '+lity_data.cn+')');
+            $(this).removeClass('btn-primary').addClass('btn-success');
+            audio_element.setAttribute('src', '');
+            audio_element.setAttribute('src', './'+lity_data.wav_file);
+            audio_element.setAttribute('autoplay', 'autoplay');
+            audio_element.load();
+            audio_element.addEventListener('ended', function(){
+                $("#play").html('<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-play" viewBox="0 0 16 16">\
+                <path d="M10.804 8 5 4.633v6.734L10.804 8zm.792-.696a.802.802 0 0 1 0 1.392l-6.363 3.692C4.713 12.69 4 12.345 4 11.692V4.308c0-.653.713-.998 1.233-.696l6.363 3.692z"/>\
+              </svg>Play  (Call Name: '+lity_data.cn+')').addClass('btn-primary').removeClass('btn-success');
+            
+            })
         });
         $(document).on('lity:close', function(event, instance) {
             if (audio_element !== undefined && audio_element.setAttribute !== undefined){
@@ -483,6 +602,7 @@ var GridPanel = undefined;
                 audio_element.pause();
             }
             poped = undefined;
+            pop_opening = false;
             var encoded = btoa(JSON.stringify(searching_para));
             const state = {'f': encoded, 'p':current_page, 's':sort_by, 'sa':sort_asc};
             const title = '';
@@ -492,8 +612,10 @@ var GridPanel = undefined;
             params.set('s', sort_by);
             params.set('sa', sort_asc);
             params.set('ps', page_size.toString());
-            history.pushState(state, title, `${window.location.pathname}?${params}`)
-
+            history.pushState(state, title, `${window.location.pathname}?${params}`);
+            if ($('.selecting').length <= 0){
+                $('#gi-area .itemblock:nth(0)').addClass('selecting');
+            }
         });
         $('#show_meta').change(function(){
             if ($(this).prop('checked')){
