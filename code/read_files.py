@@ -25,11 +25,11 @@ data_folder = f"{script_folder}simple"
 file_name = "call-catalog"
 
 def get_filenames(folder):
-    print(folder)
+    #print(folder)
     names = []
     for dirpath, dirnames, filenames in os.walk(folder):
-        print(dirpath)
-        print(filenames)
+        #print(dirpath)
+        #print(filenames)
         for name in filenames:
             names.append(name)
         break
@@ -44,6 +44,7 @@ f"""<figure>
 
 def read_data_folder(data_folder):
     filenames = get_filenames(data_folder)
+    print(filenames)
     ps = pd.Series(filenames)
     df = ps.str.split(".", expand=True).rename(columns={0:"filename",1:"filetype"})
 
@@ -51,7 +52,8 @@ def read_data_folder(data_folder):
     # drop jpg/wav filetype, so each call appears only once in df
     df = df[['filename']].drop_duplicates()
     
-    df['thumb'] = df['filename'] + '.jpg'
+    df['thumb'] = df['filename'].apply(lambda x: x + '.jpg' if x + '.jpg' in filenames else (x + '.png' if x + '.png' in filenames else ''))
+    #df['thumb'] = df['filename'] + '.jpg'
     df['clan'] = 'J'
 
     df[['cn','pod','mar']] = df['filename'].str.split("-", n=2, expand=True)
@@ -92,6 +94,15 @@ def read_yaml(yaml_file):
 def represent_none(self, _):
     return self.represent_scalar('tag:yaml.org,2002:null', '')
 
+def str_presenter(dumper, data):
+    try:
+        dlen = len(data.splitlines())
+        if (dlen > 1):
+            return dumper.represent_scalar('tag:yaml.org,2002:str', data, style='|')
+    except TypeError as ex:
+        return dumper.represent_scalar('tag:yaml.org,2002:str', data)
+    return dumper.represent_scalar('tag:yaml.org,2002:str', data)
+
 def export_file(df, data_folder, file_name, file_format = 'json'):
     if (file_format == 'json'):
         with open(file_name+'.json', 'w') as f:
@@ -102,26 +113,36 @@ def export_file(df, data_folder, file_name, file_format = 'json'):
         with open(file_name+'.yaml', 'w') as file:
             yaml_dict = generate_yaml(data_folder, df)
             yaml.add_representer(type(None), represent_none)
+            yaml.add_representer(str, str_presenter)
             documents = yaml.dump(yaml_dict, file)
 
 if __name__ == '__main__':
     """
     example:
         python3 read_files.py call-catalog.yaml <--read resources info from yaml file
-        python3 read_files.py simple <--read resources info from the directory containing resources
+        python3 read_files.py simple call-catalog yaml<--read resources info from the directory containing resources
     """
     inputs = sys.argv[1]
     if len(sys.argv) == 3:
         output = sys.argv[2]
+        file_format = 'json'
+        print("read_files.py: Generate json file...")
+    elif len(sys.argv) == 4:
+        output = sys.argv[2]
+        file_format = sys.argv[3]
+        print("read_files.py: Generate yaml file...")
     else:
         output = file_name
+        file_format = 'json'
+        print("read_files.py: Generate json file...")
 
     if inputs.endswith('.yaml'):    #read yaml file
         df = read_yaml(inputs)
-        export_file(df, data_folder, output, file_format = 'json')
+        export_file(df, data_folder, output, file_format = file_format)
         print("read_files.py: Completed reading yaml file...")
     else:   #read resource directory
         df = read_data_folder(inputs)
-        export_file(df, data_folder, output, file_format = 'yaml')
+        #print(df)
+        export_file(df, data_folder, output, file_format = file_format)
         print("read_files.py: Completed reading resource directory...")
         #print("\n".join(df.apply(make_row_html, axis=1)))
