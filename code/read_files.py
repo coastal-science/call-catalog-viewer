@@ -21,7 +21,8 @@ try:
     script_folder = os.path.dirname(__file__)
 except NameError:
     script_folder = "."
-data_folder = f"{script_folder}simple"
+#data_folder = f"{script_folder}simple"
+data_folder = "simple"
 file_name = "call-catalog"
 
 def get_filenames(folder):
@@ -66,8 +67,8 @@ def generate_yaml(data_folder, df):
     #generate array
     new_df = df.rename(columns={"thumb": "image-file", "cn": "call-type", "mar": "matrilines", "clan": "clan", "pod": "pod", "filename": "wav-file"})
     new_df['population'] = "SRKW"
-    new_df['wav-file'] = data_folder + "/" + new_df['wav-file'] + ".wav"
-    new_df['image-file'] = data_folder + "/" + new_df['image-file']
+    new_df['wav-file'] = data_folder + "/" + new_df['wav-file'] + ".wav" #data_folder + "/" + 
+    new_df['image-file'] = data_folder + "/" + new_df['image-file'] #data_folder + "/" + 
     new_df = new_df.drop(['pod_cat'], axis=1)
     
     yaml_dict = { "calls" : new_df.to_dict('records') }
@@ -142,7 +143,7 @@ if __name__ == '__main__':
         print("read_files.py: Completed reading yaml file...")
     else:   #read resource directory
         df = read_data_folder(inputs)
-        #print(df)
+        print(df)
         export_file(df, data_folder, output, file_format = file_format)
         print("read_files.py: Completed reading resource directory...")
         #print("\n".join(df.apply(make_row_html, axis=1)))
