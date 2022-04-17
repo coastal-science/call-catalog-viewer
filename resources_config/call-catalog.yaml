@@ -1,897 +1,897 @@
 calls:
 - call-type: S02ii
   clan: J
-  image-file: simple/S02ii-J-3.png
+  image-file: srkw-call-catalogue-files/media/S02ii-J-3.png
   matrilines: '3'
   pod: J
   population: SRKW
-  wav-file: simple/S02ii-J-3.wav
+  wav-file: srkw-call-catalogue-files/media/S02ii-J-3.wav
 - call-type: S10
   clan: J
-  image-file: simple/S10-J,K,L-4.jpg
+  image-file: srkw-call-catalogue-files/media/S10-J,K,L-4.jpg
   matrilines: '4'
   pod: J,K,L
   population: SRKW
-  wav-file: simple/S10-J,K,L-4.wav
+  wav-file: srkw-call-catalogue-files/media/S10-J,K,L-4.wav
 - call-type: S36
   clan: J
-  image-file: simple/S36-K,L-2.jpg
+  image-file: srkw-call-catalogue-files/media/S36-K,L-2.jpg
   matrilines: '2'
   pod: K,L
   population: SRKW
-  wav-file: simple/S36-K,L-2.wav
+  wav-file: srkw-call-catalogue-files/media/S36-K,L-2.wav
 - call-type: S12
   clan: J
-  image-file: simple/S12-J-2.jpg
+  image-file: srkw-call-catalogue-files/media/S12-J-2.jpg
   matrilines: '2'
   pod: J
   population: SRKW
-  wav-file: simple/S12-J-2.wav
+  wav-file: srkw-call-catalogue-files/media/S12-J-2.wav
 - call-type: S44
   clan: J
-  image-file: simple/S44-J-2.jpg
+  image-file: srkw-call-catalogue-files/media/S44-J-2.jpg
   matrilines: '2'
   pod: J
   population: SRKW
-  wav-file: simple/S44-J-2.wav
+  wav-file: srkw-call-catalogue-files/media/S44-J-2.wav
 - call-type: S02i
   clan: J
-  image-file: simple/S02i-J.jpg
+  image-file: srkw-call-catalogue-files/media/S02i-J.jpg
   matrilines:
   pod: J
   population: SRKW
-  wav-file: simple/S02i-J.wav
+  wav-file: srkw-call-catalogue-files/media/S02i-J.wav
 - call-type: S10
   clan: J
-  image-file: simple/S10-J,K,L-3.jpg
+  image-file: srkw-call-catalogue-files/media/S10-J,K,L-3.jpg
   matrilines: '3'
   pod: J,K,L
   population: SRKW
-  wav-file: simple/S10-J,K,L-3.wav
+  wav-file: srkw-call-catalogue-files/media/S10-J,K,L-3.wav
 - call-type: S03
   clan: J
-  image-file: simple/S03-J-1.jpg
+  image-file: srkw-call-catalogue-files/media/S03-J-1.jpg
   matrilines: '1'
   pod: J
   population: SRKW
-  wav-file: simple/S03-J-1.wav
+  wav-file: srkw-call-catalogue-files/media/S03-J-1.wav
 - call-type: S18
   clan: J
-  image-file: simple/S18-L-4.jpg
+  image-file: srkw-call-catalogue-files/media/S18-L-4.jpg
   matrilines: '4'
   pod: L
   population: SRKW
-  wav-file: simple/S18-L-4.wav
+  wav-file: srkw-call-catalogue-files/media/S18-L-4.wav
 - call-type: S41
   clan: J
-  image-file: simple/S41-J-2.jpg
+  image-file: srkw-call-catalogue-files/media/S41-J-2.jpg
   matrilines: '2'
   pod: J
   population: SRKW
-  wav-file: simple/S41-J-2.wav
+  wav-file: srkw-call-catalogue-files/media/S41-J-2.wav
 - call-type: S42
   clan: J
-  image-file: simple/S42-J,L-3.jpg
+  image-file: srkw-call-catalogue-files/media/S42-J,L-3.jpg
   matrilines: '3'
   pod: J,L
   population: SRKW
-  wav-file: simple/S42-J,L-3.wav
+  wav-file: srkw-call-catalogue-files/media/S42-J,L-3.wav
 - call-type: S02i
   clan: J
-  image-file: simple/S02i-J-2.jpg
+  image-file: srkw-call-catalogue-files/media/S02i-J-2.jpg
   matrilines: '2'
   pod: J
   population: SRKW
-  wav-file: simple/S02i-J-2.wav
+  wav-file: srkw-call-catalogue-files/media/S02i-J-2.wav
 - call-type: S04
   clan: J
-  image-file: simple/S04-J-3.png
+  image-file: srkw-call-catalogue-files/media/S04-J-3.png
   matrilines: '3'
   pod: J
   population: SRKW
-  wav-file: simple/S04-J-3.wav
+  wav-file: srkw-call-catalogue-files/media/S04-J-3.wav
 - call-type: S08i
   clan: J
-  image-file: simple/S08i-J,L-5.jpg
+  image-file: srkw-call-catalogue-files/media/S08i-J,L-5.jpg
   matrilines: '5'
   pod: J,L
   population: SRKW
-  wav-file: simple/S08i-J,L-5.wav
+  wav-file: srkw-call-catalogue-files/media/S08i-J,L-5.wav
 - call-type: S03
   clan: J
-  image-file: simple/S03-J-3.png
+  image-file: srkw-call-catalogue-files/media/S03-J-3.png
   matrilines: '3'
   pod: J
   population: SRKW
-  wav-file: simple/S03-J-3.wav
+  wav-file: srkw-call-catalogue-files/media/S03-J-3.wav
 - call-type: S17
   clan: J
-  image-file: simple/S17-K,L-6.jpg
+  image-file: srkw-call-catalogue-files/media/S17-K,L-6.jpg
   matrilines: '6'
   pod: K,L
   population: SRKW
-  wav-file: simple/S17-K,L-6.wav
+  wav-file: srkw-call-catalogue-files/media/S17-K,L-6.wav
 - call-type: S33
   clan: J
-  image-file: simple/S33-L-2.jpg
+  image-file: srkw-call-catalogue-files/media/S33-L-2.jpg
   matrilines: '2'
   pod: L
   population: SRKW
-  wav-file: simple/S33-L-2.wav
+  wav-file: srkw-call-catalogue-files/media/S33-L-2.wav
 - call-type: S31
   clan: J
-  image-file: simple/S31-L-3.jpg
+  image-file: srkw-call-catalogue-files/media/S31-L-3.jpg
   matrilines: '3'
   pod: L
   population: SRKW
-  wav-file: simple/S31-L-3.wav
+  wav-file: srkw-call-catalogue-files/media/S31-L-3.wav
 - call-type: S17
   clan: J
-  image-file: simple/S17-K,L-3.jpg
+  image-file: srkw-call-catalogue-files/media/S17-K,L-3.jpg
   matrilines: '3'
   pod: K,L
   population: SRKW
-  wav-file: simple/S17-K,L-3.wav
+  wav-file: srkw-call-catalogue-files/media/S17-K,L-3.wav
 - call-type: S40
   clan: J
-  image-file: simple/S40-L-2.jpg
+  image-file: srkw-call-catalogue-files/media/S40-L-2.jpg
   matrilines: '2'
   pod: L
   population: SRKW
-  wav-file: simple/S40-L-2.wav
+  wav-file: srkw-call-catalogue-files/media/S40-L-2.wav
 - call-type: S06
   clan: J
-  image-file: simple/S06-J.jpg
+  image-file: srkw-call-catalogue-files/media/S06-J.jpg
   matrilines:
   pod: J
   population: SRKW
-  wav-file: simple/S06-J.wav
+  wav-file: srkw-call-catalogue-files/media/S06-J.wav
 - call-type: S22
   clan: J
-  image-file: simple/S22-L-4.png
+  image-file: srkw-call-catalogue-files/media/S22-L-4.png
   matrilines: '4'
   pod: L
   population: SRKW
-  wav-file: simple/S22-L-4.wav
+  wav-file: srkw-call-catalogue-files/media/S22-L-4.wav
 - call-type: S19
   clan: J
-  image-file: simple/S19-L-4.jpg
+  image-file: srkw-call-catalogue-files/media/S19-L-4.jpg
   matrilines: '4'
   pod: L
   population: SRKW
-  wav-file: simple/S19-L-4.wav
+  wav-file: srkw-call-catalogue-files/media/S19-L-4.wav
 - call-type: S19
   clan: J
-  image-file: simple/S19-L-8.png
+  image-file: srkw-call-catalogue-files/media/S19-L-8.png
   matrilines: '8'
   pod: L
   population: SRKW
-  wav-file: simple/S19-L-8.wav
+  wav-file: srkw-call-catalogue-files/media/S19-L-8.wav
 - call-type: S44
   clan: J
-  image-file: simple/S44-J-1.jpg
+  image-file: srkw-call-catalogue-files/media/S44-J-1.jpg
   matrilines: '1'
   pod: J
   population: SRKW
-  wav-file: simple/S44-J-1.wav
+  wav-file: srkw-call-catalogue-files/media/S44-J-1.wav
 - call-type: S16
   clan: J
-  image-file: simple/S16-K,L-1.jpg
+  image-file: srkw-call-catalogue-files/media/S16-K,L-1.jpg
   matrilines: '1'
   pod: K,L
   population: SRKW
-  wav-file: simple/S16-K,L-1.wav
+  wav-file: srkw-call-catalogue-files/media/S16-K,L-1.wav
 - call-type: S37ii
   clan: J
-  image-file: simple/S37ii-K,L-2.jpg
+  image-file: srkw-call-catalogue-files/media/S37ii-K,L-2.jpg
   matrilines: '2'
   pod: K,L
   population: SRKW
-  wav-file: simple/S37ii-K,L-2.wav
+  wav-file: srkw-call-catalogue-files/media/S37ii-K,L-2.wav
 - call-type: S17
   clan: J
-  image-file: simple/S17-K,L-5.png
+  image-file: srkw-call-catalogue-files/media/S17-K,L-5.png
   matrilines: '5'
   pod: K,L
   population: SRKW
-  wav-file: simple/S17-K,L-5.wav
+  wav-file: srkw-call-catalogue-files/media/S17-K,L-5.wav
 - call-type: S13ii
   clan: J
-  image-file: simple/S13ii-K,L-1.jpg
+  image-file: srkw-call-catalogue-files/media/S13ii-K,L-1.jpg
   matrilines: '1'
   pod: K,L
   population: SRKW
-  wav-file: simple/S13ii-K,L-1.wav
+  wav-file: srkw-call-catalogue-files/media/S13ii-K,L-1.wav
 - call-type: S19
   clan: J
-  image-file: simple/S19-L-3.jpg
+  image-file: srkw-call-catalogue-files/media/S19-L-3.jpg
   matrilines: '3'
   pod: L
   population: SRKW
-  wav-file: simple/S19-L-3.wav
+  wav-file: srkw-call-catalogue-files/media/S19-L-3.wav
 - call-type: S44
   clan: J
-  image-file: simple/S44-J-5.png
+  image-file: srkw-call-catalogue-files/media/S44-J-5.png
   matrilines: '5'
   pod: J
   population: SRKW
-  wav-file: simple/S44-J-5.wav
+  wav-file: srkw-call-catalogue-files/media/S44-J-5.wav
 - call-type: S19
   clan: J
-  image-file: simple/S19-L-6.png
+  image-file: srkw-call-catalogue-files/media/S19-L-6.png
   matrilines: '6'
   pod: L
   population: SRKW
-  wav-file: simple/S19-L-6.wav
+  wav-file: srkw-call-catalogue-files/media/S19-L-6.wav
 - call-type: S07
   clan: J
-  image-file: simple/S07-J-3.png
+  image-file: srkw-call-catalogue-files/media/S07-J-3.png
   matrilines: '3'
   pod: J
   population: SRKW
-  wav-file: simple/S07-J-3.wav
+  wav-file: srkw-call-catalogue-files/media/S07-J-3.wav
 - call-type: S19
   clan: J
-  image-file: simple/S19-L-9.png
+  image-file: srkw-call-catalogue-files/media/S19-L-9.png
   matrilines: '9'
   pod: L
   population: SRKW
-  wav-file: simple/S19-L-9.wav
+  wav-file: srkw-call-catalogue-files/media/S19-L-9.wav
 - call-type: S03
   clan: J
-  image-file: simple/S03-J.jpg
+  image-file: srkw-call-catalogue-files/media/S03-J.jpg
   matrilines:
   pod: J
   population: SRKW
-  wav-file: simple/S03-J.wav
+  wav-file: srkw-call-catalogue-files/media/S03-J.wav
 - call-type: S31
   clan: J
-  image-file: simple/S31-L-4.jpg
+  image-file: srkw-call-catalogue-files/media/S31-L-4.jpg
   matrilines: '4'
   pod: L
   population: SRKW
-  wav-file: simple/S31-L-4.wav
+  wav-file: srkw-call-catalogue-files/media/S31-L-4.wav
 - call-type: S19
   clan: J
-  image-file: simple/S19-L-12.png
+  image-file: srkw-call-catalogue-files/media/S19-L-12.png
   matrilines: '12'
   pod: L
   population: SRKW
-  wav-file: simple/S19-L-12.wav
+  wav-file: srkw-call-catalogue-files/media/S19-L-12.wav
 - call-type: S41
   clan: J
-  image-file: simple/S41-J.jpg
+  image-file: srkw-call-catalogue-files/media/S41-J.jpg
   matrilines:
   pod: J
   population: SRKW
-  wav-file: simple/S41-J.wav
+  wav-file: srkw-call-catalogue-files/media/S41-J.wav
 - call-type: S37ii
   clan: J
-  image-file: simple/S37ii-K,L-4.png
+  image-file: srkw-call-catalogue-files/media/S37ii-K,L-4.png
   matrilines: '4'
   pod: K,L
   population: SRKW
-  wav-file: simple/S37ii-K,L-4.wav
+  wav-file: srkw-call-catalogue-files/media/S37ii-K,L-4.wav
 - call-type: S22
   clan: J
-  image-file: simple/S22-L-7.png
+  image-file: srkw-call-catalogue-files/media/S22-L-7.png
   matrilines: '7'
   pod: L
   population: SRKW
-  wav-file: simple/S22-L-7.wav
+  wav-file: srkw-call-catalogue-files/media/S22-L-7.wav
 - call-type: S05
   clan: J
-  image-file: simple/S05-J-1.jpg
+  image-file: srkw-call-catalogue-files/media/S05-J-1.jpg
   matrilines: '1'
   pod: J
   population: SRKW
-  wav-file: simple/S05-J-1.wav
+  wav-file: srkw-call-catalogue-files/media/S05-J-1.wav
 - call-type: S13ii
   clan: J
-  image-file: simple/S13ii-K,L-2.jpg
+  image-file: srkw-call-catalogue-files/media/S13ii-K,L-2.jpg
   matrilines: '2'
   pod: K,L
   population: SRKW
-  wav-file: simple/S13ii-K,L-2.wav
+  wav-file: srkw-call-catalogue-files/media/S13ii-K,L-2.wav
 - call-type: S02iii
   clan: J
-  image-file: simple/S02iii-L-2.jpg
+  image-file: srkw-call-catalogue-files/media/S02iii-L-2.jpg
   matrilines: '2'
   pod: L
   population: SRKW
-  wav-file: simple/S02iii-L-2.wav
+  wav-file: srkw-call-catalogue-files/media/S02iii-L-2.wav
 - call-type: S12
   clan: J
-  image-file: simple/S12-J-4.png
+  image-file: srkw-call-catalogue-files/media/S12-J-4.png
   matrilines: '4'
   pod: J
   population: SRKW
-  wav-file: simple/S12-J-4.wav
+  wav-file: srkw-call-catalogue-files/media/S12-J-4.wav
 - call-type: S08i
   clan: J
-  image-file: simple/S08i-J,L-4.jpg
+  image-file: srkw-call-catalogue-files/media/S08i-J,L-4.jpg
   matrilines: '4'
   pod: J,L
   population: SRKW
-  wav-file: simple/S08i-J,L-4.wav
+  wav-file: srkw-call-catalogue-files/media/S08i-J,L-4.wav
 - call-type: S04
   clan: J
-  image-file: simple/S04-J.jpg
+  image-file: srkw-call-catalogue-files/media/S04-J.jpg
   matrilines:
   pod: J
   population: SRKW
-  wav-file: simple/S04-J.wav
+  wav-file: srkw-call-catalogue-files/media/S04-J.wav
 - call-type: S17
   clan: J
-  image-file: simple/S17-K,L-4.jpg
+  image-file: srkw-call-catalogue-files/media/S17-K,L-4.jpg
   matrilines: '4'
   pod: K,L
   population: SRKW
-  wav-file: simple/S17-K,L-4.wav
+  wav-file: srkw-call-catalogue-files/media/S17-K,L-4.wav
 - call-type: S19
   clan: J
-  image-file: simple/S19-L-10.png
+  image-file: srkw-call-catalogue-files/media/S19-L-10.png
   matrilines: '10'
   pod: L
   population: SRKW
-  wav-file: simple/S19-L-10.wav
+  wav-file: srkw-call-catalogue-files/media/S19-L-10.wav
 - call-type: S36
   clan: J
-  image-file: simple/S36-K,L-3.jpg
+  image-file: srkw-call-catalogue-files/media/S36-K,L-3.jpg
   matrilines: '3'
   pod: K,L
   population: SRKW
-  wav-file: simple/S36-K,L-3.wav
+  wav-file: srkw-call-catalogue-files/media/S36-K,L-3.wav
 - call-type: S19
   clan: J
-  image-file: simple/S19-L.jpg
+  image-file: srkw-call-catalogue-files/media/S19-L.jpg
   matrilines:
   pod: L
   population: SRKW
-  wav-file: simple/S19-L.wav
+  wav-file: srkw-call-catalogue-files/media/S19-L.wav
 - call-type: S31
   clan: J
-  image-file: simple/S31-L-2.jpg
+  image-file: srkw-call-catalogue-files/media/S31-L-2.jpg
   matrilines: '2'
   pod: L
   population: SRKW
-  wav-file: simple/S31-L-2.wav
+  wav-file: srkw-call-catalogue-files/media/S31-L-2.wav
 - call-type: S33
   clan: J
-  image-file: simple/S33-L-3.png
+  image-file: srkw-call-catalogue-files/media/S33-L-3.png
   matrilines: '3'
   pod: L
   population: SRKW
-  wav-file: simple/S33-L-3.wav
+  wav-file: srkw-call-catalogue-files/media/S33-L-3.wav
 - call-type: S01
   clan: J
-  image-file: simple/S01-J,L-2.jpg
+  image-file: srkw-call-catalogue-files/media/S01-J,L-2.jpg
   matrilines: '2'
   pod: J,L
   population: SRKW
-  wav-file: simple/S01-J,L-2.wav
+  wav-file: srkw-call-catalogue-files/media/S01-J,L-2.wav
 - call-type: S04
   clan: J
-  image-file: simple/S04-J-1.jpg
+  image-file: srkw-call-catalogue-files/media/S04-J-1.jpg
   matrilines: '1'
   pod: J
   population: SRKW
-  wav-file: simple/S04-J-1.wav
+  wav-file: srkw-call-catalogue-files/media/S04-J-1.wav
 - call-type: S04
   clan: J
-  image-file: simple/S04-J-2.jpg
+  image-file: srkw-call-catalogue-files/media/S04-J-2.jpg
   matrilines: '2'
   pod: J
   population: SRKW
-  wav-file: simple/S04-J-2.wav
+  wav-file: srkw-call-catalogue-files/media/S04-J-2.wav
 - call-type: S16
   clan: J
-  image-file: simple/S16-K,L-4.jpg
+  image-file: srkw-call-catalogue-files/media/S16-K,L-4.jpg
   matrilines: '4'
   pod: K,L
   population: SRKW
-  wav-file: simple/S16-K,L-4.wav
+  wav-file: srkw-call-catalogue-files/media/S16-K,L-4.wav
 - call-type: S08i
   clan: J
-  image-file: simple/S08i-J,L-1.jpg
+  image-file: srkw-call-catalogue-files/media/S08i-J,L-1.jpg
   matrilines: '1'
   pod: J,L
   population: SRKW
-  wav-file: simple/S08i-J,L-1.wav
+  wav-file: srkw-call-catalogue-files/media/S08i-J,L-1.wav
 - call-type: S44
   clan: J
-  image-file: simple/S44-J-4.jpg
+  image-file: srkw-call-catalogue-files/media/S44-J-4.jpg
   matrilines: '4'
   pod: J
   population: SRKW
-  wav-file: simple/S44-J-4.wav
+  wav-file: srkw-call-catalogue-files/media/S44-J-4.wav
 - call-type: S22
   clan: J
-  image-file: simple/S22-L-3.png
+  image-file: srkw-call-catalogue-files/media/S22-L-3.png
   matrilines: '3'
   pod: L
   population: SRKW
-  wav-file: simple/S22-L-3.wav
+  wav-file: srkw-call-catalogue-files/media/S22-L-3.wav
 - call-type: S44
   clan: J
-  image-file: simple/S44-J-2 2.jpg
+  image-file: srkw-call-catalogue-files/media/S44-J-2 2.jpg
   matrilines: 2 2
   pod: J
   population: SRKW
-  wav-file: simple/S44-J-2 2.wav
+  wav-file: srkw-call-catalogue-files/media/S44-J-2 2.wav
 - call-type: S42
   clan: J
-  image-file: simple/S42-J,L-1.jpg
+  image-file: srkw-call-catalogue-files/media/S42-J,L-1.jpg
   matrilines: '1'
   pod: J,L
   population: SRKW
-  wav-file: simple/S42-J,L-1.wav
+  wav-file: srkw-call-catalogue-files/media/S42-J,L-1.wav
 - call-type: S01
   clan: J
-  image-file: simple/S01-J,L.png
+  image-file: srkw-call-catalogue-files/media/S01-J,L.png
   matrilines:
   pod: J,L
   population: SRKW
-  wav-file: simple/S01-J,L.wav
+  wav-file: srkw-call-catalogue-files/media/S01-J,L.wav
 - call-type: S31
   clan: J
-  image-file: simple/S31-L-1.jpg
+  image-file: srkw-call-catalogue-files/media/S31-L-1.jpg
   matrilines: '1'
   pod: L
   population: SRKW
-  wav-file: simple/S31-L-1.wav
+  wav-file: srkw-call-catalogue-files/media/S31-L-1.wav
 - call-type: S42
   clan: J
-  image-file: simple/S42-J,L-2.jpg
+  image-file: srkw-call-catalogue-files/media/S42-J,L-2.jpg
   matrilines: '2'
   pod: J,L
   population: SRKW
-  wav-file: simple/S42-J,L-2.wav
+  wav-file: srkw-call-catalogue-files/media/S42-J,L-2.wav
 - call-type: S12
   clan: J
-  image-file: simple/S12-J-1.jpg
+  image-file: srkw-call-catalogue-files/media/S12-J-1.jpg
   matrilines: '1'
   pod: J
   population: SRKW
-  wav-file: simple/S12-J-1.wav
+  wav-file: srkw-call-catalogue-files/media/S12-J-1.wav
 - call-type: S41
   clan: J
-  image-file: simple/S41-J-1.jpg
+  image-file: srkw-call-catalogue-files/media/S41-J-1.jpg
   matrilines: '1'
   pod: J
   population: SRKW
-  wav-file: simple/S41-J-1.wav
+  wav-file: srkw-call-catalogue-files/media/S41-J-1.wav
 - call-type: S01
   clan: J
-  image-file: simple/S01-J,L-3.jpg
+  image-file: srkw-call-catalogue-files/media/S01-J,L-3.jpg
   matrilines: '3'
   pod: J,L
   population: SRKW
-  wav-file: simple/S01-J,L-3.wav
+  wav-file: srkw-call-catalogue-files/media/S01-J,L-3.wav
 - call-type: S41
   clan: J
-  image-file: simple/S41-J-4.png
+  image-file: srkw-call-catalogue-files/media/S41-J-4.png
   matrilines: '4'
   pod: J
   population: SRKW
-  wav-file: simple/S41-J-4.wav
+  wav-file: srkw-call-catalogue-files/media/S41-J-4.wav
 - call-type: S01
   clan: J
-  image-file: simple/S01-J,L-1.jpg
+  image-file: srkw-call-catalogue-files/media/S01-J,L-1.jpg
   matrilines: '1'
   pod: J,L
   population: SRKW
-  wav-file: simple/S01-J,L-1.wav
+  wav-file: srkw-call-catalogue-files/media/S01-J,L-1.wav
 - call-type: S16
   clan: J
-  image-file: simple/S16-K,L-2.jpg
+  image-file: srkw-call-catalogue-files/media/S16-K,L-2.jpg
   matrilines: '2'
   pod: K,L
   population: SRKW
-  wav-file: simple/S16-K,L-2.wav
+  wav-file: srkw-call-catalogue-files/media/S16-K,L-2.wav
 - call-type: S44
   clan: J
-  image-file: simple/S44-J-3.jpg
+  image-file: srkw-call-catalogue-files/media/S44-J-3.jpg
   matrilines: '3'
   pod: J
   population: SRKW
-  wav-file: simple/S44-J-3.wav
+  wav-file: srkw-call-catalogue-files/media/S44-J-3.wav
 - call-type: S19
   clan: J
-  image-file: simple/S19-L-1.jpg
+  image-file: srkw-call-catalogue-files/media/S19-L-1.jpg
   matrilines: '1'
   pod: L
   population: SRKW
-  wav-file: simple/S19-L-1.wav
+  wav-file: srkw-call-catalogue-files/media/S19-L-1.wav
 - call-type: S18
   clan: J
-  image-file: simple/S18-L-1.png
+  image-file: srkw-call-catalogue-files/media/S18-L-1.png
   matrilines: '1'
   pod: L
   population: SRKW
-  wav-file: simple/S18-L-1.wav
+  wav-file: srkw-call-catalogue-files/media/S18-L-1.wav
 - call-type: S13i
   clan: J
-  image-file: simple/S13i-J-1.jpg
+  image-file: srkw-call-catalogue-files/media/S13i-J-1.jpg
   matrilines: '1'
   pod: J
   population: SRKW
-  wav-file: simple/S13i-J-1.wav
+  wav-file: srkw-call-catalogue-files/media/S13i-J-1.wav
 - call-type: S44
   clan: J
-  image-file: simple/S44-J-6.png
+  image-file: srkw-call-catalogue-files/media/S44-J-6.png
   matrilines: '6'
   pod: J
   population: SRKW
-  wav-file: simple/S44-J-6.wav
+  wav-file: srkw-call-catalogue-files/media/S44-J-6.wav
 - call-type: S18
   clan: J
-  image-file: simple/S18-L-5.png
+  image-file: srkw-call-catalogue-files/media/S18-L-5.png
   matrilines: '5'
   pod: L
   population: SRKW
-  wav-file: simple/S18-L-5.wav
+  wav-file: srkw-call-catalogue-files/media/S18-L-5.wav
 - call-type: S18
   clan: J
-  image-file: simple/S18-L-3.jpg
+  image-file: srkw-call-catalogue-files/media/S18-L-3.jpg
   matrilines: '3'
   pod: L
   population: SRKW
-  wav-file: simple/S18-L-3.wav
+  wav-file: srkw-call-catalogue-files/media/S18-L-3.wav
 - call-type: S10
   clan: J
-  image-file: simple/S10-J,K,L-2.jpg
+  image-file: srkw-call-catalogue-files/media/S10-J,K,L-2.jpg
   matrilines: '2'
   pod: J,K,L
   population: SRKW
-  wav-file: simple/S10-J,K,L-2.wav
+  wav-file: srkw-call-catalogue-files/media/S10-J,K,L-2.wav
 - call-type: S17
   clan: J
-  image-file: simple/S17-K,L-2.jpg
+  image-file: srkw-call-catalogue-files/media/S17-K,L-2.jpg
   matrilines: '2'
   pod: K,L
   population: SRKW
-  wav-file: simple/S17-K,L-2.wav
+  wav-file: srkw-call-catalogue-files/media/S17-K,L-2.wav
 - call-type: S22
   clan: J
-  image-file: simple/S22-L-5.png
+  image-file: srkw-call-catalogue-files/media/S22-L-5.png
   matrilines: '5'
   pod: L
   population: SRKW
-  wav-file: simple/S22-L-5.wav
+  wav-file: srkw-call-catalogue-files/media/S22-L-5.wav
 - call-type: S13i
   clan: J
-  image-file: simple/S13i-J-2.jpg
+  image-file: srkw-call-catalogue-files/media/S13i-J-2.jpg
   matrilines: '2'
   pod: J
   population: SRKW
-  wav-file: simple/S13i-J-2.wav
+  wav-file: srkw-call-catalogue-files/media/S13i-J-2.wav
 - call-type: S22
   clan: J
-  image-file: simple/S22-L-2.jpg
+  image-file: srkw-call-catalogue-files/media/S22-L-2.jpg
   matrilines: '2'
   pod: L
   population: SRKW
-  wav-file: simple/S22-L-2.wav
+  wav-file: srkw-call-catalogue-files/media/S22-L-2.wav
 - call-type: S02iii
   clan: J
-  image-file: simple/S02iii-L-4.png
+  image-file: srkw-call-catalogue-files/media/S02iii-L-4.png
   matrilines: '4'
   pod: L
   population: SRKW
-  wav-file: simple/S02iii-L-4.wav
+  wav-file: srkw-call-catalogue-files/media/S02iii-L-4.wav
 - call-type: S36
   clan: J
-  image-file: simple/S36-K,L-4.png
+  image-file: srkw-call-catalogue-files/media/S36-K,L-4.png
   matrilines: '4'
   pod: K,L
   population: SRKW
-  wav-file: simple/S36-K,L-4.wav
+  wav-file: srkw-call-catalogue-files/media/S36-K,L-4.wav
 - call-type: S10
   clan: J
-  image-file: simple/S10-J,K,L-1.jpg
+  image-file: srkw-call-catalogue-files/media/S10-J,K,L-1.jpg
   matrilines: '1'
   pod: J,K,L
   population: SRKW
-  wav-file: simple/S10-J,K,L-1.wav
+  wav-file: srkw-call-catalogue-files/media/S10-J,K,L-1.wav
 - call-type: S19
   clan: J
-  image-file: simple/S19-L-5.png
+  image-file: srkw-call-catalogue-files/media/S19-L-5.png
   matrilines: '5'
   pod: L
   population: SRKW
-  wav-file: simple/S19-L-5.wav
+  wav-file: srkw-call-catalogue-files/media/S19-L-5.wav
 - call-type: S31
   clan: J
-  image-file: simple/S31-L-5.png
+  image-file: srkw-call-catalogue-files/media/S31-L-5.png
   matrilines: '5'
   pod: L
   population: SRKW
-  wav-file: simple/S31-L-5.wav
+  wav-file: srkw-call-catalogue-files/media/S31-L-5.wav
 - call-type: S09
   clan: J
-  image-file: simple/S09-J.jpg
+  image-file: srkw-call-catalogue-files/media/S09-J.jpg
   matrilines:
   pod: J
   population: SRKW
-  wav-file: simple/S09-J.wav
+  wav-file: srkw-call-catalogue-files/media/S09-J.wav
 - call-type: S19
   clan: J
-  image-file: simple/S19-L-2.jpg
+  image-file: srkw-call-catalogue-files/media/S19-L-2.jpg
   matrilines: '2'
   pod: L
   population: SRKW
-  wav-file: simple/S19-L-2.wav
+  wav-file: srkw-call-catalogue-files/media/S19-L-2.wav
 - call-type: S02iii
   clan: J
-  image-file: simple/S02iii-L-5.png
+  image-file: srkw-call-catalogue-files/media/S02iii-L-5.png
   matrilines: '5'
   pod: L
   population: SRKW
-  wav-file: simple/S02iii-L-5.wav
+  wav-file: srkw-call-catalogue-files/media/S02iii-L-5.wav
 - call-type: S12
   clan: J
-  image-file: simple/S12-J.jpg
+  image-file: srkw-call-catalogue-files/media/S12-J.jpg
   matrilines:
   pod: J
   population: SRKW
-  wav-file: simple/S12-J.wav
+  wav-file: srkw-call-catalogue-files/media/S12-J.wav
 - call-type: S07
   clan: J
-  image-file: simple/S07-J-2.png
+  image-file: srkw-call-catalogue-files/media/S07-J-2.png
   matrilines: '2'
   pod: J
   population: SRKW
-  wav-file: simple/S07-J-2.wav
+  wav-file: srkw-call-catalogue-files/media/S07-J-2.wav
 - call-type: S08ii
   clan: J
-  image-file: simple/S08ii-L.jpg
+  image-file: srkw-call-catalogue-files/media/S08ii-L.jpg
   matrilines:
   pod: L
   population: SRKW
-  wav-file: simple/S08ii-L.wav
+  wav-file: srkw-call-catalogue-files/media/S08ii-L.wav
 - call-type: S08i
   clan: J
-  image-file: simple/S08i-J,L-2.jpg
+  image-file: srkw-call-catalogue-files/media/S08i-J,L-2.jpg
   matrilines: '2'
   pod: J,L
   population: SRKW
-  wav-file: simple/S08i-J,L-2.wav
+  wav-file: srkw-call-catalogue-files/media/S08i-J,L-2.wav
 - call-type: S14
   clan: J
-  image-file: simple/S14-J-1.jpg
+  image-file: srkw-call-catalogue-files/media/S14-J-1.jpg
   matrilines: '1'
   pod: J
   population: SRKW
-  wav-file: simple/S14-J-1.wav
+  wav-file: srkw-call-catalogue-files/media/S14-J-1.wav
 - call-type: S02ii
   clan: J
-  image-file: simple/S02ii-J-1.jpg
+  image-file: srkw-call-catalogue-files/media/S02ii-J-1.jpg
   matrilines: '1'
   pod: J
   population: SRKW
-  wav-file: simple/S02ii-J-1.wav
+  wav-file: srkw-call-catalogue-files/media/S02ii-J-1.wav
 - call-type: S02ii
   clan: J
-  image-file: simple/S02ii-J.jpg
+  image-file: srkw-call-catalogue-files/media/S02ii-J.jpg
   matrilines:
   pod: J
   population: SRKW
-  wav-file: simple/S02ii-J.wav
+  wav-file: srkw-call-catalogue-files/media/S02ii-J.wav
 - call-type: S16
   clan: J
-  image-file: simple/S16-K,L-3.jpg
+  image-file: srkw-call-catalogue-files/media/S16-K,L-3.jpg
   matrilines: '3'
   pod: K,L
   population: SRKW
-  wav-file: simple/S16-K,L-3.wav
+  wav-file: srkw-call-catalogue-files/media/S16-K,L-3.wav
 - call-type: S12
   clan: J
-  image-file: simple/S12-J-3.png
+  image-file: srkw-call-catalogue-files/media/S12-J-3.png
   matrilines: '3'
   pod: J
   population: SRKW
-  wav-file: simple/S12-J-3.wav
+  wav-file: srkw-call-catalogue-files/media/S12-J-3.wav
 - call-type: S09
   clan: J
-  image-file: simple/S09-J-1.jpg
+  image-file: srkw-call-catalogue-files/media/S09-J-1.jpg
   matrilines: '1'
   pod: J
   population: SRKW
-  wav-file: simple/S09-J-1.wav
+  wav-file: srkw-call-catalogue-files/media/S09-J-1.wav
 - call-type: S33
   clan: J
-  image-file: simple/S33-L-1.jpg
+  image-file: srkw-call-catalogue-files/media/S33-L-1.jpg
   matrilines: '1'
   pod: L
   population: SRKW
-  wav-file: simple/S33-L-1.wav
+  wav-file: srkw-call-catalogue-files/media/S33-L-1.wav
 - call-type: S22
   clan: J
-  image-file: simple/S22-L-1.jpg
+  image-file: srkw-call-catalogue-files/media/S22-L-1.jpg
   matrilines: '1'
   pod: L
   population: SRKW
-  wav-file: simple/S22-L-1.wav
+  wav-file: srkw-call-catalogue-files/media/S22-L-1.wav
 - call-type: S17
   clan: J
-  image-file: simple/S17-K,L-1.jpg
+  image-file: srkw-call-catalogue-files/media/S17-K,L-1.jpg
   matrilines: '1'
   pod: K,L
   population: SRKW
-  wav-file: simple/S17-K,L-1.wav
+  wav-file: srkw-call-catalogue-files/media/S17-K,L-1.wav
 - call-type: S02i
   clan: J
-  image-file: simple/S02i-J-1.jpg
+  image-file: srkw-call-catalogue-files/media/S02i-J-1.jpg
   matrilines: '1'
   pod: J
   population: SRKW
-  wav-file: simple/S02i-J-1.wav
+  wav-file: srkw-call-catalogue-files/media/S02i-J-1.wav
 - call-type: S14
   clan: J
-  image-file: simple/S14-J-2.jpg
+  image-file: srkw-call-catalogue-files/media/S14-J-2.jpg
   matrilines: '2'
   pod: J
   population: SRKW
-  wav-file: simple/S14-J-2.wav
+  wav-file: srkw-call-catalogue-files/media/S14-J-2.wav
 - call-type: S18
   clan: J
-  image-file: simple/S18-L-2.png
+  image-file: srkw-call-catalogue-files/media/S18-L-2.png
   matrilines: '2'
   pod: L
   population: SRKW
-  wav-file: simple/S18-L-2.wav
+  wav-file: srkw-call-catalogue-files/media/S18-L-2.wav
 - call-type: S41
   clan: J
-  image-file: simple/S41-J-3.png
+  image-file: srkw-call-catalogue-files/media/S41-J-3.png
   matrilines: '3'
   pod: J
   population: SRKW
-  wav-file: simple/S41-J-3.wav
+  wav-file: srkw-call-catalogue-files/media/S41-J-3.wav
 - call-type: S09
   clan: J
-  image-file: simple/S09-J-2.jpg
+  image-file: srkw-call-catalogue-files/media/S09-J-2.jpg
   matrilines: '2'
   pod: J
   population: SRKW
-  wav-file: simple/S09-J-2.wav
+  wav-file: srkw-call-catalogue-files/media/S09-J-2.wav
 - call-type: S19
   clan: J
-  image-file: simple/S19-L-7.png
+  image-file: srkw-call-catalogue-files/media/S19-L-7.png
   matrilines: '7'
   pod: L
   population: SRKW
-  wav-file: simple/S19-L-7.wav
+  wav-file: srkw-call-catalogue-files/media/S19-L-7.wav
 - call-type: S02ii
   clan: J
-  image-file: simple/S02ii-J-2.jpg
+  image-file: srkw-call-catalogue-files/media/S02ii-J-2.jpg
   matrilines: '2'
   pod: J
   population: SRKW
-  wav-file: simple/S02ii-J-2.wav
+  wav-file: srkw-call-catalogue-files/media/S02ii-J-2.wav
 - call-type: S05
   clan: J
-  image-file: simple/S05-J-2.jpg
+  image-file: srkw-call-catalogue-files/media/S05-J-2.jpg
   matrilines: '2'
   pod: J
   population: SRKW
-  wav-file: simple/S05-J-2.wav
+  wav-file: srkw-call-catalogue-files/media/S05-J-2.wav
 - call-type: S22
   clan: J
-  image-file: simple/S22-L-6.png
+  image-file: srkw-call-catalogue-files/media/S22-L-6.png
   matrilines: '6'
   pod: L
   population: SRKW
-  wav-file: simple/S22-L-6.wav
+  wav-file: srkw-call-catalogue-files/media/S22-L-6.wav
 - call-type: S37i
   clan: J
-  image-file: simple/S37i-J-2.jpg
+  image-file: srkw-call-catalogue-files/media/S37i-J-2.jpg
   matrilines: '2'
   pod: J
   population: SRKW
-  wav-file: simple/S37i-J-2.wav
+  wav-file: srkw-call-catalogue-files/media/S37i-J-2.wav
 - call-type: S37ii
   clan: J
-  image-file: simple/S37ii-K,L.jpg
+  image-file: srkw-call-catalogue-files/media/S37ii-K,L.jpg
   matrilines:
   pod: K,L
   population: SRKW
-  wav-file: simple/S37ii-K,L.wav
+  wav-file: srkw-call-catalogue-files/media/S37ii-K,L.wav
 - call-type: S37ii
   clan: J
-  image-file: simple/S37ii-K,L-3.jpg
+  image-file: srkw-call-catalogue-files/media/S37ii-K,L-3.jpg
   matrilines: '3'
   pod: K,L
   population: SRKW
-  wav-file: simple/S37ii-K,L-3.wav
+  wav-file: srkw-call-catalogue-files/media/S37ii-K,L-3.wav
 - call-type: S37i
   clan: J
-  image-file: simple/S37i-J-1.jpg
+  image-file: srkw-call-catalogue-files/media/S37i-J-1.jpg
   matrilines: '1'
   pod: J
   population: SRKW
-  wav-file: simple/S37i-J-1.wav
+  wav-file: srkw-call-catalogue-files/media/S37i-J-1.wav
 - call-type: S02iii
   clan: J
-  image-file: simple/S02iii-L-3.png
+  image-file: srkw-call-catalogue-files/media/S02iii-L-3.png
   matrilines: '3'
   pod: L
   population: SRKW
-  wav-file: simple/S02iii-L-3.wav
+  wav-file: srkw-call-catalogue-files/media/S02iii-L-3.wav
 - call-type: S37i
   clan: J
-  image-file: simple/S37i-J-3.png
+  image-file: srkw-call-catalogue-files/media/S37i-J-3.png
   matrilines: '3'
   pod: J
   population: SRKW
-  wav-file: simple/S37i-J-3.wav
+  wav-file: srkw-call-catalogue-files/media/S37i-J-3.wav
 - call-type: S19
   clan: J
-  image-file: simple/S19-L-11.png
+  image-file: srkw-call-catalogue-files/media/S19-L-11.png
   matrilines: '11'
   pod: L
   population: SRKW
-  wav-file: simple/S19-L-11.wav
+  wav-file: srkw-call-catalogue-files/media/S19-L-11.wav
 - call-type: S40
   clan: J
-  image-file: simple/S40-L-1.jpg
+  image-file: srkw-call-catalogue-files/media/S40-L-1.jpg
   matrilines: '1'
   pod: L
   population: SRKW
-  wav-file: simple/S40-L-1.wav
+  wav-file: srkw-call-catalogue-files/media/S40-L-1.wav
 - call-type: S36
   clan: J
-  image-file: simple/S36-K,L-1.jpg
+  image-file: srkw-call-catalogue-files/media/S36-K,L-1.jpg
   matrilines: '1'
   pod: K,L
   population: SRKW
-  wav-file: simple/S36-K,L-1.wav
+  wav-file: srkw-call-catalogue-files/media/S36-K,L-1.wav
 - call-type: S02iii
   clan: J
-  image-file: simple/S02iii-L-1.jpg
+  image-file: srkw-call-catalogue-files/media/S02iii-L-1.jpg
   matrilines: '1'
   pod: L
   population: SRKW
-  wav-file: simple/S02iii-L-1.wav
+  wav-file: srkw-call-catalogue-files/media/S02iii-L-1.wav
 - call-type: S08i
   clan: J
-  image-file: simple/S08i-J,L-3.png
+  image-file: srkw-call-catalogue-files/media/S08i-J,L-3.png
   matrilines: '3'
   pod: J,L
   population: SRKW
-  wav-file: simple/S08i-J,L-3.wav
+  wav-file: srkw-call-catalogue-files/media/S08i-J,L-3.wav
 - call-type: S07
   clan: J
-  image-file: simple/S07-J.jpg
+  image-file: srkw-call-catalogue-files/media/S07-J.jpg
   matrilines:
   pod: J
   population: SRKW
-  wav-file: simple/S07-J.wav
+  wav-file: srkw-call-catalogue-files/media/S07-J.wav
 - call-type: S40
   clan: J
-  image-file: simple/S40-L-3.jpg
+  image-file: srkw-call-catalogue-files/media/S40-L-3.jpg
   matrilines: '3'
   pod: L
   population: SRKW
-  wav-file: simple/S40-L-3.wav
+  wav-file: srkw-call-catalogue-files/media/S40-L-3.wav
 - call-type: S22
   clan: J
-  image-file: simple/S22-L-8.png
+  image-file: srkw-call-catalogue-files/media/S22-L-8.png
   matrilines: '8'
   pod: L
   population: SRKW
-  wav-file: simple/S22-L-8.wav
+  wav-file: srkw-call-catalogue-files/media/S22-L-8.wav
 - call-type: S06
   clan: J
-  image-file: simple/S06-J-1.jpg
+  image-file: srkw-call-catalogue-files/media/S06-J-1.jpg
   matrilines: '1'
   pod: J
   population: SRKW
-  wav-file: simple/S06-J-1.wav
+  wav-file: srkw-call-catalogue-files/media/S06-J-1.wav
 - call-type: S07
   clan: J
-  image-file: simple/S07-J-1.png
+  image-file: srkw-call-catalogue-files/media/S07-J-1.png
   matrilines: '1'
   pod: J
   population: SRKW
-  wav-file: simple/S07-J-1.wav
+  wav-file: srkw-call-catalogue-files/media/S07-J-1.wav
