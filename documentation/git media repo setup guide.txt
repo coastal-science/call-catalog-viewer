@@ -1,0 +1,44 @@
+Assuming the git repo for orca media files with call-catalog.yaml is placed in https://github.com/sfu-bigdata/srkw-call-catalogue-files.git
+
+1. [Production Server] Setting up the repo in production server - creating bare repository
+mkdir ~/<folder name e.g. proj or proj_srkw_files>
+cd ~/<folder name e.g. proj or proj_srkw_files>
+git init --bare
+
+2. [Production Server] Create git hook
+nano hooks/post-receive
+
+3. [Production Server] Git Hook Scripts below
+where:
+srkw-call-catalogue-files is the repo https://github.com/sfu-bigdata/srkw-call-catalogue-files.git
+proj_srkw_files is the repo created in (1)
+location of the call-catalog.yaml and call-catalog.json (used in website rendering) is in /usr/share/nginx/html/resources_config/
+/usr/share/nginx/html/code/read_files.py is used to generated call-catalog.json from updated call-catalog.yaml
+
+#!/bin/bash
+while read oldrev newrev ref
+do
+if [[ $ref =~ .*/main$ ]];
+then
+echo "Main ref received.  Deploying main branch to production..."
+git --work-tree=/usr/share/nginx/html/srkw-call-catalogue-files --git-dir=$HOME/proj_srkw_files checkout -f main
+cp /usr/share/nginx/html/srkw-call-catalogue-files/call-catalog.yaml /usr/share/nginx/html/resources_config/call-catalog.yaml
+python3 /usr/share/nginx/html/code/read_files.py /usr/share/nginx/html/resources_config/call-catalog.yaml /usr/share/nginx/html/resources_config/call-catalog
+else
+echo "Ref $ref successfully received.  Doing nothing: only the main branch may be deployed on this server."
+fi
+done
+
+4. [Production Server] Make the script executable for the hook to work:
+chmod +x hooks/post-receive
+
+5. [local] Go into the working directory of your project in local machine with the repo
+
+6. [local] Add the remote server as a remote called production
+
+git remote add production bdh@orca:proj_srkw_files
+
+7. [local] Push changes to website
+git add .
+git commit -m "changes from media repo srkw-call-catalogue-files"
+git push production main
