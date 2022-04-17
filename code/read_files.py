@@ -22,7 +22,7 @@ try:
 except NameError:
     script_folder = "."
 #data_folder = f"{script_folder}simple"
-data_folder = "simple"
+data_folder = ""
 file_name = "call-catalog"
 
 def get_filenames(folder):
@@ -105,6 +105,7 @@ def str_presenter(dumper, data):
     return dumper.represent_scalar('tag:yaml.org,2002:str', data)
 
 def export_file(df, data_folder, file_name, file_format = 'json'):
+    #df['thumb'] = data_folder + "/" + df['thumb']
     if (file_format == 'json'):
         with open(file_name+'.json', 'w') as f:
             f.write(df.to_json(orient='records'))
@@ -144,6 +145,6 @@ if __name__ == '__main__':
     else:   #read resource directory
         df = read_data_folder(inputs)
         print(df)
-        export_file(df, data_folder, output, file_format = file_format)
+        export_file(df, inputs, output, file_format = file_format)
         print("read_files.py: Completed reading resource directory...")
         #print("\n".join(df.apply(make_row_html, axis=1)))
