@@ -70,7 +70,10 @@ def generate_yaml(data_folder, df):
     new_df['wav-file'] = data_folder + "/" + new_df['wav-file'] + ".wav" #data_folder + "/" + 
     new_df['image-file'] = data_folder + "/" + new_df['image-file'] #data_folder + "/" + 
     new_df = new_df.drop(['pod_cat'], axis=1)
-    
+    #new_df['matrilines'] = new_df['matrilines'].astype('float').astype('Int8')
+    new_df['subpopulation'] = None
+    new_df['subclan'] = None
+    print(new_df)
     yaml_dict = { "calls" : new_df.to_dict('records') }
    
     return yaml_dict
@@ -144,7 +147,7 @@ if __name__ == '__main__':
         print("read_files.py: Completed reading yaml file...")
     else:   #read resource directory
         df = read_data_folder(inputs)
-        print(df)
+        #print(df)
         export_file(df, inputs, output, file_format = file_format)
         print("read_files.py: Completed reading resource directory...")
         #print("\n".join(df.apply(make_row_html, axis=1)))
