@@ -56,8 +56,11 @@ def read_data_folder(data_folder):
     df['thumb'] = df['filename'].apply(lambda x: x + '.jpg' if x + '.jpg' in filenames else (x + '.png' if x + '.png' in filenames else ''))
     #df['thumb'] = df['filename'] + '.jpg'
     df['clan'] = 'J'
+    df['mar'] = None
+    df['subpopulation'] = None
+    df['subclan'] = None
 
-    df[['cn','pod','mar']] = df['filename'].str.split("-", n=2, expand=True)
+    df[['cn','pod','sample']] = df['filename'].str.split("-", n=2, expand=True)
     df['pod_cat'] =  df['pod'].str.findall(r'[J|K|L]')
     #df['html'] = df.apply(make_row_html, axis=1)
     return df
@@ -71,8 +74,7 @@ def generate_yaml(data_folder, df):
     new_df['image-file'] = data_folder + "/" + new_df['image-file'] #data_folder + "/" + 
     new_df = new_df.drop(['pod_cat'], axis=1)
     #new_df['matrilines'] = new_df['matrilines'].astype('float').astype('Int8')
-    new_df['subpopulation'] = None
-    new_df['subclan'] = None
+    
     print(new_df)
     yaml_dict = { "calls" : new_df.to_dict('records') }
    
