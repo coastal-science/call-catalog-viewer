@@ -8,8 +8,8 @@ var SearchPanel = undefined;
             "s": "s1",
             "b": "b1",
             "option":[
-                {"v":"S", "text":"Southern Resident"},
-                {"v":"N", "text":"Northern Resident"},
+                {"v":"SRKW", "text":"Southern Resident"},
+                {"v":"NRKW", "text":"Northern Resident"},
                 {"v":"T", "text":"Transient"},
             ]
         },
@@ -36,7 +36,7 @@ var SearchPanel = undefined;
     }
     function init(){
         originalData = {
-            s1: ["S"],
+            s1: ["SRKW", "NRKW"],
             s2: ["J"],
             s3: ["J", "K", "L"],
         };
