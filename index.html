@@ -42,34 +42,54 @@
         .image_pop_source{
             display: table-cell;
         }
+        .lity-container{
+            overflow: auto;
+        }
+        .lity-content{
+            max-height: 80vh;
+        }
+        .lity-content > img{
+            max-height: 80vh!important;
+            margin:auto;
+        }
         .litybottom{
-            position: absolute;
-            bottom: 0;
-            opacity: 0.1;
-        }
-        .litybottom:hover{
-            opacity: 1;
-        }
-        @media (max-width:300px) and (min-height: 300px){
-            .litybottom{
-                position: relative;
-                bottom: auto;
-                opacity: 1;
-            }
-        }
-        @media (max-width:500px) and (min-height: 600px){
-            .litybottom{
-                position: relative;
-                bottom: auto;
-                opacity: 1;
-            }
+            max-height: 20vh;
+            position: relative;
+            bottom: auto;
         }
         @media (min-height: 700px){
-            .litybottom{
-                position: relative;
-                bottom: auto;
-                opacity: 1;
+            .lity-content{
+                max-height: 70vh;
             }
+            .lity-content img{
+                max-height: 70vh!important;
+            }
+            .litybottom{
+                max-height: 30vh;
+            }
+        }
+        @media (max-width: 600px){
+            /*
+                Convert to linear
+            */
+            .lity-container{
+                position:absolute;
+                top: 0;
+                right: 0;
+                left: 0;
+                bottom: 0;
+            }
+            .lity-content{
+                max-height:unset;
+            }
+            .lity-content img{
+                max-height:unset!important;
+            }
+            .litybottom{
+                max-height: unset;
+                height:auto;
+            }
+
         }
         .lity {
             overflow: auto;
@@ -98,7 +118,7 @@
         </div>
       </div>
     <h1 class="text-center text-capitalize font-weight-bold">SRKW Call Catalogue</h1>
-	<div class="container">
+	<div class="container" id="listing">
         <div class="row">
             <div class="col-md-6 text-center">
                 
@@ -111,20 +131,20 @@
         <div class="row"><div class="col">
         <div class="panel container-fluid" id="search_panel">
             <div class="row justify-content-md-center">
-                <div class="col col-12 col-sm-12 col-md-12 col-lg-6 col-xl-3 col-xxl-3 align-items-center align-right d-flex flex-nowrap">
-                    <span class="col text-end">Population(s): </span>
-                    <select id="s1" class="col" multiple aria-label="size 3 select">
+                <div class="col col-12 col-sm-12 col-md-12 col-lg-12 col-xl-10 col-xxl-10 align-items-center align-right d-flex flex-nowrap">
+                    <span class="col-4 text-end">Population(s): &nbsp;</span>
+                    <select id="s1" class="col-8" multiple aria-label="size 3 select">
                     </select>
                 </div>
-                <div class="col col-12 col-sm-12 col-md-12 col-lg-6 col-xl-3 col-xxl-3 align-items-center align-middle d-flex flex-nowrap">
-                    <span class="col text-end">Clan(s): </span>
-                    <select id="s2" class="col align-self-center" multiple aria-label="size 3 select">
+                <div class="col col-12 col-sm-12 col-md-12 col-lg-6 col-xl-5 col-xxl-5 align-items-center align-middle d-flex flex-nowrap">
+                    <span class="col-4 text-end">Clan(s): &nbsp;</span>
+                    <select id="s2" class="col-8 align-self-center" multiple aria-label="size 3 select">
                     </select>
                 </div>
 
-                <div class="col col-12 col-sm-12 col-md-12 col-lg-6 col-xl-3 col-xxl-3 align-items-center align-left d-flex flex-nowrap">
-                    <span class="col text-end">Pod(s): </span>
-                    <select id="s3" class="col align-self-center" multiple aria-label="size 3 select">
+                <div class="col col-12 col-sm-12 col-md-12 col-lg-6 col-xl-5 col-xxl-5 align-items-center align-left d-flex flex-nowrap">
+                    <span class="col-4 text-end">Pod(s): &nbsp;</span>
+                    <select id="s3" class="col-8 align-self-center" multiple aria-label="size 3 select">
                     </select>
                 </div>
             </div>

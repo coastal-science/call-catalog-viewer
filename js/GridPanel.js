@@ -77,12 +77,11 @@ var GridPanel = undefined;
             matrilines = "N/A";
         }
         return '<div class="col-xxl-2 col-xl-2 col-lg-3 col-md-3 col-sm-4 mb-4 itemblock" id="gi-'+id+'">\
-            <div class="bg-white rounded shadow-sm"><a href="'+media_folder_path+full+'" data-toggle="lightbox" class="image_pop_source text-decoration-none" data-type="image" data-gallery="gallery">\
+            <div class="bg-white rounded shadow-sm"><a href="'+media_folder_path+full+'" data-toggle="lightbox" class="image_pop_source text-decoration-none"">\
             <img src="'+media_folder_path+thumb+'" alt="" class="img-fluid card-img-top"></a>\
             <div class="p-4">\
                 <h5> <a class="play_btn" href="#">'+play_icon+'<span class="text-dark">'+callname+'</span></a></h5>\
                 <p class="small mb-0 meta-p"><span class="font-weight-bold">Pods: '+pod+'</span></p>\
-                <!--<p class="small text-muted mb-0">Matrilines: <br>'+matrilines+'</p>-->\
                 <div class="meta-p d-flex align-items-center justify-content-between rounded-pill bg-light px-3 py-2 mt-4">\
                 <div class="badge badge-warning px-3 rounded-pill font-weight-normal"><span class="font-weight-bold  text-dark">Clan: '+clan+'</span></div>\
                 </div>\
@@ -90,35 +89,8 @@ var GridPanel = undefined;
             </div>\
         </div>';
     }
-    function open_popup(){
-
-    };
-    function close_popup(){
-
-    };
     async function getData(){
-        /*
-        var fake_datasource = [
-            {
-                "filename": "BCS44-Jpod",
-                "clan": "J",
-                "thumb": "BCS44-Jpod.jpg",
-                "cn":"BCS44-Jpod",
-                "mar": "123123123",
-                "pod_cat": ["K", "J"],
-                "pod": "J1pod" //useless
-            },
-            {
-                "filename": "BCS01-Jpod",
-                "clan": "J",
-                "thumb": "BCS01-Jpod.jpg",
-                "cn":"BCS01-Jpod",
-                "mar": "1fff",
-                "pod_cat": ["J"],
-                "pod": "Jpod" //useless
-            }
-        ];*/
-		// await response of fetch call
+        // await response of fetch call
 		let response = await fetch('./resources_config/call-catalog.json');
 		// only proceed once promise is resolved
 		let data = await response.text();
@@ -130,7 +102,7 @@ var GridPanel = undefined;
         var s3 = searching_para['s3'];
 
         //Filter: searching_para
-        var resultData1 = simple_datasource.filter(item => s2.includes(item.clan));
+        var resultData1 = simple_datasource.filter(item => s2.includes(item.clan)).filter(item => s1.includes(item.population));
         resultData = resultData1.filter((item) => {
             if (item.pod_cat.length === 0){
                 return false;
@@ -268,8 +240,9 @@ var GridPanel = undefined;
         selecting = 0;
         pop_opening = false;
         metadata_show = true;
+        
         searching_para = {
-            s1: ["S"],
+            s1: ["SRKW", "NRKW"],
             s2: ["J"],
             s3: ["J", "K", "L"],
         };
@@ -332,12 +305,13 @@ var GridPanel = undefined;
                 try{
                     const obj = atob(filter);
                     if (obj !== undefined){
-                            const data = eval('('+obj+')');
-                            if (data['filename']==undefined){
-                                throw new Exception ('Parse Error');
-                            }
-                            var instance = lity('./'+data.image_file);
-                            var template = instance.options('template');
+                        const data = eval('('+obj+')');
+                        if (data['filename']==undefined){
+                            throw new Exception ('Parse Error');
+                        }
+                        //show details
+                        var instance = lity('./'+data.image_file);
+                        var template = instance.options('template');
                     }
                 }catch (e){
                     document.location.href = page_link;
@@ -401,7 +375,7 @@ var GridPanel = undefined;
             $(parent_itemblock).click();
             var obj_id = $(this).parents('.itemblock').attr('id').substring(3);
             poped = obj_id;
-            //var data_target_seq = id_to_seq[obj_id];
+            //var data_target_seq = id_to_seq[poped];
             //var data_target = resultData[data_target_seq];
             
             var instance = lity($(this).attr('href'));
@@ -489,7 +463,9 @@ var GridPanel = undefined;
                             $('.lity-close').click();
                             delayed_pop = setTimeout(()=>{
                                 $('.selecting.itemblock .image_pop_source').click();
-                                $('.selecting')[0].scrollIntoView({block: "end"});
+                                if ($('.selecting')[0] !== undefined){
+                                    $('.selecting')[0].scrollIntoView({block: "end"});
+                                }
                                 delayed_pop = undefined;
                             }, 100);
                         }
@@ -567,14 +543,39 @@ var GridPanel = undefined;
                 else{
                     document.location.href = page_link;
                 }
+                console.log(lity_data);
             }
             else{
                 //something went wrong
                 document.location.href = page_link;
             }
-            $('.lity-container').append('<div class="container litybottom"><div class="row"><button id="play" class="col btn btn-primary"><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-play" viewBox="0 0 16 16">\
-                <path d="M10.804 8 5 4.633v6.734L10.804 8zm.792-.696a.802.802 0 0 1 0 1.392l-6.363 3.692C4.713 12.69 4 12.345 4 11.692V4.308c0-.653.713-.998 1.233-.696l6.363 3.692z"/>\
-            </svg>Play (Call Name: '+lity_data.cn+') </button></div></div>');
+            let play_btn = '<button id="play" class="col btn btn-primary"><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-play" viewBox="0 0 16 16">\
+                                <path d="M10.804 8 5 4.633v6.734L10.804 8zm.792-.696a.802.802 0 0 1 0 1.392l-6.363 3.692C4.713 12.69 4 12.345 4 11.692V4.308c0-.653.713-.998 1.233-.696l6.363 3.692z"/>\
+                            </svg>Play (Call Name: '+lity_data.cn+') </button>';
+            let additional_row = '';
+            //lity_data["subclan"] = "Testing Clan";
+            //lity_data["subpopulation"] = "Testing Population";
+            if (lity_data["subpopulation"] !== undefined && 
+                lity_data["subpopulation"] !== null &&
+                lity_data["subpopulation"].length > 0){
+                let population = {'SRKW':"Southern Resident", 'NRKW':"Northern Resident"}[lity_data['population']];
+                
+                additional_row += '<div class="row text-start text-info border-2 border-light border-bottom"><div class="col-12 col-sm-6"><span>Population: '+ population +'</span></div>';
+                additional_row += '<div class="col-12 col-sm-6"><span>Sub-Population: '+lity_data['subpopulation']+'</span></div></div>';
+            }
+            if (lity_data["subclan"] !== undefined && 
+                lity_data["subclan"] !== null &&
+                lity_data["subclan"].length > 0){
+                    additional_row += '<div class="row text-start text-info border-2 border-light border-bottom"><div class="col-12 col-sm-6"><span>Clan: '+lity_data['clan']+'</span></div>';
+                    additional_row += '<div class="col-12 col-sm-6"><span>Sub-Clan: '+lity_data['subclan']+'</span></div></div>';
+            }
+            if (lity_data["sample"] !== undefined && 
+                lity_data["sample"] !== null &&
+                lity_data["sample"].length > 0){
+                additional_row += '<div class="row text-sm-center text-start text-info border-2 border-light border-bottom"><div class="col"><span>Sample: '+lity_data['sample']+'</span></div></div>';
+            }
+            
+            $('.lity-container').append('<div class="container-fluid litybottom"><div class="row">'+play_btn+'</div>'+ additional_row+'</div>');
             
             pop_opening = true;
         });
