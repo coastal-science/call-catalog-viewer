@@ -569,12 +569,33 @@ var GridPanel = undefined;
                     additional_row += '<div class="row text-start text-info border-2 border-light border-bottom"><div class="col-12 col-sm-6"><span>Clan: '+lity_data['clan']+'</span></div>';
                     additional_row += '<div class="col-12 col-sm-6"><span>Sub-Clan: '+lity_data['subclan']+'</span></div></div>';
             }
+            let items_count = ((lity_data["sample"] !== undefined && 
+                lity_data["sample"] !== null &&
+                lity_data["sample"].length > 0)?1:0) +
+                ((lity_data["mar"] !== undefined && 
+                lity_data["mar"] !== null &&
+                lity_data["mar"].length > 0)?1:0);
+            let alignment = "text-sm-center";
+            if (items_count > 1){
+                alignment = "";
+            }
+            if (items_count){
+                additional_row += '<div class="row '+alignment+' text-start text-info border-2 border-light border-bottom">';
+            }
+            
             if (lity_data["sample"] !== undefined && 
                 lity_data["sample"] !== null &&
                 lity_data["sample"].length > 0){
-                additional_row += '<div class="row text-sm-center text-start text-info border-2 border-light border-bottom"><div class="col"><span>Sample: '+lity_data['sample']+'</span></div></div>';
+                additional_row += '<div class="col"><span>Sample: '+lity_data['sample']+'</span></div>';
             }
-            
+            if (lity_data["mar"] !== undefined && 
+                lity_data["mar"] !== null &&
+                lity_data["mar"].length > 0){
+                additional_row += '<div class="col"><span>Matrilines: '+lity_data['mar']+'</span></div>';
+            }
+            if (items_count){
+                additional_row += '</div';
+            }
             $('.lity-container').append('<div class="container-fluid litybottom"><div class="row">'+play_btn+'</div>'+ additional_row+'</div>');
             
             pop_opening = true;
