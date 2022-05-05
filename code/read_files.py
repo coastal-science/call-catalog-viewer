@@ -9,6 +9,7 @@ assert sys.version_info >= (3, 5) # make sure we have Python 3.5+
 import pandas as pd
 import os
 import yaml
+import numpy as np
 
 from yaml.representer import Representer
 from yaml.dumper import Dumper
@@ -16,6 +17,30 @@ from yaml.emitter import Emitter
 from yaml.serializer import Serializer
 from yaml.resolver import Resolver
 
+# for strictyaml
+#from ensure import Ensure
+from strictyaml import as_document
+
+
+from strictyaml import load, Map, Str, Int, Seq, YAMLError
+from strictyaml.scalar import ScalarValidator
+
+YAML_NULL = ["null", "Null", "NULL", "~"]
+
+class Null(ScalarValidator):
+    """
+    'null'->None
+    """
+    @staticmethod
+    def validate_scalar(chunk):
+        """
+        """
+        if any([chunk.contents == n for n in YAML_NULL]):
+            return None
+        chunk.expecting_but_found(f"when expecting any of {YAML_NULL}")
+
+
+yaml_schema = Map({"call-type": Str(), "clan": Str(), "image-file": Str(), "wav-file": Str(), "matrilines": Null() | Str(), "pod": Str(), "population": Str(), "sample": Null() | Int(), "subclan": Null() | Str(), "subpopulation": Null() | Str()})
 
 try:
     script_folder = os.path.dirname(__file__)
@@ -61,6 +86,7 @@ def read_data_folder(data_folder):
     df['subclan'] = None
 
     df[['cn','pod','sample']] = df['filename'].str.split("-", n=2, expand=True)
+
     df['pod_cat'] =  df['pod'].str.findall(r'[J|K|L]')
     #df['html'] = df.apply(make_row_html, axis=1)
     return df
@@ -73,7 +99,7 @@ def generate_yaml(data_folder, df):
     new_df['wav-file'] = data_folder + "/" + new_df['wav-file'] + ".wav" #data_folder + "/" + 
     new_df['image-file'] = data_folder + "/" + new_df['image-file'] #data_folder + "/" + 
     new_df = new_df.drop(['pod_cat'], axis=1)
-    #new_df['matrilines'] = new_df['matrilines'].astype('float').astype('Int8')
+    #new_df['sample'] = new_df['sample'].astype('float').astype('Int8')  #accommodate None
     
     print(new_df)
     yaml_dict = { "calls" : new_df.to_dict('records') }
@@ -85,7 +111,7 @@ def read_yaml(yaml_file):
     # The FullLoader parameter handles the conversion from YAML
     # scalar values to Python the dictionary format
         resource_list = yaml.safe_load(file)
-        #print(resource_list)
+        print(resource_list)
         df = pd.DataFrame.from_dict(resource_list['calls'])
     #pre-processing and convert to original JSON format
         df['call-type'] = df['call-type']       #assuming call-type now becomes S01 instead of BCS01
@@ -93,6 +119,7 @@ def read_yaml(yaml_file):
         df['filename'] =  df['image-file'].str.split(".", expand=True)[0]
         df['filename'] =  [x.split("/")[-1] for x in df['filename']]
         df['thumb'] = df['image-file']
+        df['sample'] = df['sample'].apply(lambda x: None if np.isnan(x) else str(int(x)))
         df = df.rename(columns={"call-type": "cn", "matrilines": "mar", "clan": "clan", "pod": "pod", "image-file":"image_file", "wav-file": "wav_file" })
         #print(df)
     return df
@@ -105,6 +132,8 @@ def str_presenter(dumper, data):
         dlen = len(data.splitlines())
         if (dlen > 1):
             return dumper.represent_scalar('tag:yaml.org,2002:str', data, style='|')
+        elif ((len(data) <= 2) and (data.isdigit())):
+            return dumper.represent_scalar('tag:yaml.org,2002:int', data)
     except TypeError as ex:
         return dumper.represent_scalar('tag:yaml.org,2002:str', data)
     return dumper.represent_scalar('tag:yaml.org,2002:str', data)
@@ -119,9 +148,20 @@ def export_file(df, data_folder, file_name, file_format = 'json'):
     elif (file_format == 'yaml'):
         with open(file_name+'.yaml', 'w') as file:
             yaml_dict = generate_yaml(data_folder, df)
+            
             yaml.add_representer(type(None), represent_none)
+            #yaml.add_representer(type(np.int8(None)), represent_none)
             yaml.add_representer(str, str_presenter)
             documents = yaml.dump(yaml_dict, file)
+            
+            # Can also use regular dict if an arbitrary ordering is ok
+            #print(yaml_dict['calls'])
+            
+            #yaml_records = load(yaml_dict['calls'], yaml_schema)
+            #yaml_text = as_document(yaml_dict['calls'], yaml_schema)
+            #yaml_text.as_yaml()
+            #file.write(yaml_text.as_yaml())
+            
 
 if __name__ == '__main__':
     """

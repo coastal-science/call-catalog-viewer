@@ -5,7 +5,7 @@ calls:
   matrilines:
   pod: J
   population: SRKW
-  sample: '3'
+  sample: 3
   subclan:
   subpopulation:
   wav-file: srkw-call-catalogue-files/media/S02ii-J-3.wav
@@ -15,7 +15,7 @@ calls:
   matrilines:
   pod: J,K,L
   population: SRKW
-  sample: '4'
+  sample: 4
   subclan:
   subpopulation:
   wav-file: srkw-call-catalogue-files/media/S10-J,K,L-4.wav
@@ -25,7 +25,7 @@ calls:
   matrilines:
   pod: K,L
   population: SRKW
-  sample: '2'
+  sample: 2
   subclan:
   subpopulation:
   wav-file: srkw-call-catalogue-files/media/S36-K,L-2.wav
@@ -35,7 +35,7 @@ calls:
   matrilines:
   pod: J
   population: SRKW
-  sample: '2'
+  sample: 2
   subclan:
   subpopulation:
   wav-file: srkw-call-catalogue-files/media/S12-J-2.wav
@@ -45,7 +45,7 @@ calls:
   matrilines:
   pod: J
   population: SRKW
-  sample: '2'
+  sample: 2
   subclan:
   subpopulation:
   wav-file: srkw-call-catalogue-files/media/S44-J-2.wav
@@ -65,7 +65,7 @@ calls:
   matrilines:
   pod: J,K,L
   population: SRKW
-  sample: '3'
+  sample: 3
   subclan:
   subpopulation:
   wav-file: srkw-call-catalogue-files/media/S10-J,K,L-3.wav
@@ -75,7 +75,7 @@ calls:
   matrilines:
   pod: J
   population: SRKW
-  sample: '1'
+  sample: 1
   subclan:
   subpopulation:
   wav-file: srkw-call-catalogue-files/media/S03-J-1.wav
@@ -85,7 +85,7 @@ calls:
   matrilines:
   pod: L
   population: SRKW
-  sample: '4'
+  sample: 4
   subclan:
   subpopulation:
   wav-file: srkw-call-catalogue-files/media/S18-L-4.wav
@@ -95,7 +95,7 @@ calls:
   matrilines:
   pod: J
   population: SRKW
-  sample: '2'
+  sample: 2
   subclan:
   subpopulation:
   wav-file: srkw-call-catalogue-files/media/S41-J-2.wav
@@ -105,7 +105,7 @@ calls:
   matrilines:
   pod: J,L
   population: SRKW
-  sample: '3'
+  sample: 3
   subclan:
   subpopulation:
   wav-file: srkw-call-catalogue-files/media/S42-J,L-3.wav
@@ -115,7 +115,7 @@ calls:
   matrilines:
   pod: J
   population: SRKW
-  sample: '2'
+  sample: 2
   subclan:
   subpopulation:
   wav-file: srkw-call-catalogue-files/media/S02i-J-2.wav
@@ -125,7 +125,7 @@ calls:
   matrilines:
   pod: J
   population: SRKW
-  sample: '3'
+  sample: 3
   subclan:
   subpopulation:
   wav-file: srkw-call-catalogue-files/media/S04-J-3.wav
@@ -135,7 +135,7 @@ calls:
   matrilines:
   pod: J,L
   population: SRKW
-  sample: '5'
+  sample: 5
   subclan:
   subpopulation:
   wav-file: srkw-call-catalogue-files/media/S08i-J,L-5.wav
@@ -145,7 +145,7 @@ calls:
   matrilines:
   pod: J
   population: SRKW
-  sample: '3'
+  sample: 3
   subclan:
   subpopulation:
   wav-file: srkw-call-catalogue-files/media/S03-J-3.wav
@@ -155,7 +155,7 @@ calls:
   matrilines:
   pod: K,L
   population: SRKW
-  sample: '6'
+  sample: 6
   subclan:
   subpopulation:
   wav-file: srkw-call-catalogue-files/media/S17-K,L-6.wav
@@ -165,7 +165,7 @@ calls:
   matrilines:
   pod: L
   population: SRKW
-  sample: '2'
+  sample: 2
   subclan:
   subpopulation:
   wav-file: srkw-call-catalogue-files/media/S33-L-2.wav
@@ -175,7 +175,7 @@ calls:
   matrilines:
   pod: L
   population: SRKW
-  sample: '3'
+  sample: 3
   subclan:
   subpopulation:
   wav-file: srkw-call-catalogue-files/media/S31-L-3.wav
@@ -185,7 +185,7 @@ calls:
   matrilines:
   pod: K,L
   population: SRKW
-  sample: '3'
+  sample: 3
   subclan:
   subpopulation:
   wav-file: srkw-call-catalogue-files/media/S17-K,L-3.wav
@@ -195,7 +195,7 @@ calls:
   matrilines:
   pod: L
   population: SRKW
-  sample: '2'
+  sample: 2
   subclan:
   subpopulation:
   wav-file: srkw-call-catalogue-files/media/S40-L-2.wav
@@ -215,7 +215,7 @@ calls:
   matrilines:
   pod: L
   population: SRKW
-  sample: '4'
+  sample: 4
   subclan:
   subpopulation:
   wav-file: srkw-call-catalogue-files/media/S22-L-4.wav
@@ -225,7 +225,7 @@ calls:
   matrilines:
   pod: L
   population: SRKW
-  sample: '4'
+  sample: 4
   subclan:
   subpopulation:
   wav-file: srkw-call-catalogue-files/media/S19-L-4.wav
@@ -235,7 +235,7 @@ calls:
   matrilines:
   pod: L
   population: SRKW
-  sample: '8'
+  sample: 8
   subclan:
   subpopulation:
   wav-file: srkw-call-catalogue-files/media/S19-L-8.wav
@@ -245,7 +245,7 @@ calls:
   matrilines:
   pod: J
   population: SRKW
-  sample: '1'
+  sample: 1
   subclan:
   subpopulation:
   wav-file: srkw-call-catalogue-files/media/S44-J-1.wav
@@ -255,7 +255,7 @@ calls:
   matrilines:
   pod: K,L
   population: SRKW
-  sample: '1'
+  sample: 1
   subclan:
   subpopulation:
   wav-file: srkw-call-catalogue-files/media/S16-K,L-1.wav
@@ -265,7 +265,7 @@ calls:
   matrilines:
   pod: K,L
   population: SRKW
-  sample: '2'
+  sample: 2
   subclan:
   subpopulation:
   wav-file: srkw-call-catalogue-files/media/S37ii-K,L-2.wav
@@ -275,7 +275,7 @@ calls:
   matrilines:
   pod: K,L
   population: SRKW
-  sample: '5'
+  sample: 5
   subclan:
   subpopulation:
   wav-file: srkw-call-catalogue-files/media/S17-K,L-5.wav
@@ -285,7 +285,7 @@ calls:
   matrilines:
   pod: K,L
   population: SRKW
-  sample: '1'
+  sample: 1
   subclan:
   subpopulation:
   wav-file: srkw-call-catalogue-files/media/S13ii-K,L-1.wav
@@ -295,7 +295,7 @@ calls:
   matrilines:
   pod: L
   population: SRKW
-  sample: '3'
+  sample: 3
   subclan:
   subpopulation:
   wav-file: srkw-call-catalogue-files/media/S19-L-3.wav
@@ -305,7 +305,7 @@ calls:
   matrilines:
   pod: J
   population: SRKW
-  sample: '5'
+  sample: 5
   subclan:
   subpopulation:
   wav-file: srkw-call-catalogue-files/media/S44-J-5.wav
@@ -315,7 +315,7 @@ calls:
   matrilines:
   pod: L
   population: SRKW
-  sample: '6'
+  sample: 6
   subclan:
   subpopulation:
   wav-file: srkw-call-catalogue-files/media/S19-L-6.wav
@@ -325,7 +325,7 @@ calls:
   matrilines:
   pod: J
   population: SRKW
-  sample: '3'
+  sample: 3
   subclan:
   subpopulation:
   wav-file: srkw-call-catalogue-files/media/S07-J-3.wav
@@ -335,7 +335,7 @@ calls:
   matrilines:
   pod: L
   population: SRKW
-  sample: '9'
+  sample: 9
   subclan:
   subpopulation:
   wav-file: srkw-call-catalogue-files/media/S19-L-9.wav
@@ -355,7 +355,7 @@ calls:
   matrilines:
   pod: L
   population: SRKW
-  sample: '4'
+  sample: 4
   subclan:
   subpopulation:
   wav-file: srkw-call-catalogue-files/media/S31-L-4.wav
@@ -365,7 +365,7 @@ calls:
   matrilines:
   pod: L
   population: SRKW
-  sample: '12'
+  sample: 12
   subclan:
   subpopulation:
   wav-file: srkw-call-catalogue-files/media/S19-L-12.wav
@@ -385,7 +385,7 @@ calls:
   matrilines:
   pod: K,L
   population: SRKW
-  sample: '4'
+  sample: 4
   subclan:
   subpopulation:
   wav-file: srkw-call-catalogue-files/media/S37ii-K,L-4.wav
@@ -395,7 +395,7 @@ calls:
   matrilines:
   pod: L
   population: SRKW
-  sample: '7'
+  sample: 7
   subclan:
   subpopulation:
   wav-file: srkw-call-catalogue-files/media/S22-L-7.wav
@@ -405,7 +405,7 @@ calls:
   matrilines:
   pod: J
   population: SRKW
-  sample: '1'
+  sample: 1
   subclan:
   subpopulation:
   wav-file: srkw-call-catalogue-files/media/S05-J-1.wav
@@ -415,7 +415,7 @@ calls:
   matrilines:
   pod: K,L
   population: SRKW
-  sample: '2'
+  sample: 2
   subclan:
   subpopulation:
   wav-file: srkw-call-catalogue-files/media/S13ii-K,L-2.wav
@@ -425,7 +425,7 @@ calls:
   matrilines:
   pod: L
   population: SRKW
-  sample: '2'
+  sample: 2
   subclan:
   subpopulation:
   wav-file: srkw-call-catalogue-files/media/S02iii-L-2.wav
@@ -435,7 +435,7 @@ calls:
   matrilines:
   pod: J
   population: SRKW
-  sample: '4'
+  sample: 4
   subclan:
   subpopulation:
   wav-file: srkw-call-catalogue-files/media/S12-J-4.wav
@@ -445,7 +445,7 @@ calls:
   matrilines:
   pod: J,L
   population: SRKW
-  sample: '4'
+  sample: 4
   subclan:
   subpopulation:
   wav-file: srkw-call-catalogue-files/media/S08i-J,L-4.wav
@@ -465,7 +465,7 @@ calls:
   matrilines:
   pod: K,L
   population: SRKW
-  sample: '4'
+  sample: 4
   subclan:
   subpopulation:
   wav-file: srkw-call-catalogue-files/media/S17-K,L-4.wav
@@ -475,7 +475,7 @@ calls:
   matrilines:
   pod: L
   population: SRKW
-  sample: '10'
+  sample: 10
   subclan:
   subpopulation:
   wav-file: srkw-call-catalogue-files/media/S19-L-10.wav
@@ -485,7 +485,7 @@ calls:
   matrilines:
   pod: K,L
   population: SRKW
-  sample: '3'
+  sample: 3
   subclan:
   subpopulation:
   wav-file: srkw-call-catalogue-files/media/S36-K,L-3.wav
@@ -505,7 +505,7 @@ calls:
   matrilines:
   pod: L
   population: SRKW
-  sample: '2'
+  sample: 2
   subclan:
   subpopulation:
   wav-file: srkw-call-catalogue-files/media/S31-L-2.wav
@@ -515,7 +515,7 @@ calls:
   matrilines:
   pod: L
   population: SRKW
-  sample: '3'
+  sample: 3
   subclan:
   subpopulation:
   wav-file: srkw-call-catalogue-files/media/S33-L-3.wav
@@ -525,7 +525,7 @@ calls:
   matrilines:
   pod: J,L
   population: SRKW
-  sample: '2'
+  sample: 2
   subclan:
   subpopulation:
   wav-file: srkw-call-catalogue-files/media/S01-J,L-2.wav
@@ -535,7 +535,7 @@ calls:
   matrilines:
   pod: J
   population: SRKW
-  sample: '1'
+  sample: 1
   subclan:
   subpopulation:
   wav-file: srkw-call-catalogue-files/media/S04-J-1.wav
@@ -545,7 +545,7 @@ calls:
   matrilines:
   pod: J
   population: SRKW
-  sample: '2'
+  sample: 2
   subclan:
   subpopulation:
   wav-file: srkw-call-catalogue-files/media/S04-J-2.wav
@@ -555,7 +555,7 @@ calls:
   matrilines:
   pod: K,L
   population: SRKW
-  sample: '4'
+  sample: 4
   subclan:
   subpopulation:
   wav-file: srkw-call-catalogue-files/media/S16-K,L-4.wav
@@ -565,7 +565,7 @@ calls:
   matrilines:
   pod: J,L
   population: SRKW
-  sample: '1'
+  sample: 1
   subclan:
   subpopulation:
   wav-file: srkw-call-catalogue-files/media/S08i-J,L-1.wav
@@ -575,7 +575,7 @@ calls:
   matrilines:
   pod: J
   population: SRKW
-  sample: '4'
+  sample: 4
   subclan:
   subpopulation:
   wav-file: srkw-call-catalogue-files/media/S44-J-4.wav
@@ -585,27 +585,17 @@ calls:
   matrilines:
   pod: L
   population: SRKW
-  sample: '3'
+  sample: 3
   subclan:
   subpopulation:
   wav-file: srkw-call-catalogue-files/media/S22-L-3.wav
-- call-type: S44
-  clan: J
-  image-file: srkw-call-catalogue-files/media/S44-J-2 2.jpg
-  matrilines:
-  pod: J
-  population: SRKW
-  sample: 2 2
-  subclan:
-  subpopulation:
-  wav-file: srkw-call-catalogue-files/media/S44-J-2 2.wav
 - call-type: S42
   clan: J
   image-file: srkw-call-catalogue-files/media/S42-J,L-1.jpg
   matrilines:
   pod: J,L
   population: SRKW
-  sample: '1'
+  sample: 1
   subclan:
   subpopulation:
   wav-file: srkw-call-catalogue-files/media/S42-J,L-1.wav
@@ -625,7 +615,7 @@ calls:
   matrilines:
   pod: L
   population: SRKW
-  sample: '1'
+  sample: 1
   subclan:
   subpopulation:
   wav-file: srkw-call-catalogue-files/media/S31-L-1.wav
@@ -635,7 +625,7 @@ calls:
   matrilines:
   pod: J,L
   population: SRKW
-  sample: '2'
+  sample: 2
   subclan:
   subpopulation:
   wav-file: srkw-call-catalogue-files/media/S42-J,L-2.wav
@@ -645,7 +635,7 @@ calls:
   matrilines:
   pod: J
   population: SRKW
-  sample: '1'
+  sample: 1
   subclan:
   subpopulation:
   wav-file: srkw-call-catalogue-files/media/S12-J-1.wav
@@ -655,7 +645,7 @@ calls:
   matrilines:
   pod: J
   population: SRKW
-  sample: '1'
+  sample: 1
   subclan:
   subpopulation:
   wav-file: srkw-call-catalogue-files/media/S41-J-1.wav
@@ -665,7 +655,7 @@ calls:
   matrilines:
   pod: J,L
   population: SRKW
-  sample: '3'
+  sample: 3
   subclan:
   subpopulation:
   wav-file: srkw-call-catalogue-files/media/S01-J,L-3.wav
@@ -675,7 +665,7 @@ calls:
   matrilines:
   pod: J
   population: SRKW
-  sample: '4'
+  sample: 4
   subclan:
   subpopulation:
   wav-file: srkw-call-catalogue-files/media/S41-J-4.wav
@@ -685,7 +675,7 @@ calls:
   matrilines:
   pod: J,L
   population: SRKW
-  sample: '1'
+  sample: 1
   subclan:
   subpopulation:
   wav-file: srkw-call-catalogue-files/media/S01-J,L-1.wav
@@ -695,7 +685,7 @@ calls:
   matrilines:
   pod: K,L
   population: SRKW
-  sample: '2'
+  sample: 2
   subclan:
   subpopulation:
   wav-file: srkw-call-catalogue-files/media/S16-K,L-2.wav
@@ -705,7 +695,7 @@ calls:
   matrilines:
   pod: J
   population: SRKW
-  sample: '3'
+  sample: 3
   subclan:
   subpopulation:
   wav-file: srkw-call-catalogue-files/media/S44-J-3.wav
@@ -715,7 +705,7 @@ calls:
   matrilines:
   pod: L
   population: SRKW
-  sample: '1'
+  sample: 1
   subclan:
   subpopulation:
   wav-file: srkw-call-catalogue-files/media/S19-L-1.wav
@@ -725,7 +715,7 @@ calls:
   matrilines:
   pod: L
   population: SRKW
-  sample: '1'
+  sample: 1
   subclan:
   subpopulation:
   wav-file: srkw-call-catalogue-files/media/S18-L-1.wav
@@ -735,7 +725,7 @@ calls:
   matrilines:
   pod: J
   population: SRKW
-  sample: '1'
+  sample: 1
   subclan:
   subpopulation:
   wav-file: srkw-call-catalogue-files/media/S13i-J-1.wav
@@ -745,7 +735,7 @@ calls:
   matrilines:
   pod: J
   population: SRKW
-  sample: '6'
+  sample: 6
   subclan:
   subpopulation:
   wav-file: srkw-call-catalogue-files/media/S44-J-6.wav
@@ -755,7 +745,7 @@ calls:
   matrilines:
   pod: L
   population: SRKW
-  sample: '5'
+  sample: 5
   subclan:
   subpopulation:
   wav-file: srkw-call-catalogue-files/media/S18-L-5.wav
@@ -765,7 +755,7 @@ calls:
   matrilines:
   pod: L
   population: SRKW
-  sample: '3'
+  sample: 3
   subclan:
   subpopulation:
   wav-file: srkw-call-catalogue-files/media/S18-L-3.wav
@@ -775,7 +765,7 @@ calls:
   matrilines:
   pod: J,K,L
   population: SRKW
-  sample: '2'
+  sample: 2
   subclan:
   subpopulation:
   wav-file: srkw-call-catalogue-files/media/S10-J,K,L-2.wav
@@ -785,7 +775,7 @@ calls:
   matrilines:
   pod: K,L
   population: SRKW
-  sample: '2'
+  sample: 2
   subclan:
   subpopulation:
   wav-file: srkw-call-catalogue-files/media/S17-K,L-2.wav
@@ -795,7 +785,7 @@ calls:
   matrilines:
   pod: L
   population: SRKW
-  sample: '5'
+  sample: 5
   subclan:
   subpopulation:
   wav-file: srkw-call-catalogue-files/media/S22-L-5.wav
@@ -805,7 +795,7 @@ calls:
   matrilines:
   pod: J
   population: SRKW
-  sample: '2'
+  sample: 2
   subclan:
   subpopulation:
   wav-file: srkw-call-catalogue-files/media/S13i-J-2.wav
@@ -815,7 +805,7 @@ calls:
   matrilines:
   pod: L
   population: SRKW
-  sample: '2'
+  sample: 2
   subclan:
   subpopulation:
   wav-file: srkw-call-catalogue-files/media/S22-L-2.wav
@@ -825,7 +815,7 @@ calls:
   matrilines:
   pod: L
   population: SRKW
-  sample: '4'
+  sample: 4
   subclan:
   subpopulation:
   wav-file: srkw-call-catalogue-files/media/S02iii-L-4.wav
@@ -835,7 +825,7 @@ calls:
   matrilines:
   pod: K,L
   population: SRKW
-  sample: '4'
+  sample: 4
   subclan:
   subpopulation:
   wav-file: srkw-call-catalogue-files/media/S36-K,L-4.wav
@@ -845,7 +835,7 @@ calls:
   matrilines:
   pod: J,K,L
   population: SRKW
-  sample: '1'
+  sample: 1
   subclan:
   subpopulation:
   wav-file: srkw-call-catalogue-files/media/S10-J,K,L-1.wav
@@ -855,7 +845,7 @@ calls:
   matrilines:
   pod: L
   population: SRKW
-  sample: '5'
+  sample: 5
   subclan:
   subpopulation:
   wav-file: srkw-call-catalogue-files/media/S19-L-5.wav
@@ -865,7 +855,7 @@ calls:
   matrilines:
   pod: L
   population: SRKW
-  sample: '5'
+  sample: 5
   subclan:
   subpopulation:
   wav-file: srkw-call-catalogue-files/media/S31-L-5.wav
@@ -885,7 +875,7 @@ calls:
   matrilines:
   pod: L
   population: SRKW
-  sample: '2'
+  sample: 2
   subclan:
   subpopulation:
   wav-file: srkw-call-catalogue-files/media/S19-L-2.wav
@@ -895,7 +885,7 @@ calls:
   matrilines:
   pod: L
   population: SRKW
-  sample: '5'
+  sample: 5
   subclan:
   subpopulation:
   wav-file: srkw-call-catalogue-files/media/S02iii-L-5.wav
@@ -915,7 +905,7 @@ calls:
   matrilines:
   pod: J
   population: SRKW
-  sample: '2'
+  sample: 2
   subclan:
   subpopulation:
   wav-file: srkw-call-catalogue-files/media/S07-J-2.wav
@@ -935,7 +925,7 @@ calls:
   matrilines:
   pod: J,L
   population: SRKW
-  sample: '2'
+  sample: 2
   subclan:
   subpopulation:
   wav-file: srkw-call-catalogue-files/media/S08i-J,L-2.wav
@@ -945,7 +935,7 @@ calls:
   matrilines:
   pod: J
   population: SRKW
-  sample: '1'
+  sample: 1
   subclan:
   subpopulation:
   wav-file: srkw-call-catalogue-files/media/S14-J-1.wav
@@ -955,7 +945,7 @@ calls:
   matrilines:
   pod: J
   population: SRKW
-  sample: '1'
+  sample: 1
   subclan:
   subpopulation:
   wav-file: srkw-call-catalogue-files/media/S02ii-J-1.wav
@@ -975,7 +965,7 @@ calls:
   matrilines:
   pod: K,L
   population: SRKW
-  sample: '3'
+  sample: 3
   subclan:
   subpopulation:
   wav-file: srkw-call-catalogue-files/media/S16-K,L-3.wav
@@ -985,7 +975,7 @@ calls:
   matrilines:
   pod: J
   population: SRKW
-  sample: '3'
+  sample: 3
   subclan:
   subpopulation:
   wav-file: srkw-call-catalogue-files/media/S12-J-3.wav
@@ -995,7 +985,7 @@ calls:
   matrilines:
   pod: J
   population: SRKW
-  sample: '1'
+  sample: 1
   subclan:
   subpopulation:
   wav-file: srkw-call-catalogue-files/media/S09-J-1.wav
@@ -1005,7 +995,7 @@ calls:
   matrilines:
   pod: L
   population: SRKW
-  sample: '1'
+  sample: 1
   subclan:
   subpopulation:
   wav-file: srkw-call-catalogue-files/media/S33-L-1.wav
@@ -1015,7 +1005,7 @@ calls:
   matrilines:
   pod: L
   population: SRKW
-  sample: '1'
+  sample: 1
   subclan:
   subpopulation:
   wav-file: srkw-call-catalogue-files/media/S22-L-1.wav
@@ -1025,7 +1015,7 @@ calls:
   matrilines:
   pod: K,L
   population: SRKW
-  sample: '1'
+  sample: 1
   subclan:
   subpopulation:
   wav-file: srkw-call-catalogue-files/media/S17-K,L-1.wav
@@ -1035,7 +1025,7 @@ calls:
   matrilines:
   pod: J
   population: SRKW
-  sample: '1'
+  sample: 1
   subclan:
   subpopulation:
   wav-file: srkw-call-catalogue-files/media/S02i-J-1.wav
@@ -1045,7 +1035,7 @@ calls:
   matrilines:
   pod: J
   population: SRKW
-  sample: '2'
+  sample: 2
   subclan:
   subpopulation:
   wav-file: srkw-call-catalogue-files/media/S14-J-2.wav
@@ -1055,7 +1045,7 @@ calls:
   matrilines:
   pod: L
   population: SRKW
-  sample: '2'
+  sample: 2
   subclan:
   subpopulation:
   wav-file: srkw-call-catalogue-files/media/S18-L-2.wav
@@ -1065,7 +1055,7 @@ calls:
   matrilines:
   pod: J
   population: SRKW
-  sample: '3'
+  sample: 3
   subclan:
   subpopulation:
   wav-file: srkw-call-catalogue-files/media/S41-J-3.wav
@@ -1075,7 +1065,7 @@ calls:
   matrilines:
   pod: J
   population: SRKW
-  sample: '2'
+  sample: 2
   subclan:
   subpopulation:
   wav-file: srkw-call-catalogue-files/media/S09-J-2.wav
@@ -1085,7 +1075,7 @@ calls:
   matrilines:
   pod: L
   population: SRKW
-  sample: '7'
+  sample: 7
   subclan:
   subpopulation:
   wav-file: srkw-call-catalogue-files/media/S19-L-7.wav
@@ -1095,7 +1085,7 @@ calls:
   matrilines:
   pod: J
   population: SRKW
-  sample: '2'
+  sample: 2
   subclan:
   subpopulation:
   wav-file: srkw-call-catalogue-files/media/S02ii-J-2.wav
@@ -1105,7 +1095,7 @@ calls:
   matrilines:
   pod: J
   population: SRKW
-  sample: '2'
+  sample: 2
   subclan:
   subpopulation:
   wav-file: srkw-call-catalogue-files/media/S05-J-2.wav
@@ -1115,7 +1105,7 @@ calls:
   matrilines:
   pod: L
   population: SRKW
-  sample: '6'
+  sample: 6
   subclan:
   subpopulation:
   wav-file: srkw-call-catalogue-files/media/S22-L-6.wav
@@ -1125,7 +1115,7 @@ calls:
   matrilines:
   pod: J
   population: SRKW
-  sample: '2'
+  sample: 2
   subclan:
   subpopulation:
   wav-file: srkw-call-catalogue-files/media/S37i-J-2.wav
@@ -1145,7 +1135,7 @@ calls:
   matrilines:
   pod: K,L
   population: SRKW
-  sample: '3'
+  sample: 3
   subclan:
   subpopulation:
   wav-file: srkw-call-catalogue-files/media/S37ii-K,L-3.wav
@@ -1155,7 +1145,7 @@ calls:
   matrilines:
   pod: J
   population: SRKW
-  sample: '1'
+  sample: 1
   subclan:
   subpopulation:
   wav-file: srkw-call-catalogue-files/media/S37i-J-1.wav
@@ -1165,7 +1155,7 @@ calls:
   matrilines:
   pod: L
   population: SRKW
-  sample: '3'
+  sample: 3
   subclan:
   subpopulation:
   wav-file: srkw-call-catalogue-files/media/S02iii-L-3.wav
@@ -1175,7 +1165,7 @@ calls:
   matrilines:
   pod: J
   population: SRKW
-  sample: '3'
+  sample: 3
   subclan:
   subpopulation:
   wav-file: srkw-call-catalogue-files/media/S37i-J-3.wav
@@ -1185,7 +1175,7 @@ calls:
   matrilines:
   pod: L
   population: SRKW
-  sample: '11'
+  sample: 11
   subclan:
   subpopulation:
   wav-file: srkw-call-catalogue-files/media/S19-L-11.wav
@@ -1195,7 +1185,7 @@ calls:
   matrilines:
   pod: L
   population: SRKW
-  sample: '1'
+  sample: 1
   subclan:
   subpopulation:
   wav-file: srkw-call-catalogue-files/media/S40-L-1.wav
@@ -1205,7 +1195,7 @@ calls:
   matrilines:
   pod: K,L
   population: SRKW
-  sample: '1'
+  sample: 1
   subclan:
   subpopulation:
   wav-file: srkw-call-catalogue-files/media/S36-K,L-1.wav
@@ -1215,7 +1205,7 @@ calls:
   matrilines:
   pod: L
   population: SRKW
-  sample: '1'
+  sample: 1
   subclan:
   subpopulation:
   wav-file: srkw-call-catalogue-files/media/S02iii-L-1.wav
@@ -1225,7 +1215,7 @@ calls:
   matrilines:
   pod: J,L
   population: SRKW
-  sample: '3'
+  sample: 3
   subclan:
   subpopulation:
   wav-file: srkw-call-catalogue-files/media/S08i-J,L-3.wav
@@ -1245,7 +1235,7 @@ calls:
   matrilines:
   pod: L
   population: SRKW
-  sample: '3'
+  sample: 3
   subclan:
   subpopulation:
   wav-file: srkw-call-catalogue-files/media/S40-L-3.wav
@@ -1255,7 +1245,7 @@ calls:
   matrilines:
   pod: L
   population: SRKW
-  sample: '8'
+  sample: 8
   subclan:
   subpopulation:
   wav-file: srkw-call-catalogue-files/media/S22-L-8.wav
@@ -1265,7 +1255,7 @@ calls:
   matrilines:
   pod: J
   population: SRKW
-  sample: '1'
+  sample: 1
   subclan:
   subpopulation:
   wav-file: srkw-call-catalogue-files/media/S06-J-1.wav
@@ -1275,7 +1265,7 @@ calls:
   matrilines:
   pod: J
   population: SRKW
-  sample: '1'
+  sample: 1
   subclan:
   subpopulation:
   wav-file: srkw-call-catalogue-files/media/S07-J-1.wav
