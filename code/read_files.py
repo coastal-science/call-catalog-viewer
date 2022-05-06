@@ -19,6 +19,7 @@ from yaml.resolver import Resolver
 
 # for strictyaml
 #from ensure import Ensure
+"""
 from strictyaml import as_document
 
 
@@ -41,7 +42,7 @@ class Null(ScalarValidator):
 
 
 yaml_schema = Map({"call-type": Str(), "clan": Str(), "image-file": Str(), "wav-file": Str(), "matrilines": Null() | Str(), "pod": Str(), "population": Str(), "sample": Null() | Int(), "subclan": Null() | Str(), "subpopulation": Null() | Str()})
-
+"""
 try:
     script_folder = os.path.dirname(__file__)
 except NameError:
