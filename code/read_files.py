@@ -29,13 +29,11 @@ from strictyaml.scalar import ScalarValidator
 YAML_NULL = ["null", "Null", "NULL", "~"]
 
 class Null(ScalarValidator):
-    """
-    'null'->None
-    """
+
+    #'null'->None
+
     @staticmethod
     def validate_scalar(chunk):
-        """
-        """
         if any([chunk.contents == n for n in YAML_NULL]):
             return None
         chunk.expecting_but_found(f"when expecting any of {YAML_NULL}")
