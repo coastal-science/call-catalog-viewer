@@ -70,7 +70,7 @@ f"""<figure>
 
 def read_data_folder(data_folder):
     filenames = get_filenames(data_folder)
-    print(filenames)
+    #print(filenames)
     ps = pd.Series(filenames)
     df = ps.str.split(".", expand=True).rename(columns={0:"filename",1:"filetype"})
 
@@ -101,27 +101,51 @@ def generate_yaml(data_folder, df):
     new_df = new_df.drop(['pod_cat'], axis=1)
     #new_df['sample'] = new_df['sample'].astype('float').astype('Int8')  #accommodate None
     
-    print(new_df)
+    #print(new_df)
     yaml_dict = { "calls" : new_df.to_dict('records') }
    
     return yaml_dict
 
 def read_yaml(yaml_file):
     with open(yaml_file) as file:
-    # The FullLoader parameter handles the conversion from YAML
-    # scalar values to Python the dictionary format
+        # The FullLoader parameter handles the conversion from YAML
+        # scalar values to Python the dictionary format
         resource_list = yaml.safe_load(file)
-        print(resource_list)
+        #print(resource_list)
         df = pd.DataFrame.from_dict(resource_list['calls'])
-    #pre-processing and convert to original JSON format
+        #pre-processing and convert to original JSON format
         df['call-type'] = df['call-type']       #assuming call-type now becomes S01 instead of BCS01
         df['pod_cat'] =  df['pod'].str.findall(r'[J|K|L]')
         df['filename'] =  df['image-file'].str.split(".", expand=True)[0]
         df['filename'] =  [x.split("/")[-1] for x in df['filename']]
         df['thumb'] = df['image-file']
         df['sample'] = df['sample'].apply(lambda x: None if np.isnan(x) else str(int(x)))
-        df = df.rename(columns={"call-type": "cn", "matrilines": "mar", "clan": "clan", "pod": "pod", "image-file":"image_file", "wav-file": "wav_file" })
+        
+        #check image-file and wav-file
+        from os.path import exists
+        df['image_exists'] = df['image-file'].apply(lambda x: exists(x))
+        df['wav_exists'] = df['wav-file'].apply(lambda x: exists(x))
         #print(df)
+        #output if there is case of file not found in image
+        if False in df['image_exists'].unique():
+            # output all files not found
+            # selecting rows based on condition
+            no_image_df = df[df['image_exists'] == False]
+            print("The following image files are not found:\n", no_image_df[['call-type', 'clan', 'population','image-file']])
+            
+        #output if there is case of file not found in wav
+        if False in df['wav_exists'].unique():
+            # output all files not found
+            # selecting rows based on condition
+            no_wav_df = df[df['wav_exists'] == False]
+            print("The following wav files are not found:\n", no_wav_df[['call-type', 'clan', 'population','wav-file']])
+    
+        #drop 'image_exists' and 'wav_exists' columns
+        df.drop(['image_exists', 'wav_exists'], inplace=True, axis=1)
+    
+        #rename columns
+        df = df.rename(columns={"call-type": "cn", "matrilines": "mar", "clan": "clan", "pod": "pod", "image-file":"image_file", "wav-file": "wav_file" })
+
     return df
 
 def represent_none(self, _):
