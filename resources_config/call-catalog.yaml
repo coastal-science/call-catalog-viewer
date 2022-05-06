@@ -949,6 +949,16 @@ calls:
   subclan:
   subpopulation:
   wav-file: srkw-call-catalogue-files/media/S02ii-J-1.wav
+- call-type: S44
+  clan: J
+  image-file: srkw-call-catalogue-files/media/S44-J-7.jpg
+  matrilines:
+  pod: J
+  population: SRKW
+  sample: 7
+  subclan:
+  subpopulation:
+  wav-file: srkw-call-catalogue-files/media/S44-J-7.wav
 - call-type: S02ii
   clan: J
   image-file: srkw-call-catalogue-files/media/S02ii-J.jpg
