@@ -124,40 +124,66 @@
 
 <!-- Navbar -->
 <div class="w3-top">
-  <div class="w3-bar w3-black w3-card">
-    <a class="w3-bar-item w3-button w3-padding-large w3-hide-medium w3-hide-large w3-right" href="javascript:void(0)" onclick="myFunction()" title="Toggle Navigation Menu"><i class="fa fa-bars"></i></a>
-    <a href="home.html#" class="w3-bar-item w3-button w3-padding-large">HOME</a>
-    <a href="home.html#catalogue" class="w3-bar-item w3-button w3-padding-large w3-hide-small">CATALOGUE</a>
-    <a href="home.html#team" class="w3-bar-item w3-button w3-padding-large w3-hide-small">TEAM</a>
-    <a href="home.html#contact" class="w3-bar-item w3-button w3-padding-large w3-hide-small">CONTACT</a>
-    <div class="w3-dropdown-hover w3-hide-small">
-      <button class="w3-padding-large w3-button" title="More">MORE <i class="fa fa-caret-down"></i></button>     
-      <div class="w3-dropdown-content w3-bar-block w3-card-4">
-        <a href="home.html#" class="w3-bar-item w3-button">Sub-page1</a>
-        <a href="home.html#" class="w3-bar-item w3-button">Sub-page2</a>
-        <a href="home.html#" class="w3-bar-item w3-button">Sub-page3</a>
+    <div class="w3-bar w3-black w3-card">
+      <a class="w3-bar-item w3-button w3-padding-large w3-hide-medium w3-hide-large w3-right" href="javascript:void(0)" onclick="myFunction()" title="Toggle Navigation Menu"><i class="fa fa-bars"></i></a>
+      <a href="home.html#" class="w3-bar-item w3-button w3-padding-large">HOME</a>
+      <a href="https://orca.research.sfu.ca/annotation" class="w3-bar-item w3-button w3-padding-large w3-hide-small">ANNOTATIONS</a>
+      <a href="index.html" class="w3-bar-item w3-button w3-padding-large w3-hide-small">CATALOGUE</a>
+      <a href="home.html#contact" class="w3-bar-item w3-button w3-padding-large w3-hide-small">CONTACT</a>
+      <div class="w3-dropdown-hover w3-hide-small">
+        <button class="w3-padding-large w3-button" title="More">MORE <i class="fa fa-caret-down"></i></button>     
+        <div class="w3-dropdown-content w3-bar-block w3-card-4">
+          <a href="home.html#" class="w3-bar-item w3-button">Sub-page1</a>
+          <a href="home.html#" class="w3-bar-item w3-button">Sub-page2</a>
+          <a href="home.html#" class="w3-bar-item w3-button">Sub-page3</a>
+        </div>
       </div>
+      <a href="javascript:void(0)" class="w3-padding-large w3-hover-red w3-hide-small w3-right"><i class="fa fa-search"></i></a>
     </div>
-    <a href="javascript:void(0)" class="w3-padding-large w3-hover-red w3-hide-small w3-right"><i class="fa fa-search"></i></a>
   </div>
-</div>
-
-<!-- Navbar on small screens (remove the onclick attribute if you want the navbar to always show on top of the content when clicking on the links) -->
-<div id="navDemo" class="w3-bar-block w3-black w3-hide w3-hide-large w3-hide-medium w3-top" style="margin-top:46px">
-  <a href="home.html#catalogue" class="w3-bar-item w3-button w3-padding-large" onclick="myFunction()">CATALOGUE</a>
-  <a href="home.html#team" class="w3-bar-item w3-button w3-padding-large" onclick="myFunction()">TEAM</a>
-  <a href="home.html#contact" class="w3-bar-item w3-button w3-padding-large" onclick="myFunction()">CONTACT</a>
-  <a href="home.html#" class="w3-bar-item w3-button w3-padding-large" onclick="myFunction()">MORE</a>
-</div>
+  
+  <!-- Navbar on small screens (remove the onclick attribute if you want the navbar to always show on top of the content when clicking on the links) -->
+  <div id="navDemo" class="w3-bar-block w3-black w3-hide w3-hide-large w3-hide-medium w3-top" style="margin-top:46px">
+    <a href="home.html" class="w3-bar-item w3-button w3-padding-large" onclick="myFunction()">HOME</a>
+    <a href="https://orca.research.sfu.ca/annotation" class="w3-bar-item w3-button w3-padding-large" onclick="myFunction()">ANNOTATIONS</a>
+    <a href="index.html" class="w3-bar-item w3-button w3-padding-large" onclick="myFunction()">CATALOGUE</a>
+    <a href="home.html#contact" class="w3-bar-item w3-button w3-padding-large" onclick="myFunction()">CONTACT</a>
+    <a href="home.html#" class="w3-bar-item w3-button w3-padding-large" onclick="myFunction()">MORE</a>
+  </div>
 
 <body>
-    <div class="toast">
+    
+    <button type="button" class="btn btn-primary" id="liveToastBtn">Show live toast</button>
+      <div class="toast">
         <div class="toast-header">
             URL is newly opened. You are reading from last cache.<br/>
             Arrow Keys are not available. Close the current detail and choose another data from the list again.
         </div>
       </div>
+
+    
     <div class="container" id="listing" style="margin-top:5%">
+        <div id="myModal" class="modal fade">
+            <div class="modal-dialog">
+                <div class="modal-content" style="border-radius:0">
+                    <div class="modal-header">
+                        <h5 class="modal-title"><medium>Use of information from this website is subject to terms under <a href="https://open.canada.ca/en/open-government-licence-canada" target="_blank">Open Government License &ndash; Canada</a></medium></h5>
+                        <button id='closeModal' type="button" class="btn btn-secondary" data-bs-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <p>You are free to:</p>
+                        <ul>
+                            <li>Copy, modify, publish, translate, adapt, distribute or otherwise use the Information in any medium, mode or format for any lawful purpose.</li></ul>
+                        <p>You must, where you do any of the above:</p>
+                        <ul>
+                            <li>Acknowledge the source of the Information by including any attribution statement specified by the Information Provider(s) and, where possible, provide a link to this licence.</li>
+                            <li>If the Information Provider does not provide a specific attribution statement, or if you are using Information from several information providers and multiple attributions are not practical for your product or application, you must use the following attribution statement:
+                            <br>Contains information licensed under the Open Government Licence &ndash; Canada.</li></ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
         <h1 class="text-center text-capitalize font-weight-bold">SRKW Call Catalogue</h1>
     
         <div class="row">
@@ -276,7 +302,7 @@
                     </div>
                     <div class="col-12 col-lg-4 align-items-center text-center">
                         <span class="toast-body col-12">
-                            <kbd>&blank;</kbd> to play sound track;
+                            <kbd>&blank;</kbd> to play sound track;TEST
                         </span>
                     </div>
                 </div>
@@ -296,6 +322,11 @@
         SearchPanel.init();
         GridPanel.init();
     })
+
+
+	$(document).ready(function(){
+      	$("#myModal").modal('show');
+	});
 </script>
 
 </html>
