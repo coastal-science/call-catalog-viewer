@@ -444,7 +444,10 @@ var GridPanel = undefined;
         if (urlParams.has('popup')) {
             const queryString = window.location.search;
             const urlParams = new URLSearchParams(queryString);
-            if (urlParams.has('popup')) {
+            console.log('init')
+            console.log('urlParams')
+            console.log(urlParams.toString())
+            if (urlParams.has('popup')){
                 const filter = urlParams.get('popup');
                 try {
                     const obj = atob(filter);
@@ -680,7 +683,8 @@ var GridPanel = undefined;
             getData();
         });
 
-        $(document).on('lity:open', function (event, instance) {
+        $(document).on('lity:open', function(event, instance) {
+            console.log('lity open');
             lity_data = [];
             const queryString = window.location.search;
             const urlParams = new URLSearchParams(queryString);
@@ -691,6 +695,10 @@ var GridPanel = undefined;
                 lity_data = data_target;
                 var encoded_data = btoa(JSON.stringify(data_target));
                 var encoded = btoa(JSON.stringify(searching_para));
+                console.log('searching_para')
+                console.log(searching_para);
+                console.log('data_target')
+                console.log(data_target);
                 const state = { 'f': encoded, 'p': current_page, 's': sort_by, 'sa': sort_asc, 'popup': encoded_data };
                 const title = 'Details: ' + lity_data.cn + ' (Call Name)';//For Safari only
                 const params = new URLSearchParams('');
@@ -700,16 +708,37 @@ var GridPanel = undefined;
                 params.set('sa', sort_asc);
                 params.set('ps', page_size.toString());
                 params.set('popup', encoded_data);
+                for (const [key, value] of Object.entries(searching_para)) { //replacement for {f: encoded}
+                    // console.log(`${key} ${value}`);
+                    params.set(key, value)
+                    state[key] = value
+                }
+                for (const [key, value] of Object.entries(data_target)) { //replacement for {popup: encoded_data}
+                    // console.log(`${key} ${value}`);
+                    params.set(key, value)
+                    state[key] = value
+                }  
+                console.log('params and state updated')
+                console.log(params)
+                console.log(`${window.location.pathname}?${params}`)
+                console.log('state')
+                console.log(state)
 
+        
                 history.pushState(state, title, `${window.location.pathname}?${params}`);
             }
             else if (urlParams.has('popup')) {
                 //may be generated from link
+                console.log('lity open has popup');
                 const filter = urlParams.get('popup');
                 const obj = atob(filter);
-                if (obj !== undefined) {
-                    try {
-                        lity_data = eval('(' + obj + ')');
+
+                const obj2 = Object.fromEntries(urlParams) // convert to js object
+                console.log('all url params')
+                console.log(obj2)
+                if (obj !== undefined){
+                    try{
+                        lity_data = eval('('+obj+')');
                         $('.selecting').removeClass('selecting');
                     } catch (e) {
                         document.location.href = page_link;
@@ -718,7 +747,8 @@ var GridPanel = undefined;
                 else {
                     document.location.href = page_link;
                 }
-                // console.log(lity_data);
+                console.log('lity_data')
+                console.log(lity_data);
             }
             else {
                 //something went wrong
@@ -832,11 +862,15 @@ var GridPanel = undefined;
             })
         });
         $(document).on('lity:close', function (event, instance) {
+            console.log('lity close');
             if (audio_element !== undefined && audio_element.setAttribute !== undefined) {
                 //pause unfinished playing when close
                 audio_element.setAttribute('src', '');
                 audio_element.pause();
             }
+            console.log('poped is:', poped)
+            var data_target_seq = id_to_seq[poped];
+            var data_target = resultData[data_target_seq];
             poped = undefined;
             pop_opening = false;
             var encoded = btoa(JSON.stringify(searching_para));
@@ -848,6 +882,29 @@ var GridPanel = undefined;
             params.set('s', sort_by);
             params.set('sa', sort_asc);
             params.set('ps', page_size.toString());
+            console.log('searching_para')
+            console.log(searching_para)
+            console.log('state')
+            console.log(state)
+            console.log('params')
+            console.log(params.toString())
+
+            for (const [key, value] of Object.entries(searching_para)) { //replacement for {f: encoded}
+                // console.log(`${key} ${value}`);
+                params.set(key, value)
+                state[key] = value
+            }
+            if(data_target != undefined)
+                for (const [key, value] of Object.entries(data_target)) { //replacement for {popup: encoded_data}
+                    // console.log(`${key} ${value}`);
+                    params.set(key, value)
+                    state[key] = value
+                }  
+            console.log('updated')
+            console.log('state')
+            console.log(state)
+            console.log('params')
+            console.log(params.toString())
             history.pushState(state, title, `${window.location.pathname}?${params}`);
             if ($('.selecting').length <= 0) {
                 $('#gi-area .itemblock:nth(0)').addClass('selecting');
