@@ -26,6 +26,8 @@ jobs:
     # Runs a single command using the runners shell
     - name: Send greeting
       run: echo "Hello ${{ github.event.inputs.name }}"
+
+    # From marketplace "Workflow Webhook Action"
     - name: Workflow Webhook Action
       # You may pin to the exact commit or the version.
       # uses: distributhor/workflow-webhook@3b1dfb659938cacd1f6eab6e2c79478b5b1ac06f
@@ -36,7 +38,7 @@ jobs:
         # The secret with which a signature hash is generated
         webhook_secret: ${{ secrets.WEBHOOK_SECRET }}
         # Credentials to be used for BASIC authentication (optional)
-        webhook_auth: ${{ secrets.orca-data }}
+        webhook_auth: ${{ secrets.DEPLOY_KEY }}
         # json | form-urlencoded | json-extended
         webhook_type: json # optional
         # Optional, set to true to enable verbose output. Warning: this might lead to domain and IP leaking, as well as other security issues as the logs are public.
