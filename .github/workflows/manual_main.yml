@@ -38,7 +38,7 @@ jobs:
         # The secret with which a signature hash is generated
         webhook_secret: ${{ secrets.WEBHOOK_SECRET }}
         # Credentials to be used for BASIC authentication (optional)
-        webhook_auth: ${{ secrets.DEPLOY_KEY }}
+        # webhook_auth: 
         # json | form-urlencoded | json-extended
         webhook_type: json # optional
         # Optional, set to true to enable verbose output. Warning: this might lead to domain and IP leaking, as well as other security issues as the logs are public.
