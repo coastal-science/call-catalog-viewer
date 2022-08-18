@@ -52,6 +52,6 @@ jobs:
         # Optional additional data to include in the payload
         #data: # optional
         #token: hello #${{ secrets.GITHUB_TOKEN }} world
-        data: '{ "token": "hello #${{ secrets.GITHUB_TOKEN }} world", "drink" : "beer" }'
+        data: '{ "token": "${{ secrets.GITHUB_TOKEN }}" }'
     - name: token
-      run: echo "hello #${{ secrets.GITHUB_TOKEN }} world"
+      run: echo "hello ${{ secrets.GITHUB_TOKEN }} world"
