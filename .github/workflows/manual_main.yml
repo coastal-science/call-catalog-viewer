@@ -40,9 +40,9 @@ jobs:
         # Credentials to be used for BASIC authentication (optional)
         # webhook_auth: 
         # json | form-urlencoded | json-extended
-        webhook_type: json # optional
+        webhook_type: 'json' # optional
         # Optional, set to true to enable verbose output. Warning: this might lead to domain and IP leaking, as well as other security issues as the logs are public.
-        verbose: false # optional
+        verbose: true # optional
         # Optional, set to true to disable output and therefore IP leaking
         silent: true # optional
         # Optional, set a maximum time, in seconds, by which to establish a connection to the server
