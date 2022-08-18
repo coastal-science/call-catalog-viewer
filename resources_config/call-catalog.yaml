@@ -1,3 +1,6 @@
+id:
+  - call-type
+  - sample
 calls:
 - call-type: S02ii
   clan: J
