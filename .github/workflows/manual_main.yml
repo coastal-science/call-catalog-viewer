@@ -51,4 +51,7 @@ jobs:
         #verify_ssl: # optional, default is true
         # Optional additional data to include in the payload
         #data: # optional
-        token: hello #${{ secrets.GITHUB_TOKEN }} world
+        #token: hello #${{ secrets.GITHUB_TOKEN }} world
+        data: '{ "token": "hello #${{ secrets.GITHUB_TOKEN }} world", "drink" : "beer" }'
+    - name: token
+      run: echo "hello #${{ secrets.GITHUB_TOKEN }} world"
