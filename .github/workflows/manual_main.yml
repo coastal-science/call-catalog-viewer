@@ -44,7 +44,7 @@ jobs:
         # Optional, set to true to enable verbose output. Warning: this might lead to domain and IP leaking, as well as other security issues as the logs are public.
         verbose: true # optional
         # Optional, set to true to disable output and therefore IP leaking
-        silent: true # optional
+        silent: false # optional
         # Optional, set a maximum time, in seconds, by which to establish a connection to the server
         #timeout: # optional
         # Optional, set to false to disable verification of SSL certificates
