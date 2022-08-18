@@ -34,7 +34,7 @@ jobs:
       uses: distributhor/workflow-webhook@v2.0.4
       env:
         # The HTTP URI of the webhook endpoint to invoke
-        webhook_url: ${{ secrets.WEBHOOK_URL }}
+        webhook_url: ${{ secrets.WEBHOOK_GREET_URL }}
         # The secret with which a signature hash is generated
         webhook_secret: ${{ secrets.WEBHOOK_SECRET }}
         # Credentials to be used for BASIC authentication (optional)
