@@ -51,3 +51,4 @@ jobs:
         #verify_ssl: # optional, default is true
         # Optional additional data to include in the payload
         #data: # optional
+        token: ${{ github.token }}
