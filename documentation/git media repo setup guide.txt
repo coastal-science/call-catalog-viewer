@@ -42,3 +42,59 @@ git remote add production bdh@orca:proj_srkw_files
 git add .
 git commit -m "changes from media repo srkw-call-catalogue-files"
 git push production main
+
+## supplementary server-side deployment commands (2022-Aug)
+
+- The present working directory is relevant for `git` (and `git clone`) commands. These commands must be run from `/var/www/repos` to avoid unexpected behaviour.
+- The git repo and repo files are in separarate directories. Any git commands must explicitly specify these folders.
+-- `--work-tree=/var/www/html/call-catalog-viewer` is used for the repo files
+-- `--git-dir=/var/www/repos/call-catalog-viewer` is used for git files
+
+cd /var/www/repo
+
+clone viewer
+GIT_SSH_COMMAND="ssh -i /data/deploy-keys/id_rsa_srkw_deploy_www-data \
+ -o UserKnownHostsFile=/data/deploy-keys/www-data_known_host" git --work-tree=/var/www/html/call-catalog-viewer --git-dir=/var/www/repos/call-catalog-viewer clone git@github.com:coastal-science/call-catalog-viewer.git
+
+Confirm with fetch
+GIT_SSH_COMMAND="ssh -i /data/deploy-keys/id_rsa_srkw_deploy_www-data \
+ -o UserKnownHostsFile=/data/deploy-keys/www-data_known_host" git --work-tree=/var/www/html/call-catalog-viewer --git-dir=/var/www/repos/call-catalog-viewer fetch --all -v
+
+clone data files
+GIT_SSH_COMMAND="ssh -i /data/deploy-keys/id_rsa_srkw_deploy_files \
+ -o UserKnownHostsFile=/data/deploy-keys/www-data_known_host" git --work-tree=/var/www/html/srkw-call-catalogue-files --git-dir=/var/www/repos/srkw-call-catalogue-files clone git@github.com:sfu-bigdata/srkw-call-catalogue-files.git
+
+Confirm with fetch
+ GIT_SSH_COMMAND="ssh -i /data/deploy-keys/id_rsa_srkw_deploy_files \
+ -o UserKnownHostsFile=/data/deploy-keys/www-data_known_host" git --work-tree=/var/www/html/viewer/srkw-call-catalogue-files --git-dir=/var/www/repos/srkw-call-catalogue-files fetch --all -v
+
+Connect
+cd /var/www/html/call-catalog-viewer
+ln -s ../srkw_call_catalogue_files srkw_call_catalogue_files
+
+update data into viewer
+cp srkw-call-catalogue-files/call-catalog.yaml resources_config/call-catalog.yaml 
+python3 code/read_files.py resources_config/call-catalog.yaml resources_config/call-catalog
+
+The final folder structure us expected to be:
+```
+/var/www/
+└───html
+│   │   catalog-viewer
+│   │   │   css
+│   │   │   index.html
+│   │   │   js
+│   │   │   ...
+│   │   └── srkw-call-catalogue-files -> ../srkw-call-catalogue-files
+│   │   srkw_call_catalogue_files
+│   │   │   ...
+│   │   │   media/
+│   │   └── call-catalog.yaml
+└───repos
+    │   catalog-viewer
+    │   │   config
+    │   └── HEAD...
+    └───srkw_call_catalogue_files
+        │   config
+        └── HEAD...
+```
