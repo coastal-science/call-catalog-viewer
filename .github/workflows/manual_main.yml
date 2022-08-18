@@ -32,7 +32,7 @@ jobs:
       # You may pin to the exact commit or the version.
       # uses: distributhor/workflow-webhook@3b1dfb659938cacd1f6eab6e2c79478b5b1ac06f
       uses: distributhor/workflow-webhook@v2.0.4
-      with:
+      env:
         # The HTTP URI of the webhook endpoint to invoke
         webhook_url: ${{ secrets.WEBHOOK_URL }}
         # The secret with which a signature hash is generated
