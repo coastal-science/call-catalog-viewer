@@ -19,7 +19,7 @@ var GridPanel = undefined;
     var lity_data = undefined;
     var audio_element = undefined;
     var selecting = undefined;
-    const media_folder_path = '';
+    const media_folder_path = ''; /* srkw-call-catalogue-files/media removed to get files locally */
     const play_icon = '<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-play" width="32" height="32" viewBox="0 0 24 24"><path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm-3 17v-10l9 5.146-9 4.854z"/></svg>';
     /*
         <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-play" viewBox="0 0 16 16">\
@@ -80,7 +80,7 @@ var GridPanel = undefined;
             <div class="bg-white rounded shadow-sm"><a href="'+media_folder_path+full+'" data-toggle="lightbox" class="image_pop_source text-decoration-none"">\
             <img src="'+media_folder_path+thumb+'" alt="" class="img-fluid card-img-top"></a>\
             <div class="p-4">\
-                <h5> <a class="play_btn" href="#">'+play_icon+'<span class="text-dark">'+callname+'</span></a></h5>\
+                <h5> <a class="play_btn" href="#" style="text-decoration:none">'+play_icon+'<span class="text-dark">&nbsp;'+callname+'</span></a></h5>\
                 <p class="small mb-0 meta-p"><span class="font-weight-bold">Pods: '+pod+'</span></p>\
                 <div class="meta-p d-flex align-items-center justify-content-between rounded-pill bg-light px-3 py-2 mt-4">\
                 <div class="badge badge-warning px-3 rounded-pill font-weight-normal"><span class="font-weight-bold  text-dark">Clan: '+clan+'</span></div>\
