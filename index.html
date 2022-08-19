@@ -21,95 +21,99 @@
     <script src="./js/SearchPanel.js"></script>
     <script src="./js/GridPanel.js"></script>
 
-        <style>
-            body {font-family: "Lato", sans-serif}
-            .mySlides {display: none}
-    
-            .hidden{
-                display: none!important;
-            }
-            
-            .itemblock > div{
-                height:100%;
-            }
-            .page-link:focus {
-                box-shadow: none !important;
-                background-color: #fff !important;
-            }
-            .page-item.active .page-link {
-                color: #fff !important;
-                background-color: #0d6efd !important;
-                border-color: #0d6efd !important;
-            }
-            .card-img-top{
-                aspect-ratio: 198/205;
-            }
-            .row{
-                padding-top: 3px;
-            }
-            .image_pop_source{
-                display: table-cell;
-            }
-            .lity-container{
-                overflow: auto;
-            }
+    </head>
+
+    <style>
+
+        body {font-family: "Lato", sans-serif}
+        .mySlides {display: none}
+        
+
+        .hidden{
+            display: none!important;
+        }
+        
+        .itemblock > div{
+            height:100%;
+        }
+        .page-link:focus {
+            box-shadow: none !important;
+            background-color: #fff !important;
+        }
+        .page-item.active .page-link {
+            color: #fff !important;
+            background-color: #0d6efd !important;
+            border-color: #0d6efd !important;
+        }
+        .card-img-top{
+            aspect-ratio: 198/205;
+        }
+        .row{
+            padding-top: 3px;
+        }
+        .image_pop_source{
+            display: table-cell;
+        }
+        .lity-container{
+            overflow: auto;
+        }
+        .lity-content{
+            max-height: 80vh;
+        }
+        .lity-content > img{
+            max-height: 80vh!important;
+            margin:auto;
+        }
+        .litybottom{
+            max-height: 20vh;
+            position: relative;
+            bottom: auto;
+        }
+        @media (min-height: 700px){
             .lity-content{
-                max-height: 80vh;
+                max-height: 70vh;
             }
-            .lity-content > img{
-                max-height: 80vh!important;
-                margin:auto;
+            .lity-content img{
+                max-height: 70vh!important;
             }
             .litybottom{
-                max-height: 20vh;
-                position: relative;
-                bottom: auto;
+                max-height: 30vh;
             }
-            @media (min-height: 700px){
-                .lity-content{
-                    max-height: 70vh;
-                }
-                .lity-content img{
-                    max-height: 70vh!important;
-                }
-                .litybottom{
-                    max-height: 30vh;
-                }
+        }
+        @media (max-width: 600px){
+            /*
+                Convert to linear
+            */
+            .lity-container{
+                position:absolute;
+                top: 0;
+                right: 0;
+                left: 0;
+                bottom: 0;
             }
-            @media (max-width: 600px){
-                /*
-                    Convert to linear
-                */
-                .lity-container{
-                    position:absolute;
-                    top: 0;
-                    right: 0;
-                    left: 0;
-                    bottom: 0;
-                }
-                .lity-content{
-                    max-height:unset;
-                }
-                .lity-content img{
-                    max-height:unset!important;
-                }
-                .litybottom{
-                    max-height: unset;
-                    height:auto;
-                }
-    
+            .lity-content{
+                max-height:unset;
             }
-            .lity {
-                overflow: auto;
+            .lity-content img{
+                max-height:unset!important;
             }
-            .selecting{
-                border: 0.5em solid;
-                border-color:#0d6efd;
+            .litybottom{
+                max-height: unset;
+                height:auto;
             }
-            .toast{
+
+        }
+        .lity {
+            overflow: auto;
+        }
+        .selecting{
+            border: 0.5em solid;
+            border-color:#0d6efd;
+        }
+        .toast{
             position: fixed;
-            bottom: 0;
-            right: 0;
+            top: 0;
+            left: 0;
             z-index: 9999;
         }
         kbd{
@@ -117,76 +121,48 @@
         }
     </style>
 
-</head>    
+
+
+
 
 
 <body>
-    
     <!-- Navbar -->
     <div class="w3-top">
-        <div class="w3-bar w3-black w3-card">
-          <a class="w3-bar-item w3-button w3-padding-large w3-hide-medium w3-hide-large w3-right" href="javascript:void(0)" onclick="myFunction()" title="Toggle Navigation Menu"><i class="fa fa-bars"></i></a>
-          <a href="home.html#" class="w3-bar-item w3-button w3-padding-large">HOME</a>
-          <a href="https://orca.research.sfu.ca/annotation" class="w3-bar-item w3-button w3-padding-large w3-hide-small">ANNOTATIONS</a>
-          <a href="index.html" class="w3-bar-item w3-button w3-padding-large w3-hide-small">CATALOGUE</a>
-          <a href="home.html#contact" class="w3-bar-item w3-button w3-padding-large w3-hide-small">CONTACT</a>
-          <div class="w3-dropdown-hover w3-hide-small">
-            <button class="w3-padding-large w3-button" title="More">MORE <i class="fa fa-caret-down"></i></button>     
+    <div class="w3-bar w3-black w3-card">
+      <a class="w3-bar-item w3-button w3-padding-large w3-hide-medium w3-hide-large w3-right" href="javascript:void(0)" onclick="myFunction()" title="Toggle Navigation Menu"><i class="fa fa-bars"></i></a>
+      <a href="home.html#" class="w3-bar-item w3-button w3-padding-large">HOME</a>
+       <a href="index.html" class="w3-bar-item w3-button w3-padding-large w3-hide-small">CATALOGUE</a>
+       <a href="license.html" class="w3-bar-item w3-button w3-padding-large w3-hide-small">LICENSE</a>
+     <!-- <div class="w3-dropdown-hover w3-hide-small">
         <button class="w3-padding-large w3-button" title="More">MORE <i class="fa fa-caret-down"></i></button>     
-            <button class="w3-padding-large w3-button" title="More">MORE <i class="fa fa-caret-down"></i></button>     
-            <div class="w3-dropdown-content w3-bar-block w3-card-4">
-              <a href="home.html#" class="w3-bar-item w3-button">Sub-page1</a>
-              <a href="home.html#" class="w3-bar-item w3-button">Sub-page2</a>
-              <a href="home.html#" class="w3-bar-item w3-button">Sub-page3</a>
-            </div>
-          </div>
-          <a href="javascript:void(0)" class="w3-padding-large w3-hover-red w3-hide-small w3-right"><i class="fa fa-search"></i></a>
+        <div class="w3-dropdown-content w3-bar-block w3-card-4">
+          <a href="home.html#" class="w3-bar-item w3-button">Sub-page1</a>
+          <a href="home.html#" class="w3-bar-item w3-button">Sub-page2</a>
+          <a href="home.html#" class="w3-bar-item w3-button">Sub-page3</a>
         </div>
       </div>
-      
-      <!-- Navbar on small screens (remove the onclick attribute if you want the navbar to always show on top of the content when clicking on the links) -->
-      <div id="navDemo" class="w3-bar-block w3-black w3-hide w3-hide-large w3-hide-medium w3-top" style="margin-top:46px">
-        <a href="home.html" class="w3-bar-item w3-button w3-padding-large" onclick="myFunction()">HOME</a>
-        <a href="https://orca.research.sfu.ca/annotation" class="w3-bar-item w3-button w3-padding-large" onclick="myFunction()">ANNOTATIONS</a>
-        <a href="index.html" class="w3-bar-item w3-button w3-padding-large" onclick="myFunction()">CATALOGUE</a>
-        <a href="home.html#contact" class="w3-bar-item w3-button w3-padding-large" onclick="myFunction()">CONTACT</a>
-        <a href="home.html#" class="w3-bar-item w3-button w3-padding-large" onclick="myFunction()">MORE</a>
-      </div>
-
-
-    
-    <button type="button" class="btn btn-primary" id="liveToastBtn">Show live toast</button> <!--button is hidden behind the nav bar -->
-      <!-- <div class="toast"> <!--needs an additional 'show' class -->
-      <div class="toast show" role="alert" aria-live="assertive" aria-atomic="true">
+      <a href="javascript:void(0)" class="w3-padding-large w3-hover-red w3-hide-small w3-right"><i class="fa fa-search"></i></a>
+    -->
+    </div>
+  </div>
+  
+  <!-- Navbar on small screens (remove the onclick attribute if you want the navbar to always show on top of the content when clicking on the links) -->
+  <div id="navDemo" class="w3-bar-block w3-black w3-hide w3-hide-large w3-hide-medium w3-top" style="margin-top:46px">
+    <a href="index.html" class="w3-bar-item w3-button w3-padding-large" onclick="myFunction()">CATALOGUE</a>
+    <a href="license.html" class="w3-bar-item w3-button w3-padding-large" onclick="myFunction()">LICENSE</a>
+   </div>
+    <!--<button type="button" class="btn btn-primary" id="liveToastBtn">Show live toast</button>
+      <div class="toast">
         <div class="toast-header">
             URL is newly opened. You are reading from last cache.<br/>
             Arrow Keys are not available. Close the current detail and choose another data from the list again.
-            <!-- To close the toast, a dismiss button is necessary.-->
-            <!-- <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"> -->
-                <!-- <span aria-hidden="true">&times;</span> -->
-              <!-- </button>           -->
         </div>
-      </div>
+      </div>-->
 
-      <div class="toast show" role="alert" aria-live="assertive" aria-atomic="true" style="left: 0">
-        <div class="toast-header">
-            This is a toast header that is dismissed with an corner 'x' button.
-            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close">
-                <!-- <span aria-hidden="true">&times;</span> -->
-              </button>          
-        </div>
-        <div class="toast-body">
-            Use of information from this website is subject to terms under <a href="https://open.canada.ca/en/open-government-licence-canada" target="_blank">Open Government License &ndash; Canada</a>
-            <div class="mt-2 pt-2 border-top">
-                <button type="button" class="btn btn-primary btn-sm">Agree</button>
-                <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="toast">Close</button>
-            </div>
-        </div>
-      </div>
-
-      
+    
     <div class="container" id="listing" style="margin-top:5%">
-        <div id="myModal" class="modal fade">
+        <!--<div id="myModal" class="modal fade">
             <div class="modal-dialog">
                 <div class="modal-content" style="border-radius:0">
                     <div class="modal-header">
@@ -205,9 +181,9 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div>-->
         
-        <h1 class="text-center text-capitalize font-weight-bold">SRKW Call Catalogue</h1>
+        <h1 class="text-center text-capitalize font-weight-bold" style="margin-top:5rem;">Explore Catalogue</h1>
     
         <div class="row">
             <div class="col-md-6 text-center">
@@ -312,7 +288,7 @@
                         </span>
                     </div>
                 </div>
-                <div class="row toast-header">
+                <!--<div class="row toast-header">
                     <div class="col-12 col-lg-4 align-items-center text-center">
                         <span class="toast-body col-12">
                             <kbd>&#8593;</kbd> <kbd>&#8595;</kbd> <kbd>&#8592;</kbd> <kbd>&#8594;</kbd> to navigate; 
@@ -328,18 +304,35 @@
                             <kbd>&blank;</kbd> to play sound track;TEST
                         </span>
                     </div>
-                </div>
+                </div>-->
             </div>
             <div class="px-lg-5">
                 <div id="gi-area" class="row">
-                    <!-- Gallery item -->
                     
+                    <!-- Gallery item -->
+                     
+               
                 </div>
+            
+            
+              
             </div>
+
+              
         </div>
 	</div>
 </body>
 <script>
+    // Used to toggle the menu on small screens when clicking on the menu button
+    function myFunction() {
+    var x = document.getElementById("navDemo");
+    if (x.className.indexOf("w3-show") == -1) {
+        x.className += " w3-show";
+    } else { 
+        x.className = x.className.replace(" w3-show", "");
+    }
+    }
+
     
     $(function(){
         SearchPanel.init();
@@ -347,9 +340,9 @@
     })
 
 
-	$(document).ready(function(){
-      	$("#myModal").modal('show');
-	});
+	//$(document).ready(function(){
+    //  	$("#myModal").modal('show');
+	//});
 </script>
 
 </html>
