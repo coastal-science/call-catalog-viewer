@@ -47,8 +47,8 @@ jobs:
           # end of optional handling for multi line json
           echo "::set-output name=packageJson::$content"
           echo "::endgroup::"
-    - run: |
-          echo "${{fromJson(steps.set_var.outputs.packageJson).version}}"
+    #- run: |
+    #      echo "${{fromJson(steps.set_var.outputs.packageJson).version}}"
       
     # From marketplace "Workflow Webhook Action"
     - name: Workflow Webhook Action
@@ -63,7 +63,7 @@ jobs:
         # Credentials to be used for BASIC authentication (optional)
         # webhook_auth: 
         # json | form-urlencoded | json-extended
-        webhook_type: json # optional
+        webhook_type: json-extended # optional
         # Optional, set to true to enable verbose output. Warning: this might lead to domain and IP leaking, as well as other security issues as the logs are public.
         verbose: true # optional
         # Optional, set to true to disable output and therefore IP leaking
