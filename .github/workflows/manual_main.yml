@@ -6,13 +6,18 @@ on:
   workflow_dispatch:
     # Inputs the workflow accepts.
     inputs:
-      name:
+      branchName:
         # Friendly description to be shown in the UI instead of 'name'
         description: 'Which branch do you want to deploy on the production server?'
         # Default value if no value is explicitly provided
-        default: 'World'
+        default: 'main'
         # Input has to be provided for the workflow to run
-        required: false    
+        required: false
+        type: choice
+        options:
+        - main
+        - develop
+
     
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -25,8 +30,25 @@ jobs:
     steps:
     # Runs a single command using the runners shell
     - name: Selected branch 
-      run: echo "Hello ${{ github.event.inputs.name }}"
+      run: echo "Deployong branch ${{ github.event.inputs.branchName }}"
 
+    - id: set_var
+      # Read event payload: https://stackoverflow.com/a/61919791
+      #/distributhor/workflow-webhook sends a handful of 'event' details in the payload
+      # the complete envent data is in $GITHUB_EVENT_PATH
+      # the GH Webhook is already configure to receive the complete event data
+      name: Event Payload
+      run: |
+          content=`cat $GITHUB_EVENT_PATH`
+          # the following lines are only required for multi line json
+          content="${content//'%'/'%25'}"
+          content="${content//$'\n'/'%0A'}"
+          content="${content//$'\r'/'%0D'}"
+          # end of optional handling for multi line json
+          echo "::set-output name=packageJson::$content"
+    - run: |
+          echo "${{fromJson(steps.set_var.outputs.packageJson).version}}"
+      
     # From marketplace "Workflow Webhook Action"
     - name: Workflow Webhook Action
       # You may pin to the exact commit or the version.
@@ -51,6 +73,6 @@ jobs:
         #verify_ssl: # optional, default is true
         # Optional additional data to include in the payload
         #data: # optional
-        #data: '{ "token": "${{ secrets.GITHUB_TOKEN }}" }'
-#    - name: token
-#      run: echo "hello ${{ secrets.GITHUB_TOKEN }} world"
+        #data: '{ "token": "${{ secrets.GITHUB_TOKEN }}" }'nnn
+    - name: token
+      run: echo "hello ${{ steps.set_var.outputs.packageJson }} world"
