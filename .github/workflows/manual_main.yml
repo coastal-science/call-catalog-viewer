@@ -18,7 +18,6 @@ on:
         - main
         - develop
 
-    
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "greet"
@@ -74,5 +73,10 @@ jobs:
         # Optional additional data to include in the payload
         #data: # optional
         #data: '{ "token": "${{ secrets.GITHUB_TOKEN }}" }'nnn
-    - name: token
-      run: echo "hello ${{ steps.set_var.outputs.packageJson }} world"
+    - name: token 
+      #group log lines
+      run: |
+        echo "::group::Expected Payload"
+        echo "hello ${{ secrets.GITHUB_TOKEN }} world"
+        echo "${{ steps.set_var.outputs.packageJson }}"
+        echo "::endgroup::"
