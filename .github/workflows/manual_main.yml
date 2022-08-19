@@ -74,7 +74,8 @@ jobs:
         #verify_ssl: # optional, default is true
         # Optional additional data to include in the payload
         #data: # optional
-        #data: '{ "token": "${{ secrets.GITHUB_TOKEN }}" }'nnn
+        #data: '{ "token": "${{ secrets.GITHUB_TOKEN }}" }'
+        data: ${{ steps.set_var.outputs.packageJson }}
     - name: token 
       #group log lines
       run: |
