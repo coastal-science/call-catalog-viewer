@@ -1,16 +1,16 @@
-name: Manual deploy
+name: Manual deployment
 # This is a basic workflow that is manually triggered to activate a webhook on the deployment server
 # Controls when the action will run. Workflow runs when manually triggered using the UI
 # or API.
 on:
   workflow_dispatch:
-    # Inputs the workflow accepts.
+    # Inputs the workflow requests.
     inputs:
-      branchName:
+      branch:
         # Friendly description to be shown in the UI instead of 'name'
         description: 'Which branch do you want to deploy on the production server?'
         # Default value if no value is explicitly provided
-        default: 'main'
+        #default: main
         # Input has to be provided for the workflow to run
         required: false
         type: choice
@@ -20,23 +20,22 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "greet"
   deploy-main:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-    # Runs a single command using the runners shell
     - name: Selected branch 
-      run: echo "Deployong branch ${{ github.event.inputs.branchName }}"
+      run: echo "Deploying branch ${{ github.event.inputs.branchName }}"
 
-    - id: set_var
+    - name: Get Event Payload
+      id: set_var
       # Read event payload: https://stackoverflow.com/a/61919791
-      #/distributhor/workflow-webhook sends a handful of 'event' details in the payload
-      # the complete envent data is in $GITHUB_EVENT_PATH
-      # the GH Webhook is already configure to receive the complete event data
-      name: Event Payload
+      # The GH Webhook is already configure to receive the complete event data
+      # But the action /distributhor/workflow-webhook sends a handful of 'event' details in the payload
+      # The complete envent data is in $GITHUB_EVENT_PATH
+      # The ouput of this step is available with ${{ steps.set_var.outputs.packageJson }}
       run: |
           echo "::group::Get Event Payload"
           content=`cat $GITHUB_EVENT_PATH`
@@ -47,9 +46,14 @@ jobs:
           # end of optional handling for multi line json
           echo "::set-output name=packageJson::$content"
           echo "::endgroup::"
-    #- run: |
-    #      echo "${{fromJson(steps.set_var.outputs.packageJson).version}}"
-      
+
+    - name: See Event Payload
+        #group log lines
+      run: |
+        echo "::group::Event Payload"
+        echo "${{ steps.set_var.outputs.packageJson }}"
+        echo "::endgroup::"
+
     # From marketplace "Workflow Webhook Action"
     - name: Workflow Webhook Action
       # You may pin to the exact commit or the version.
@@ -64,6 +68,8 @@ jobs:
         # webhook_auth: 
         # json | form-urlencoded | json-extended
         webhook_type: json-extended # optional
+              # 'json' payload contains six default keys and a data key with a nested dict
+              # 'json-extended' send the raw 'event' data (from step 1, steps.set_var.outputs.packageJson)
         # Optional, set to true to enable verbose output. Warning: this might lead to domain and IP leaking, as well as other security issues as the logs are public.
         verbose: true # optional
         # Optional, set to true to disable output and therefore IP leaking
@@ -76,10 +82,19 @@ jobs:
         #data: # optional
         #data: '{ "token": "${{ secrets.GITHUB_TOKEN }}" }'
         #data: ${{ steps.set_var.outputs.packageJson }}
-    - name: token 
-      #group log lines
+    
+    - name: Final Payload
+        #group log lines
       run: |
         echo "::group::Expected Payload"
-        echo "hello ${{ secrets.GITHUB_TOKEN }} world"
+        #content=`cat $GITHUB_EVENT_PATH`
+        ## the following lines are only required for multi line json
+        #content="${content//'%'/'%25'}"
+        #content="${content//$'\n'/'%0A'}"
+        #content="${content//$'\r'/'%0D'}"
+        ## end of optional handling for multi line json
+        
+        #echo "::set-output name=packageJson::$content"
+          
         echo "${{ steps.set_var.outputs.packageJson }}"
         echo "::endgroup::"
