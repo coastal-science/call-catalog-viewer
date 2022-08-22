@@ -60,7 +60,7 @@ jobs:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
     needs: input_sha # dependent jobs
-    if: "always()&&(needs.input_sha.outputs.ref != null)" 
+    #if: "always()&&(needs.input_sha.outputs.ref != null)" 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
     - name: Selected branch 
@@ -125,6 +125,7 @@ jobs:
       # add keys:value at root level and update JSON file in place
       # https://stackoverflow.com/a/64482683
       run: |
+        jq --version
         #echo "${{ steps.set_var.outputs.packageJson }}"
         #echo "${{ needs.input_sha.outputs.ref }}"
         jq '.ref="${{ needs.input_sha.outputs.ref }}"' $GITHUB_EVENT_PATH > $GITHUB_EVENT_PATH
