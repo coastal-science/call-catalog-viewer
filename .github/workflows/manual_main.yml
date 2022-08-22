@@ -130,7 +130,7 @@ jobs:
       run: |
         echo "${{ steps.set_var.outputs.packageJson }}"
         echo "${{ needs.input_sha.outputs.ref }}"
-        echo "`jq '.ref="${{ needs.input_sha.outputs.ref }}"' $GITHUB_EVENT_PATH`" > $GITHUB_EVENT_PATH
+        jq '.ref="${{ needs.input_sha.outputs.ref }}"' $GITHUB_EVENT_PATH > $GITHUB_EVENT_PATH
         
     - name: Final Payload
         #group log lines
