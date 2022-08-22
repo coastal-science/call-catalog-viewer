@@ -130,7 +130,7 @@ jobs:
       run: |
         echo "${{ steps.set_var.outputs.packageJson }}"
         echo "${{ needs.input_sha.outputs.ref }}"
-        awk --version
+        jq --version
         
     - name: Final Payload
         #group log lines
