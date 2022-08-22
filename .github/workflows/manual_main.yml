@@ -21,7 +21,7 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  input-branch-sha:
+  input_sha:
     name: Get SHA of selected branch
     runs-on: ubuntu-latest
     #if: $GITHUB_REF != ${{ github.event.inputs.branch }}
@@ -125,7 +125,7 @@ jobs:
       # add keys:value at root level and update a JSON file in place
       run: |
         echo ${{ steps.set_var.outputs.packageJson }}
-        echo ${{ needs.input-branch-sha.outputs.ref }}
+        echo ${{ needs.input_sha.outputs.ref }}
         
     - name: Final Payload
         #group log lines
