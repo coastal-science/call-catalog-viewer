@@ -134,7 +134,15 @@ jobs:
         jq '.ref="${{ needs.input_sha.outputs.ref }}"' $GITHUB_EVENT_PATH > $GITHUB_EVENT_PATH
         jq '.before="${{ needs.input_sha.outputs.before }}"' $GITHUB_EVENT_PATH > $GITHUB_EVENT_PATH
         jq '.after="${{ needs.input_sha.outputs.after }}"' $GITHUB_EVENT_PATH > $GITHUB_EVENT_PATH
-
+        echo "::group::Expected Payload"
+        content=`cat $GITHUB_EVENT_PATH`
+        ## the following lines are only required for multi line json
+        content="${content//'%'/'%25'}"
+        content="${content//$'\n'/'%0A'}"
+        content="${content//$'\r'/'%0D'}"
+        ## end of optional handling for multi line json
+        echo $content
+        
     - name: Final Payload
         #group log lines
       run: |
