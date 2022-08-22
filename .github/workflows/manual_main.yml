@@ -56,7 +56,7 @@ jobs:
           echo "::set-output name=before::$before"
           echo "::set-output name=after::$after"
       - run: |
-          echo "${{ steps.commits.outputs.ref }}", "${{ steps.commits.outputs.before }}", "${{ steps.commits.outputs.after }}"
+          echo "${{ steps.commits.outputs.ref }}, ${{ steps.commits.outputs.before }}, ${{ steps.commits.outputs.after }}"
   
   deploy-main:
     # The type of runner that the job will run on
