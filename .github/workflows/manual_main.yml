@@ -132,8 +132,8 @@ jobs:
         echo "${{ needs.input_sha.outputs.ref }}"
         echo "${{ needs.input_sha.outputs.before }}"
         echo "${{ needs.input_sha.outputs.after }}"
-        jq '.ref="${{ needs.input_sha.outputs.ref }}"' $GITHUB_EVENT_PATH > $GITHUB_EVENT_PATH
-        jq '.before="${{ needs.input_sha.outputs.before }}"' $GITHUB_EVENT_PATH > $GITHUB_EVENT_PATH
+        echo `jq '.ref="${{ needs.input_sha.outputs.ref }}"' $GITHUB_EVENT_PATH` > $GITHUB_EVENT_PATH
+        echo `jq '.before="${{ needs.input_sha.outputs.before }}"' $GITHUB_EVENT_PATH` > $GITHUB_EVENT_PATH
         jq '.after="${{ needs.input_sha.outputs.after }}"' $GITHUB_EVENT_PATH > $GITHUB_EVENT_PATH
         echo "::endgroup::"
 
@@ -144,7 +144,7 @@ jobs:
         content="${content//$'\r'/'%0D'}"
         ## end of optional handling for multi line json
         
-        echo "::group::Current Payload"
+        echo "::group::New Payload"
         echo $content
         echo "::endgroup::"
 
