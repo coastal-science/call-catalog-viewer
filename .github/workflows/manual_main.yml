@@ -120,12 +120,12 @@ jobs:
         #data: '{ "token": "${{ secrets.GITHUB_TOKEN }}" }'
         #data: ${{ steps.set_var.outputs.packageJson }}
     
-    #- name: Append commit data
+    - name: Append commit data
       # Append commit data for GH Webhook compatibility
       # add keys:value at root level and update a JSON file in place
-      #run: |
-        #echo ${{ steps.set_var.outputs.packageJson }}
-        #echo ${{ needs.input_sha.outputs.ref }}
+      run: |
+        echo "${{ steps.set_var.outputs.packageJson }}"
+        echo "${{ needs.input_sha.outputs.ref }}"
         
     - name: Final Payload
         #group log lines
