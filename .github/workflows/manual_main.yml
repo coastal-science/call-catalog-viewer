@@ -52,10 +52,9 @@ jobs:
           echo $GITHUB_REF $GITHUB_SHA
           echo ${{ github.event.inputs.branch }}
           #echo "::set-output name=GITHUB_SHA::$BRANCH_SHA"
-          echo "::set-output name=AFTER::$after"
-          echo "::set-output name=BEFORE::$before"
-          echo "::set-output name=REF::$ref"
-
+          echo "::set-output name=ref::$ref"
+          echo "::set-output name=before::$before"
+          echo "::set-output name=after::$after"
   
   deploy-main:
     # The type of runner that the job will run on
