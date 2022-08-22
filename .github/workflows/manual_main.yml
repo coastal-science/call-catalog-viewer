@@ -127,7 +127,9 @@ jobs:
       run: |
         jq --version
         #echo "${{ steps.set_var.outputs.packageJson }}"
-        #echo "${{ needs.input_sha.outputs.ref }}"
+        echo "${{ needs.input_sha.outputs.ref }}"
+        echo "${{ needs.input_sha.outputs.before }}"
+        echo "${{ needs.input_sha.outputs.after }}"
         jq '.ref="${{ needs.input_sha.outputs.ref }}"' $GITHUB_EVENT_PATH > $GITHUB_EVENT_PATH
         jq '.before="${{ needs.input_sha.outputs.before }}"' $GITHUB_EVENT_PATH > $GITHUB_EVENT_PATH
         jq '.after="${{ needs.input_sha.outputs.after }}"' $GITHUB_EVENT_PATH > $GITHUB_EVENT_PATH
