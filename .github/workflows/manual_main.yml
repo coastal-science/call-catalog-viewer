@@ -134,7 +134,7 @@ jobs:
         echo "${{ needs.input_sha.outputs.after }}"
         echo `jq '.ref="${{ needs.input_sha.outputs.ref }}"' $GITHUB_EVENT_PATH` > $GITHUB_EVENT_PATH
         echo `jq '.before="${{ needs.input_sha.outputs.before }}"' $GITHUB_EVENT_PATH` > $GITHUB_EVENT_PATH
-        jq '.after="${{ needs.input_sha.outputs.after }}"' $GITHUB_EVENT_PATH > $GITHUB_EVENT_PATH
+        #jq '.after="${{ needs.input_sha.outputs.after }}"' $GITHUB_EVENT_PATH > $GITHUB_EVENT_PATH
         echo "::endgroup::"
 
         content=`cat $GITHUB_EVENT_PATH`
@@ -145,7 +145,9 @@ jobs:
         ## end of optional handling for multi line json
         
         echo "::group::New Payload"
-        echo $content
+        echo "::set-output name=packageJson::$content"
+        echo "${{ steps.set_var.outputs.packageJson }}"
+
         echo "::endgroup::"
 
     - name: Final Payload
