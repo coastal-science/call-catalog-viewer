@@ -30,6 +30,7 @@ jobs:
       - uses: actions/checkout@v3
         with:
           ref: ${{ github.event.inputs.branch }}
+          fetch-depth: 2
       - run: |
           git checkout ${{ github.event.inputs.branch }}
           BRANCH_SHA=`git log -1 '--format=format:%H'`
@@ -42,7 +43,7 @@ jobs:
           echo $head
           echo $after
           echo $before
-          echo $GITHUB_REF
+          echo $GITHUB_REF $GITHUB_SHA
           echo ${{ github.event.inputs.branch }}
           #echo "::set-output name=GITHUB_SHA::$BRANCH_SHA"
       - run: |
