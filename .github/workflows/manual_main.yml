@@ -44,7 +44,7 @@ jobs:
           #echo "::set-output name=GITHUB_REF::${{ github.event.inputs.branch }}"
 
           after=`git show-ref --heads "${{ github.event.inputs.branch }}" | cut -d" " -f1`
-          head=`git show-ref --heads "${{ github.event.inputs.branch }}" | cut -d" " -f2`
+          ref=`git show-ref --heads "${{ github.event.inputs.branch }}" | cut -d" " -f2`
           before=`git log --pretty=%P -n 1 "${{ github.event.inputs.branch }}"`
           echo $head
           echo $after
@@ -130,6 +130,7 @@ jobs:
       run: |
         echo "${{ steps.set_var.outputs.packageJson }}"
         echo "${{ needs.input_sha.outputs.ref }}"
+        awk --version
         
     - name: Final Payload
         #group log lines
