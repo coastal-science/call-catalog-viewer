@@ -119,8 +119,8 @@ jobs:
       # add keys:value at root level and update a JSON file in place
       run: |
         echo ${{ steps.set_var.outputs.packageJson }}
+        echo ${{ needs.input-branch-sha.outputs.ref }}
         awk --version
-        jq --version
         echo "`jq '.ref="${{ needs.input-branch-sha.outputs.ref }}"' $GITHUB_EVENT_PATH`" > $GITHUB_EVENT_PATH
 
     - name: Final Payload
