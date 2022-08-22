@@ -8,7 +8,7 @@ on:
     inputs:
       branch:
         # Friendly description to be shown in the UI instead of 'name'
-        description: 'Deploy to server branch:'
+        description: 'Deploy branch:'
         # Default value if no value is explicitly provided
         #default: main
         # Input has to be provided for the workflow to run
@@ -129,8 +129,8 @@ jobs:
         #echo "${{ steps.set_var.outputs.packageJson }}"
         #echo "${{ needs.input_sha.outputs.ref }}"
         jq '.ref="${{ needs.input_sha.outputs.ref }}"' $GITHUB_EVENT_PATH > $GITHUB_EVENT_PATH
-        jq '.ref="${{ needs.input_sha.outputs.before }}"' $GITHUB_EVENT_PATH > $GITHUB_EVENT_PATH
-        jq '.ref="${{ needs.input_sha.outputs.after }}"' $GITHUB_EVENT_PATH > $GITHUB_EVENT_PATH
+        jq '.before="${{ needs.input_sha.outputs.before }}"' $GITHUB_EVENT_PATH > $GITHUB_EVENT_PATH
+        jq '.after="${{ needs.input_sha.outputs.after }}"' $GITHUB_EVENT_PATH > $GITHUB_EVENT_PATH
 
     - name: Final Payload
         #group log lines
