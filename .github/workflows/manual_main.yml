@@ -43,9 +43,9 @@ jobs:
           echo "::set-output name=BRANCH_SHA::$BRANCH_SHA"
           #echo "::set-output name=GITHUB_REF::${{ github.event.inputs.branch }}"
 
-          after=`git show-ref --heads ${{ github.event.inputs.branch }} | cut -d" " -f1`
-          head=`git show-ref --heads ${{ github.event.inputs.branch }} | cut -d" " -f2`
-          before=`git log --pretty=%P -n 1 ${{ github.event.inputs.branch }}`
+          after=`git show-ref --heads "${{ github.event.inputs.branch }}" | cut -d" " -f1`
+          head=`git show-ref --heads "${{ github.event.inputs.branch }}" | cut -d" " -f2`
+          before=`git log --pretty=%P -n 1 "${{ github.event.inputs.branch }}"`
           echo $head
           echo $after
           echo $before
