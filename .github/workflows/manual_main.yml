@@ -25,9 +25,15 @@ jobs:
     name: Get SHA of selected branch
     runs-on: ubuntu-latest
     #if: $GITHUB_REF != ${{ github.event.inputs.branch }}
+    outputs:
+      ref: ${{ steps.commits.outputs.ref }}
+      before: ${{ steps.commits.outputs.before }}
+      after: ${{ steps.commits.outputs.after }}
     steps:
       # Checkout and get SHA
-      - uses: actions/checkout@v3
+      - id: commits
+        # Get latest branch details
+        uses: actions/checkout@v3
         with:
           ref: ${{ github.event.inputs.branch }}
           fetch-depth: 2
@@ -49,6 +55,7 @@ jobs:
           echo "::set-output name=AFTER::$after"
           echo "::set-output name=BEFORE::$before"
           echo "::set-output name=REF::$ref"
+
   
   deploy-main:
     # The type of runner that the job will run on
