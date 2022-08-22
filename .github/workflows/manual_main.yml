@@ -31,13 +31,13 @@ jobs:
       after: ${{ steps.commits.outputs.after }}
     steps:
       # Checkout and get SHA
-      - id: commits
-        # Get latest branch details
+      - # Get latest branch details
         uses: actions/checkout@v3
         with:
           ref: ${{ github.event.inputs.branch }}
           fetch-depth: 2
-      - run: |
+      - id: commits
+        run: |
           git checkout ${{ github.event.inputs.branch }}
           BRANCH_SHA=`git log -1 '--format=format:%H'`
           echo "::set-output name=BRANCH_SHA::$BRANCH_SHA"
@@ -56,7 +56,9 @@ jobs:
           echo "::set-output name=before::$before"
           echo "::set-output name=after::$after"
       - run: |
-          echo "${{ steps.commits.outputs.ref }}, ${{ steps.commits.outputs.before }}, ${{ steps.commits.outputs.after }}"
+          echo "${{ steps.commits.outputs.ref }}"
+          echo "${{ steps.commits.outputs.before }}"
+          echo "${{ steps.commits.outputs.after }}"
   
   deploy-main:
     # The type of runner that the job will run on
