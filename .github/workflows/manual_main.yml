@@ -120,7 +120,8 @@ jobs:
         #echo "add_keys=$add_keys" >> $GITHUB_ENV
         
         #Files downloaded to $HOME are persisted between actions in the same job (https://stackoverflow.com/a/70082514)
-        cp $GITHUB_EVENT_PATH Custom_Event_Path.json
+        cp $GITHUB_EVENT_PATH $HOME/Custom_Event_Path.json
+        ln -s $GITHUB_EVENT_PATH $HOME/Custom_Event_Path.json
         
         echo $GITHUB_EVENT_PATH
         echo `cat $GITHUB_EVENT_PATH`
