@@ -92,6 +92,7 @@ jobs:
         echo "::group::Event Payload"
         echo "${{ steps.set_var.outputs.packageJson }}"
         echo $GITHUB_ENV
+        echo $GITHUB_EVENT_PATH
         cat $GITHUB_ENV
         echo "::endgroup::"
         
