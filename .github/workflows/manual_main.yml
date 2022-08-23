@@ -24,7 +24,7 @@ jobs:
   input_sha:
     name: Get SHA of selected branch
     runs-on: ubuntu-latest
-    if: $GITHUB_REF != ${{ github.event.inputs.branch }}
+    #if: $GITHUB_REF != ${{ github.event.inputs.branch }}
     outputs:
       ref: ${{ steps.commits.outputs.ref }}
       before: ${{ steps.commits.outputs.before }}
@@ -97,7 +97,7 @@ jobs:
         cat $GITHUB_ENV
         echo "::endgroup::"
         
-    - name: Append commit data
+    - name: Append commit data]
       id: append_var
       # Append commit data for GH Webhook compatibility
       # add keys:value at root level and update JSON file in place
@@ -145,6 +145,7 @@ jobs:
     - name: Deploy by triggering server webhook
       # You may pin to the exact commit or the version.
       # uses: distributhor/workflow-webhook@3b1dfb659938cacd1f6eab6e2c79478b5b1ac06f
+      if: ${{ success() }}
       uses: distributhor/workflow-webhook@v2.0.4
       env:
         # The HTTP URI of the webhook endpoint to invoke
@@ -168,7 +169,7 @@ jobs:
         # Optional additional data to include in the payload
         #data: # optional
         #data: '{ "token": "${{ secrets.GITHUB_TOKEN }}" }'
-        data: '{ "before": "${{ needs.input_sha.outputs.before }}" }'
+        data: '{ "ref": "${{ needs.input_sha.outputs.ref }}", "before": "${{ needs.input_sha.outputs.before }}", "after": "${{ needs.input_sha.outputs.after }}" }'
         #data: ${{ steps.set_var.outputs.packageJson }}
         #GITHUB_EVENT_PATH: Custom_Event_Path.json If you attempt to override the value of one of these default environment variables, the assignment is ignored
         #add_keys: ${{ env.add_keys }}
