@@ -116,7 +116,6 @@ jobs:
         
         add_keys=" `jq '. + { \"ref\": \"${{ needs.input_sha.outputs.ref }}\" } + { \"before\": \"${{ needs.input_sha.outputs.before }}\" } + { \"after\": \"${{ needs.input_sha.outputs.after }}\" }' $GITHUB_EVENT_PATH > tmp.$$.json && mv tmp.$$.json $GITHUB_EVENT_PATH` "
         $add_keys
-        echo "::set-env name=add_keys::$add_keys"
         echo "add_keys=$add_keys" >> $GITHUB_ENV
         
         echo $GITHUB_EVENT_PATH
