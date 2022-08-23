@@ -174,7 +174,7 @@ jobs:
     - name: Final Payload
         #group log lines
       env:
-        GITHUB_EVENT_PATH: Custom_Event_Path.json
+        GITHUB_EVENT_PATH_TRIGGER: " `cp Custom_Event_Path.json $GITHUB_EVENT_PATH`"
       run: |
         echo "::group::Expected Payload"
         echo $GITHUB_EVENT_PATH
