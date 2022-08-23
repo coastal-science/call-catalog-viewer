@@ -117,6 +117,7 @@ jobs:
         add_keys=" `jq '. + { \"ref\": \"${{ needs.input_sha.outputs.ref }}\" } + { \"before\": \"${{ needs.input_sha.outputs.before }}\" } + { \"after\": \"${{ needs.input_sha.outputs.after }}\" }' $GITHUB_EVENT_PATH > tmp.$$.json && mv tmp.$$.json $GITHUB_EVENT_PATH` "
         $add_keys
         echo "add_keys=$add_keys" >> $GITHUB_ENV
+        cp $GITHUB_EVENT_PATH Custom_Event_Path.json
         
         echo $GITHUB_EVENT_PATH
         echo `cat $GITHUB_EVENT_PATH`
@@ -164,11 +165,13 @@ jobs:
         #data: # optional
         #data: '{ "token": "${{ secrets.GITHUB_TOKEN }}" }'
         #data: ${{ steps.set_var.outputs.packageJson }}
-        #GITHUB_EVENT_PATH: "${{ steps.append_var.outputs.packageJson }}"
-        add_keys: ${{ env.add_keys }}
+        GITHUB_EVENT_PATH: Custom_Event_Path.json
+        #add_keys: ${{ env.add_keys }}
     
     - name: Final Payload
         #group log lines
+      env:
+        GITHUB_EVENT_PATH: Custom_Event_Path.json
       run: |
         echo "::group::Expected Payload"
         content=`cat $GITHUB_EVENT_PATH`
