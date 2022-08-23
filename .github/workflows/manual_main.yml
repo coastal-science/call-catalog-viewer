@@ -121,7 +121,7 @@ jobs:
         
         #Files downloaded to $HOME are persisted between actions in the same job (https://stackoverflow.com/a/70082514)
         cp $GITHUB_EVENT_PATH $HOME/Custom_Event_Path.json
-        ln -sf $GITHUB_EVENT_PATH $HOME/Custom_Event_Path.json
+        ln -sf $HOME/Custom_Event_Path.json $GITHUB_EVENT_PATH
         
         echo $GITHUB_EVENT_PATH
         echo `cat $GITHUB_EVENT_PATH`
