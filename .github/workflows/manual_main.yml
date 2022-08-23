@@ -179,7 +179,7 @@ jobs:
       run: |
         echo "::group::Expected Payload"
         echo $GITHUB_EVENT_PATH
-        $GITHUB_EVENT_PATH_TRIGGER
+        #$GITHUB_EVENT_PATH_TRIGGER
         content=`cat $GITHUB_EVENT_PATH`
         ## the following lines are only required for multi line json
         content="${content//'%'/'%25'}"
