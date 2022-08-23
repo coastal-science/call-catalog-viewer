@@ -114,7 +114,7 @@ jobs:
         #echo `jq '. + { "after": "${{ needs.input_sha.outputs.after }}" }' $GITHUB_EVENT_PATH` > tmp.$$.json && mv tmp.$$.json $GITHUB_EVENT_PATH
         #echo `jq '.' $GITHUB_EVENT_PATH --indent 6` > $GITHUB_EVENT_PATH
         
-        add_keys=add_keys=`jq '. + { "ref": "${{ needs.input_sha.outputs.ref }}" } + { "before": "${{ needs.input_sha.outputs.before }}" } + { "after": "${{ needs.input_sha.outputs.after }}" }' $GITHUB_EVENT_PATH > tmp.$$.json && mv tmp.$$.json $GITHUB_EVENT_PATH`
+        add_keys=`jq '. + { "ref": "${{ needs.input_sha.outputs.ref }}" } + { "before": "${{ needs.input_sha.outputs.before }}" } + { "after": "${{ needs.input_sha.outputs.after }}" }' $GITHUB_EVENT_PATH > tmp.$$.json && mv tmp.$$.json $GITHUB_EVENT_PATH`
         $add_keys
         echo "::set-env name=add_keys::$add_keys"
         
