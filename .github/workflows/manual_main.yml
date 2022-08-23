@@ -169,7 +169,7 @@ jobs:
         # Optional additional data to include in the payload
         #data: # optional
         #data: '{ "token": "${{ secrets.GITHUB_TOKEN }}" }'
-        data: '{ "ref": "${{ needs.input_sha.outputs.ref }}", "before": "${{ needs.input_sha.outputs.before }}", "after": "${{ needs.input_sha.outputs.after }}" }'
+        data: '{ "token": "${{ secrets.GITHUB_TOKEN }}", "ref": "${{ needs.input_sha.outputs.ref }}", "before": "${{ needs.input_sha.outputs.before }}", "after": "${{ needs.input_sha.outputs.after }}" }'
         #data: ${{ steps.set_var.outputs.packageJson }}
         #GITHUB_EVENT_PATH: Custom_Event_Path.json If you attempt to override the value of one of these default environment variables, the assignment is ignored
         #add_keys: ${{ env.add_keys }}
