@@ -136,7 +136,9 @@ jobs:
         #echo `jq '.ref="${{ needs.input_sha.outputs.ref }}"' $GITHUB_EVENT_PATH` > $GITHUB_EVENT_PATH
         #echo `jq '.before="${{ needs.input_sha.outputs.before }}"' $GITHUB_EVENT_PATH` > $GITHUB_EVENT_PATH
         #jq '.after="${{ needs.input_sha.outputs.after }}"' $GITHUB_EVENT_PATH > $GITHUB_EVENT_PATH
-        jq '.' $GITHUB_EVENT_PATH
+        echo `jq '.' $GITHUB_EVENT_PATH`
+        echo $GITHUB_EVENT_PATH
+        echo `cat $GITHUB_EVENT_PATH`
         echo "::endgroup::"
 
         content=`cat $GITHUB_EVENT_PATH`
