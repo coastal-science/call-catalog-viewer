@@ -122,6 +122,7 @@ jobs:
         #data: ${{ steps.set_var.outputs.packageJson }}
     
     - name: Append commit data
+      id: append_var
       # Append commit data for GH Webhook compatibility
       # add keys:value at root level and update JSON file in place
       # https://stackoverflow.com/a/64482683
@@ -133,6 +134,8 @@ jobs:
         echo "${{ needs.input_sha.outputs.before }}"
         echo "${{ needs.input_sha.outputs.after }}"
         echo `jq '. + { "ref": "${{ needs.input_sha.outputs.ref }}" }' $GITHUB_EVENT_PATH` > tmp.$$.json && mv tmp.$$.json $GITHUB_EVENT_PATH
+        echo `jq '. + { "before": "${{ needs.input_sha.outputs.before }}" }' $GITHUB_EVENT_PATH` > tmp.$$.json && mv tmp.$$.json $GITHUB_EVENT_PATH
+        echo `jq '. + { "after": "${{ needs.input_sha.outputs.after }}" }' $GITHUB_EVENT_PATH` > tmp.$$.json && mv tmp.$$.json $GITHUB_EVENT_PATH
         #echo `jq '.ref="${{ needs.input_sha.outputs.ref }}"' $GITHUB_EVENT_PATH` > $GITHUB_EVENT_PATH
         #echo `jq '.before="${{ needs.input_sha.outputs.before }}"' $GITHUB_EVENT_PATH` > $GITHUB_EVENT_PATH
         #jq '.after="${{ needs.input_sha.outputs.after }}"' $GITHUB_EVENT_PATH > $GITHUB_EVENT_PATH
@@ -150,7 +153,7 @@ jobs:
         
         echo "::group::New Payload"
         echo "::set-output name=packageJson::$content"
-        echo "${{ steps.set_var.outputs.packageJson }}"
+        echo "${{ steps.append_var.outputs.packageJson }}"
 
         echo "::endgroup::"
 
@@ -167,5 +170,5 @@ jobs:
         
         #echo "::set-output name=packageJson::$content"
           
-        echo "${{ steps.set_var.outputs.packageJson }}"
+        echo "${{ steps.append_var.outputs.packageJson }}"
         echo "::endgroup::"
