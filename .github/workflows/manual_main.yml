@@ -120,8 +120,8 @@ jobs:
         #echo "add_keys=$add_keys" >> $GITHUB_ENV
         
         #Files downloaded to $HOME are persisted between actions in the same job (https://stackoverflow.com/a/70082514)
-        cp $GITHUB_EVENT_PATH $HOME/Custom_Event_Path.json
-        ln -sf $HOME/Custom_Event_Path.json $GITHUB_EVENT_PATH
+        #cp $GITHUB_EVENT_PATH $HOME/Custom_Event_Path.json
+        #ln -sf $HOME/Custom_Event_Path.json $GITHUB_EVENT_PATH
         
         echo $GITHUB_EVENT_PATH
         echo `cat $GITHUB_EVENT_PATH`
@@ -168,6 +168,7 @@ jobs:
         # Optional additional data to include in the payload
         #data: # optional
         #data: '{ "token": "${{ secrets.GITHUB_TOKEN }}" }'
+        data: '{ "before": "${{ needs.input_sha.outputs.before }}" }'
         #data: ${{ steps.set_var.outputs.packageJson }}
         #GITHUB_EVENT_PATH: Custom_Event_Path.json If you attempt to override the value of one of these default environment variables, the assignment is ignored
         #add_keys: ${{ env.add_keys }}
