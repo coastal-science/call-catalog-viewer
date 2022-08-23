@@ -91,6 +91,7 @@ jobs:
       run: |
         echo "::group::Event Payload"
         echo "${{ steps.set_var.outputs.packageJson }}"
+        echo $GITHUB_ENV
         echo "::endgroup::"
         
     - name: Append commit data
