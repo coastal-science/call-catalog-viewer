@@ -157,6 +157,7 @@ jobs:
         #data: # optional
         #data: '{ "token": "${{ secrets.GITHUB_TOKEN }}" }'
         #data: ${{ steps.set_var.outputs.packageJson }}
+        GITHUB_EVENT_PATH: "${{ steps.append_var.outputs.packageJson }}"
     
     - name: Final Payload
         #group log lines
