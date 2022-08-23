@@ -77,6 +77,7 @@ jobs:
       # The ouput of this step is available with ${{ steps.set_var.outputs.packageJson }}
       run: |
           echo "::group::Get Event Payload"
+          echo `cat $GITHUB_EVENT_PATH`
           content=`cat $GITHUB_EVENT_PATH`
           # the following lines are only required for multi line json
           content="${content//'%'/'%25'}"
@@ -114,8 +115,8 @@ jobs:
         #echo `jq '. + { "after": "${{ needs.input_sha.outputs.after }}" }' $GITHUB_EVENT_PATH` > tmp.$$.json && mv tmp.$$.json $GITHUB_EVENT_PATH
         #echo `jq '.' $GITHUB_EVENT_PATH --indent 6` > $GITHUB_EVENT_PATH
         
-        #add_keys=" `jq '. + { \"ref\": \"${{ needs.input_sha.outputs.ref }}\" } + { \"before\": \"${{ needs.input_sha.outputs.before }}\" } + { \"after\": \"${{ needs.input_sha.outputs.after }}\" }' $GITHUB_EVENT_PATH > tmp.$$.json && mv tmp.$$.json $GITHUB_EVENT_PATH` "
-        #$add_keys
+        add_keys=" `jq -c '. + { \"ref\": \"${{ needs.input_sha.outputs.ref }}\" } + { \"before\": \"${{ needs.input_sha.outputs.before }}\" } + { \"after\": \"${{ needs.input_sha.outputs.after }}\" }' $GITHUB_EVENT_PATH > tmp.$$.json && mv tmp.$$.json $GITHUB_EVENT_PATH` "
+        $add_keys
         #echo "add_keys=$add_keys" >> $GITHUB_ENV
         
         #Files downloaded to $HOME are persisted between actions in the same job (https://stackoverflow.com/a/70082514)
@@ -176,6 +177,7 @@ jobs:
         GITHUB_EVENT_PATH: Custom_Event_Path.json
       run: |
         echo "::group::Expected Payload"
+        echo $GITHUB_EVENT_PATH
         content=`cat $GITHUB_EVENT_PATH`
         ## the following lines are only required for multi line json
         content="${content//'%'/'%25'}"
