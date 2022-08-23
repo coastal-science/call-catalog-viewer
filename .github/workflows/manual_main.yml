@@ -115,6 +115,8 @@ jobs:
         echo `cat $GITHUB_EVENT_PATH`
         echo "::endgroup::"
 
+        echo "::group::New Payload"
+        
         content=`cat $GITHUB_EVENT_PATH`
         ## the following lines are only required for multi line json
         content="${content//'%'/'%25'}"
@@ -122,7 +124,6 @@ jobs:
         content="${content//$'\r'/'%0D'}"
         ## end of optional handling for multi line json
         
-        echo "::group::New Payload"
         echo "::set-output name=packageJson::$content"
         echo "${{ steps.append_var.outputs.packageJson }}"
 
