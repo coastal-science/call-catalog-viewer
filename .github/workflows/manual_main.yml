@@ -133,13 +133,11 @@ jobs:
         echo "${{ needs.input_sha.outputs.ref }}"
         echo "${{ needs.input_sha.outputs.before }}"
         echo "${{ needs.input_sha.outputs.after }}"
+        
         echo `jq '. + { "ref": "${{ needs.input_sha.outputs.ref }}" }' $GITHUB_EVENT_PATH` > tmp.$$.json && mv tmp.$$.json $GITHUB_EVENT_PATH
         echo `jq '. + { "before": "${{ needs.input_sha.outputs.before }}" }' $GITHUB_EVENT_PATH` > tmp.$$.json && mv tmp.$$.json $GITHUB_EVENT_PATH
         echo `jq '. + { "after": "${{ needs.input_sha.outputs.after }}" }' $GITHUB_EVENT_PATH` > tmp.$$.json && mv tmp.$$.json $GITHUB_EVENT_PATH
-        #echo `jq '.ref="${{ needs.input_sha.outputs.ref }}"' $GITHUB_EVENT_PATH` > $GITHUB_EVENT_PATH
-        #echo `jq '.before="${{ needs.input_sha.outputs.before }}"' $GITHUB_EVENT_PATH` > $GITHUB_EVENT_PATH
-        #jq '.after="${{ needs.input_sha.outputs.after }}"' $GITHUB_EVENT_PATH > $GITHUB_EVENT_PATH
-        echo `jq '.' $GITHUB_EVENT_PATH`
+        
         echo $GITHUB_EVENT_PATH
         echo `cat $GITHUB_EVENT_PATH`
         echo "::endgroup::"
