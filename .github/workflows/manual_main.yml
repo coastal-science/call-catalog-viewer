@@ -57,6 +57,7 @@ jobs:
           echo "::set-output name=after::$after"
   
   deploy:
+    name: Deploy to server
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
     # dependent jobs
@@ -91,36 +92,7 @@ jobs:
         echo "::group::Event Payload"
         echo "${{ steps.set_var.outputs.packageJson }}"
         echo "::endgroup::"
-
-    # From marketplace "Workflow Webhook Action"
-    - name: Workflow Webhook Action
-      # You may pin to the exact commit or the version.
-      # uses: distributhor/workflow-webhook@3b1dfb659938cacd1f6eab6e2c79478b5b1ac06f
-      uses: distributhor/workflow-webhook@v2.0.4
-      env:
-        # The HTTP URI of the webhook endpoint to invoke
-        webhook_url: ${{ secrets.WEBHOOK_URL }}
-        # The secret with which a signature hash is generated
-        webhook_secret: ${{ secrets.WEBHOOK_SECRET }}
-        # Credentials to be used for BASIC authentication (optional)
-        # webhook_auth: 
-        # json | form-urlencoded | json-extended
-        webhook_type: json-extended # optional
-              # 'json' payload contains six default keys and a data key with a nested dict
-              # 'json-extended' send the raw 'event' data (from step 1, steps.set_var.outputs.packageJson)
-        # Optional, set to true to enable verbose output. Warning: this might lead to domain and IP leaking, as well as other security issues as the logs are public.
-        verbose: true # optional
-        # Optional, set to true to disable output and therefore IP leaking
-        silent: false # optional
-        # Optional, set a maximum time, in seconds, by which to establish a connection to the server
-        #timeout: # optional
-        # Optional, set to false to disable verification of SSL certificates
-        #verify_ssl: # optional, default is true
-        # Optional additional data to include in the payload
-        #data: # optional
-        #data: '{ "token": "${{ secrets.GITHUB_TOKEN }}" }'
-        #data: ${{ steps.set_var.outputs.packageJson }}
-    
+        
     - name: Append commit data
       id: append_var
       # Append commit data for GH Webhook compatibility
@@ -156,6 +128,35 @@ jobs:
 
         echo "::endgroup::"
 
+    # From marketplace "Workflow Webhook Action"
+    - name: Deploy by triggering server webhook
+      # You may pin to the exact commit or the version.
+      # uses: distributhor/workflow-webhook@3b1dfb659938cacd1f6eab6e2c79478b5b1ac06f
+      uses: distributhor/workflow-webhook@v2.0.4
+      env:
+        # The HTTP URI of the webhook endpoint to invoke
+        webhook_url: ${{ secrets.WEBHOOK_URL }}
+        # The secret with which a signature hash is generated
+        webhook_secret: ${{ secrets.WEBHOOK_SECRET }}
+        # Credentials to be used for BASIC authentication (optional)
+        # webhook_auth: 
+        # json | form-urlencoded | json-extended
+        webhook_type: json-extended # optional
+              # 'json' payload contains six default keys and a data key with a nested dict
+              # 'json-extended' send the raw 'event' data (from step 1, steps.set_var.outputs.packageJson)
+        # Optional, set to true to enable verbose output. Warning: this might lead to domain and IP leaking, as well as other security issues as the logs are public.
+        verbose: true # optional
+        # Optional, set to true to disable output and therefore IP leaking
+        silent: false # optional
+        # Optional, set a maximum time, in seconds, by which to establish a connection to the server
+        #timeout: # optional
+        # Optional, set to false to disable verification of SSL certificates
+        #verify_ssl: # optional, default is true
+        # Optional additional data to include in the payload
+        #data: # optional
+        #data: '{ "token": "${{ secrets.GITHUB_TOKEN }}" }'
+        #data: ${{ steps.set_var.outputs.packageJson }}
+    
     - name: Final Payload
         #group log lines
       run: |
