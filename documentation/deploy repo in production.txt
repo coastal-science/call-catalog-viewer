@@ -1,0 +1,63 @@
+# How to deploy repos in a production server
+
+Access the production server with `ssh orca`. Both `viewer` (coastalscience) and `data` catalog (sfu-bigdata) repos need deploy keys uploaded into github.
+
+- [Production] means `/var/www/` directory
+- [Local] means the home directory of the `bdh` user, `~` or `/home/bdh`
+
+1. [Local] Create a space that keep metadata for git repos. These folders and contents must be accesible by the webserver (user name: `www-data`). The subfolders (`viewer` and `data`) will be automatically created by the `clone` commands below. The `orca` folder must be created by the dev. The final structure of the folder will be.
+```
+orca
+│   viewer
+└───data
+```
+
+Folders in `~` are owned by bdh and www-data has read/write access. Folders in `/var/www/html` are owned by www-data and have read/write access (except `.htpasswd`).
+```bash
+cd 
+mkdir orca
+chgrp www-data orca
+chmod g+s orca
+setfacl -Rdm g:www-data:rwx orca
+```
+
+2. [Production] Clone the viewer repo into `/var/www/html/viewer`. The corresponding headless git repo is in `~/bdh/orca/viewer`.
+```bash
+cd /var/www/
+sudo -u www-data GIT_SSH_COMMAND="ssh -i /data/deploy-keys/id_rsa_srkw_deploy_www-data \
+-o UserKnownHostsFile=/data/deploy-keys/www-data_known_host" \
+git clone --separate-git-dir=/home/bdh/orca/viewer git@github.com:coastal-science/srkw-call-catalogue.git html/viewer
+```
+
+> When used in headless manner, the repo files are placed here (`.`) and  `/var/www/html/viewer` contains a file `.git` file containing a reference to the git metadata directory in `gitdir: /home/bdh/orca/viewer`, which must be accessible by user `www-data`.
+
+3. [Production] Clone the data catalog repo into `…/html/viewer/srkw-call-catalogue-files`. The corresponding headless git repo is `~/bdh/orca/viewer`.
+```bash
+cd html/viewer
+sudo -u www-data GIT_SSH_COMMAND="ssh -i /data/deploy-keys/id_rsa_srkw_deploy_www-data \
+-o UserKnownHostsFile=/data/deploy-keys/www-data_known_host" \
+git clone --separate-git-dir=/home/bdh/orca/data git@github.com:sfu-bigdata/srkw-call-catalogue-files.git
+```
+
+4. [TODO: untested]: [Production] `python3 ${viewer}/code/read_files.py ${viewer}/resources_config/call-catalog.yaml ${viewer}/resources_config/call-catalog`
+
+- where `${viewer}` is `/var/www/html/viewer/`
+- `read_files.py` depends on `srkw-call-catalogue-files/*.yaml` (_step 3_)]
+
+
+5. Change nginx root directive location with `sudo vim /etc/nginx/nginx.conf`. If changes are not reflected (orca.research.sfu.ca) reload nginx with `sudo service nginx reload`.
+
+
+## Alternate/Manual procedure [untested]
+
+Instead of cloning, the more manual procedure is:
+
+1. [Local] To create a bare (`git init --bare`) repo in `~/orca/viewer`.
+2. [Local] Add remotes `git remote add production git@github.com:coastal-science/srkw-call-catalogue.git` 
+3. [Production] Fetch branches
+```bash
+sudo -u www-data GIT_SSH_COMMAND="ssh -i /data/deploy-keys/id_rsa_srkw_deploy_www-data \
+-o UserKnownHostsFile=/data/deploy-keys/www-data_known_host" \
+git fetch --all 
+```
+4. [Production] `git branch ...`, `git pull ...`, etc
