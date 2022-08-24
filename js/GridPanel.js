@@ -598,6 +598,17 @@ var GridPanel = undefined;
             }
             $('.lity-container').append('<div class="container-fluid litybottom"><div class="row">'+play_btn+'</div>'+ additional_row+'</div>');
             
+            file = 'resources_config/sample.md'
+            css_file = 'css/darkdown.css'
+            $('.lity-container').append(
+                `<div class="container-fluid litybottom"> 
+                    <zero-md src='${file}'> 
+                        <template> 
+                            <link href='${css_file}' rel="stylesheet"> </link>  
+                        </template> 
+                    </zero-md>
+                </div>`);
+            
             pop_opening = true;
         });
         $(document).on('click', '.lity-container #play', function(){
