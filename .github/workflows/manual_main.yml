@@ -24,7 +24,7 @@ jobs:
   input_sha:
     name: Get SHA of selected branch
     runs-on: ubuntu-latest
-    #if: $GITHUB_REF != ${{ github.event.inputs.branch }}
+    if: $GITHUB_REF != ${{ github.event.inputs.branch }}
     outputs:
       ref: ${{ steps.commits.outputs.ref }}
       before: ${{ steps.commits.outputs.before }}
