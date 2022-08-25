@@ -39,6 +39,8 @@ jobs:
       - id: commits
         run: |
           git checkout ${{ github.event.inputs.branch }}
+          echo ${GITHUB_REF}
+          echo ${GITHUB_REF#refs/heads/}
           BRANCH_SHA=`git log -1 '--format=format:%H'`
           echo "::set-output name=BRANCH_SHA::$BRANCH_SHA"
           #echo "::set-output name=GITHUB_REF::${{ github.event.inputs.branch }}"
