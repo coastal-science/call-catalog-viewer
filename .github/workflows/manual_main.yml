@@ -24,7 +24,7 @@ jobs:
   input_sha:
     name: Get SHA of selected branch
     runs-on: ubuntu-latest
-    if: ${GITHUB_REF#refs/heads/} != ${{ github.event.inputs.branch }}
+    #if: ${GITHUB_REF#refs/heads/} != ${{ github.event.inputs.branch }}
     outputs:
       ref: ${{ steps.commits.outputs.ref }}
       before: ${{ steps.commits.outputs.before }}
@@ -39,19 +39,18 @@ jobs:
       - id: commits
         run: |
           git checkout ${{ github.event.inputs.branch }}
-          echo ${GITHUB_REF}
-          echo ${GITHUB_REF#refs/heads/}
+          echo ${GITHUB_REF#refs/heads/} $GITHUB_REF $GITHUB_SHA
           BRANCH_SHA=`git log -1 '--format=format:%H'`
           echo "::set-output name=BRANCH_SHA::$BRANCH_SHA"
           #echo "::set-output name=GITHUB_REF::${{ github.event.inputs.branch }}"
-
+          
           after=`git show-ref --heads "${{ github.event.inputs.branch }}" | cut -d" " -f1`
           ref=`git show-ref --heads "${{ github.event.inputs.branch }}" | cut -d" " -f2`
           before=`git log --pretty=%P -n 1 "${{ github.event.inputs.branch }}"`
           echo $head
           echo $after
           echo $before
-          echo $GITHUB_REF $GITHUB_SHA
+          
           echo ${{ github.event.inputs.branch }}
           
           echo "::set-output name=ref::$ref"
@@ -64,7 +63,7 @@ jobs:
     runs-on: ubuntu-latest
     # dependent jobs
     needs: input_sha 
-    #if: "always()&&(needs.input_sha.outputs.ref != null)" 
+    if: "always()&&(needs.input_sha.outputs.ref != null)" 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
     - name: Selected branch 
