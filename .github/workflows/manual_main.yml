@@ -40,9 +40,6 @@ jobs:
         run: |
           git checkout ${{ github.event.inputs.branch }}
           echo ${GITHUB_REF#refs/heads/} $GITHUB_REF $GITHUB_SHA
-          BRANCH_SHA=`git log -1 '--format=format:%H'`
-          echo "::set-output name=BRANCH_SHA::$BRANCH_SHA"
-          #echo "::set-output name=GITHUB_REF::${{ github.event.inputs.branch }}"
           
           after=`git show-ref --heads "${{ github.event.inputs.branch }}" | cut -d" " -f1`
           ref=`git show-ref --heads "${{ github.event.inputs.branch }}" | cut -d" " -f2`
@@ -72,7 +69,8 @@ jobs:
     - name: Get Event Payload
       id: set_var
       # Read event payload: https://stackoverflow.com/a/61919791
-      # The GH Webhook is already configure to receive the complete event data
+      # The GH Webhook is already configure to receive the complete event data,
+      # use json-extended (as below)
       # But the action /distributhor/workflow-webhook sends a handful of 'event' details in the payload
       # The complete envent data is in $GITHUB_EVENT_PATH
       # The ouput of this step is available with ${{ steps.set_var.outputs.packageJson }}
@@ -98,7 +96,7 @@ jobs:
         cat $GITHUB_ENV
         echo "::endgroup::"
         
-    - name: Append commit data]
+    - name: Append commit data
       id: append_var
       # Append commit data for GH Webhook compatibility
       # add keys:value at root level and update JSON file in place
