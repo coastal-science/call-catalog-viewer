@@ -1,1 +1,194 @@
-name: Manual deploy
+name: Manual deployment
+# This is a basic workflow that is manually triggered to activate a webhook on the deployment server
+# Controls when the action will run. Workflow runs when manually triggered using the UI
+# or API.
+on:
+  workflow_dispatch:
+    # Inputs the workflow requests.
+    inputs:
+      branch:
+        # Friendly description to be shown in the UI instead of 'name'
+        description: 'Deploy branch:'
+        # Default value if no value is explicitly provided
+        #default: main
+        # Input has to be provided for the workflow to run
+        required: false
+        type: choice
+        options:
+        - main
+        - develop
+        - front-end
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  input_sha:
+    name: Get SHA of selected branch
+    runs-on: ubuntu-latest
+    #if: ${GITHUB_REF#refs/heads/} != ${{ github.event.inputs.branch }}
+    outputs:
+      ref: ${{ steps.commits.outputs.ref }}
+      before: ${{ steps.commits.outputs.before }}
+      after: ${{ steps.commits.outputs.after }}
+    steps:
+      # Checkout and get SHA
+      - # Get latest branch details
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.inputs.branch }}
+          fetch-depth: 2
+      - id: commits
+        run: |
+          git checkout ${{ github.event.inputs.branch }}
+          echo ${GITHUB_REF#refs/heads/} $GITHUB_REF $GITHUB_SHA
+          
+          after=`git show-ref --heads "${{ github.event.inputs.branch }}" | cut -d" " -f1`
+          ref=`git show-ref --heads "${{ github.event.inputs.branch }}" | cut -d" " -f2`
+          before=`git log --pretty=%P -n 1 "${{ github.event.inputs.branch }}"`
+          echo $head
+          echo $after
+          echo $before
+          
+          echo ${{ github.event.inputs.branch }}
+          
+          echo "::set-output name=ref::$ref"
+          echo "::set-output name=before::$before"
+          echo "::set-output name=after::$after"
+  
+  deploy:
+    name: Deploy to server
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    # dependent jobs
+    needs: input_sha 
+    if: "always()&&(needs.input_sha.outputs.ref != null)" 
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+    - name: Selected branch 
+      run: echo "Deploying branch ${{ github.event.inputs.branch }}"
+
+    - name: Get Event Payload
+      id: set_var
+      # Read event payload: https://stackoverflow.com/a/61919791
+      # The GH Webhook is already configure to receive the complete event data,
+      # use json-extended (as below)
+      # But the action /distributhor/workflow-webhook sends a handful of 'event' details in the payload
+      # The complete envent data is in $GITHUB_EVENT_PATH
+      # The ouput of this step is available with ${{ steps.set_var.outputs.packageJson }}
+      run: |
+          echo "::group::Get Event Payload"
+          echo `cat $GITHUB_EVENT_PATH`
+          content=`cat $GITHUB_EVENT_PATH`
+          # the following lines are only required for multi line json
+          content="${content//'%'/'%25'}"
+          content="${content//$'\n'/'%0A'}"
+          content="${content//$'\r'/'%0D'}"
+          # end of optional handling for multi line json
+          echo "::set-output name=packageJson::$content"
+          echo "::endgroup::"
+
+    - name: See Event Payload
+        #group log lines
+      run: |
+        echo "::group::Event Payload"
+        echo "${{ steps.set_var.outputs.packageJson }}"
+        echo $GITHUB_ENV
+        echo $GITHUB_EVENT_PATH
+        cat $GITHUB_ENV
+        echo "::endgroup::"
+        
+    - name: Append commit data
+      id: append_var
+      # Append commit data for GH Webhook compatibility
+      # add keys:value at root level and update JSON file in place
+      # https://stackoverflow.com/a/64482683
+      run: |
+        jq --version
+        echo "::group::Current Payload"
+        echo "${{ steps.set_var.outputs.packageJson }}"
+        echo "${{ needs.input_sha.outputs.ref }}"
+        echo "${{ needs.input_sha.outputs.before }}"
+        echo "${{ needs.input_sha.outputs.after }}"
+        
+        #echo `jq '. + { "ref": "${{ needs.input_sha.outputs.ref }}" }' $GITHUB_EVENT_PATH` > tmp.$$.json && mv tmp.$$.json $GITHUB_EVENT_PATH
+        #echo `jq '. + { "before": "${{ needs.input_sha.outputs.before }}" }' $GITHUB_EVENT_PATH` > tmp.$$.json && mv tmp.$$.json $GITHUB_EVENT_PATH
+        #echo `jq '. + { "after": "${{ needs.input_sha.outputs.after }}" }' $GITHUB_EVENT_PATH` > tmp.$$.json && mv tmp.$$.json $GITHUB_EVENT_PATH
+        #echo `jq '.' $GITHUB_EVENT_PATH --indent 6` > $GITHUB_EVENT_PATH
+        
+        add_keys=" `jq -c '. + { \"ref\": \"${{ needs.input_sha.outputs.ref }}\" } + { \"before\": \"${{ needs.input_sha.outputs.before }}\" } + { \"after\": \"${{ needs.input_sha.outputs.after }}\" }' $GITHUB_EVENT_PATH > tmp.$$.json && mv tmp.$$.json $GITHUB_EVENT_PATH` "
+        $add_keys
+        #echo "add_keys=$add_keys" >> $GITHUB_ENV
+        
+        #Files downloaded to $HOME are persisted between actions in the same job (https://stackoverflow.com/a/70082514)
+        #cp $GITHUB_EVENT_PATH $HOME/Custom_Event_Path.json
+        #ln -sf $HOME/Custom_Event_Path.json $GITHUB_EVENT_PATH
+        
+        echo $GITHUB_EVENT_PATH
+        echo `cat $GITHUB_EVENT_PATH`
+        echo "::endgroup::"
+
+        echo "::group::New Payload"
+        
+        content=`cat $GITHUB_EVENT_PATH`
+        ## the following lines are only required for multi line json
+        content="${content//'%'/'%25'}"
+        content="${content//$'\n'/'%0A'}"
+        content="${content//$'\r'/'%0D'}"
+        ## end of optional handling for multi line json
+        
+        echo "::set-output name=packageJson::$content"
+        echo "${{ steps.append_var.outputs.packageJson }}"
+
+        echo "::endgroup::"
+
+    # From marketplace "Workflow Webhook Action"
+    - name: Deploy by triggering server webhook
+      # You may pin to the exact commit or the version.
+      # uses: distributhor/workflow-webhook@3b1dfb659938cacd1f6eab6e2c79478b5b1ac06f
+      if: ${{ success() }}
+      uses: distributhor/workflow-webhook@v2.0.4
+      env:
+        # The HTTP URI of the webhook endpoint to invoke
+        webhook_url: ${{ secrets.DISPATCH_URL }}
+        # The secret with which a signature hash is generated
+        webhook_secret: ${{ secrets.WEBHOOK_SECRET }}
+        # Credentials to be used for BASIC authentication (optional)
+        # webhook_auth: 
+        # json | form-urlencoded | json-extended
+        webhook_type: json-extended # optional
+              # 'json' payload contains six default keys and a data key with a nested dict
+              # 'json-extended' sends the raw 'event' data (from step 1, steps.set_var.outputs.packageJson)
+        # Optional, set to true to enable verbose output. Warning: this might lead to domain and IP leaking, as well as other security issues as the logs are public.
+        verbose: true # optional
+        # Optional, set to true to disable output and therefore IP leaking
+        silent: false # optional
+        # Optional, set a maximum time, in seconds, by which to establish a connection to the server
+        #timeout: # optional
+        # Optional, set to false to disable verification of SSL certificates
+        #verify_ssl: # optional, default is true
+        # Optional additional data to include in the payload
+        #data: # optional
+        #data: '{ "token": "${{ secrets.GITHUB_TOKEN }}" }'
+        data: '{ "token": "${{ secrets.GITHUB_TOKEN }}", "ref": "${{ needs.input_sha.outputs.ref }}", "before": "${{ needs.input_sha.outputs.before }}", "after": "${{ needs.input_sha.outputs.after }}" }'
+        #data: ${{ steps.set_var.outputs.packageJson }}
+        #GITHUB_EVENT_PATH: Custom_Event_Path.json If you attempt to override the value of one of these default environment variables, the assignment is ignored
+        #add_keys: ${{ env.add_keys }}
+    
+    - name: Final Payload
+        #group log lines
+      env:
+        GITHUB_EVENT_PATH_TRIGGER: " `cp Custom_Event_Path.json $GITHUB_EVENT_PATH`"
+      run: |
+        echo "::group::Expected Payload"
+        echo $GITHUB_EVENT_PATH
+        #$GITHUB_EVENT_PATH_TRIGGER
+        content=`cat $GITHUB_EVENT_PATH`
+        ## the following lines are only required for multi line json
+        content="${content//'%'/'%25'}"
+        content="${content//$'\n'/'%0A'}"
+        content="${content//$'\r'/'%0D'}"
+        ## end of optional handling for multi line json
+        echo $content
+        #echo "::set-output name=packageJson::$content"
+          
+        #echo "${{ steps.append_var.outputs.packageJson }}"
+        echo "::endgroup::"
