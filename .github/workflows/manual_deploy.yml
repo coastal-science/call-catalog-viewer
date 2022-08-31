@@ -3,6 +3,14 @@ name: Manual deployment
 # Controls when the action will run. Workflow runs when manually triggered using the UI
 # or API.
 on:
+  workflow_call: # allows reusing the workflow
+    inputs:
+      branch:
+        required: true
+        type: string
+    secrets:
+      token:
+        required: false
   workflow_dispatch:
     # Inputs the workflow requests.
     inputs:
@@ -24,7 +32,7 @@ jobs:
   input_sha:
     name: Get SHA of selected branch
     runs-on: ubuntu-latest
-    #if: ${GITHUB_REF#refs/heads/} != ${{ github.event.inputs.branch }}
+    #if: ${GITHUB_REF#refs/heads/} != ${{ inputs.branch }}
     outputs:
       ref: ${{ steps.commits.outputs.ref }}
       before: ${{ steps.commits.outputs.before }}
@@ -34,21 +42,21 @@ jobs:
       - # Get latest branch details
         uses: actions/checkout@v3
         with:
-          ref: ${{ github.event.inputs.branch }}
-          fetch-depth: 2
+          ref: ${{ inputs.branch }}
+          fetch-depth: 1
       - id: commits
         run: |
-          git checkout ${{ github.event.inputs.branch }}
-          echo ${GITHUB_REF#refs/heads/} $GITHUB_REF $GITHUB_SHA
+          git checkout ${{ inputs.branch }}
+          echo "${{inputs.branch}}" ${GITHUB_REF#refs/heads/} $GITHUB_REF $GITHUB_SHA
           
-          after=`git show-ref --heads "${{ github.event.inputs.branch }}" | cut -d" " -f1`
-          ref=`git show-ref --heads "${{ github.event.inputs.branch }}" | cut -d" " -f2`
-          before=`git log --pretty=%P -n 1 "${{ github.event.inputs.branch }}"`
-          echo $head
+          after=`git show-ref --heads "${{ inputs.branch }}" | cut -d" " -f1`
+          ref=`git show-ref --heads "${{ inputs.branch }}" | cut -d" " -f2`
+          before=`git log --pretty=%P -n 1 "${{ inputs.branch }}"`
+          echo $ref
           echo $after
           echo $before
           
-          echo ${{ github.event.inputs.branch }}
+          
           
           echo "::set-output name=ref::$ref"
           echo "::set-output name=before::$before"
@@ -64,7 +72,7 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
     - name: Selected branch 
-      run: echo "Deploying branch ${{ github.event.inputs.branch }}"
+      run: echo "Deploying branch ${{ inputs.branch }}"
 
     - name: Get Event Payload
       id: set_var
@@ -167,20 +175,16 @@ jobs:
         #verify_ssl: # optional, default is true
         # Optional additional data to include in the payload
         #data: # optional
-        #data: '{ "token": "${{ secrets.GITHUB_TOKEN }}" }'
         data: '{ "token": "${{ secrets.GITHUB_TOKEN }}", "ref": "${{ needs.input_sha.outputs.ref }}", "before": "${{ needs.input_sha.outputs.before }}", "after": "${{ needs.input_sha.outputs.after }}" }'
         #data: ${{ steps.set_var.outputs.packageJson }}
         #GITHUB_EVENT_PATH: Custom_Event_Path.json If you attempt to override the value of one of these default environment variables, the assignment is ignored
-        #add_keys: ${{ env.add_keys }}
     
     - name: Final Payload
         #group log lines
-      env:
-        GITHUB_EVENT_PATH_TRIGGER: " `cp Custom_Event_Path.json $GITHUB_EVENT_PATH`"
       run: |
         echo "::group::Expected Payload"
         echo $GITHUB_EVENT_PATH
-        #$GITHUB_EVENT_PATH_TRIGGER
+        
         content=`cat $GITHUB_EVENT_PATH`
         ## the following lines are only required for multi line json
         content="${content//'%'/'%25'}"
