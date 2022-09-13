@@ -78,7 +78,7 @@ var GridPanel = undefined;
         }
         return '<div class="col-xxl-2 col-xl-2 col-lg-3 col-md-3 col-sm-4 mb-4 itemblock" id="gi-'+id+'">\
             <div class="bg-white rounded shadow-sm"><a href="'+media_folder_path+full+'" data-toggle="lightbox" class="image_pop_source text-decoration-none"">\
-            <img src="'+media_folder_path+thumb+'" alt="" class="img-fluid card-img-top"></a>\
+            <img src="'+media_folder_path+thumb+'" loading="lazy" alt="" class="img-fluid card-img-top"></a>\
             <div class="p-4">\
                 <h5> <a class="play_btn" href="#" style="text-decoration:none">'+play_icon+'<span class="text-dark">&nbsp;'+callname+'</span></a></h5>\
                 <p class="small mb-0 meta-p"><span class="font-weight-bold">Pods: '+pod+'</span></p>\
