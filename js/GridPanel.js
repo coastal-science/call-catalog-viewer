@@ -513,18 +513,41 @@ var GridPanel = undefined;
             $('#gi-area .meta-p').addClass('hidden');
         }
     }
+    async function digestMessage(message) {
+        const msgUint8 = new TextEncoder().encode(message);                           // encode as (utf-8) Uint8Array
+        const hashBuffer = await window.crypto.subtle.digest('SHA-256', msgUint8);           // hash the message
+        const hashArray = Array.from(new Uint8Array(hashBuffer));                     // convert buffer to byte array
+        const hashHex = hashArray.map((b) => b.toString(16).padStart(2, '0')).join(''); // convert bytes to hex string
+        return hashHex;
+    }
 
     /**
      * Turn data fields into the HTML and append them to the gridView
      */
-    function append_items() {
+    async function append_items(){
         var i = next_drawn;
         var grid = $('#gi-area').empty();
-        for (; i < currentDisplayData.length; i++) {
-            var ele = currentDisplayData[i];
-            do {
-                var tmpid = window.crypto.getRandomValues(new Uint32Array(1))[0].toString(16) + window.crypto.getRandomValues(new Uint32Array(1))[0].toString(16);
-            } while (id_to_seq[tmpid] !== undefined);
+        for (; i < resultData.length; i++){
+            var ele = resultData[i];
+            do{
+                var tmpid = window.crypto.getRandomValues(new Uint32Array(1))[0].toString(16)+window.crypto.getRandomValues(new Uint32Array(1))[0].toString(16);
+                message = [ele.cn, ele.sample].join('-')
+                msgUint8 = new TextEncoder().encode(message);                           // encode as (utf-8) Uint8Array
+
+                // var tmpid = await window.crypto.createHash('sha1').update( message ).digest('hex');
+                var hashBuffer = await window.crypto.subtle.digest('SHA-1', msgUint8 )
+                // var tmpid = digestMessage( message );
+                // digestMessage( message ).then((digestHex) => console.log(digestHex));
+                // digestHex = digestMessage( message );
+                // digestHex = digestMessage( message )
+                // msgUint8 = new TextEncoder().encode(message);                           // encode as (utf-8) Uint8Array
+                hashArray = Array.from(new Uint8Array(hashBuffer));                     // convert buffer to byte array
+                b64=btoa(unescape(encodeURIComponent(hashBuffer)))
+                hashHex = hashArray.map((b) => b.toString(16).padStart(2, '0')).join(''); // convert bytes to hex string
+                console.log(i, msgUint8.toString(), hashArray.length, hashHex, message, b64);
+                
+                var tmpid = hashHex
+            }while (id_to_seq[tmpid] !== undefined);
             id_to_seq[tmpid] = i;
             var obj = pack_option(tmpid, LIBRARY + '/' + ele.image_file, ele.call_type, ele['d1'], ele[ele.d1], ele.d2, ele[ele.d2], LIBRARY + '/' + ele.image_file);
             grid.append(obj);
@@ -537,11 +560,11 @@ var GridPanel = undefined;
             next_drawn = i;
         }
     };
-    function redraw_items() {
+    async function redraw_items(){
         id_to_seq = {};
         next_drawn = 0;
         poped = false;
-        append_items();
+        await append_items();
     };
     panel.redraw_items = redraw_items;
     function bindEvents() {
