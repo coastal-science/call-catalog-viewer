@@ -647,7 +647,8 @@ var GridPanel = undefined;
             }
             $('.lity-container').append('<div class="container-fluid litybottom"><div class="row">'+play_btn+'</div>'+ additional_row+'</div>');
             
-            file = 'resources_config/sample.md'
+            // file = 'resources_config/sample.md'
+            file = media_folder_path + lity_data['description-file']
             css_file = 'css/darkdown.css'
             $('.lity-container').append(
                 `<div class="container-fluid litybottom"> 
