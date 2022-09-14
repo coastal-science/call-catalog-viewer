@@ -111,7 +111,13 @@ def read_yaml(yaml_file):
         # scalar values to Python the dictionary format
         resource_list = yaml.safe_load(file)
         #print(resource_list)
-        df = pd.DataFrame.from_dict(resource_list['calls'])
+
+        id_fields = resource_list['id'] # ['call-type', 'sample']
+        data_field = list(resource_list.keys())
+        data_field.remove('id')
+        data_field = data_field[0] # 'calls'
+
+        df = pd.DataFrame.from_dict(resource_list['calls']) # data_field
         #pre-processing and convert to original JSON format
         df['call-type'] = df['call-type']       #assuming call-type now becomes S01 instead of BCS01
         df['pod_cat'] =  df['pod'].str.findall(r'[J|K|L]')
@@ -119,11 +125,35 @@ def read_yaml(yaml_file):
         df['filename'] =  [x.split("/")[-1] for x in df['filename']]
         df['thumb'] = df['image-file']
         df['sample'] = df['sample'].apply(lambda x: None if np.isnan(x) else str(int(x)))
-        
+
+        # Easily identify columns named as `id_fields` by rennaming/prepend 'id-'
+        new_id_columns = dict(zip(id_fields, ['id-' + x for x in id_fields])) 
+        df = df.rename(columns=new_id_columns) # 'call-type' -> 'id-call-type', 'sample' -> 'id-sample' 
+
         #check image-file and wav-file
         from os.path import exists
         df['image_exists'] = df['image-file'].apply(lambda x: exists(x))
         df['wav_exists'] = df['wav-file'].apply(lambda x: exists(x))
+        df['description_exists'] = df['description-file'].apply(lambda x: exists(x))
+
+        files = [ x for x in df.columns.str if x.lower().endswith('file') ]
+        for file in files:
+            type_of_file = file[:-4] # "image-file" -> "image"
+            df[type_of_file+"_exists"] = df[file].apply(lambda x: exists(x))
+            # df['image_exists'] = df['image-file'].apply(lambda x: exists(x))
+
+        files_exists = [ x for x in df.columns.str if x.lower().endswith('_exists') ]
+
+        for file in files_exists:
+            type_of_file = file[:-7] # "image_exists" -> "image"
+
+            #output if there is case of file not found in image
+            if False in df[file].unique():
+                # output all files not found
+                # selecting rows based on condition
+                no_file_type_df = df[df[file] == False]
+                print(f"The following {type_of_file} files are not found:\n", no_file_type_df[['call-type', 'clan', 'population',f'{file}']])
+
         #print(df)
         #output if there is case of file not found in image
         if False in df['image_exists'].unique():
@@ -141,9 +171,12 @@ def read_yaml(yaml_file):
     
         #drop 'image_exists' and 'wav_exists' columns
         df.drop(['image_exists', 'wav_exists'], inplace=True, axis=1)
-    
+        # df.drop(files_exists, inplace=True, axis=1)
+                
         #rename columns
         df = df.rename(columns={"call-type": "cn", "matrilines": "mar", "clan": "clan", "pod": "pod", "image-file":"image_file", "wav-file": "wav_file" })
+        # new_columns = df.columns.str.replace(r"\W","_", regex=True) # 'image-file-2' -> 'image_file_2'
+        # df.columns = new_columns
 
     return df
 
