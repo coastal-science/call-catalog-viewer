@@ -1,8 +1,18 @@
 """Convenience functions for dictionary access, YAML, check duplicates in a list"""
 
+import re
 import sys
+from pathlib import Path
+
 import yaml
 
+is_yaml = lambda file: re.search(r"\.ya?ml$", str(file), flags=re.IGNORECASE)  # .yaml or .yml
+is_yaml = lambda file: Path(file).resolve().suffix.lower() in [".yaml, '.yaml"]  # .yaml or .yml
+
+
+def is_yaml(file) -> bool:
+    print("is_yaml", file, Path(file).resolve().suffix.lower() in [".yaml", ".yaml"])
+    return Path(file).resolve().suffix.lower() in [".yaml", ".yaml"]  # .yaml or .yml
 
 def represent_none(self, _):
     """ Represent (read/write) 'None' values as empty strings. 
