@@ -1,10 +1,10 @@
 """
 usage: add_catalog.py [-h] [--force | --no-force] [--debug | --no-debug] name folder file
-  
+
   name                 Name of new catalog to add
   folder               New catalog folder containing catalog data files
   file                 Yaml file within `folder` containing the catalog entries
-  
+
   --force, --no-force  Remove before adding catalog even if it already exists (default: False)
 
 Example:
@@ -38,7 +38,7 @@ and the following folder structure:
 ├── catalog
 │   └── catalog.yaml
 ├── home.html
-└── index.html  
+└── index.html
 ```
 
 To `add` a catalog use the command `$ python code/add_catalog.py srkw-call-catalogue-files ./srkw-call-catalogue-files call-catalog.yaml`
@@ -62,7 +62,7 @@ And the directories update symbolic links accordingly
 │   │   └── media   # containing jpg, wav, etc
 │   └── catalog.yaml
 ├── home.html
-└── index.html  
+└── index.html
 ```
 
 To `remove` a catalog use the command `$ python code/remove_catalog.py srkw-call-catalogue-files`
@@ -83,32 +83,32 @@ import yaml
 import remove_catalog
 from utils import yaml  # represent 'None' values as empty strings ''
 
-
 MY_EXIT_ERROR = -1
 
-def add(catalog_name:str, new_folder, new_catalog, force=False):
+
+def add(catalog_name: str, new_folder, new_catalog, force=False):
     """Add a catalog to the viewer.
 
     Args:
         catalog_name (str): _description_
         new_folder (str): Folder where the catalog files are located. A symlink to this folder will be created for the viewer.
         new_catalog (str): Yaml containing the catalog entries.
-        force (bool, optional): Remove `catalog_name` if already present before before adding. Applies to removing symlinks and parsed json  Defaults to False.
+        force (bool, optional): Remove `catalog_name` if already present. Removes symlinks and parsed json.  Defaults to False.
 
     Returns:
         int: Exit Code. 0 means success.
     """
-    
+
     # Remove existing catalog
-    
+
     print(f"\nRemove {catalog_name=} if already present")
-    
+
     removed = remove_catalog.remove(catalog_name, force=force)
-    if not removed: # early stopping
-        exit(MY_EXIT_ERROR) 
-    
+    if not removed:  # early stopping
+        exit(MY_EXIT_ERROR)
+
     print()
-    
+
     new_catalog = Path(new_catalog).resolve()
     new_folder = Path(new_folder).resolve()
 
@@ -133,7 +133,7 @@ def add(catalog_name:str, new_folder, new_catalog, force=False):
 
     print("\nCalling code/read_files.py...")
     # python code/read_files.py resources_config/call-catalog-desc.yaml resources_config/call-catalog
-    cmd = f"{sys.executable} code/read_files.py catalogs/{catalog_name}/{new_catalog.name} catalogs/{catalog_name}" # {'--force' if force else ''}
+    cmd = f"{sys.executable} code/read_files.py catalogs/{catalog_name}/{new_catalog.name} catalogs/{catalog_name}"  # {'--force' if force else ''}
     print(f"  {cmd}")
     cmd = shlex.split(cmd)
 
@@ -150,64 +150,68 @@ def add(catalog_name:str, new_folder, new_catalog, force=False):
 
     if EXIT_CODE != 0:
         print(f"{now}: Could not complete python operation ({EXIT_CODE}).")
-        STATE="failure"
+        STATE = "failure"
     else:
         # print(f"{now}: python exit code is {EXIT_CODE}")
-        STATE="success"
+        STATE = "success"
 
     path = Path(catalog_folder).resolve() / catalog_file
     # Add the new catalog name to viewer/catalogs/catalogs.yaml
-    with open(path, 'r+') as f:
+    with open(path, "r+") as f:
         all_catalogs = yaml.safe_load(f)
 
         if not all_catalogs:
-            all_catalogs = {'catalogs':[]}
-        all_catalogs['catalogs'].append(catalog_name)
-        f.seek(0) # to ensure rewriting existing content, without seek, the effect is to append to the end of the document.
+            all_catalogs = {"catalogs": []}
+        all_catalogs["catalogs"].append(catalog_name)
+        f.seek(
+            0
+        )  # to ensure rewriting existing content, without seek, the effect is to append to the end of the document.
         yaml.dump(all_catalogs, f)
 
+    return 0 if STATE == "success" else EXIT_CODE
 
-    return 0 if STATE == 'success' else EXIT_CODE
 
 def touch(catalog_file):
     """'Touch' `catalog_folder/catalog_file`
-    
+
     Checks for the existence and creates the non empty yaml `catalog_file`.
     The file must contain a root level key "catalogs" containing a list of strings.
-    
+
     Args:
         catalog_file (str): Location of yaml file containing list of all catalogs supported by the viewer.
         catalog_folder (str): Parent folder of catalog_folder
     """
-    
+
     print(catalog_file)
-    
-    extension =  re.search(r"\.ya?ml$", catalog_file, flags=re.IGNORECASE) # .yaml or .yml
+
+    extension = re.search(
+        r"\.ya?ml$", catalog_file, flags=re.IGNORECASE
+    )  # .yaml or .yml
 
     if not extension:
-    # if not any([catalog_file.lower().endswith(x) for x in [".yaml", ".yml"]]):
-        print(f"{thisfile}: {cmd}: {catalog_file} does not have yaml extension", end='\n\n')
+        # if not any([catalog_file.lower().endswith(x) for x in [".yaml", ".yml"]]):
+        print(f"{thisfile}: {cmd}: {catalog_file} does not have yaml extension", end="\n\n")
         exit(MY_EXIT_ERROR)
-    
-    path = Path(catalog_file).resolve() #/ catalog_file
+
+    path = Path(catalog_file).resolve()  # / catalog_file
     if not path.is_file():
         print(f"{thisfile}: {cmd}: {catalog_file} does not exist. Creating an empty file.")
         path.touch()
-    
-    with open(path, 'r+') as f:
+
+    with open(path, "r+") as f:
         all_catalogs = yaml.safe_load(f)
         if not all_catalogs:
             print(f"{thisfile}: {cmd}: {catalog_file} must containg one key 'catalog' with a list of catalog names.")
-            
-            empty = {'catalogs': []}
+
+            empty = {"catalogs": []}
             print(empty)
 
             yaml.dump(empty, f)
             print(f"{thisfile}: {cmd}: Created {catalog_file}")
 
-    
+
 def is_valid_file(parser, arg):
-    """ Argparse function to validate whether the file exists
+    """Argparse function to validate whether the file exists
     TODO: Refactor. This function is c/p in many modules.
     """
 
@@ -221,48 +225,52 @@ def is_valid_file(parser, arg):
 if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(
-        description=
-        "Add catalogs that this viewer can display",
-        allow_abbrev=True)
+        description="Add catalogs that this viewer can display", allow_abbrev=True
+    )
 
-    parser.add_argument("name",
-                        help="Name of new catalog to add/remove",
-                        type=str
-                        )
+    parser.add_argument("name", help="Name of new catalog to add/remove", type=str)
 
-    parser.add_argument("folder",
-                        help="New catalog folder containing catalog data files",
-                        type=lambda x: is_valid_file(parser, x)
-                        )
+    parser.add_argument(
+        "folder",
+        help="New catalog folder containing catalog data files",
+        type=lambda x: is_valid_file(parser, x),
+    )
 
-    parser.add_argument("file",
-                        help="Yaml file within `folder` containing the catalog entries",
-                        # type=lambda x: is_valid_file(parser, x)
-                        )
+    parser.add_argument(
+        "file",
+        help="Yaml file within `folder` containing the catalog entries",
+        # type=lambda x: is_valid_file(parser, x)
+    )
 
-    parser.add_argument("--force", dest="force", required=False,
-                        help="RRemove before adding catalog even if it already exists",
-                        default=False,
-                        # action='store_true', # Python <=3.7
-                        action=argparse.BooleanOptionalAction # Python 3.7+
-                        )
+    parser.add_argument(
+        "--force",
+        dest="force",
+        required=False,
+        help="RRemove before adding catalog even if it already exists",
+        default=False,
+        # action='store_true', # Python <=3.7
+        action=argparse.BooleanOptionalAction,  # Python 3.7+
+    )
 
-    parser.add_argument("--debug", dest="debug", required=False,
-                        help="Print extra debug information for troubleshooting/developing",
-                        default=False,
-                        # action='store_true', # Python <=3.7
-                        action=argparse.BooleanOptionalAction # Python 3.7+
-                        )
+    parser.add_argument(
+        "--debug",
+        dest="debug",
+        required=False,
+        help="Print extra debug information for troubleshooting/developing",
+        default=False,
+        # action='store_true', # Python <=3.7
+        action=argparse.BooleanOptionalAction,  # Python 3.7+
+    )
 
     args = parser.parse_args()
     print(args)
 
-    cmd = 'add'
+    cmd = "add"
     name = args.name
     folder = args.folder
     file = args.file
-    force = args.force # default False
-    debug = args.debug # default False
+    force = args.force  # default False
+    debug = args.debug  # default False
 
     EXIT_CODE = 0
 
@@ -271,31 +279,31 @@ if __name__ == "__main__":
 
     # Check whether `folder` exists and `file` has yaml extension
     if not os.path.isdir(folder):
-        print(f"{thisfile}: {cmd}: {folder=} is not a directory", end='\n\n')
+        print(f"{thisfile}: {cmd}: {folder=} is not a directory", end="\n\n")
         exit(MY_EXIT_ERROR)
 
-    p = (Path(folder).resolve()/file)
+    p = Path(folder).resolve() / file
     # print(p)
     # if not file.endswith(".yaml") or not file.endswith('.yml'):
-    extension =  re.search(r"\.ya?ml$", p, flags=re.IGNORECASE) # .yaml or .yml
+    extension = re.search(r"\.ya?ml$", p, flags=re.IGNORECASE)  # .yaml or .yml
     # if not p.is_file() or not any([p.suffix.lower() in [".yaml", ".yml"]]):
     if not extension:
-        print(f"{thisfile}: {cmd}: {file=} does not exist or does not have yaml extension", end='\n\n')
+        print(f"{thisfile}: {cmd}: {file=} does not exist or does not have yaml extension", end="\n\n")
         exit(MY_EXIT_ERROR)
 
     print(f" {name=}")
     print(f" folder={Path(folder).resolve()}")
-    print(f" file={Path(file).resolve()}", end='\n\n')
+    print(f" file={Path(file).resolve()}", end="\n\n")
 
     catalog_folder = "catalogs"
     catalog_file = "catalogs.yaml"
-    
+
     # check for catalogs
     touch(catalog_folder + "/" + catalog_file)
-    
+
     # Add catalog
     print(f"{thisfile}: add catalog named {name=} with entries {file=} from {folder=}")
     EXIT_CODE = add(name, folder, file, force=force)
 
-    print(f"{thisfile}: {cmd}: Complete", end='\n\n')
+    print(f"{thisfile}: {cmd}: Complete", end="\n\n")
     exit(EXIT_CODE)
