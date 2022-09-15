@@ -28,7 +28,7 @@ from utils import is_yaml
 REMOVE_EXIT_ERROR = -1
 
 LIBRARY = "catalogs"
-LIBRARY_INDEX = "catalogs.yaml"
+LIBRARY_INDEX = "index.yaml"
 
 
 def remove(
@@ -111,16 +111,16 @@ if __name__ == "__main__":
     parser.add_argument("name", help="Name of catalog to remove", type=str)
 
     parser.add_argument(
-        "--catalog-folder",
-        default="catalogs",
         help="Folder containing catalog data files",
+        "--LIBRARY",
+        default=LIBRARY,
         type=lambda x: is_valid_file(parser, x),
     )
 
     parser.add_argument(
-        "--catalog-file",
-        default="catalogs.yaml",
         help="Yaml file within `folder` containing the catalog entries for the viewer",
+        "--LIBRARY-INDEX",
+        default=LIBRARY_INDEX,
         # type=lambda x: is_valid_file(parser, x)
     )
 
