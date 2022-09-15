@@ -15,7 +15,9 @@ optional arguments:
   --force, --no-force   Remove before adding catalog even if it already exists (default: False)
 
 Example:
+
 `python add_catalog.py srkw-call-catalogue-files ./srkw-call-catalogue-files call-catalog.yaml`
+
 `python add_catalog.py srkw-call-catalogue-files ./srkw-call-catalogue-files call-catalog.yaml --force`
 
 To construct the catalog with a new directory and index use --LIBRARY and --LIBRARY-INDEX arguments
@@ -44,6 +46,7 @@ catalogs:
     - 
 ```
 and the following folder structure:
+```
 /var/www/html/catalog-viewer/
 ├── catalog
 │   └── index.yaml

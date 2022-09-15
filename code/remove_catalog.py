@@ -14,7 +14,9 @@ optional arguments:
   --force, --no-force   Remove catalog even if it already exists (default: True)
 
 Example:
+
 `python remove_catalog.py srkw-call-catalogue-files`
+
 `python remove_catalog.py srkw-call-catalogue-files catalog catlogs.yaml --force`
 """
 
