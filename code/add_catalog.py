@@ -1,34 +1,44 @@
 """
-usage: add_catalog.py [-h] [--force | --no-force] [--debug | --no-debug] name folder file
+usage: add_catalog.py [-h] [--LIBRARY LIBRARY] [--LIBRARY-INDEX LIBRARY_INDEX] [--force | --no-force]
+                      [--debug | --no-debug]
+                      name source_folder index
 
-  name                 Name of new catalog to add
-  folder               New catalog folder containing catalog data files
-  file                 Yaml file within `folder` containing the catalog entries
+required arguments:
+  name                  Name of new catalog to add
+  source_folder         Source directory containing data files
+  index                 Yaml file within `source` containing the catalog entries
 
-  --force, --no-force  Remove before adding catalog even if it already exists (default: False)
+optional arguments:
+  --LIBRARY LIBRARY     Library folder for the viewer. This is directory must exist beforehand.
+  --LIBRARY-INDEX LIBRARY_INDEX
+                        Index yaml within LIBRARY
+  --force, --no-force   Remove before adding catalog even if it already exists (default: False)
 
 Example:
 `python add_catalog.py srkw-call-catalogue-files ./srkw-call-catalogue-files call-catalog.yaml`
 `python add_catalog.py srkw-call-catalogue-files ./srkw-call-catalogue-files call-catalog.yaml --force`
 
-The important files for configuring multiple catalogs are:
+To construct the catalog with a new directory and index use --LIBRARY and --LIBRARY-INDEX arguments
+`python add_catalog.py srkw-call-catalogue-files srkw-call-catalogue-files call-catalog.yaml --LIBRARY catalog --LIBRARY-INDEX index.yaml --force `
+
+The relevant files for configuring multiple catalogs are:
 ```
 /var/www/html/catalog-viewer/
 ├── catalog
-│   ├── catalogs.yaml
+│   ├── index.yaml
 │   ├── <catalog-A-name>.json # produced by `read_files.py` parser
 │   ├── <catalog-A-name> -> /var/www/html/<catalog-A-name> # symbolic link
 │   │   ├── call-catalog.yaml
 │   │   ├── ...
 ```
-`catalog.yaml`
+`index.yaml` contains a listing of available catalogs
 ```yaml
 catalogs:
     - srkw-call-catalogue-files
     - nrkw-call-catalogue-files
     - transient-call-catalogue-files
 ```
-Starting with an empty list of catalogs `catalog.yaml`:
+Starting with an empty list of catalogs `index.yaml`:
 ```yaml
 catalogs:
     - 
@@ -36,14 +46,15 @@ catalogs:
 and the following folder structure:
 /var/www/html/catalog-viewer/
 ├── catalog
-│   └── catalog.yaml
+│   └── index.yaml
 ├── home.html
+├── ...
 └── index.html
 ```
 
 To `add` a catalog use the command `$ python code/add_catalog.py srkw-call-catalogue-files ./srkw-call-catalogue-files call-catalog.yaml`
 
-`catalog.yaml` updates like so
+`index.yaml` updates like so
 ```yaml
 catalogs:
     - srkw-call-catalogue-files
@@ -54,13 +65,12 @@ And the directories update symbolic links accordingly
 ```
 /var/www/html/catalog-viewer/
 ├── catalog
-│   ├── catalogs.yaml
+│   ├── index.yaml
 │   ├── srkw-call-catalogue-files.json  # produced by `read_files.py` parser
 │   ├── srkw-call-catalogue-files -> /var/www/html/srkw-call-catalogue-files    # symbolic link
 │   │   ├── call-catalog.yaml
 │   │   ├── ...
 │   │   └── media   # containing jpg, wav, etc
-│   └── catalog.yaml
 ├── home.html
 └── index.html
 ```
@@ -152,7 +162,7 @@ def add(catalog_name: str, source_folder, catalog_listing, force=False):
         # now=`date +%F-%T-%Z`
         now = datetime.now().strftime("%Y/%m/%d-%H:%M:%S")
         # now = datetime.now()
-        print(f"{now}: Could not complete python operation ({EXIT_CODE}).")
+        print(f"{now}: Could not complete read_files.py operation ({EXIT_CODE}).")
         STATE = "failure"
     else:
         # print(f"{now}: python exit code is {EXIT_CODE}")
@@ -215,8 +225,9 @@ def is_valid_file(parser, arg):
     TODO: Refactor. This function is c/p in many modules.
     """
 
-    if not os.path.exists(arg):
-        parser.error("The file %s does not exist or cannot be found!" % arg)
+    path = Path(arg).resolve()
+    if not os.path.exists(path):
+        parser.error("The file %s does not exist or cannot be found!" % (arg))
     else:
         # return open(arg, 'r')  # return an open file handle
         return arg
@@ -228,17 +239,17 @@ if __name__ == "__main__":
         description="Add catalogs that this viewer can display", allow_abbrev=True
     )
 
-    parser.add_argument("name", help="Name of new catalog to add/remove", type=str)
+    parser.add_argument("name", help="Name of new catalog to add", type=str)
 
     parser.add_argument(
-        "folder",
-        help="Source folder to be added that contains data files",
+        "source",
+        help="Source directory containing data files",
         type=lambda x: is_valid_file(parser, x),
     )
 
     parser.add_argument(
         "catalog",
-        help="Yaml file within `folder` containing the catalog entries",
+        help="Yaml file within `source` containing the catalog entries",
         # type=lambda x: is_valid_file(parser, x)
     )
 
@@ -246,7 +257,7 @@ if __name__ == "__main__":
         "--LIBRARY",
         default=LIBRARY,
         required=False,
-        help="Library folder for the viewer",
+        help="Library folder for the viewer. This is directory must exist beforehand.",
         type=lambda x: is_valid_file(parser, x),
     )
 
@@ -261,7 +272,7 @@ if __name__ == "__main__":
         "--force",
         dest="force",
         required=False,
-        help="RRemove before adding catalog even if it already exists",
+        help="Remove before adding catalog even if it already exists",
         default=False,
         # action='store_true', # Python <=3.7
         action=argparse.BooleanOptionalAction,  # Python 3.7+
@@ -282,7 +293,7 @@ if __name__ == "__main__":
 
     cmd = "add"
     name = args.name
-    source_folder = args.folder
+    source_folder = args.source
     catalog_listing = args.catalog
     force = args.force  # default False
     debug = args.debug  # default False
@@ -294,7 +305,7 @@ if __name__ == "__main__":
     thisfile = Path(__file__).name
     print(f"{thisfile}: {cmd}:")
 
-    # Check whether `folder` exists and `file` has yaml extension
+    # Check whether `source_folder` exists and `file` has yaml extension
     if not os.path.isdir(source_folder):
         print(f"{thisfile}: {cmd}: {source_folder=} is not a directory", end="\n\n")
         exit(ADD_EXIT_ERROR)
@@ -308,7 +319,7 @@ if __name__ == "__main__":
         exit(ADD_EXIT_ERROR)
 
     print(f" {name=}")
-    print(f" folder={Path(source_folder).resolve()}")
+    print(f" source_folder={Path(source_folder).resolve()}")
     print(f" file={Path(catalog_listing).resolve()}", end="\n\n")
 
     # catalog_folder = "catalogs"
