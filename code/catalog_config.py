@@ -7,6 +7,10 @@ from pathlib import Path
 import add_catalog
 import remove_catalog
 
+LIBRARY = "catalogs"
+LIBRARY_INDEX = "catalogs.yaml"
+
+
 if __name__ == "__main__":
 
     # cmd, name, folder, file  = sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4]
@@ -41,12 +45,12 @@ if __name__ == "__main__":
     if cmd == "add":
         print("call 'add_catalog.py'")
         # print(f"{thisfile}: add catalog named {name=} with entries {file=} from {folder=}")
-        # EXIT_CODE = add_catalog.add(name, folder, file, force=True)
+        # EXIT_CODE = add_catalog(name, source_folder, catalog_listing, force=force)
         fullcmd = f"{sys.executable} code/add_catalog.py {cmdargs}"
     if cmd == "remove":
         print("call 'remove_catalog.py'")
         # print(f"{thisfile}: remove catalog named {name=} listed in {catalog_folder}/{catalog_file=}")
-        # EXIT_CODE = remove_catalog.remove(name, catalog_folder, catalog_file, force=True)
+        # EXIT_CODE = remove_catalog(name, catalog_file, catalog_folder, force=force)
         fullcmd = f"{sys.executable} code/remove_catalog.py {cmdargs}"
 
     fullcmd = shlex.split(fullcmd)
