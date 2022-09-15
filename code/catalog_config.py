@@ -1,14 +1,37 @@
+"""Configure Catalog setup. Add and remove catalogs from the viewer's 'library/'
+usage: catalog_config.py [-h] {add,remove} ...
+
+Configure (add/remove) catalogs that this viewer can display
+
+positional arguments:
+  {add,remove}  `add` or `remove`
+  cmdargs
+
+Example:
+
+`python catalog_config.py add ...<cmd line arguments of add_catalog.py>...`
+
+`python catalog_config.py remove ...<cmd line arguments of remove_catalog.py>...`
+
+To see individual `help` use
+```
+python catalog_config.py add -h | --help
+python catalog_config.py remove -h | --help
+```
+"""
+
+
 import argparse
 import shlex
 import subprocess
 import sys
 from pathlib import Path
 
-import add_catalog
-import remove_catalog
+from add_catalog import add as add_catalog
+from remove_catalog import remove as remove_catalog
 
 LIBRARY = "catalogs"
-LIBRARY_INDEX = "catalogs.yaml"
+LIBRARY_INDEX = "index.yaml"
 
 
 if __name__ == "__main__":
@@ -29,34 +52,43 @@ if __name__ == "__main__":
 
     cmd = args.cmd
     cmdargs = args.cmdargs
-
-    catalog_folder = "catalogs"
-    catalog_file = "catalog.yaml"
+    cmdargs = ' '.join(cmdargs)  # to be split comprehensively with shlex.split()
 
     thisfile = Path(__file__).name
-    fullcmd = f"{sys.executable} code/{cmd}_catalog.py {cmdargs}"
+
+    """
+    The commented section below code is generic, precise, short but obscure.
+    It runs **any** python script of the form `code/*_catalog.py` with all cmd line args
+    The version below the commenting is explcit but longer.
+    """
+
+    # fullcmd = f"{sys.executable} code/{cmd}_catalog.py {' '.join(cmdargs)}"
 
     print(f"{thisfile}: {cmd} {cmdargs}")
-    print(f"  {fullcmd}")
-    fullcmd = shlex.split(fullcmd)
+    # print(f"{thisfile}: subprocess: {fullcmd}")
 
-    output = subprocess.run(fullcmd, universal_newlines=True)
+    # fullcmd = shlex.split(fullcmd)
+    # output = subprocess.run(fullcmd, universal_newlines=True)
+
+    # print("\nCompleted all subprocesses")
+    # print()
+    # exit(output.returncode)
 
     if cmd == "add":
         print("call 'add_catalog.py'")
-        # print(f"{thisfile}: add catalog named {name=} with entries {file=} from {folder=}")
-        # EXIT_CODE = add_catalog(name, source_folder, catalog_listing, force=force)
-        fullcmd = f"{sys.executable} code/add_catalog.py {cmdargs}"
+        fullcmd = f"{sys.executable} code/add_catalog.py {cmdargs}"  # instead of call add_catalog()
+        # system call instead of method call since add_catalog.py contains extra input arguments 
+        # and file validation.
+
     if cmd == "remove":
         print("call 'remove_catalog.py'")
-        # print(f"{thisfile}: remove catalog named {name=} listed in {catalog_folder}/{catalog_file=}")
-        # EXIT_CODE = remove_catalog(name, catalog_file, catalog_folder, force=force)
         fullcmd = f"{sys.executable} code/remove_catalog.py {cmdargs}"
+
+    print(f"{thisfile}: subprocess: {fullcmd}")
 
     fullcmd = shlex.split(fullcmd)
     output = subprocess.run(fullcmd, universal_newlines=True)
-    EXIT_CODE = output.returncode
 
-    print("Complete")
+    print("\nCompleted all subprocesses")
     print()
-    exit(EXIT_CODE)
+    exit(output.returncode)
