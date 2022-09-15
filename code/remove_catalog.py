@@ -1,13 +1,16 @@
 """
-usage: remove_catalog.py [-h] [--catalog-folder CATALOG_FOLDER] [--catalog-file CATALOG_FILE]
-                         [--force | --no-force] [--debug | --no-debug]
+usage: remove_catalog.py [-h] [--LIBRARY LIBRARY] [--LIBRARY-INDEX LIBRARY_INDEX] [--force | --no-force]
+                         [--debug | --no-debug]
                          name
 
+required arguments:
   name                  Name of catalog to remove
-  --catalog-folder CATALOG_FOLDER
-                        Folder containing catalog data files (default: 'catalogs')
-  --catalog-file CATALOG_FILE
-                        Yaml file within `folder` containing the catalog entries for the viewer (default: 'catalogs.yaml')
+
+optional arguments:
+  --LIBRARY LIBRARY     Folder containing catalog data files. (default: 'catalogs')
+  --LIBRARY-INDEX LIBRARY_INDEX
+                        Yaml file within `folder` containing the catalog entries for the viewer. (default:
+                        'index.yaml')
   --force, --no-force   Remove catalog even if it already exists (default: True)
 
 Example:
@@ -37,7 +40,7 @@ def remove(
     library: str = LIBRARY,
     force: bool = False,
 ):
-    """Remove the specified catalog 'name' from the viewer.
+    """Remove the specified 'catalog_name' from the viewer.
 
     Args:
         catalog_name (str): _Name of the catalog to remove. This name must listed in `library_index`
@@ -60,7 +63,8 @@ def remove(
         print(f"Catalog named '{catalog_name}' is not part of {library_index}, nothing to remove here.")
 
     elif force:
-        print(f"Removed '{catalog_name}' from the catalogs listed in {library_index}.")
+        # catalog_name already exists and remove anyway.
+        print(f"{catalog_name=} already exists in the catalogs listed in {library_index}. Replacing anyway...")
         all_catalogs["catalogs"].remove(catalog_name)
 
         if not all_catalogs:
@@ -68,18 +72,20 @@ def remove(
             all_catalogs["catalogs"] = {"catalogs": [None]}
 
     else:
-        print(f"{catalog_name=} is already part of {library_index}. Use `--force` to remove anyway.")
+        # catalog_name already exists and skip removal.
+        print(f"{catalog_name=} is already part of {library_index}. Use `--force` to remove anyway.\n")
         return False
 
     # remove symlink and parsed json
     print("Removing symlink folders and parsed json")
     p = Path(library, catalog_name)
     print(f"  {p}")
-    p.unlink(missing_ok=force)
+    # If missing_ok is true, FileNotFoundError exceptions will be ignored (same behavior as the POSIX rm -f command).
+    p.unlink(missing_ok=True)
 
     p = Path(library, catalog_name + ".json")
     print(f"  {p}")
-    p.unlink(missing_ok=force)
+    p.unlink(missing_ok=True)
 
     with open(listings, "w") as f:
         yaml.dump(all_catalogs, f)
@@ -111,16 +117,16 @@ if __name__ == "__main__":
     parser.add_argument("name", help="Name of catalog to remove", type=str)
 
     parser.add_argument(
-        help="Folder containing catalog data files",
         "--LIBRARY",
         default=LIBRARY,
+        help=f"Folder containing catalog data files. (default: '{LIBRARY}')",
         type=lambda x: is_valid_file(parser, x),
     )
 
     parser.add_argument(
-        help="Yaml file within `folder` containing the catalog entries for the viewer",
         "--LIBRARY-INDEX",
         default=LIBRARY_INDEX,
+        help=f"Yaml file within `folder` containing the catalog entries for the viewer. (default: '{LIBRARY_INDEX}')",
         # type=lambda x: is_valid_file(parser, x)
     )
 
@@ -128,7 +134,7 @@ if __name__ == "__main__":
         "--force",
         dest="force",
         required=False,
-        help="Remove catalog even if it exists",
+        help="Remove catalog even if it already exists",
         default=True,
         # action='store_true', # Python <=3.7
         action=argparse.BooleanOptionalAction,  # Python 3.7+
