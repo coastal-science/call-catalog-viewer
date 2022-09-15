@@ -87,7 +87,7 @@ from utils import yaml, is_yaml  # represent 'None' values as empty strings ''
 ADD_EXIT_ERROR = -1
 
 LIBRARY = "catalogs"
-LIBRARY_INDEX = "catalogs.yaml"
+LIBRARY_INDEX = "index.yaml"
 
 
 def add(catalog_name: str, source_folder, catalog_listing, force=False):
@@ -237,7 +237,7 @@ if __name__ == "__main__":
     )
 
     parser.add_argument(
-        "index",
+        "catalog",
         help="Yaml file within `folder` containing the catalog entries",
         # type=lambda x: is_valid_file(parser, x)
     )
@@ -283,7 +283,7 @@ if __name__ == "__main__":
     cmd = "add"
     name = args.name
     source_folder = args.folder
-    catalog_listing = args.index
+    catalog_listing = args.catalog
     force = args.force  # default False
     debug = args.debug  # default False
 
