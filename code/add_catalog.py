@@ -66,16 +66,21 @@ catalogs:
 ```
 And the directories update symbolic links accordingly
 ```
-/var/www/html/catalog-viewer/
-├── catalog
-│   ├── index.yaml
-│   ├── srkw-call-catalogue-files.json  # produced by `read_files.py` parser
-│   ├── srkw-call-catalogue-files -> /var/www/html/srkw-call-catalogue-files    # symbolic link
-│   │   ├── call-catalog.yaml
-│   │   ├── ...
-│   │   └── media   # containing jpg, wav, etc
-├── home.html
-└── index.html
+/var/www/html/
+├── catalog-viewer
+    ├── catalog
+    │   ├── index.yaml
+    │   ├── srkw-call-catalogue-files.json  # produced by `read_files.py` parser
+    │   ├── srkw-call-catalogue-files -> /var/www/html/srkw-call-catalogue-files    # symbolic link
+    │   │   ├── call-catalog.yaml
+    │   │   ├── ...
+    │   │   └── media   # containing jpg, wav, etc
+    ├── home.html
+    └── index.html
+├── srkw-call-catalogue-files
+        ├── call-catalog.yaml
+        ├── ...
+        └── media   # containing jpg, wav, etc
 ```
 
 To `remove` a catalog use the command `$ python code/remove_catalog.py srkw-call-catalogue-files`
@@ -101,6 +106,16 @@ ADD_EXIT_ERROR = -1
 
 LIBRARY = "catalogs"
 LIBRARY_INDEX = "index.yaml"
+
+# TODO: index.yaml holds catalog-name as well as path to catalog listing (call-catalog.yaml)
+"""`index.yaml` updates like so
+```yaml
+catalogs:
+    - srkw-call-catalogue-files/call-catalog.yaml
+    - nrkw-call-catalogue-files/call-catalog.yaml         # independent calls `add_catalog.py`
+    - transient-call-catalogue-files/call-catalog.yaml    # independent calls `add_catalog.py`
+```
+"""
 
 
 def add(catalog_name: str, source_folder, catalog_listing, force=False):
