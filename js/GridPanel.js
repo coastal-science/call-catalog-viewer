@@ -19,6 +19,9 @@ var GridPanel = undefined;
     var lity_data = undefined;
     var audio_element = undefined;
     var selecting = undefined;
+    const LIBRARY = 'catalogs'
+    const LIBRARY_INDEX = 'index.yaml'
+    var catalog_library = {}
     const media_folder_path = ''; /* srkw-call-catalogue-files/media removed to get files locally */
     const play_icon = '<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-play" width="32" height="32" viewBox="0 0 24 24"><path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm-3 17v-10l9 5.146-9 4.854z"/></svg>';
     /*
@@ -89,9 +92,42 @@ var GridPanel = undefined;
             </div>\
         </div>';
     }
-    async function getData(){
+    async function getData(catalog_json){
+        // catalog_json = './resources_config/call-catalog.json'
+        catalog_json = "catalogs/srkw-call-catalogue-files.json"
+        // let response = getCatalog(catalog_json)
+        
+        // 1. read yaml https://stackoverflow.com/a/70919596
+            // non-blocking version:
+            // fetch(LIBRARY + "/" + LIBRARY_INDEX)
+            //   .then(response => response.text())
+            //   .then(text => {
+            //     // once the file has been loaded, we can parse it into an object.
+            //     yaml = jsyaml.load(text);
+            //     console.log(yaml);
+            //   });
+        
         // await response of fetch call
-		let response = await fetch('./resources_config/call-catalog.json');
+        let response = await fetch(LIBRARY + "/" + LIBRARY_INDEX)
+		// only proceed once promise is resolved
+		let text = await response.text();
+        yaml = jsyaml.load(text);
+        console.log(yaml[LIBRARY]);
+
+        yaml = yaml[LIBRARY].reverse() // reverse() ensures that the catalog added first is the most recent loaded
+		// only proceed once second promise is resolved
+        
+        // 2 and 3. for each catalog in yaml (in reverse order): getCatalog(catalog)
+        yaml.forEach(name =>{
+            // console.log(LIBRARY + "/" + name + '.json')
+            let response = getCatalog(LIBRARY + "/" + name + '.json')
+        })
+    }
+    panel.getData = getData;
+
+    async function getCatalog(catalog_json){
+        // await response of fetch call
+		let response = await fetch(catalog_json);
 		// only proceed once promise is resolved
 		let data = await response.text();
 		// only proceed once second promise is resolved
@@ -226,11 +262,14 @@ var GridPanel = undefined;
             $('.selecting').removeClass('selecting');
         }
 
+        catalog_library[catalog_json] = resultData
+        console.log(catalog_library)
+
         history.pushState(state, title, `${window.location.pathname}?${params}`);
         return;
         return $.ajax({});
     }
-    panel.getData = getData;
+    panel.getCatalog = getCatalog;
 
     function init(){
         resultData = [];
