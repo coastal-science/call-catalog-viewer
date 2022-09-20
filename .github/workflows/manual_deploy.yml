@@ -26,7 +26,7 @@ on:
         - main
         - develop
         - front-end
-
+        
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   input_sha:
@@ -47,24 +47,24 @@ jobs:
       - id: commits
         run: |
           git checkout ${{ inputs.branch }}
+          echo input.branch, GH_ENV_PARSED, GH_ENV_FULL, GH_ENV_SHA
           echo "${{inputs.branch}}" ${GITHUB_REF#refs/heads/} $GITHUB_REF $GITHUB_SHA
           
           after=`git show-ref --heads "${{ inputs.branch }}" | cut -d" " -f1`
           ref=`git show-ref --heads "${{ inputs.branch }}" | cut -d" " -f2`
           before=`git log --pretty=%P -n 1 "${{ inputs.branch }}"`
-          echo $ref
-          echo $after
-          echo $before
-          
-          
-          
+          echo Ref: $ref
+          echo After: $after
+          echo Before: $before
+         
           echo "::set-output name=ref::$ref"
           echo "::set-output name=before::$before"
           echo "::set-output name=after::$after"
   
   deploy:
     name: Deploy to server
-    # The type of runner that the job will run on
+    # Add information to event payload. The parsing and addition must occur in the same instance as 
+    # the distributhor/workflow-webhook action. Changes to environment variables do not propagate accross jobs (VM).
     runs-on: ubuntu-latest
     # dependent jobs
     needs: input_sha 
@@ -80,29 +80,23 @@ jobs:
       # The GH Webhook is already configure to receive the complete event data,
       # use json-extended (as below)
       # But the action /distributhor/workflow-webhook sends a handful of 'event' details in the payload
-      # The complete envent data is in $GITHUB_EVENT_PATH
-      # The ouput of this step is available with ${{ steps.set_var.outputs.packageJson }}
+      # The complete event data is in $GITHUB_EVENT_PATH
+      # The output of this step is available with '${{ steps.set_var.outputs.packageJson }}'
       run: |
           echo "::group::Get Event Payload"
           echo `cat $GITHUB_EVENT_PATH`
           content=`cat $GITHUB_EVENT_PATH`
+          
           # the following lines are only required for multi line json
           content="${content//'%'/'%25'}"
           content="${content//$'\n'/'%0A'}"
           content="${content//$'\r'/'%0D'}"
           # end of optional handling for multi line json
+
+          # using jq instead
+          content=`cat $GITHUB_EVENT_PATH` | jq -sRr @uri
           echo "::set-output name=packageJson::$content"
           echo "::endgroup::"
-
-    - name: See Event Payload
-        #group log lines
-      run: |
-        echo "::group::Event Payload"
-        echo "${{ steps.set_var.outputs.packageJson }}"
-        echo $GITHUB_ENV
-        echo $GITHUB_EVENT_PATH
-        cat $GITHUB_ENV
-        echo "::endgroup::"
         
     - name: Append commit data
       id: append_var
@@ -112,25 +106,27 @@ jobs:
       run: |
         jq --version
         echo "::group::Current Payload"
-        echo "${{ steps.set_var.outputs.packageJson }}"
+        echo "$GITHUB_EVENT_PATH"
+        printf %q '"${{ steps.set_var.outputs.packageJson }}"'
         echo "${{ needs.input_sha.outputs.ref }}"
         echo "${{ needs.input_sha.outputs.before }}"
         echo "${{ needs.input_sha.outputs.after }}"
         
-        #echo `jq '. + { "ref": "${{ needs.input_sha.outputs.ref }}" }' $GITHUB_EVENT_PATH` > tmp.$$.json && mv tmp.$$.json $GITHUB_EVENT_PATH
-        #echo `jq '. + { "before": "${{ needs.input_sha.outputs.before }}" }' $GITHUB_EVENT_PATH` > tmp.$$.json && mv tmp.$$.json $GITHUB_EVENT_PATH
-        #echo `jq '. + { "after": "${{ needs.input_sha.outputs.after }}" }' $GITHUB_EVENT_PATH` > tmp.$$.json && mv tmp.$$.json $GITHUB_EVENT_PATH
-        #echo `jq '.' $GITHUB_EVENT_PATH --indent 6` > $GITHUB_EVENT_PATH
+        echo `jq '. + { "ref": "${{ needs.input_sha.outputs.ref }}" }' $GITHUB_EVENT_PATH` > tmp.$$.json && mv tmp.$$.json $GITHUB_EVENT_PATH
+        echo `jq '. + { "before": "${{ needs.input_sha.outputs.before }}" }' $GITHUB_EVENT_PATH` > tmp.$$.json && mv tmp.$$.json $GITHUB_EVENT_PATH
+        echo `jq '. + { "after": "${{ needs.input_sha.outputs.after }}" }' $GITHUB_EVENT_PATH` > tmp.$$.json && mv tmp.$$.json $GITHUB_EVENT_PATH
+        echo `jq '.' $GITHUB_EVENT_PATH --indent 6` > $GITHUB_EVENT_PATH
         
-        add_keys=" `jq -c '. + { \"ref\": \"${{ needs.input_sha.outputs.ref }}\" } + { \"before\": \"${{ needs.input_sha.outputs.before }}\" } + { \"after\": \"${{ needs.input_sha.outputs.after }}\" }' $GITHUB_EVENT_PATH > tmp.$$.json && mv tmp.$$.json $GITHUB_EVENT_PATH` "
-        $add_keys
+        # one liner
+        #add_keys=" `jq -c '. + { \"ref\": \"${{ needs.input_sha.outputs.ref }}\" } + { \"before\": \"${{ needs.input_sha.outputs.before }}\" } + { \"after\": \"${{ needs.input_sha.outputs.after }}\" }' $GITHUB_EVENT_PATH > tmp.$$.json && mv tmp.$$.json $GITHUB_EVENT_PATH` "
+        #$add_keys
         #echo "add_keys=$add_keys" >> $GITHUB_ENV
         
         #Files downloaded to $HOME are persisted between actions in the same job (https://stackoverflow.com/a/70082514)
         #cp $GITHUB_EVENT_PATH $HOME/Custom_Event_Path.json
         #ln -sf $HOME/Custom_Event_Path.json $GITHUB_EVENT_PATH
+        #echo "$GITHUB_EVENT_PATH"
         
-        echo $GITHUB_EVENT_PATH
         echo `cat $GITHUB_EVENT_PATH`
         echo "::endgroup::"
 
@@ -142,9 +138,11 @@ jobs:
         content="${content//$'\n'/'%0A'}"
         content="${content//$'\r'/'%0D'}"
         ## end of optional handling for multi line json
-        
+
+        # using jq instead
+        content=`cat $GITHUB_EVENT_PATH` | jq -sRr @uri
         echo "::set-output name=packageJson::$content"
-        echo "${{ steps.append_var.outputs.packageJson }}"
+        printf %q "${{ steps.append_var.outputs.packageJson }}"
 
         echo "::endgroup::"
 
@@ -176,14 +174,13 @@ jobs:
         # Optional additional data to include in the payload
         #data: # optional
         data: '{ "token": "${{ secrets.GITHUB_TOKEN }}", "ref": "${{ needs.input_sha.outputs.ref }}", "before": "${{ needs.input_sha.outputs.before }}", "after": "${{ needs.input_sha.outputs.after }}" }'
-        #data: ${{ steps.set_var.outputs.packageJson }}
         #GITHUB_EVENT_PATH: Custom_Event_Path.json If you attempt to override the value of one of these default environment variables, the assignment is ignored
     
     - name: Final Payload
         #group log lines
       run: |
         echo "::group::Expected Payload"
-        echo $GITHUB_EVENT_PATH
+        echo "$GITHUB_EVENT_PATH"
         
         content=`cat $GITHUB_EVENT_PATH`
         ## the following lines are only required for multi line json
@@ -191,8 +188,10 @@ jobs:
         content="${content//$'\n'/'%0A'}"
         content="${content//$'\r'/'%0D'}"
         ## end of optional handling for multi line json
+
+        # using jq instead
+        content=`cat $GITHUB_EVENT_PATH` | jq -sRr @uri
         echo $content
         #echo "::set-output name=packageJson::$content"
-          
-        #echo "${{ steps.append_var.outputs.packageJson }}"
+        
         echo "::endgroup::"
