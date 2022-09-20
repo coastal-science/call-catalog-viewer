@@ -10,7 +10,7 @@ on:
        - actions-patch-1
 jobs:
   get_pushed_branch:
-    name: Get revelant branch
+    name: Get relevant branch
     runs-on: ubuntu-latest
     outputs:
       branch-name: ${{ steps.set-name.outputs.ref_branch }}
