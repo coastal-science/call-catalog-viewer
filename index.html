@@ -33,34 +33,44 @@
     <style>
 
         body {font-family: "Lato", sans-serif}
-        .mySlides {display: none}
-        
 
         .hidden{
             display: none!important;
         }
-        
+
+        .btn-feedback {background-color:silver;border-color:silver;color:white;}
+
+        .btn-feedback a:hover {color:transparent;}
+
+        .btn-filter {background-color:darkgray;border-color:darkgray;color:white;}
+
+        .btn-filter a:hover {color:transparent;}
+       
+        .form-check-input:checked {background-color: darkgray;border-color:darkgray;}
         .itemblock > div{
             height:100%;
         }
+
+        .page-link {color:darkgray;}
         .page-link:focus {
             box-shadow: none !important;
             background-color: #fff !important;
         }
         .page-item.active .page-link {
             color: #fff !important;
-            background-color: #0d6efd !important;
-            border-color: #0d6efd !important;
+            background-color: darkgray !important;
+            border-color: darkgray !important;
         }
         .card-img-top{
             aspect-ratio: 198/205;
         }
         .row{
-            padding-top: 3px;
+            padding-top: 5px;
         }
         .image_pop_source{
             display: table-cell;
         }
+
         .lity-container{
             overflow: auto;
         }
@@ -76,6 +86,7 @@
             position: relative;
             bottom: auto;
         }
+
         @media (min-height: 700px){
             .lity-content{
                 max-height: 70vh;
@@ -114,15 +125,11 @@
             overflow: auto;
         }
         .selecting{
-            border: 0.5em solid;
-            border-color:#0d6efd;
+            outline: .4rem solid;
+            outline-color:silver;
         }
-        .toast{
-            position: fixed;
-            top: 0;
-            left: 0;
-            z-index: 9999;
-        }
+        
+    
         kbd{
             font-size: 1.2rem;
         }
@@ -141,6 +148,7 @@
       <a href="home.html#" class="w3-bar-item w3-button w3-padding-large">HOME</a>
        <a href="index.html" class="w3-bar-item w3-button w3-padding-large w3-hide-small">CATALOGUE</a>
        <a href="license.html" class="w3-bar-item w3-button w3-padding-large w3-hide-small">LICENSE</a>
+       <a href="faq.html" class="w3-bar-item w3-button w3-padding-large w3-hide-small">FAQ</a>
      <!-- <div class="w3-dropdown-hover w3-hide-small">
         <button class="w3-padding-large w3-button" title="More">MORE <i class="fa fa-caret-down"></i></button>     
         <div class="w3-dropdown-content w3-bar-block w3-card-4">
@@ -158,72 +166,44 @@
   <div id="navDemo" class="w3-bar-block w3-black w3-hide w3-hide-large w3-hide-medium w3-top" style="margin-top:46px">
     <a href="index.html" class="w3-bar-item w3-button w3-padding-large" onclick="myFunction()">CATALOGUE</a>
     <a href="license.html" class="w3-bar-item w3-button w3-padding-large" onclick="myFunction()">LICENSE</a>
+    <a href="faq.html" class="w3-bar-item w3-button w3-padding-large" onclick="myFunction()">FAQ</a>
    </div>
-    <!--<button type="button" class="btn btn-primary" id="liveToastBtn">Show live toast</button>
-      <div class="toast">
-        <div class="toast-header">
-            URL is newly opened. You are reading from last cache.<br/>
-            Arrow Keys are not available. Close the current detail and choose another data from the list again.
-        </div>
-      </div>-->
+
 
     
-    <div class="container" id="listing" style="margin-top:5%">
-        <!--<div id="myModal" class="modal fade">
-            <div class="modal-dialog">
-                <div class="modal-content" style="border-radius:0">
-                    <div class="modal-header">
-                        <h5 class="modal-title"><medium>Use of information from this website is subject to terms under <a href="https://open.canada.ca/en/open-government-licence-canada" target="_blank">Open Government License &ndash; Canada</a></medium></h5>
-                        <button id='closeModal' type="button" class="btn btn-secondary" data-bs-dismiss="modal">&times;</button>
-                    </div>
-                    <div class="modal-body">
-                        <p>You are free to:</p>
-                        <ul>
-                            <li>Copy, modify, publish, translate, adapt, distribute or otherwise use the Information in any medium, mode or format for any lawful purpose.</li></ul>
-                        <p>You must, where you do any of the above:</p>
-                        <ul>
-                            <li>Acknowledge the source of the Information by including any attribution statement specified by the Information Provider(s) and, where possible, provide a link to this licence.</li>
-                            <li>If the Information Provider does not provide a specific attribution statement, or if you are using Information from several information providers and multiple attributions are not practical for your product or application, you must use the following attribution statement:
-                            <br>Contains information licensed under the Open Government Licence &ndash; Canada.</li></ul>
-                    </div>
-                </div>
-            </div>
-        </div>-->
-        
-        <h1 class="text-center text-capitalize font-weight-bold" style="margin-top:5rem;">Explore Catalogue</h1>
-    
-        <div class="row">
-            <div class="col-md-6 text-center">
-                
-            </div>
-            <div class="col-md-6 text-center">
-                <span class="float-md-right">Please provide your feedback --></span>
-                <a class="btn btn-success float-md-right" target="_blank" href="https://docs.google.com/document/d/15ld2tYWpc3sSIs42RlNjMchv0ICXg1fbEz3999SFijg/edit?usp=sharing" role="button">Feedback</a>
-            </div>
+    <div class="container" id="listing" style="margin-top:6%">  
+      
+         <div class="row">
+                <span style="padding-top:1em">  
+                <a class="btn btn-feedback" target="_blank" href="https://docs.google.com/document/d/15ld2tYWpc3sSIs42RlNjMchv0ICXg1fbEz3999SFijg/edit?usp=sharing" role="button">Feedback</a>
+                </span>
+            <h1 class="text-center text-capitalize font-weight-bold" style="font-family:'Segoe UI', sans-serif;letter-spacing:.1em;font-size:2rem;font-weight:400">Explore Catalogue</h1>
         </div>
+      
         <div class="row"><div class="col">
         <div class="panel container-fluid" id="search_panel">
             <div class="row justify-content-md-center">
-                <div class="col col-12 col-sm-12 col-md-12 col-lg-12 col-xl-10 col-xxl-10 align-items-center align-right d-flex flex-nowrap">
+                <div class="col col-12 col-sm-12 col-md-12 col-lg-12 col-xl-10 col-xxl-10 align-items-center align-middle align-right d-flex flex-nowrap">
                     <span class="col-4 text-end">Population(s): &nbsp;</span>
                     <select id="s1" class="col-8" multiple aria-label="size 3 select">
-                    </select>
+                    </select><br>&nbsp;
                 </div>
+                
                 <div class="col col-12 col-sm-12 col-md-12 col-lg-6 col-xl-5 col-xxl-5 align-items-center align-middle d-flex flex-nowrap">
                     <span class="col-4 text-end">Clan(s): &nbsp;</span>
                     <select id="s2" class="col-8 align-self-center" multiple aria-label="size 3 select">
-                    </select>
+                    </select><br>&nbsp;
                 </div>
 
                 <div class="col col-12 col-sm-12 col-md-12 col-lg-6 col-xl-5 col-xxl-5 align-items-center align-left d-flex flex-nowrap">
                     <span class="col-4 text-end">Pod(s): &nbsp;</span>
                     <select id="s3" class="col-8 align-self-center" multiple aria-label="size 3 select">
-                    </select>
+                    </select><br>&nbsp;
                 </div>
             </div>
             <div class="row"><div class="col"><span>&nbsp;</span></div> </div>
             <div class="row justify-content-md-center">
-                <button id="search_now" class="btn col col-12 col-sm-12 col-md-4 col-lg-2 btn-primary">Filter</button>
+                <button id="search_now" class="btn col col-12 col-sm-12 col-md-4 col-lg-2 btn-filter">Filter</button>
             </div>
         </div>
         <div class="row"><div class="col"><span>
@@ -287,7 +267,7 @@
                     <div class="col col-12 col-sm-12 col-md-12 col-lg-4 col-xl-4 col-xxl-3 row align-middle d-flex flex-nowrap align-items-center">
                         <span>
                             <span>
-                                Total Number of Results: 
+                                Total Number of Results:test
                             </span>
                             <span id="total">
 
@@ -295,25 +275,12 @@
                         </span>
                     </div>
                 </div>
-                <!--<div class="row toast-header">
-                    <div class="col-12 col-lg-4 align-items-center text-center">
-                        <span class="toast-body col-12">
-                            <kbd>&#8593;</kbd> <kbd>&#8595;</kbd> <kbd>&#8592;</kbd> <kbd>&#8594;</kbd> to navigate; 
-                        </span>
-                    </div> 
-                    <div class="col-12 col-lg-4 align-items-center text-center">
-                        <span class="toast-body col-12">
-                            <kbd>&#8626;</kbd> to open zoom-in;
-                        </span>
-                    </div>
-                    <div class="col-12 col-lg-4 align-items-center text-center">
-                        <span class="toast-body col-12">
-                            <kbd>&blank;</kbd> to play sound track;TEST
-                        </span>
-                    </div>
-                </div>-->
+             
             </div>
-            <div class="px-lg-5">
+<!------------------------------------------------END LISTING--------------------------------------------------->
+
+
+            <div class="px-lg-5" style="padding-top:3em">
                 <div id="gi-area" class="row">
                     
                     <!-- Gallery item -->
@@ -347,9 +314,7 @@
     })
 
 
-	//$(document).ready(function(){
-    //  	$("#myModal").modal('show');
-	//});
+
 </script>
 
 </html>
