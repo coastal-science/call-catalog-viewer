@@ -46,7 +46,7 @@ git push production main
 ## supplementary server-side deployment commands (2022-Aug)
 
 - The present working directory is relevant for `git` (and `git clone`) commands. These commands must be run from `/var/www/repos` to avoid unexpected behaviour.
-- The git repo and repo files are in separarate directories. Any git commands must explicitly specify these folders.
+- The git repo and repo files are in separate directories. Any git commands must explicitly specify these folders.
 -- `--work-tree=/var/www/html/call-catalog-viewer` is used for the repo files
 -- `--git-dir=/var/www/repos/call-catalog-viewer` is used for git files
 
@@ -65,8 +65,8 @@ GIT_SSH_COMMAND="ssh -i /data/deploy-keys/id_rsa_srkw_deploy_files \
  -o UserKnownHostsFile=/data/deploy-keys/www-data_known_host" git --work-tree=/var/www/html/srkw-call-catalogue-files --git-dir=/var/www/repos/srkw-call-catalogue-files clone git@github.com:sfu-bigdata/srkw-call-catalogue-files.git
 
 Confirm with fetch
- GIT_SSH_COMMAND="ssh -i /data/deploy-keys/id_rsa_srkw_deploy_files \
- -o UserKnownHostsFile=/data/deploy-keys/www-data_known_host" git --work-tree=/var/www/html/viewer/srkw-call-catalogue-files --git-dir=/var/www/repos/srkw-call-catalogue-files fetch --all -v
+GIT_SSH_COMMAND="ssh -i /data/deploy-keys/id_rsa_srkw_deploy_files \
+-o UserKnownHostsFile=/data/deploy-keys/www-data_known_host" git --work-tree=/var/www/html/viewer/srkw-call-catalogue-files --git-dir=/var/www/repos/srkw-call-catalogue-files fetch --all -v
 
 Connect
 cd /var/www/html/call-catalog-viewer
@@ -98,3 +98,10 @@ The final folder structure us expected to be:
         │   config
         └── HEAD...
 ```
+
+To tell Git that you want your own independent version of the file or folder (`library` or `catalog`). For instance, you don't want to overwrite (or delete) production/staging config files.
+
+cd /var/www/html/call-catalog-viewer
+git update-index --skip-worktree catalogs/index.yaml
+
+It's important to know that git update-index will not propagate with Git, so each user will have to run it independently. https://stackoverflow.com/a/40272289
