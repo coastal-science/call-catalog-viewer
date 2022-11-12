@@ -135,12 +135,29 @@ var GridPanel = undefined;
         // need to have the searchable parameters within the json file
         // can add each of the searchable parameters to include what is required
         // add a JSON object right to the start so that simple_datasource[0] contains an object with filters, 
-        var simple_datasource = JSON.parse(data); // is an array of json objects each representing a call
+        var simple_datasource = JSON.parse(data); // json representation the catalogue.json file
+        
+        // get the filter data and set simple_datasource so it is just calls
+        var filters = simple_datasource["filters"]; 
+        simple_datasource = simple_datasource["calls"];
+        console.log("Starting length: " + simple_datasource.length);
+        updateFilters(filters);
+
         var s1 = searching_para['s1'];
         var s2 = searching_para['s2'];
         var s3 = searching_para['s3'];
 
-        //Filter: searching_para
+        // loop through searching_para using the keys from it as the values to get from json
+        var parameters = Object.keys(searching_para); // for each of the parameters to search by, find the intersection of them
+        parameters.forEach(param => {
+            if (!(["s1", "s2", "s3"].includes(param))) {
+                simple_datasource = simple_datasource.filter(item => searching_para[param].includes(item[param]));
+                // console.log("Pod " + item["pod"]);
+            }
+        });
+        resultData = simple_datasource;
+
+        // //Filter: searching_para
         var resultData1 = simple_datasource.filter(item => s2.includes(item.clan)).filter(item => s1.includes(item.population));
         resultData = resultData1.filter((item) => {
             return item.pod_cat.filter(value => s3.includes(value)).length; // set intersection
@@ -150,6 +167,7 @@ var GridPanel = undefined;
             // m, p are expected to be small (in comparison to the number of entries) (?)
             // explicit loop version below returns faster (at first match, w/o complete set intersection)
         });
+        console.log("RESULT DATA LENGTH " + resultData.length);
         // resultData = resultData1.filter((item) => {
 
         //     if (item.pod_cat.length === 0){
@@ -254,6 +272,7 @@ var GridPanel = undefined;
             }
         };
         resultData.sort(current_sort);
+        console.log(JSON.stringify(resultData));
 
         resultData = resultData.splice((current_page-1)*page_size, page_size);
         redraw_items();
@@ -283,6 +302,26 @@ var GridPanel = undefined;
         return $.ajax({});
     }
     panel.getCatalog = getCatalog;
+
+    /**
+     * Update the current filters to include the new ones from given catalogue
+     * @param {JSON} filters JSON representation of filters for given catalogue
+     */
+    function updateFilters(filters) {
+        filters.forEach(element => {
+            var filterable = element[0]; 
+            if (!(filterable in searching_para)) { // filterable is not already in the searchable
+                searching_para[filterable] = element.slice(1); // add the filterable param to the searching_params
+            } else { // filterable is already in the parameters. Add all the elements that are not already in it
+                element.slice(1).forEach (val => {
+                    if (!searching_para[filterable].includes(val)) {
+                        searching_para[filterable].push(val);
+                    }
+                });
+            }
+        });
+    }
+
 
     function init(){
         resultData = [];
