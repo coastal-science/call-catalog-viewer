@@ -132,7 +132,10 @@ var GridPanel = undefined;
 		let data = await response.text();
 		// only proceed once second promise is resolved
 		
-        var simple_datasource = JSON.parse(data);
+        // need to have the searchable parameters within the json file
+        // can add each of the searchable parameters to include what is required
+        // add a JSON object right to the start so that simple_datasource[0] contains an object with filters, 
+        var simple_datasource = JSON.parse(data); // is an array of json objects each representing a call
         var s1 = searching_para['s1'];
         var s2 = searching_para['s2'];
         var s3 = searching_para['s3'];
@@ -290,6 +293,7 @@ var GridPanel = undefined;
         pop_opening = false;
         metadata_show = true;
         
+        // TODO: How can this be altered to allow for searching parameters to be picked from the yaml?
         searching_para = {
             s1: ["SRKW", "NRKW"],
             s2: ["J"],

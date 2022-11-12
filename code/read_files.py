@@ -94,6 +94,7 @@ def read_data_folder(data_folder):
     
 def generate_yaml(data_folder, df):
     
+    # TODO: Specifics in the creation of the yaml files
     #generate array
     new_df = df.rename(columns={"thumb": "image-file", "cn": "call-type", "mar": "matrilines", "clan": "clan", "pod": "pod", "filename": "wav-file"})
     new_df['population'] = "SRKW"
@@ -111,9 +112,22 @@ def read_yaml(yaml_file):
     with open(yaml_file) as file:
         # The FullLoader parameter handles the conversion from YAML
         # scalar values to Python the dictionary format
-        resource_list = yaml.safe_load(file)
-        #print(resource_list)
-        df = pd.DataFrame.from_dict(resource_list['calls'])
+        resource_list = yaml.safe_load(file) # generates a dictionary from the yaml file
+        # print(resource_list)
+        df = pd.DataFrame.from_dict(resource_list['calls']) # creates dataframe with all of the call data
+
+        filters = list()
+        # create a list of filters with list[0] being the paramater name and everything else the values
+        d = resource_list['filters'] # list of dictonaries {key is param: value is potential filters on param}
+        for elem in d: 
+            for key in elem:
+                ar = [key]
+                for value in elem[key]:
+                    ar.append(value)
+                filters.append(ar)
+
+        print(filters)
+
         #pre-processing and convert to original JSON format
         # TODO: Issues with specifics here
         df['call-type'] = df['call-type']       #assuming call-type now becomes S01 instead of BCS01
@@ -167,7 +181,7 @@ def str_presenter(dumper, data):
 def export_file(df, data_folder, file_name, file_format = 'json'):
     #df['thumb'] = data_folder + "/" + df['thumb']
     if (file_format == 'json'):
-        with open(file_name+'.json', 'w') as f:
+        with open(file_name+'.json', 'w') as f: # this is where it writes to the json.
             f.write(df.to_json(orient='records'))
     elif (file_format == 'csv'):
             df.to_csv(file_name+'.csv')
@@ -195,7 +209,7 @@ if __name__ == '__main__':
         python3 read_files.py call-catalog.yaml <--read resources info from yaml file
         python3 read_files.py simple call-catalog yaml<--read resources info from the directory containing resources
     """
-    inputs = sys.argv[1]
+    inputs = sys.argv[1] # inputs is path to index file in the catalog to be added
     if len(sys.argv) == 3:
         output = sys.argv[2]
         file_format = 'json'
@@ -209,7 +223,7 @@ if __name__ == '__main__':
         file_format = 'json'
         print("read_files.py: Generate json file...")
 
-    if inputs.endswith('.yaml'):    #read yaml file
+    if inputs.endswith('.yaml'):    # input file is a yaml. Read it
         df = read_yaml(inputs)
         export_file(df, data_folder, output, file_format = file_format)
         print("read_files.py: Completed reading yaml file...")
