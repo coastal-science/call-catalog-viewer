@@ -41,6 +41,9 @@ class Null(ScalarValidator):
 
 yaml_schema = Map({"call-type": Str(), "clan": Str(), "image-file": Str(), "wav-file": Str(), "matrilines": Null() | Str(), "pod": Str(), "population": Str(), "sample": Null() | Int(), "subclan": Null() | Str(), "subpopulation": Null() | Str()})
 """
+
+LIBRARY = 'catalogs'
+
 try:
     script_folder = os.path.dirname(__file__)
 except NameError:
@@ -113,17 +116,18 @@ def read_yaml(yaml_file):
         #print(resource_list)
         df = pd.DataFrame.from_dict(resource_list['calls'])
         #pre-processing and convert to original JSON format
+        # TODO: Issues with specifics here
         df['call-type'] = df['call-type']       #assuming call-type now becomes S01 instead of BCS01
         df['pod_cat'] =  df['pod'].str.findall(r'[J|K|L]')
         df['filename'] =  df['image-file'].str.split(".", expand=True)[0]
         df['filename'] =  [x.split("/")[-1] for x in df['filename']]
         df['thumb'] = df['image-file']
         df['sample'] = df['sample'].apply(lambda x: None if np.isnan(x) else str(int(x)))
-        
+
         #check image-file and wav-file
         from os.path import exists
-        df['image_exists'] = df['image-file'].apply(lambda x: exists(x))
-        df['wav_exists'] = df['wav-file'].apply(lambda x: exists(x))
+        df['image_exists'] = df['image-file'].apply(lambda x: exists(LIBRARY + '/' + x))
+        df['wav_exists'] = df['wav-file'].apply(lambda x: exists(LIBRARY + '/' + x))
         #print(df)
         #output if there is case of file not found in image
         if False in df['image_exists'].unique():
