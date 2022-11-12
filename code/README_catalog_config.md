@@ -28,7 +28,7 @@ python code/catalog_config.py add <name> <source-folder> <index.yaml>
 ```
 e.g.
 ```
-python code/catalog_config.py add srkw-call-catalogue-files ./srkw-call-catalogue-files call-catalog.yaml
+python code/catalog_config.py add srkw-call-catalogue-files ../srkw-call-catalogue-files call-catalog.yaml
 ```
 
 ## `remove` a catalog
@@ -110,7 +110,7 @@ cd /var/www/html/catalog-viewer/
 Then, to `add` a catalog use the command 
 
 ```bash
-$ python code/add_catalog.py srkw-call-catalogue-files ./srkw-call-catalogue-files call-catalog.yaml
+$ python code/add_catalog.py srkw-call-catalogue-files ../srkw-call-catalogue-files call-catalog.yaml
 ```
 
 `index.yaml` updates like so

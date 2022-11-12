@@ -42,8 +42,6 @@ class Null(ScalarValidator):
 yaml_schema = Map({"call-type": Str(), "clan": Str(), "image-file": Str(), "wav-file": Str(), "matrilines": Null() | Str(), "pod": Str(), "population": Str(), "sample": Null() | Int(), "subclan": Null() | Str(), "subpopulation": Null() | Str()})
 """
 
-LIBRARY = 'catalogs'
-
 try:
     script_folder = os.path.dirname(__file__)
 except NameError:
@@ -51,6 +49,7 @@ except NameError:
 #data_folder = f"{script_folder}simple"
 data_folder = ""
 file_name = "call-catalog"
+library = "catalogs"
 
 def get_filenames(folder):
     #print(folder)
@@ -126,8 +125,8 @@ def read_yaml(yaml_file):
 
         #check image-file and wav-file
         from os.path import exists
-        df['image_exists'] = df['image-file'].apply(lambda x: exists(LIBRARY + '/' + x))
-        df['wav_exists'] = df['wav-file'].apply(lambda x: exists(LIBRARY + '/' + x))
+        df['image_exists'] = df['image-file'].apply(lambda x: exists(library + '/' + x))
+        df['wav_exists'] = df['wav-file'].apply(lambda x: exists(library + '/' + x))
         #print(df)
         #output if there is case of file not found in image
         if False in df['image_exists'].unique():
