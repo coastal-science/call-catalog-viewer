@@ -116,18 +116,17 @@ def read_yaml(yaml_file):
         # print(resource_list)
         df = pd.DataFrame.from_dict(resource_list['calls']) # creates dataframe with all of the call data
 
+        # create a list of lists with the parameter name as 0th element and everything else after
+        #  makes for easier handling in json than dictionaries with unknown keys
+        f = resource_list['filters'] # is a list a dictionary objects containing all of the filterable datas
         filters = list()
-        # create a list of filters with list[0] being the paramater name and everything else the values
-        d = resource_list['filters'] # list of dictonaries {key is param: value is potential filters on param}
-        for elem in d: 
-            for key in elem:
-                ar = [key]
-                for value in elem[key]:
-                    ar.append(value)
-                filters.append(ar)
+        for val in f:
+            for i in val:
+                arr = [x for x in val[i]] 
+                arr.insert(0, i)
+                filters.append(arr) # adds all of the filterable data and inserts the parameter at index 0
 
         print(filters)
-
         #pre-processing and convert to original JSON format
         # TODO: Issues with specifics here
         df['call-type'] = df['call-type']       #assuming call-type now becomes S01 instead of BCS01
@@ -162,7 +161,8 @@ def read_yaml(yaml_file):
         #rename columns
         df = df.rename(columns={"call-type": "cn", "matrilines": "mar", "clan": "clan", "pod": "pod", "image-file":"image_file", "wav-file": "wav_file" })
 
-    return df
+    # returns the dataframe and the filters dictionary
+    return (df, filters)
 
 def represent_none(self, _):
     return self.represent_scalar('tag:yaml.org,2002:null', '')
@@ -178,11 +178,19 @@ def str_presenter(dumper, data):
         return dumper.represent_scalar('tag:yaml.org,2002:str', data)
     return dumper.represent_scalar('tag:yaml.org,2002:str', data)
 
-def export_file(df, data_folder, file_name, file_format = 'json'):
+def export_file(df, data_folder, filters, file_name, file_format = 'json'):
+    from json import dump
     #df['thumb'] = data_folder + "/" + df['thumb']
     if (file_format == 'json'):
         with open(file_name+'.json', 'w') as f: # this is where it writes to the json.
-            f.write(df.to_json(orient='records'))
+            json = dict()
+            json['filters'] = filters
+            json['calls'] = df.to_dict('records')
+            print(json['calls'])
+            # filters.append(df.to_dict('records'))
+            dump(json, f)
+            # print(filters)
+            # f.write(df.to_json(orient='records'))
     elif (file_format == 'csv'):
             df.to_csv(file_name+'.csv')
     elif (file_format == 'yaml'):
@@ -224,8 +232,8 @@ if __name__ == '__main__':
         print("read_files.py: Generate json file...")
 
     if inputs.endswith('.yaml'):    # input file is a yaml. Read it
-        df = read_yaml(inputs)
-        export_file(df, data_folder, output, file_format = file_format)
+        df, filter = read_yaml(inputs)
+        export_file(df, data_folder, filter, output, file_format = file_format)
         print("read_files.py: Completed reading yaml file...")
     else:   #read resource directory
         df = read_data_folder(inputs)
