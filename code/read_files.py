@@ -101,6 +101,7 @@ def generate_yaml(data_folder, df):
     new_df['wav-file'] = data_folder + "/" + new_df['wav-file'] + ".wav" #data_folder + "/" + 
     new_df['image-file'] = data_folder + "/" + new_df['image-file'] #data_folder + "/" + 
     new_df = new_df.drop(['pod_cat'], axis=1)
+    print("GEnerate yaml called")
     #new_df['sample'] = new_df['sample'].astype('float').astype('Int8')  #accommodate None
     
     #print(new_df)
@@ -114,26 +115,46 @@ def read_yaml(yaml_file):
         # scalar values to Python the dictionary format
         resource_list = yaml.safe_load(file) # generates a dictionary from the yaml file
         # print(resource_list)
-        df = pd.DataFrame.from_dict(resource_list['calls']) # creates dataframe with all of the call data
 
         # create a list of lists with the parameter name as 0th element and everything else after
         #  makes for easier handling in json than dictionaries with unknown keys
-        f = resource_list['filters'] # is a list a dictionary objects containing all of the filterable datas
+        f = resource_list['fields'] # is a list a dictionary objects containing all of the filterable datas
+        fields = list()
         filters = list()
         for val in f:
-            for i in val:
-                arr = [x for x in val[i]] 
-                arr.insert(0, i)
-                filters.append(arr) # adds all of the filterable data and inserts the parameter at index 0
+            if type(val) == dict: # this means that it is filterable item
+                key = list(dict(val).keys())[0]
+                params = [x.split(',') for x in val[key]] # options are put in as a comma seperated string. This splits them
+                print(params)
+                arr = [key]
+                for x in params[0]:
+                    arr.append(x)
+                filters.append(arr) # adds arr with structures ['field_name', 'value1', 'value2'...] to the filters list
+                print(arr)
+                fields.append(key)
+            else:
+                fields.append(val)
 
-        print(filters)
-        #pre-processing and convert to original JSON format
-        # TODO: Issues with specifics here
-        df['call-type'] = df['call-type']       #assuming call-type now becomes S01 instead of BCS01
-        df['pod_cat'] =  df['pod'].str.findall(r'[J|K|L]')
+
+        REQUIRED_FIELDS = ['image-file', 'wav-file', 'description-file']
+        for field in REQUIRED_FIELDS:
+            if field not in fields:
+                print(f"Field '{field}' is required")
+                exit(-1)
+
+        # pre-processing and convert to original JSON format
+        # create dataframe with all of the call data and do special handling form image-file, wav-file and description-file
+        df = pd.DataFrame.from_dict(resource_list['calls'])
+
+        # extract the filename from the path
         df['filename'] =  df['image-file'].str.split(".", expand=True)[0]
         df['filename'] =  [x.split("/")[-1] for x in df['filename']]
-        df['thumb'] = df['image-file']
+
+
+
+        # df['pod_cat'] =  df['pod'].str.findall(r'[J|K|L]')
+        # df['call-type'] = df['call-type']       #assuming call-type now becomes S01 instead of BCS01
+        # df['thumb'] = df['image-file']
         df['sample'] = df['sample'].apply(lambda x: None if np.isnan(x) else str(int(x)))
 
         #check image-file and wav-file
@@ -159,7 +180,7 @@ def read_yaml(yaml_file):
         df.drop(['image_exists', 'wav_exists'], inplace=True, axis=1)
     
         #rename columns
-        df = df.rename(columns={"call-type": "cn", "matrilines": "mar", "clan": "clan", "pod": "pod", "image-file":"image_file", "wav-file": "wav_file" })
+        # df = df.rename(columns={"call-type": "cn", "matrilines": "mar", "clan": "clan", "pod": "pod", "image-file":"image_file", "wav-file": "wav_file" })
 
     # returns the dataframe and the filters dictionary
     return (df, filters)
@@ -186,7 +207,7 @@ def export_file(df, data_folder, filters, file_name, file_format = 'json'):
             json = dict()
             json['filters'] = filters
             json['calls'] = df.to_dict('records')
-            print(json['calls'])
+            # print(json['calls'])
             # filters.append(df.to_dict('records'))
             dump(json, f)
             # print(filters)
