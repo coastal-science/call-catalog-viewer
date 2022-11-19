@@ -61,7 +61,7 @@ var GridPanel = undefined;
         return 1;
     }
 
-    function pack_option(id, thumb, callname, matrilines, pod, clan, full){
+    function pack_option(id, image_file, callname, pod, clan, full){
         if (Array.isArray(pod)){
             if (pod.length >= 1){
                 pod = '['+pod.join(', ')+']';
@@ -73,15 +73,22 @@ var GridPanel = undefined;
                 pod = 'N/A';
             }
         }
+
+        // checking if values exist in the data. If they do, they will be put there, else they will be unkown or N/A
         if (callname === undefined || callname === null){
             callname = "Unknown";
         }
-        if (matrilines === undefined || matrilines === null){
-            matrilines = "N/A";
+        if (pod === undefined) {
+            pod = "N/A";
         }
+        if (clan === undefined) {
+            clan = "N/A";
+        }
+
+        
         return '<div class="col-xxl-2 col-xl-2 col-lg-3 col-md-3 col-sm-4 mb-4 itemblock" id="gi-'+id+'">\
             <div class="bg-white rounded shadow-sm"><a href="'+media_folder_path+full+'" data-toggle="lightbox" class="image_pop_source text-decoration-none"">\
-            <img src="'+media_folder_path+thumb+'" loading="lazy" alt="" class="img-fluid card-img-top"></a>\
+            <img src="'+media_folder_path+image_file+'" loading="lazy" alt="" class="img-fluid card-img-top"></a>\
             <div class="p-4">\
                 <h5> <a class="play_btn" href="#" style="text-decoration:none">'+play_icon+'<span class="text-dark">&nbsp;'+callname+'</span></a></h5>\
                 <p class="small mb-0 meta-p"><span class="font-weight-bold">Pods: '+pod+'</span></p>\
@@ -149,24 +156,40 @@ var GridPanel = undefined;
 
         // loop through searching_para using the keys from it as the values to get from json
         var parameters = Object.keys(searching_para); // for each of the parameters to search by, find the intersection of them
+        console.log(parameters);
         parameters.forEach(param => {
             if (!(["s1", "s2", "s3"].includes(param))) {
-                simple_datasource = simple_datasource.filter(item => searching_para[param].includes(item[param]));
+                simple_datasource = simple_datasource.filter(item => {
+                    if (Array.isArray(item[param])) {
+                        console.log(item[param][0]);
+                        for (var i = 0; i < item[param].length; i++) {
+                            if (searching_para[param].includes(item[i])) {
+                                return true;
+                            }
+                        }
+                        return false;
+                    } else {
+                        return searching_para[param].includes(item[param]);
+                    }
+                })
+                console.log(searching_para[param]);
+                // simple_datasource = simple_datasource.filter(item => searching_para[param].includes(item[param]));
+                console.log(simple_datasource);
                 // console.log("Pod " + item["pod"]);
             }
         });
         resultData = simple_datasource;
 
-        // //Filter: searching_para
-        var resultData1 = simple_datasource.filter(item => s2.includes(item.clan)).filter(item => s1.includes(item.population));
-        resultData = resultData1.filter((item) => {
-            return item.pod_cat.filter(value => s3.includes(value)).length; // set intersection
-            // Entire set intersection is computed =  O(m x p); 
-            // m = # of s3 filter options
-            // p = max(# of pod_cat values)
-            // m, p are expected to be small (in comparison to the number of entries) (?)
-            // explicit loop version below returns faster (at first match, w/o complete set intersection)
-        });
+        // // //Filter: searching_para
+        // var resultData1 = simple_datasource.filter(item => s2.includes(item.clan)).filter(item => s1.includes(item.population));
+        // resultData = resultData1.filter((item) => {
+        //     return item.pod_cat.filter(value => s3.includes(value)).length; // set intersection
+        //     // Entire set intersection is computed =  O(m x p); 
+        //     // m = # of s3 filter options
+        //     // p = max(# of pod_cat values)
+        //     // m, p are expected to be small (in comparison to the number of entries) (?)
+        //     // explicit loop version below returns faster (at first match, w/o complete set intersection)
+        // });
         console.log("RESULT DATA LENGTH " + resultData.length);
         // resultData = resultData1.filter((item) => {
 
@@ -440,7 +463,7 @@ var GridPanel = undefined;
                 var tmpid = window.crypto.getRandomValues(new Uint32Array(1))[0].toString(16)+window.crypto.getRandomValues(new Uint32Array(1))[0].toString(16);
             }while (id_to_seq[tmpid] !== undefined);
             id_to_seq[tmpid] = i;
-            var obj = pack_option(tmpid, LIBRARY+'/'+ele.thumb, ele.cn, ele.mar, ele.pod_cat, ele.clan, LIBRARY+'/'+ele.image_file);
+            var obj = pack_option(tmpid, LIBRARY+'/'+ele.image_file, ele.call_name, ele.pod, ele.clan, LIBRARY+'/'+ele.image_file);
             grid.append(obj);
             
         }
