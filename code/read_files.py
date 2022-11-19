@@ -109,6 +109,11 @@ def generate_yaml(data_folder, df):
    
     return yaml_dict
 
+def split_params(fields, row):
+    for field in fields:
+        print(field)
+
+
 def read_yaml(yaml_file):
     with open(yaml_file) as file:
         # The FullLoader parameter handles the conversion from YAML
@@ -142,19 +147,32 @@ def read_yaml(yaml_file):
                 print(f"Field '{field}' is required")
                 exit(-1)
 
+        OPTIONAL_FIELDS = ['call-type', 'pod', 'clan', 'stupid']
+        for field in OPTIONAL_FIELDS:
+            if field not in fields:
+                print(f"Field '{field}' can be specified")
+
         # pre-processing and convert to original JSON format
         # create dataframe with all of the call data and do special handling form image-file, wav-file and description-file
         df = pd.DataFrame.from_dict(resource_list['calls'])
+
+        # need to iterate through all of the rows in DataFrame to split any values that may exist. J,L -> [J, L]
+        for index, row in df.iterrows():
+            for field in fields:
+                if field in REQUIRED_FIELDS:
+                    continue # don't want to change anything with the image, sound, or description. They could be vaild commas
+                if (type(row[field]) == str and ',' in row[field]):
+                    print(row[field].split(','))
+                    df.at[index,field] = row[field].split(',')
+                    # row[field] = str(row[field]).split(',')
+                    # df = df.replace(row[field], str(row[field]).split(','))
 
         # extract the filename from the path
         df['filename'] =  df['image-file'].str.split(".", expand=True)[0]
         df['filename'] =  [x.split("/")[-1] for x in df['filename']]
 
 
-
-        # df['pod_cat'] =  df['pod'].str.findall(r'[J|K|L]')
-        # df['call-type'] = df['call-type']       #assuming call-type now becomes S01 instead of BCS01
-        # df['thumb'] = df['image-file']
+        # keeping for testing
         df['sample'] = df['sample'].apply(lambda x: None if np.isnan(x) else str(int(x)))
 
         #check image-file and wav-file
@@ -179,8 +197,9 @@ def read_yaml(yaml_file):
         #drop 'image_exists' and 'wav_exists' columns
         df.drop(['image_exists', 'wav_exists'], inplace=True, axis=1)
     
-        #rename columns
-        # df = df.rename(columns={"call-type": "cn", "matrilines": "mar", "clan": "clan", "pod": "pod", "image-file":"image_file", "wav-file": "wav_file" })
+        #rename columns for better compatibility in GridPanel
+        # call-type is in there for testing purposes
+        df = df.rename(columns={"image-file": "image_file", "wav-file": "wav_file", "description-file": "description_file", "call-type": "call_name"})
 
     # returns the dataframe and the filters dictionary
     return (df, filters)
