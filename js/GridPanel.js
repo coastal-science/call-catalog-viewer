@@ -353,6 +353,7 @@ var GridPanel = undefined;
         
         // TODO: How can this be altered to allow for searching parameters to be picked from the yaml?
         // Does this even matter?? Update params is called on teh loading anyway
+        // these are passed through the url to the searching params. Can update these first and then send them to the fellas over there
         searching_para = {
             s1: ["SRKW", "NRKW"],
             s2: ["J"],
