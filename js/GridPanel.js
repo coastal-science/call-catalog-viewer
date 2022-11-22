@@ -76,7 +76,7 @@ var GridPanel = undefined;
 
         // checking if values exist in the data. If they do, they will be put there, else they will be unkown or N/A
         if (callname === undefined || callname === null){
-            callname = "Unknown";
+            callname = "Not Specified";
         }
         if (pod === undefined) {
             pod = "N/A";
@@ -147,7 +147,7 @@ var GridPanel = undefined;
         // get the filter data and set simple_datasource so it is just calls
         var filters = simple_datasource["filters"]; 
         simple_datasource = simple_datasource["calls"];
-        console.log("Starting length: " + simple_datasource.length);
+        // console.log("Starting length: " + simple_datasource.length);
         updateFilters(filters);
 
         var s1 = searching_para['s1'];
@@ -156,14 +156,13 @@ var GridPanel = undefined;
 
         // loop through searching_para using the keys from it as the values to get from json
         var parameters = Object.keys(searching_para); // for each of the parameters to search by, find the intersection of them
-        console.log(parameters);
+        // console.log(parameters);
         parameters.forEach(param => {
             if (!(["s1", "s2", "s3"].includes(param))) {
                 simple_datasource = simple_datasource.filter(item => {
                     if (Array.isArray(item[param])) {
-                        console.log(item[param][0]);
                         for (var i = 0; i < item[param].length; i++) {
-                            if (searching_para[param].includes(item[i])) {
+                            if (searching_para[param].includes(item[param][i])) {
                                 return true;
                             }
                         }
@@ -172,13 +171,10 @@ var GridPanel = undefined;
                         return searching_para[param].includes(item[param]);
                     }
                 })
-                console.log(searching_para[param]);
-                // simple_datasource = simple_datasource.filter(item => searching_para[param].includes(item[param]));
-                console.log(simple_datasource);
-                // console.log("Pod " + item["pod"]);
             }
         });
         resultData = simple_datasource;
+
 
         // // //Filter: searching_para
         // var resultData1 = simple_datasource.filter(item => s2.includes(item.clan)).filter(item => s1.includes(item.population));
@@ -295,7 +291,7 @@ var GridPanel = undefined;
             }
         };
         resultData.sort(current_sort);
-        console.log(JSON.stringify(resultData));
+        // console.log(JSON.stringify(resultData));
 
         resultData = resultData.splice((current_page-1)*page_size, page_size);
         redraw_items();
@@ -356,6 +352,7 @@ var GridPanel = undefined;
         metadata_show = true;
         
         // TODO: How can this be altered to allow for searching parameters to be picked from the yaml?
+        // Does this even matter?? Update params is called on teh loading anyway
         searching_para = {
             s1: ["SRKW", "NRKW"],
             s2: ["J"],
@@ -658,7 +655,7 @@ var GridPanel = undefined;
                 else{
                     document.location.href = page_link;
                 }
-                console.log(lity_data);
+                // console.log(lity_data);
             }
             else{
                 //something went wrong
