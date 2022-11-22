@@ -130,12 +130,10 @@ def read_yaml(yaml_file):
             if type(val) == dict: # this means that it is filterable item
                 key = list(dict(val).keys())[0]
                 params = [x.split(',') for x in val[key]] # options are put in as a comma seperated string. This splits them
-                print(params)
                 arr = [key]
                 for x in params[0]:
                     arr.append(x)
                 filters.append(arr) # adds arr with structures ['field_name', 'value1', 'value2'...] to the filters list
-                print(arr)
                 fields.append(key)
             else:
                 fields.append(val)
@@ -147,7 +145,8 @@ def read_yaml(yaml_file):
                 print(f"Field '{field}' is required")
                 exit(-1)
 
-        OPTIONAL_FIELDS = ['call-type', 'pod', 'clan', 'stupid']
+        # What can I do with these fields???
+        OPTIONAL_FIELDS = ['call-type', 'pod', 'clan']
         for field in OPTIONAL_FIELDS:
             if field not in fields:
                 print(f"Field '{field}' can be specified")
@@ -164,9 +163,8 @@ def read_yaml(yaml_file):
                 if (type(row[field]) == str and ',' in row[field]):
                     print(row[field].split(','))
                     df.at[index,field] = row[field].split(',')
-                    # row[field] = str(row[field]).split(',')
-                    # df = df.replace(row[field], str(row[field]).split(','))
 
+        print(df)
         # extract the filename from the path
         df['filename'] =  df['image-file'].str.split(".", expand=True)[0]
         df['filename'] =  [x.split("/")[-1] for x in df['filename']]
