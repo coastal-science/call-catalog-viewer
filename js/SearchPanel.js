@@ -42,6 +42,7 @@ var SearchPanel = undefined;
 
     function buildDropdowns() {
         s_options.forEach((value) => {
+            console.log(value);
             Panel.find('#' + value.s).empty();
             var default_option = [];
             value.option.forEach((op_val) => {
@@ -56,28 +57,25 @@ var SearchPanel = undefined;
         bindEvents();
     }
 
-    function updateOptions(originalData) {
-         
-    }
-
     function init() {
         originalData = {
-            // s1: ["SRKW", "NRKW"],
-            // s2: ["J"],
-            // s3: ["J", "K", "L"],
+            s1: ["SRKW", "NRKW"],
+            s2: ["J"],
+            s3: ["J", "K", "L"],
         };
         const queryString = window.location.search;
         const urlParams = new URLSearchParams(queryString);
         if (urlParams.has('f')) {
             const filter = urlParams.get('f');
-            const obj = atob(filter); // this is the filters passed through the url
+            const obj = atob(filter);
             console.log("OBJ: " + obj);
             if (obj !== undefined) {
                 try {
                     const ev = eval('(' + obj + ')');
-                    var keys = Object.keys(ev);
-                    keys.forEach((item) => {
-                        originalData[item] = ev[item];
+                    ['s1', 's2', 's3'].forEach((v) => {
+                        if (ev[v] !== undefined) {
+                            originalData[v] = ev[v];
+                        }
                     });
                 } catch (e) {
 
@@ -85,8 +83,7 @@ var SearchPanel = undefined;
             }
         }
 
-        updateOptions(originalData);
-        console.log("Original Data:" + originalData);
+        console.log(originalData);
 
         tmpResult = $.extend(true, {}, originalData);
         Panel = $('.panel');
