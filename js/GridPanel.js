@@ -295,7 +295,7 @@ var GridPanel = undefined;
 
         resultData = resultData.splice((current_page-1)*page_size, page_size);
         redraw_items();
-        console.log("SEARCHING PARA: ", searching_para);
+
         var encoded = btoa(JSON.stringify(searching_para));
         const state = {'f': encoded, 'p':current_page, 's':sort_by, 'sa':sort_asc};
         const title = '';
@@ -355,33 +355,31 @@ var GridPanel = undefined;
         // Does this even matter?? Update params is called on teh loading anyway
         // these are passed through the url to the searching params. Can update these first and then send them to the fellas over there
         searching_para = {
-            // s1: ["SRKW", "NRKW"],
-            // s2: ["J"],
-            // s3: ["J", "K", "L"],
+            s1: ["SRKW", "NRKW"],
+            s2: ["J"],
+            s3: ["J", "K", "L"],
         };
         sort_by = 'cn';
         sort_asc = 'as';
 
         const queryString = window.location.search;
         const urlParams = new URLSearchParams(queryString);
-        // // all this does is add the old ones that we don't want
-        // if (urlParams.has('f')){
-        //     const filter = urlParams.get('f');
-        //     const obj = atob(filter);
-        //     if (obj !== undefined){
-        //         // try{
-        //         //     const ev = eval('('+obj+')');
-        //         //     console.log("EV: " + ev['pod']);
-        //         //     ['s1','s2','s3'].forEach((v)=>{
-        //         //         if (ev[v] !== undefined){
-        //         //             // searching_para[v] = ev[v];
-        //         //         }
-        //         //     });
-        //         // }catch (e){
+        if (urlParams.has('f')){
+            const filter = urlParams.get('f');
+            const obj = atob(filter);
+            if (obj !== undefined){
+                try{
+                    const ev = eval('('+obj+')');
+                    ['s1','s2','s3'].forEach((v)=>{
+                        if (ev[v] !== undefined){
+                            searching_para[v] = ev[v];
+                        }
+                    });
+                }catch (e){
 
-        //         // }
-        //     }
-        // }
+                }
+            }
+        }
         current_page = 1;
         if (urlParams.has('p')){
             const filter = urlParams.get('p');
