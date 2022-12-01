@@ -146,16 +146,13 @@ var SearchPanel = undefined;
     };
     panel.init = init;
 
-    function bindEvents() { // TODO: Accomodate any number of filters, not hardcoded to 3
-        $('#s1').on('changed.bs.select', (e, clickedIndex, isSelected, previousValue) => {
-            tmpResult['s1'] = $('#s1').selectpicker('val');
-        });
-        $('#s2').on('changed.bs.select', (e, clickedIndex, isSelected, previousValue) => {
-            tmpResult['s2'] = $('#s2').selectpicker('val');
-        });
-        $('#s3').on('changed.bs.select', (e, clickedIndex, isSelected, previousValue) => {
-            tmpResult['s3'] = $('#s3').selectpicker('val');
-        });
+    function bindEvents() {
+        // for the number of values, in s_options, do this thing
+        for (let i = 0; i < s_options.length; i++) {
+            $('#s' + i).on('changed.bs.select', (e, clickedIndex, isSelected, previousValue) => {
+                tmpResult['s' + i] = $('#s' + i).selectpicker('val');
+            });
+        }
         Panel.find('#search_now').off('click').click(function (e) {
             dirty = false;
             originalData = $.extend(true, {}, tmpResult);
