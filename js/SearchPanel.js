@@ -64,9 +64,7 @@ var SearchPanel = undefined;
                 arr.push(temp);  
             });
             obj.option = arr;
-            console.log(obj);
             s_options.push(obj);
-            console.log(s_options);
             count++;
         });
     }
@@ -112,20 +110,27 @@ var SearchPanel = undefined;
                     let count = 1;
                     Object.keys(ev).forEach((item) => {
                         if (!['s1', 's2', 's3'].includes(item)) {
-                            originalData['s' + count] = ev[item];
+                            // originalData['s' + count] = ev[item];
+                            var list = [item];
+                            list = list.concat(ev[item]);
+                            originalData['s' + count] = list;
+                            // console.log("THIS IS EACH: " + JSON.stringify(originalData['s' + count]));
+                            // originalData['s' + count] = [item].append(ev[item])
+                            // originalData[item] = ev[item];
                             element_id_to_title['s' + count] = item;
-                            console.log("DATA ORIG: " + originalData['s' + count]);
                             count++;
                         }
                     });
                 } catch (e) {
-
+                    console.log(e);
                 }
             }
         }
         updateFilterOptions(originalData);
-
-        tmpResult = $.extend(true, {}, originalData);
+        
+        console.log("ORIG " + JSON.stringify(originalData)); // This is passed as a key value using the filterable name as key and options as value. Can convert this back s notation with value as first element in array
+        tmpResult = $.extend(true, {}, originalData); // need for better handling of the tmpResult to update filtering capabilities
+        console.log("TEMP RESULT: " + JSON.stringify(tmpResult));
         Panel = $('.panel');
 
         Panel.find("#search_rows").empty(); // clear the search rows panel so that we can append the data
@@ -133,9 +138,9 @@ var SearchPanel = undefined;
             Panel.find('#' + value.s).empty();
             var default_option = [];
             Panel.find("#search_rows").append(pack_dropdown(value.display)); // the dropdown to the panel
-            value.option.forEach((op_val) => {
+            value.option.slice(1).forEach((op_val) => { // slice the string to not include the category {s1: ['pod', 'value1', 'value2']}
                 Panel.find('#' + value.s).append(pack_option(op_val.v, op_val.text)); // add all of the options to the dropdown just added
-                if (originalData[value.s].indexOf(op_val.v) >= 0) {
+                if (originalData[value.display].indexOf(op_val.v) >= 0) {
                     default_option.push(op_val.v);
                 }
             });
@@ -148,14 +153,18 @@ var SearchPanel = undefined;
 
     function bindEvents() {
         // for the number of values, in s_options, do this thing
-        for (let i = 0; i < s_options.length; i++) {
-            $('#s' + i).on('changed.bs.select', (e, clickedIndex, isSelected, previousValue) => {
-                tmpResult['s' + i] = $('#s' + i).selectpicker('val');
+        for (let i = 1; i <= s_options.length; i++) {
+            var object = s_options[i];
+            $('#s' + i).on('changed.bs.select', (e, clickedIndex, isSelected, previousValue) => { // sets the listener when dropdowns are changed
+                const list = [tmpResult['s' + i][0]]
+                tmpResult['s' + i] = list.concat($('#s' + i).selectpicker('val'));
             });
         }
-        Panel.find('#search_now').off('click').click(function (e) {
+        Panel.find('#search_now').off('click').click(function (e) { // function that is called when the filter button is clicked. 
             dirty = false;
+            console.log("ORIGINAL PRE BINDIGN: " + JSON.stringify(originalData));
             originalData = $.extend(true, {}, tmpResult);
+            console.log("BINDING: " + JSON.stringify(originalData));
             GridPanel.get_new(originalData);
         });
     }
