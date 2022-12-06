@@ -1,7 +1,9 @@
 var GridPanel = undefined;
 (function (panel) {
     var Panel = undefined;
-    var resultData = undefined;
+    var resultData = undefined; // this is all of the data read from catalogs initially
+    var data_index = 0;
+    var filterData = undefined; // this is the data that has the filters applied to it and we want to use
     var searching_para = undefined;
     var metadata_show = undefined;
     var sort_by = undefined;
@@ -132,6 +134,41 @@ var GridPanel = undefined;
     }
     panel.getData = getData;
 
+    /**
+     * This is applies the current filters defined in searching_para to our entire dataset in resultData
+     * Thus, tracking the data that should be displayed at any current time
+     */
+    async function updateCurrentData() {
+        filterData = resultData; // this resets so that we are checking all of the values
+        var params = Object.keys(searching_para);
+
+        params.forEach(p => {
+            if (!(["s1", "s2", "s3"].includes(p))) {
+                filterData = filterData.filter(item => { // item is all of the calls in the catalogs
+                    if (!(p in item)) // filtering on a different catalog data
+                        return true;
+
+                    if (Array.isArray(item[p])) {
+                        console.log("IT IS AN ARRAY " + p);
+                        for (var i = 0; i < item[p].length; i++) {
+                            if (searching_para[p].includes(item[p][i])) {
+                                return true;
+                            }
+                        }
+                        return false;
+                    } else {
+                        return searching_para[p].includes(item[p]);
+                    }
+                })
+            }
+        });
+    }
+
+    /**
+     * This will load all of the data into result data and create the initial searching_paras
+     * @param {path to catalog json} catalog_json 
+     * @returns 
+     */
     async function getCatalog(catalog_json) {
         // await response of fetch call
         let response = await fetch(catalog_json);
@@ -173,7 +210,13 @@ var GridPanel = undefined;
                 })
             }
         });
-        resultData = simple_datasource;
+
+        var keys = Object.keys(simple_datasource);
+        keys.forEach(item => { // this will append all of the items to the resultdata
+            resultData[data_index] = simple_datasource[item];
+            data_index++;
+        });
+        await updateCurrentData(); // update the filters to allow for drawing
 
         // // //Filter: searching_para
         // var resultData1 = simple_datasource.filter(item => s2.includes(item.clan)).filter(item => s1.includes(item.population));
@@ -320,10 +363,6 @@ var GridPanel = undefined;
         return $.ajax({});
     }
     panel.getCatalog = getCatalog;
-
-    async function applyChangesToGrid(resultData) {
-        
-    }
     
     /**
      * Update the current filters to include the new ones from given catalogue
@@ -331,7 +370,6 @@ var GridPanel = undefined;
      */
     function updateFiltersFromJSON(filters) {
         filters.forEach(element => {
-            console.log(element);
             var filterable = element[0];
             if (!(filterable in searching_para)) { // filterable is not already in the searchable
                 searching_para[filterable] = element.slice(1); // add the filterable param to the searching_params
@@ -459,12 +497,15 @@ var GridPanel = undefined;
     }
 
     function get_new(para) {
+        searching_para = {};
         console.log("GET NEW: " + JSON.stringify(para));
         // searching_para = para;
-        updateFiltersFromURLParams(para);
+        updateFiltersFromURLParams(para); // updates searching_para with the filters passed through url
+        updateCurrentData(); // applies the now updated filters on the resultData, giving us the filterData that should be displayed
         total_result = undefined;
         current_page = 1;
-        getData(); // this just calls it again on the catalog, resetting everything to the default
+        redraw_items(); // redraws the items
+        // getData(); // this just calls it again on the catalog, resetting everything to the default
     };
     panel.get_new = get_new;
 
@@ -480,8 +521,8 @@ var GridPanel = undefined;
     function append_items() {
         var i = next_drawn;
         var grid = $('#gi-area').empty();
-        for (; i < resultData.length; i++) {
-            var ele = resultData[i];
+        for (; i < filterData.length; i++) {
+            var ele = filterData[i];
             do {
                 var tmpid = window.crypto.getRandomValues(new Uint32Array(1))[0].toString(16) + window.crypto.getRandomValues(new Uint32Array(1))[0].toString(16);
             } while (id_to_seq[tmpid] !== undefined);
