@@ -4,6 +4,7 @@ var GridPanel = undefined;
     var resultData = undefined; // this is all of the data read from catalogs initially
     var data_index = 0;
     var filterData = undefined; // this is the data that has the filters applied to it and we want to use
+    var entireFilterData = undefined;
     var searching_para = undefined;
     var metadata_show = undefined;
     var sort_by = undefined;
@@ -165,6 +166,7 @@ var GridPanel = undefined;
                 })
             }
         });
+        entireFilterData = filterData;
     }
 
     /**
@@ -256,7 +258,7 @@ var GridPanel = undefined;
         //     return false;
         // });
 
-        filter_result = filterData.length; // here the length has been messed up by the previous splice, so we need something that can track
+        filter_result = entireFilterData.length; // here the length has been messed up by the previous splice, so we need something that can track
         // create somehting that will just update when the data is filtered and use that for the length and to slice off of
 
         $("#total").text(filter_result);
@@ -330,6 +332,7 @@ var GridPanel = undefined;
         }
         //Sort by: sort_by, sort_asc
         current_sort = (a, b) => {
+            sort_by = "call_name"; // hard coding it to deal with the sorting, I am not sure what to do here. 
             if (Array.isArray(a)) {
                 a = a.join(', ');
             }
@@ -348,11 +351,12 @@ var GridPanel = undefined;
                 return 1;
             }
         };
-        filterData.sort(current_sort);
+        entireFilterData.sort(current_sort);
         // console.log(JSON.stringify(resultData));
 
         // resultData = resultData.splice((current_page - 1) * page_size, page_size);
-        filterData = filterData.splice((current_page-1) * page_size, page_size);
+        filterData = entireFilterData.slice((current_page-1) * page_size, (current_page) * page_size);
+        console.log(filterData.length);
         redraw_items();
 
         var encoded = btoa(JSON.stringify(searching_para));
