@@ -15,6 +15,7 @@ var GridPanel = undefined;
     var page_size = 120;
     var total_result = undefined;
     var total_page = undefined;
+    var data_initialized = false;
 
     var poped = undefined;
     var pop_opening = undefined;
@@ -141,15 +142,17 @@ var GridPanel = undefined;
     async function updateCurrentData() {
         filterData = resultData; // this resets so that we are checking all of the values
         var params = Object.keys(searching_para);
-
+        console.log("SEARCHING: " + JSON.stringify(searching_para));
         params.forEach(p => {
             if (!(["s1", "s2", "s3"].includes(p))) {
                 filterData = filterData.filter(item => { // item is all of the calls in the catalogs
+                    if (p === "clan") {
+                        console.log(item[p]);
+                    }
                     if (!(p in item)) // filtering on a different catalog data
                         return true;
 
                     if (Array.isArray(item[p])) {
-                        console.log("IT IS AN ARRAY " + p);
                         for (var i = 0; i < item[p].length; i++) {
                             if (searching_para[p].includes(item[p][i])) {
                                 return true;
@@ -170,65 +173,76 @@ var GridPanel = undefined;
      * @returns 
      */
     async function getCatalog(catalog_json) {
-        // await response of fetch call
-        let response = await fetch(catalog_json);
-        // only proceed once promise is resolved
-        let data = await response.text();
-        // only proceed once second promise is resolved
+        if (!data_initialized) {
 
-        // need to have the searchable parameters within the json file
-        // can add each of the searchable parameters to include what is required
-        // add a JSON object right to the start so that simple_datasource[0] contains an object with filters, 
-        var simple_datasource = JSON.parse(data); // json representation the catalogue.json file
-
-        // get the filter data and set simple_datasource so it is just calls
-        var filters = simple_datasource["filters"];
-        simple_datasource = simple_datasource["calls"];
-        // console.log("Starting length: " + simple_datasource.length);
-        updateFiltersFromJSON(filters);
-
-        var s1 = searching_para['s1'];
-        var s2 = searching_para['s2'];
-        var s3 = searching_para['s3'];
-
-        // loop through searching_para using the keys from it as the values to get from json
-        var parameters = Object.keys(searching_para); // for each of the parameters to search by, find the intersection of them
-        // console.log(parameters);
-        parameters.forEach(param => {
-            if (!(["s1", "s2", "s3"].includes(param))) {
-                simple_datasource = simple_datasource.filter(item => {
-                    if (Array.isArray(item[param])) {
-                        for (var i = 0; i < item[param].length; i++) {
-                            if (searching_para[param].includes(item[param][i])) {
-                                return true;
+            // await response of fetch call
+            let response = await fetch(catalog_json);
+            // only proceed once promise is resolved
+            let data = await response.text();
+            // only proceed once second promise is resolved
+    
+            // need to have the searchable parameters within the json file
+            // can add each of the searchable parameters to include what is required
+            // add a JSON object right to the start so that simple_datasource[0] contains an object with filters, 
+            var simple_datasource = JSON.parse(data); // json representation the catalogue.json file
+    
+            // get the filter data and set simple_datasource so it is just calls
+            var filters = simple_datasource["filters"];
+            simple_datasource = simple_datasource["calls"];
+            // console.log("Starting length: " + simple_datasource.length);
+            updateFiltersFromJSON(filters);
+    
+            var s1 = searching_para['s1'];
+            var s2 = searching_para['s2'];
+            var s3 = searching_para['s3'];
+    
+            // loop through searching_para using the keys from it as the values to get from json
+            var parameters = Object.keys(searching_para); // for each of the parameters to search by, find the intersection of them
+            // console.log(parameters);
+            parameters.forEach(param => {
+                if (!(["s1", "s2", "s3"].includes(param))) {
+                    simple_datasource = simple_datasource.filter(item => {
+                        if (Array.isArray(item[param])) {
+                            for (var i = 0; i < item[param].length; i++) {
+                                if (searching_para[param].includes(item[param][i])) {
+                                    return true;
+                                }
                             }
+                            return false;
+                        } else {
+                            return searching_para[param].includes(item[param]);
                         }
-                        return false;
-                    } else {
-                        return searching_para[param].includes(item[param]);
-                    }
-                })
-            }
-        });
-
-        var keys = Object.keys(simple_datasource);
-        keys.forEach(item => { // this will append all of the items to the resultdata
-            resultData[data_index] = simple_datasource[item];
-            data_index++;
-        });
-        await updateCurrentData(); // update the filters to allow for drawing
-
-        // // //Filter: searching_para
-        // var resultData1 = simple_datasource.filter(item => s2.includes(item.clan)).filter(item => s1.includes(item.population));
-        // resultData = resultData1.filter((item) => {
-        //     return item.pod_cat.filter(value => s3.includes(value)).length; // set intersection
-        //     // Entire set intersection is computed =  O(m x p); 
-        //     // m = # of s3 filter options
-        //     // p = max(# of pod_cat values)
-        //     // m, p are expected to be small (in comparison to the number of entries) (?)
-        //     // explicit loop version below returns faster (at first match, w/o complete set intersection)
-        // });
-        console.log("RESULT DATA LENGTH " + resultData.length);
+                    })
+                }
+            });
+    
+            var keys = Object.keys(simple_datasource);
+            keys.forEach(item => { // this will append all of the items to the resultdata
+                resultData[data_index] = simple_datasource[item];
+                data_index++;
+            });
+            await updateCurrentData(); // update the filters to allow for drawing
+    
+            var keys = Object.keys(resultData);
+            keys.forEach(item => {
+                if (filterData[item] == undefined) {
+                    console.log(JSON.stringify(resultData[item]));
+                }
+            })
+            // // //Filter: searching_para
+            // var resultData1 = simple_datasource.filter(item => s2.includes(item.clan)).filter(item => s1.includes(item.population));
+            // resultData = resultData1.filter((item) => {
+            //     return item.pod_cat.filter(value => s3.includes(value)).length; // set intersection
+            //     // Entire set intersection is computed =  O(m x p); 
+            //     // m = # of s3 filter options
+            //     // p = max(# of pod_cat values)
+            //     // m, p are expected to be small (in comparison to the number of entries) (?)
+            //     // explicit loop version below returns faster (at first match, w/o complete set intersection)
+            // });
+            console.log("RESULT DATA LENGTH " + resultData.length);
+            console.log("FILTER DATA LENGTH: " + filterData.length);
+            data_initialized = true;
+        }
         // resultData = resultData1.filter((item) => {
 
         //     if (item.pod_cat.length === 0){
@@ -242,10 +256,136 @@ var GridPanel = undefined;
         //     return false;
         // });
 
-        total_result = resultData.length;
+        filter_result = filterData.length; // here the length has been messed up by the previous splice, so we need something that can track
+        // create somehting that will just update when the data is filtered and use that for the length and to slice off of
 
-        $("#total").text(total_result);
-        total_page = Math.floor((total_result - 1) / page_size) + 1;
+        $("#total").text(filter_result);
+        total_page = Math.floor((filter_result - 1) / page_size) + 1;
+        if (total_page <= 0) {
+            total_page = 1;
+        }
+        if (current_page > total_page) {
+            current_page = total_page;
+        }
+        if (current_page < 1) {
+            current_page = 1;
+        }
+        console.log("PAGE: " + current_page);
+
+        $('#paging > ul > li').removeClass('hidden active disabled');
+        if (total_page >= 3) {
+            if (current_page === 1) {
+                $('#paging > ul > li:nth-child(1)').addClass('disabled');
+                $('#paging > ul > li:nth-child(2)').addClass('active').attr('data-flow', '1');
+                $('#paging > ul > li:nth-child(2) a').text('1');
+                $('#paging > ul > li:nth-child(3) a').text('2');
+                $('#paging > ul > li:nth-child(3)').attr('data-flow', '2');
+                $('#paging > ul > li:nth-child(4) a').text('3');
+                $('#paging > ul > li:nth-child(4)').attr('data-flow', '3');
+
+            }
+            else if (current_page >= total_page) {
+                //at foremost
+                $('#paging > ul > li:nth-child(2) a').text(total_page - 2);
+                $('#paging > ul > li:nth-child(2)').attr('data-flow', total_page - 2);
+                $('#paging > ul > li:nth-child(3) a').text(total_page - 1);
+                $('#paging > ul > li:nth-child(3)').attr('data-flow', total_page - 1);
+                $('#paging > ul > li:nth-child(4) a').text(total_page);
+                $('#paging > ul > li:nth-child(4)').addClass('active').attr('data-flow', total_page);
+                $('#paging > ul > li:nth-child(5)').addClass('disabled');
+            }
+            else {
+                //middle
+                $('#paging > ul > li:nth-child(2) a').text(current_page - 1);
+                $('#paging > ul > li:nth-child(2)').attr('data-flow', current_page - 1);
+                $('#paging > ul > li:nth-child(3) a').text(current_page);
+                $('#paging > ul > li:nth-child(3)').addClass('active').attr('data-flow', current_page);
+                $('#paging > ul > li:nth-child(4) a').text(current_page + 1);
+                $('#paging > ul > li:nth-child(4)').attr('data-flow', current_page + 1);
+
+            }
+        }
+        else if (total_page === 2) {
+            $('#paging > ul > li:nth-child(2)').attr('data-flow', '1');
+            $('#paging > ul > li:nth-child(3)').attr('data-flow', '2');
+            $('#paging > ul > li:nth-child(2) a').text('1');
+            $('#paging > ul > li:nth-child(3) a').text('2');
+            $('#paging > ul > li:nth-child(4)').addClass('hidden');
+            if (current_page === 1) {
+                $('#paging > ul > li:nth-child(1)').addClass('disabled');
+                $('#paging > ul > li:nth-child(2)').addClass('active');
+            }
+            else {
+                $('#paging > ul > li:nth-child(3)').addClass('active');
+                $('#paging > ul > li:nth-child(5)').addClass('disabled');
+            }
+        }
+        else if (total_page === 1) {
+            $('#paging > ul > li:nth-child(1)').addClass('disabled');
+            $('#paging > ul > li:nth-child(2)').addClass('active').attr('data-flow', '1');
+            $('#paging > ul > li:nth-child(2) a').text('1');
+            $('#paging > ul > li:nth-child(3)').addClass('hidden');
+            $('#paging > ul > li:nth-child(4)').addClass('hidden');
+            $('#paging > ul > li:nth-child(5)').addClass('disabled');
+        }
+        //Sort by: sort_by, sort_asc
+        current_sort = (a, b) => {
+            if (Array.isArray(a)) {
+                a = a.join(', ');
+            }
+            if (Array.isArray(b)) {
+                b = b.join(', ');
+            }
+            if (a[sort_by] === b[sort_by]) {
+                return 0;
+            }
+            var smaller = (sort_asc === "as") ? a[sort_by] : b[sort_by];
+            var larger = (sort_asc === "as") ? b[sort_by] : a[sort_by];
+            if (larger > smaller) {
+                return -1;
+            }
+            else {
+                return 1;
+            }
+        };
+        filterData.sort(current_sort);
+        // console.log(JSON.stringify(resultData));
+
+        // resultData = resultData.splice((current_page - 1) * page_size, page_size);
+        filterData = filterData.splice((current_page-1) * page_size, page_size);
+        redraw_items();
+
+        var encoded = btoa(JSON.stringify(searching_para));
+        const state = { 'f': encoded, 'p': current_page, 's': sort_by, 'sa': sort_asc };
+        const title = '';
+        const queryString = window.location.search;
+        const params = new URLSearchParams('');
+        params.set('f', encoded);
+        params.set('p', current_page);
+        params.set('s', sort_by);
+        params.set('sa', sort_asc);
+        params.set('ps', page_size.toString());
+        const urlParams = new URLSearchParams(queryString);
+        if (urlParams.has('popup')) {
+            params.set('popup', urlParams.get('popup'));
+            $('.selecting').removeClass('selecting');
+        }
+
+        catalog_library[catalog_json] = resultData;
+        console.log("added to library", catalog_library);
+
+        history.pushState(state, title, `${window.location.pathname}?${params}`);
+        return;
+        return Promise(resultData);
+        return $.ajax({});
+    }
+    panel.getCatalog = getCatalog;
+    
+    function updatePagination() {
+        let filter_result = filterData.length;
+
+        $("#total").text(filter_result);
+        total_page = Math.floor((filter_result - 1) / page_size) + 1;
         if (total_page <= 0) {
             total_page = 1;
         }
@@ -332,10 +472,11 @@ var GridPanel = undefined;
                 return 1;
             }
         };
-        resultData.sort(current_sort);
+        filterData.sort(current_sort);
         // console.log(JSON.stringify(resultData));
 
-        resultData = resultData.splice((current_page - 1) * page_size, page_size);
+        // resultData = resultData.splice((current_page - 1) * page_size, page_size);
+        filterData = filterData.splice((current_page-1) * page_size, page_size);
         redraw_items();
 
         var encoded = btoa(JSON.stringify(searching_para));
@@ -359,11 +500,7 @@ var GridPanel = undefined;
 
         history.pushState(state, title, `${window.location.pathname}?${params}`);
         return;
-        return Promise(resultData);
-        return $.ajax({});
     }
-    panel.getCatalog = getCatalog;
-    
     /**
      * Update the current filters to include the new ones from given catalogue
      * @param {JSON} filters JSON representation of filters for given catalogue
@@ -494,6 +631,7 @@ var GridPanel = undefined;
                 });
             }
         });
+        console.log("SEARCH PARAMS: " + JSON.stringify(searching_para));    
     }
 
     function get_new(para) {
@@ -504,7 +642,8 @@ var GridPanel = undefined;
         updateCurrentData(); // applies the now updated filters on the resultData, giving us the filterData that should be displayed
         total_result = undefined;
         current_page = 1;
-        redraw_items(); // redraws the items
+        getData();
+        // redraw_items(); // redraws the items
         // getData(); // this just calls it again on the catalog, resetting everything to the default
     };
     panel.get_new = get_new;
@@ -671,6 +810,7 @@ var GridPanel = undefined;
             var data_flow = $(this).attr('data-flow');
             if (data_flow === 'n') {
                 current_page += 1;
+                console.log("CURENT PAGE: " + current_page);
             }
             else if (data_flow === 'p') {
                 current_page -= 1;
