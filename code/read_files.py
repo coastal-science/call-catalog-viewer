@@ -161,10 +161,8 @@ def read_yaml(yaml_file):
                 if field in REQUIRED_FIELDS:
                     continue # don't want to change anything with the image, sound, or description. They could be vaild commas
                 if (type(row[field]) == str and ',' in row[field]):
-                    print(row[field].split(','))
                     df.at[index,field] = row[field].split(',')
 
-        print(df)
         # extract the filename from the path
         df['filename'] =  df['image-file'].str.split(".", expand=True)[0]
         df['filename'] =  [x.split("/")[-1] for x in df['filename']]
