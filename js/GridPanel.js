@@ -3,7 +3,7 @@ var GridPanel = undefined;
     var Panel = undefined;
     var resultData = undefined; // this is all of the data read from catalogs initially
     var data_index = 0;
-    var filterData = undefined; // this is the data that has the filters applied to it and we want to use
+    var currentDisplayData = undefined; // this is the data that has the filters applied to it and we want to use
     var entireFilterData = undefined;
     var searching_para = undefined;
     var metadata_show = undefined;
@@ -132,10 +132,6 @@ var GridPanel = undefined;
             // In case of yaml.forEach(name =>) with callback function, the callback
             //  would have to be async and could introduce race conditions (unexpected behaviour).
             let response = await getCatalog(LIBRARY + "/" + name + '.json');
-            console.log("IN THE YAML");
-            // setTimeout(function() {
-            //     location.reload();
-            // }, 500);
         }
         data_initialized = true;
     }
@@ -143,26 +139,17 @@ var GridPanel = undefined;
 
     /**
      * This is applies the current filters defined in searching_para to our entire dataset in resultData
-     * Thus, tracking the data that should be displayed at any current time
+     * This filtered data is then assigned to entireFilterData for later access
      */
     async function updateCurrentData() {
-        filterData = resultData; // this resets so that we are checking all of the values
+        entireFilterData = resultData; // this resets so that we are checking all of the values
         var params = Object.keys(searching_para);
-        console.log("START LENGHT: " + resultData.length);
-        console.log("SEARCHING: " + JSON.stringify(searching_para));
         params.forEach(p => {
-            console.log(p + "THING");
             if (!(["s1", "s2", "s3"].includes(p))) {
-                filterData = filterData.filter(item => { // item is all of the calls in the catalogs
+                entireFilterData = entireFilterData.filter(item => { // item is all of the calls in the catalogs
                     if (!(p in item)) // filtering on a different catalog data
                         return true;
-                    console.log("FILTESR " + p + item[p]);
                     if (Array.isArray(item[p])) {
-                        if (p == "matrilines") { // it is an option, but no filterable values are selected
-                            console.log("IT KNOWS ON " + p);
-                            return true;
-                        }
-
                         for (var i = 0; i < item[p].length; i++) {
                             if (searching_para[p].includes(item[p][i])) {
                                 return true;
@@ -172,24 +159,22 @@ var GridPanel = undefined;
                     } else {
                         if (searching_para[p].length == 0) 
                             return true;
-                        if (p == "matrilines") {
-                            console.log(searching_para[p] + "THE THING");
-                        }
+
                         return searching_para[p].includes(item[p]);
                     }
                 })
             }
         });
-        entireFilterData = filterData;
     }
 
     /**
-     * This will load all of the data into result data and create the initial searching_paras
-     * @param {path to catalog json} catalog_json 
+     * Initialize data on the first call from getData
+     * Obtain correct data to display and assign to currentDisplayData and perform correct pagination and URL parameterizing
+     * @param {Object} catalog_json path to JSON file
      * @returns 
      */
     async function getCatalog(catalog_json) {
-        if (!data_initialized) {
+        if (!data_initialized) { // if this is our first time setting params, use filters from JSON
 
             // await response of fetch call
             let response = await fetch(catalog_json);
@@ -197,83 +182,22 @@ var GridPanel = undefined;
             let data = await response.text();
             // only proceed once second promise is resolved
     
-            // need to have the searchable parameters within the json file
-            // can add each of the searchable parameters to include what is required
-            // add a JSON object right to the start so that simple_datasource[0] contains an object with filters, 
             var simple_datasource = JSON.parse(data); // json representation the catalogue.json file
     
             // get the filter data and set simple_datasource so it is just calls
             var filters = simple_datasource["filters"];
             simple_datasource = simple_datasource["calls"];
-            // console.log("Starting length: " + simple_datasource.length);
             updateFiltersFromJSON(filters);
-    
-            var s1 = searching_para['s1'];
-            var s2 = searching_para['s2'];
-            var s3 = searching_para['s3'];
-    
-            // loop through searching_para using the keys from it as the values to get from json
-            var parameters = Object.keys(searching_para); // for each of the parameters to search by, find the intersection of them
-            // console.log(parameters);
-            // parameters.forEach(param => {
-            //     if (!(["s1", "s2", "s3"].includes(param))) {
-            //         simple_datasource = simple_datasource.filter(item => {
-            //             if (Array.isArray(item[param])) {
-            //                 for (var i = 0; i < item[param].length; i++) {
-            //                     if (searching_para[param].includes(item[param][i])) {
-            //                         return true;
-            //                     }
-            //                 }
-            //                 return false;
-            //             } else {
-            //                 return searching_para[param].includes(item[param]);
-            //             }
-            //         })
-            //     }
-            // });
     
             var keys = Object.keys(simple_datasource);
             keys.forEach(item => { // this will append all of the items to the resultdata
                 resultData[data_index] = simple_datasource[item];
                 data_index++;
             });
-            await updateCurrentData(); // update the filters to allow for drawing
-    
-            var keys = Object.keys(resultData);
-            keys.forEach(item => {
-                if (filterData[item] == undefined) {
-                    // console.log(JSON.stringify(resultData[item]));
-                }
-            })
-            // // //Filter: searching_para
-            // var resultData1 = simple_datasource.filter(item => s2.includes(item.clan)).filter(item => s1.includes(item.population));
-            // resultData = resultData1.filter((item) => {
-            //     return item.pod_cat.filter(value => s3.includes(value)).length; // set intersection
-            //     // Entire set intersection is computed =  O(m x p); 
-            //     // m = # of s3 filter options
-            //     // p = max(# of pod_cat values)
-            //     // m, p are expected to be small (in comparison to the number of entries) (?)
-            //     // explicit loop version below returns faster (at first match, w/o complete set intersection)
-            // });
-            console.log("RESULT DATA LENGTH " + resultData.length);
-            console.log("FILTER DATA LENGTH: " + filterData.length);
-            // data_initialized = true;
+            await updateCurrentData(); // apply filters on resultData, populating currentFilteredData accordingly
         }
-        // resultData = resultData1.filter((item) => {
 
-        //     if (item.pod_cat.length === 0){
-        //         return false;
-        //     }
-        //     for (i = 0; i < item.pod_cat.length; i++){
-        //         if (s3.includes(item.pod_cat[i])){
-        //             return true;
-        //         }
-        //     }
-        //     return false;
-        // });
-
-        filter_result = entireFilterData.length; // here the length has been messed up by the previous splice, so we need something that can track
-        // create somehting that will just update when the data is filtered and use that for the length and to slice off of
+        filter_result = entireFilterData.length; // update the length based off of the filtered data
 
         $("#total").text(filter_result);
         total_page = Math.floor((filter_result - 1) / page_size) + 1;
@@ -286,7 +210,6 @@ var GridPanel = undefined;
         if (current_page < 1) {
             current_page = 1;
         }
-        console.log("PAGE: " + current_page);
 
         $('#paging > ul > li').removeClass('hidden active disabled');
         if (total_page >= 3) {
@@ -344,9 +267,11 @@ var GridPanel = undefined;
             $('#paging > ul > li:nth-child(4)').addClass('hidden');
             $('#paging > ul > li:nth-child(5)').addClass('disabled');
         }
+
+        // TODO: sorting is not compatible. Hardcoded to sort by call_name
         //Sort by: sort_by, sort_asc
         current_sort = (a, b) => {
-            sort_by = "call_name"; // hard coding it to deal with the sorting, I am not sure what to do here. 
+            sort_by = "call_name";
             if (Array.isArray(a)) {
                 a = a.join(', ');
             }
@@ -366,12 +291,9 @@ var GridPanel = undefined;
             }
         };
         entireFilterData.sort(current_sort);
-        // console.log(JSON.stringify(resultData));
 
-        // resultData = resultData.splice((current_page - 1) * page_size, page_size);
-        filterData = entireFilterData.slice((current_page-1) * page_size, (current_page) * page_size);
-        console.log(filterData.length);
-        redraw_items();
+        currentDisplayData = entireFilterData.slice((current_page-1) * page_size, (current_page) * page_size); // obtain the data to display on this page from the entireData slice
+        redraw_items(); // draws our new updated items
 
         var encoded = btoa(JSON.stringify(searching_para));
         const state = { 'f': encoded, 'p': current_page, 's': sort_by, 'sa': sort_asc };
@@ -394,8 +316,6 @@ var GridPanel = undefined;
 
         history.pushState(state, title, `${window.location.pathname}?${params}`);
         return;
-        return Promise(resultData);
-        return $.ajax({});
     }
     panel.getCatalog = getCatalog;
     
@@ -416,7 +336,6 @@ var GridPanel = undefined;
                 });
             }
         });
-        console.log("UPDATED: " + searching_para);
     }
 
 
@@ -513,9 +432,12 @@ var GridPanel = undefined;
     };
     panel.init = init;
 
+    /**
+     * Updates searching_params based on the filters passed through URL
+     * Called on filter button clicked
+     * @param {Object} params new paramaters to filter on
+     */
     function updateFiltersFromURLParams(params) {
-        console.log("THESE THE KEYS: " + Object.keys(params));
-
         Object.keys(params).forEach((key) => {
             const arr = params[key];
             var filterable = arr[0];
@@ -530,20 +452,19 @@ var GridPanel = undefined;
                 });
             }
         });
-        console.log("SEARCH PARAMS: " + JSON.stringify(searching_para));    
     }
 
+    /**
+     * receive new filters, update searching_para, apply filters to update currentDisplayData, call getData to refresh page
+     * @param {Object} para search filters selected in search panel
+     */
     function get_new(para) {
-        searching_para = {};
-        console.log("GET NEW: " + JSON.stringify(para));
-        // searching_para = para;
+        searching_para = {}; // reset searching params as we are going to entirely rebuild them
         updateFiltersFromURLParams(para); // updates searching_para with the filters passed through url
-        updateCurrentData(); // applies the now updated filters on the resultData, giving us the filterData that should be displayed
+        updateCurrentData(); // applies the now updated filters on the resultData, giving us the currentDisplayData that should be displayed
         total_result = undefined;
         current_page = 1;
         getData();
-        // redraw_items(); // redraws the items
-        // getData(); // this just calls it again on the catalog, resetting everything to the default
     };
     panel.get_new = get_new;
 
@@ -556,18 +477,20 @@ var GridPanel = undefined;
         }
     }
 
+    /**
+     * Turn data fields into the HTML and append them to the gridView
+     */
     function append_items() {
         var i = next_drawn;
         var grid = $('#gi-area').empty();
-        for (; i < filterData.length; i++) {
-            var ele = filterData[i];
+        for (; i < currentDisplayData.length; i++) {
+            var ele = currentDisplayData[i];
             do {
                 var tmpid = window.crypto.getRandomValues(new Uint32Array(1))[0].toString(16) + window.crypto.getRandomValues(new Uint32Array(1))[0].toString(16);
             } while (id_to_seq[tmpid] !== undefined);
             id_to_seq[tmpid] = i;
             var obj = pack_option(tmpid, LIBRARY + '/' + ele.image_file, ele.call_name, ele.pod, ele.clan, LIBRARY + '/' + ele.image_file);
             grid.append(obj);
-
         }
         selecting = 0;
         propagate_meta();
@@ -709,7 +632,6 @@ var GridPanel = undefined;
             var data_flow = $(this).attr('data-flow');
             if (data_flow === 'n') {
                 current_page += 1;
-                console.log("CURENT PAGE: " + current_page);
             }
             else if (data_flow === 'p') {
                 current_page -= 1;
@@ -769,7 +691,7 @@ var GridPanel = undefined;
             }
             let play_btn = '<button id="play" class="col btn btn-primary"><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-play" viewBox="0 0 16 16">\
                                 <path d="M10.804 8 5 4.633v6.734L10.804 8zm.792-.696a.802.802 0 0 1 0 1.392l-6.363 3.692C4.713 12.69 4 12.345 4 11.692V4.308c0-.653.713-.998 1.233-.696l6.363 3.692z"/>\
-                            </svg>Play (Call Name: '+ lity_data.cn + ') </button>';
+                            </svg>Play (Call Name: '+ lity_data.call_name + ') </button>';
             let additional_row = '';
             //lity_data["subclan"] = "Testing Clan";
             //lity_data["subpopulation"] = "Testing Population";
@@ -834,7 +756,7 @@ var GridPanel = undefined;
             audio_element = document.createElement('audio');
             $(this).html('<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-play" viewBox="0 0 16 16">\
             <path d="M10.804 8 5 4.633v6.734L10.804 8zm.792-.696a.802.802 0 0 1 0 1.392l-6.363 3.692C4.713 12.69 4 12.345 4 11.692V4.308c0-.653.713-.998 1.233-.696l6.363 3.692z"/>\
-          </svg>Playing  (Call Name: '+ lity_data.cn + ')');
+          </svg>Playing  (Call Name: '+ lity_data.call_name + ')');
             $(this).removeClass('btn-primary').addClass('btn-success');
             audio_element.setAttribute('src', '');
             audio_element.setAttribute('src', LIBRARY + '/' + lity_data.wav_file);
@@ -843,7 +765,7 @@ var GridPanel = undefined;
             audio_element.addEventListener('ended', function () {
                 $("#play").html('<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-play" viewBox="0 0 16 16">\
                 <path d="M10.804 8 5 4.633v6.734L10.804 8zm.792-.696a.802.802 0 0 1 0 1.392l-6.363 3.692C4.713 12.69 4 12.345 4 11.692V4.308c0-.653.713-.998 1.233-.696l6.363 3.692z"/>\
-              </svg>Play  (Call Name: '+ lity_data.cn + ')').addClass('btn-primary').removeClass('btn-success');
+              </svg>Play  (Call Name: '+ lity_data.call_name + ')').addClass('btn-primary').removeClass('btn-success');
 
             })
         });
