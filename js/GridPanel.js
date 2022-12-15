@@ -147,6 +147,9 @@ var GridPanel = undefined;
         params.forEach(p => {
             if (!(["s1", "s2", "s3"].includes(p))) {
                 entireFilterData = entireFilterData.filter(item => { // item is all of the calls in the catalogs
+                    if (searching_para[p].length == 0) // if it is empty then it is just true for all
+                        return true;
+
                     if (!(p in item)) // filtering on a different catalog data
                         return true;
                     if (Array.isArray(item[p])) {
@@ -157,9 +160,6 @@ var GridPanel = undefined;
                         }
                         return false;
                     } else {
-                        if (searching_para[p].length == 0) 
-                            return true;
-
                         return searching_para[p].includes(item[p]);
                     }
                 })
