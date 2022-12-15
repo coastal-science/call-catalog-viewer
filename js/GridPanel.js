@@ -132,7 +132,12 @@ var GridPanel = undefined;
             // In case of yaml.forEach(name =>) with callback function, the callback
             //  would have to be async and could introduce race conditions (unexpected behaviour).
             let response = await getCatalog(LIBRARY + "/" + name + '.json');
+            console.log("IN THE YAML");
+            // setTimeout(function() {
+            //     location.reload();
+            // }, 500);
         }
+        data_initialized = true;
     }
     panel.getData = getData;
 
@@ -143,17 +148,21 @@ var GridPanel = undefined;
     async function updateCurrentData() {
         filterData = resultData; // this resets so that we are checking all of the values
         var params = Object.keys(searching_para);
+        console.log("START LENGHT: " + resultData.length);
         console.log("SEARCHING: " + JSON.stringify(searching_para));
         params.forEach(p => {
+            console.log(p + "THING");
             if (!(["s1", "s2", "s3"].includes(p))) {
                 filterData = filterData.filter(item => { // item is all of the calls in the catalogs
-                    if (p === "clan") {
-                        console.log(item[p]);
-                    }
                     if (!(p in item)) // filtering on a different catalog data
                         return true;
-
+                    console.log("FILTESR " + p + item[p]);
                     if (Array.isArray(item[p])) {
+                        if (p == "matrilines") { // it is an option, but no filterable values are selected
+                            console.log("IT KNOWS ON " + p);
+                            return true;
+                        }
+
                         for (var i = 0; i < item[p].length; i++) {
                             if (searching_para[p].includes(item[p][i])) {
                                 return true;
@@ -161,6 +170,11 @@ var GridPanel = undefined;
                         }
                         return false;
                     } else {
+                        if (searching_para[p].length == 0) 
+                            return true;
+                        if (p == "matrilines") {
+                            console.log(searching_para[p] + "THE THING");
+                        }
                         return searching_para[p].includes(item[p]);
                     }
                 })
@@ -201,22 +215,22 @@ var GridPanel = undefined;
             // loop through searching_para using the keys from it as the values to get from json
             var parameters = Object.keys(searching_para); // for each of the parameters to search by, find the intersection of them
             // console.log(parameters);
-            parameters.forEach(param => {
-                if (!(["s1", "s2", "s3"].includes(param))) {
-                    simple_datasource = simple_datasource.filter(item => {
-                        if (Array.isArray(item[param])) {
-                            for (var i = 0; i < item[param].length; i++) {
-                                if (searching_para[param].includes(item[param][i])) {
-                                    return true;
-                                }
-                            }
-                            return false;
-                        } else {
-                            return searching_para[param].includes(item[param]);
-                        }
-                    })
-                }
-            });
+            // parameters.forEach(param => {
+            //     if (!(["s1", "s2", "s3"].includes(param))) {
+            //         simple_datasource = simple_datasource.filter(item => {
+            //             if (Array.isArray(item[param])) {
+            //                 for (var i = 0; i < item[param].length; i++) {
+            //                     if (searching_para[param].includes(item[param][i])) {
+            //                         return true;
+            //                     }
+            //                 }
+            //                 return false;
+            //             } else {
+            //                 return searching_para[param].includes(item[param]);
+            //             }
+            //         })
+            //     }
+            // });
     
             var keys = Object.keys(simple_datasource);
             keys.forEach(item => { // this will append all of the items to the resultdata
@@ -228,7 +242,7 @@ var GridPanel = undefined;
             var keys = Object.keys(resultData);
             keys.forEach(item => {
                 if (filterData[item] == undefined) {
-                    console.log(JSON.stringify(resultData[item]));
+                    // console.log(JSON.stringify(resultData[item]));
                 }
             })
             // // //Filter: searching_para
@@ -243,7 +257,7 @@ var GridPanel = undefined;
             // });
             console.log("RESULT DATA LENGTH " + resultData.length);
             console.log("FILTER DATA LENGTH: " + filterData.length);
-            data_initialized = true;
+            // data_initialized = true;
         }
         // resultData = resultData1.filter((item) => {
 
@@ -385,126 +399,6 @@ var GridPanel = undefined;
     }
     panel.getCatalog = getCatalog;
     
-    function updatePagination() {
-        let filter_result = filterData.length;
-
-        $("#total").text(filter_result);
-        total_page = Math.floor((filter_result - 1) / page_size) + 1;
-        if (total_page <= 0) {
-            total_page = 1;
-        }
-        if (current_page > total_page) {
-            current_page = total_page;
-        }
-        if (current_page < 1) {
-            current_page = 1;
-        }
-
-        $('#paging > ul > li').removeClass('hidden active disabled');
-        if (total_page >= 3) {
-            if (current_page === 1) {
-                $('#paging > ul > li:nth-child(1)').addClass('disabled');
-                $('#paging > ul > li:nth-child(2)').addClass('active').attr('data-flow', '1');
-                $('#paging > ul > li:nth-child(2) a').text('1');
-                $('#paging > ul > li:nth-child(3) a').text('2');
-                $('#paging > ul > li:nth-child(3)').attr('data-flow', '2');
-                $('#paging > ul > li:nth-child(4) a').text('3');
-                $('#paging > ul > li:nth-child(4)').attr('data-flow', '3');
-
-            }
-            else if (current_page >= total_page) {
-                //at foremost
-                $('#paging > ul > li:nth-child(2) a').text(total_page - 2);
-                $('#paging > ul > li:nth-child(2)').attr('data-flow', total_page - 2);
-                $('#paging > ul > li:nth-child(3) a').text(total_page - 1);
-                $('#paging > ul > li:nth-child(3)').attr('data-flow', total_page - 1);
-                $('#paging > ul > li:nth-child(4) a').text(total_page);
-                $('#paging > ul > li:nth-child(4)').addClass('active').attr('data-flow', total_page);
-                $('#paging > ul > li:nth-child(5)').addClass('disabled');
-            }
-            else {
-                //middle
-                $('#paging > ul > li:nth-child(2) a').text(current_page - 1);
-                $('#paging > ul > li:nth-child(2)').attr('data-flow', current_page - 1);
-                $('#paging > ul > li:nth-child(3) a').text(current_page);
-                $('#paging > ul > li:nth-child(3)').addClass('active').attr('data-flow', current_page);
-                $('#paging > ul > li:nth-child(4) a').text(current_page + 1);
-                $('#paging > ul > li:nth-child(4)').attr('data-flow', current_page + 1);
-
-            }
-        }
-        else if (total_page === 2) {
-            $('#paging > ul > li:nth-child(2)').attr('data-flow', '1');
-            $('#paging > ul > li:nth-child(3)').attr('data-flow', '2');
-            $('#paging > ul > li:nth-child(2) a').text('1');
-            $('#paging > ul > li:nth-child(3) a').text('2');
-            $('#paging > ul > li:nth-child(4)').addClass('hidden');
-            if (current_page === 1) {
-                $('#paging > ul > li:nth-child(1)').addClass('disabled');
-                $('#paging > ul > li:nth-child(2)').addClass('active');
-            }
-            else {
-                $('#paging > ul > li:nth-child(3)').addClass('active');
-                $('#paging > ul > li:nth-child(5)').addClass('disabled');
-            }
-        }
-        else if (total_page === 1) {
-            $('#paging > ul > li:nth-child(1)').addClass('disabled');
-            $('#paging > ul > li:nth-child(2)').addClass('active').attr('data-flow', '1');
-            $('#paging > ul > li:nth-child(2) a').text('1');
-            $('#paging > ul > li:nth-child(3)').addClass('hidden');
-            $('#paging > ul > li:nth-child(4)').addClass('hidden');
-            $('#paging > ul > li:nth-child(5)').addClass('disabled');
-        }
-        //Sort by: sort_by, sort_asc
-        current_sort = (a, b) => {
-            if (Array.isArray(a)) {
-                a = a.join(', ');
-            }
-            if (Array.isArray(b)) {
-                b = b.join(', ');
-            }
-            if (a[sort_by] === b[sort_by]) {
-                return 0;
-            }
-            var smaller = (sort_asc === "as") ? a[sort_by] : b[sort_by];
-            var larger = (sort_asc === "as") ? b[sort_by] : a[sort_by];
-            if (larger > smaller) {
-                return -1;
-            }
-            else {
-                return 1;
-            }
-        };
-        filterData.sort(current_sort);
-        // console.log(JSON.stringify(resultData));
-
-        // resultData = resultData.splice((current_page - 1) * page_size, page_size);
-        filterData = filterData.splice((current_page-1) * page_size, page_size);
-        redraw_items();
-
-        var encoded = btoa(JSON.stringify(searching_para));
-        const state = { 'f': encoded, 'p': current_page, 's': sort_by, 'sa': sort_asc };
-        const title = '';
-        const queryString = window.location.search;
-        const params = new URLSearchParams('');
-        params.set('f', encoded);
-        params.set('p', current_page);
-        params.set('s', sort_by);
-        params.set('sa', sort_asc);
-        params.set('ps', page_size.toString());
-        const urlParams = new URLSearchParams(queryString);
-        if (urlParams.has('popup')) {
-            params.set('popup', urlParams.get('popup'));
-            $('.selecting').removeClass('selecting');
-        }
-
-        catalog_library[catalog_json] = resultData;
-        console.log("added to library", catalog_library);
-
-        history.pushState(state, title, `${window.location.pathname}?${params}`);
-        return;
-    }
     /**
      * Update the current filters to include the new ones from given catalogue
      * @param {JSON} filters JSON representation of filters for given catalogue
@@ -522,6 +416,7 @@ var GridPanel = undefined;
                 });
             }
         });
+        console.log("UPDATED: " + searching_para);
     }
 
 
