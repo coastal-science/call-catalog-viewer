@@ -3,33 +3,7 @@ var SearchPanel = undefined;
     var Panel = undefined;
     var originalData = undefined;
     var tmpResult = undefined;
-    var s_options = [
-        // {
-        //     "s": "s1",
-        //     "b": "b1",
-        //     "option": [
-        //         { "v": "SRKW", "text": "Southern Resident" },
-        //         { "v": "NRKW", "text": "Northern Resident" },
-        //         { "v": "T", "text": "Transient" },
-        //     ]
-        // },
-        // {
-        //     "s": "s2",
-        //     "b": "b2",
-        //     "option": [
-        //         { "v": "J", "text": "J" }
-        //     ]
-        // },
-        // {
-        //     "s": "s3",
-        //     "b": "b3",
-        //     "option": [
-        //         { "v": "J", "text": "J" },
-        //         { "v": "K", "text": "K" },
-        //         { "v": "L", "text": "L" },
-        //     ]
-        // }
-    ];
+    var s_options = [];
     var dirty = false;
     var s_index = 1;
     var element_id_to_title = {};
@@ -70,9 +44,9 @@ var SearchPanel = undefined;
     }
 
     /**
-     * create html representation of the dropdown to append to the panel
+     * create HTML representation of the dropdown to append to the panel
      * @param {string} value the id of the panel to add s1, s2, s3.... 
-     * @returns html representation of dropdown to append to the panel
+     * @returns HTML representation of dropdown to append to the panel
      */
     function pack_dropdown(value) {
         return '<div class="col col-12 col-sm-12 col-md-12 col-lg-12 col-xl-10 col-xxl-10 align-items-center align-middle align-right d-flex flex-nowrap">' + 
@@ -83,11 +57,7 @@ var SearchPanel = undefined;
     }
 
     function init() {
-        originalData = {
-            // s1: ["SRKW", "NRKW"],
-            // s2: ["J"],
-            // s3: ["J", "K", "L"],
-        };
+        originalData = {};
 
         var queryString = location.search;
         urlParams = new URLSearchParams(queryString);
@@ -110,13 +80,9 @@ var SearchPanel = undefined;
                     let count = 1;
                     Object.keys(ev).forEach((item) => {
                         if (!['s1', 's2', 's3'].includes(item)) {
-                            // originalData['s' + count] = ev[item];
                             var list = [item];
                             list = list.concat(ev[item]);
-                            originalData['s' + count] = list;
-                            // console.log("THIS IS EACH: " + JSON.stringify(originalData['s' + count]));
-                            // originalData['s' + count] = [item].append(ev[item])
-                            // originalData[item] = ev[item];
+                            originalData['s' + count] = list; // set data using s1, s2, s3.... notation for easier access later
                             element_id_to_title['s' + count] = item;
                             count++;
                         }
@@ -128,18 +94,16 @@ var SearchPanel = undefined;
         }
         updateFilterOptions(originalData);
         
-        console.log("ORIG " + JSON.stringify(originalData)); // This is passed as a key value using the filterable name as key and options as value. Can convert this back s notation with value as first element in array
-        tmpResult = $.extend(true, {}, originalData); // need for better handling of the tmpResult to update filtering capabilities
-        console.log("TEMP RESULT: " + JSON.stringify(tmpResult));
+        tmpResult = $.extend(true, {}, originalData);
         Panel = $('.panel');
 
         Panel.find("#search_rows").empty(); // clear the search rows panel so that we can append the data
-        s_options.forEach((value) => { // won't allow with more than 3 options
+        s_options.forEach((value) => {
             Panel.find('#' + value.s).empty();
             var default_option = [];
             Panel.find("#search_rows").append(pack_dropdown(value.display)); // the dropdown to the panel
             value.option.slice(1).forEach((op_val) => { // slice the string to not include the category {s1: ['pod', 'value1', 'value2']}
-                Panel.find('#' + value.s).append(pack_option(op_val.v, op_val.text)); // add all of the options to the dropdown just added
+                Panel.find('#' + value.s).append(pack_option(op_val.v, op_val.text)); // add all of the options to the dropdown
                 if (originalData[value.display].indexOf(op_val.v) >= 0) {
                     default_option.push(op_val.v);
                 }
@@ -151,6 +115,9 @@ var SearchPanel = undefined;
     };
     panel.init = init;
 
+    /**
+     * create and set listeners for all of the dropdowns 
+     */
     function bindEvents() {
         // for the number of values, in s_options, do this thing
         for (let i = 1; i <= s_options.length; i++) {
@@ -162,9 +129,7 @@ var SearchPanel = undefined;
         }
         Panel.find('#search_now').off('click').click(function (e) { // function that is called when the filter button is clicked. 
             dirty = false;
-            console.log("ORIGINAL PRE BINDIGN: " + JSON.stringify(originalData));
             originalData = $.extend(true, {}, tmpResult);
-            console.log("BINDING: " + JSON.stringify(originalData));
             GridPanel.get_new(originalData);
         });
     }
