@@ -139,7 +139,7 @@ def read_yaml(yaml_file):
                 fields.append(val)
 
 
-        REQUIRED_FIELDS = ['image-file', 'wav-file', 'call-type', 'pod', 'clan', 'sample']
+        REQUIRED_FIELDS = ['sample', 'call-type', 'image-file', 'wav-file', 'description-file', 'pod', 'clan']
         for field in REQUIRED_FIELDS:
             if field not in fields:
                 print(f"Field '{field}' is required")
