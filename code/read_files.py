@@ -139,17 +139,17 @@ def read_yaml(yaml_file):
                 fields.append(val)
 
 
-        REQUIRED_FIELDS = ['image-file', 'wav-file', 'description-file']
+        REQUIRED_FIELDS = ['image-file', 'wav-file', 'call-type', 'pod', 'clan', 'sample']
         for field in REQUIRED_FIELDS:
             if field not in fields:
                 print(f"Field '{field}' is required")
                 exit(-1)
 
         # What can I do with these fields???
-        OPTIONAL_FIELDS = ['call-type', 'pod', 'clan']
-        for field in OPTIONAL_FIELDS:
-            if field not in fields:
-                print(f"Field '{field}' can be specified")
+        # OPTIONAL_FIELDS = ['call-type', 'pod', 'clan']
+        # for field in OPTIONAL_FIELDS:
+        #     if field not in fields:
+        #         print(f"Field '{field}' can be specified")
 
         # pre-processing and convert to original JSON format
         # create dataframe with all of the call data and do special handling form image-file, wav-file and description-file
@@ -158,8 +158,8 @@ def read_yaml(yaml_file):
         # need to iterate through all of the rows in DataFrame to split any values that may exist. J,L -> [J, L]
         for index, row in df.iterrows():
             for field in fields:
-                if field in REQUIRED_FIELDS:
-                    continue # don't want to change anything with the image, sound, or description. They could be vaild commas
+                if field in ['image-file', 'wav-file']:
+                    continue # don't want to change anything with the image or sound files. They could be vaild commas
                 if (type(row[field]) == str and ',' in row[field]):
                     df.at[index,field] = row[field].split(',')
 
