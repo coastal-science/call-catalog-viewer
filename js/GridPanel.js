@@ -168,6 +168,25 @@ var GridPanel = undefined;
     }
 
     /**
+     * Ensure that all of the necessary fields are present and set to default values if they do not have values
+     * @param {Object} data data for the lity object that needs to get verified
+     */
+    function validateParameters(data) {
+        if (!data.call_name) {
+            data.call_name = "Unknown";
+        }
+
+        if (!data.clan) {
+            data.clan = "Unknown";
+        }
+
+        if (!data.pod) {
+            data.pod = "Unknown";
+        }
+        return data;
+    }
+
+    /**
      * Initialize data on the first call from getData
      * Obtain correct data to display and assign to currentDisplayData and perform correct pagination and URL parameterizing
      * @param {Object} catalog_json path to JSON file
@@ -191,7 +210,7 @@ var GridPanel = undefined;
     
             var keys = Object.keys(simple_datasource);
             keys.forEach(item => { // this will append all of the items to the resultdata
-                resultData[data_index] = simple_datasource[item];
+                resultData[data_index] = validateParameters(simple_datasource[item]);
                 data_index++;
             });
             await updateCurrentData(); // apply filters on resultData, populating currentFilteredData accordingly
@@ -271,7 +290,6 @@ var GridPanel = undefined;
         // TODO: sorting is not compatible. Hardcoded to sort by call_name
         //Sort by: sort_by, sort_asc
         current_sort = (a, b) => {
-            sort_by = "call_name";
             if (Array.isArray(a)) {
                 a = a.join(', ');
             }
@@ -325,16 +343,21 @@ var GridPanel = undefined;
      */
     function updateFiltersFromJSON(filters) {
         filters.forEach(element => {
-            var filterable = element[0];
+            var filterable = element[0];            
             if (!(filterable in searching_para)) { // filterable is not already in the searchable
                 searching_para[filterable] = element.slice(1); // add the filterable param to the searching_params
             } else { // filterable is already in the parameters. Add all the elements that are not already in it
+                var index = searching_para[filterable].indexOf("Unknown"); // remove the index to ensure it will always be at the end
+                if (index != -1)
+                    searching_para[filterable].splice(index, 1);
+
                 element.slice(1).forEach(val => {
                     if (!searching_para[filterable].includes(val)) {
                         searching_para[filterable].push(val);
                     }
                 });
             }
+            searching_para[filterable].push('Unknown');
         });
     }
 
@@ -652,7 +675,8 @@ var GridPanel = undefined;
             const urlParams = new URLSearchParams(queryString);
             if (poped != undefined && !urlParams.has('popup')) {
                 var data_target_seq = id_to_seq[poped];
-                var data_target = resultData[data_target_seq];
+                var data_target = currentDisplayData[data_target_seq];
+                validateParameters(data_target);
                 lity_data = data_target;
                 var encoded_data = btoa(JSON.stringify(data_target));
                 var encoded = btoa(JSON.stringify(searching_para));
