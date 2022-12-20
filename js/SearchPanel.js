@@ -49,6 +49,7 @@ var SearchPanel = undefined;
      * @returns HTML representation of dropdown to append to the panel
      */
     function pack_dropdown(value) {
+        element_id_to_title[value] = element_id_to_title[value].charAt(0).toUpperCase() + element_id_to_title[value].slice(1);
         return '<div class="col col-12 col-sm-12 col-md-12 col-lg-12 col-xl-10 col-xxl-10 align-items-center align-middle align-right d-flex flex-nowrap">' + 
                     '<span class="col-4 text-end">' + element_id_to_title[value]  + ': &nbsp;</span>' +
                     '<select id="' + value + '" class="col-8" multiple aria-label="size 3 select">' +
