@@ -82,7 +82,7 @@ def read_data_folder(data_folder):
     df['thumb'] = df['filename'].apply(lambda x: x + '.jpg' if x + '.jpg' in filenames else (x + '.png' if x + '.png' in filenames else ''))
     #df['thumb'] = df['filename'] + '.jpg'
     df['clan'] = 'J'
-    df['mar'] = None
+    df['mar'] = None 
     df['subpopulation'] = None
     df['subclan'] = None
 
@@ -127,6 +127,7 @@ def read_yaml(yaml_file):
         fields = list()
         filters = list()
         sortables = list()
+        display = list()
         for val in f:
             if type(val) == dict: # this means that it is filterable item
                 key = list(dict(val).keys())[0]
@@ -141,7 +142,21 @@ def read_yaml(yaml_file):
                             arr.append(x)
                         sortables = arr
                     continue
+                
+                if key == 'display-one':
+                    if val[key] is None or len(val[key]) == 0:
+                        display.append({'d1': 'sample'})
+                    else:
+                        display.append({'d1': val[key][0]})
+                    continue
                     
+                if key == 'display-two':
+                    if val[key] is None or len(val[key]) == 0:
+                        display.append({'d2': 'sample'})
+                    else:
+                        display.append({'d2': val[key][0]})
+                    continue
+                
                 params = [x.split(',') for x in val[key]] # options are put in as a comma seperated string. This splits them
                 arr = [key]
                 for x in params[0]:
@@ -151,12 +166,15 @@ def read_yaml(yaml_file):
             else:
                 fields.append(val)
 
-        REQUIRED_FIELDS = ['sample', 'call-type', 'image-file', 'wav-file', 'description-file', 'pod', 'clan']
+        REQUIRED_FIELDS = ['sample', 'call-type', 'image-file', 'wav-file', 'description-file']
         for field in REQUIRED_FIELDS:
             if field not in fields:
                 print(f"Field '{field}' is required")
                 exit(-1)
 
+        if len(display) != 2:
+            print("Fields 'display-one' and 'display-two' must be included")
+            exit(-1)
         # What can I do with these fields???
         # OPTIONAL_FIELDS = ['call-type', 'pod', 'clan']
         # for field in OPTIONAL_FIELDS:
@@ -181,7 +199,7 @@ def read_yaml(yaml_file):
 
 
         # keeping for testing
-        df['sample'] = df['sample'].apply(lambda x: None if np.isnan(x) else str(int(x)))
+        df['sample'] = df['sample'].apply(lambda x: 0 if np.isnan(x) else str(int(x)))
 
         #check image-file and wav-file
         from os.path import exists
@@ -210,7 +228,7 @@ def read_yaml(yaml_file):
         df = df.rename(columns={"image-file": "image_file", "wav-file": "wav_file", "description-file": "description_file", "call-type": "call_type"})
 
     # returns the dataframe and the filters dictionary
-    return (df, filters, sortables)
+    return (df, filters, sortables, display)
 
 def represent_none(self, _):
     return self.represent_scalar('tag:yaml.org,2002:null', '')
@@ -226,7 +244,7 @@ def str_presenter(dumper, data):
         return dumper.represent_scalar('tag:yaml.org,2002:str', data)
     return dumper.represent_scalar('tag:yaml.org,2002:str', data)
 
-def export_file(df, data_folder, filters, sortables, file_name, file_format = 'json'):
+def export_file(df, data_folder, filters, sortables, display, file_name, file_format = 'json'):
     from json import dump
     #df['thumb'] = data_folder + "/" + df['thumb']
     if (file_format == 'json'):
@@ -234,12 +252,9 @@ def export_file(df, data_folder, filters, sortables, file_name, file_format = 'j
             json = dict()
             json['filters'] = filters
             json['sortable'] = sortables
+            json['display'] = display
             json['calls'] = df.to_dict('records')
-            # print(json['calls'])
-            # filters.append(df.to_dict('records'))
             dump(json, f)
-            # print(filters)
-            # f.write(df.to_json(orient='records'))
     elif (file_format == 'csv'):
             df.to_csv(file_name+'.csv')
     elif (file_format == 'yaml'):
@@ -281,8 +296,8 @@ if __name__ == '__main__':
         print("read_files.py: Generate json file...")
 
     if inputs.endswith('.yaml'):    # input file is a yaml. Read it
-        df, filter, sortables = read_yaml(inputs)
-        export_file(df, data_folder, filter, sortables, output, file_format = file_format)
+        df, filter, sortables, display = read_yaml(inputs)
+        export_file(df, data_folder, filter, sortables, display, output, file_format = file_format)
         print("read_files.py: Completed reading yaml file...")
     else:   #read resource directory
         df = read_data_folder(inputs)
