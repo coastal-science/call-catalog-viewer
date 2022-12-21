@@ -152,30 +152,6 @@ var GridPanel = undefined;
         });
 
         $dropdown.selectpicker('refresh');
-
-
-        // $("#sort").change(function () {
-            
-        //     $("#sort").append($("<option/>", { html: "Temporary" }));
-        //     // if (this.checked) {
-        //     // }
-        //     // $("#policy2").change(function () {
-        //     //     if (this.checked) {
-        //     //         $("#policyShow").append(($("<option/>", { html: "employee" }));
-        //     //     }
-        //     // });
-        // });
-        // $("#sort").ready(function() {
-        //     $('#sort').append('<option value="1">One</option>');
-        //     console.log("SHORT IS READY");
-        //     $val = $("#sort");
-        //     $val.append(new Option("Text", 'value'));   
-        //     $('#sort').trigger('change', true);
-        // })
-        // // $dropdown.on('change', 'select', function () {
-        //     console.log("CALLED");
-        //     $dropdown.append("<option value=evan>Evan</option>");
-        // })
     }
 
     /**
