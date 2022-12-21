@@ -6,6 +6,7 @@ var GridPanel = undefined;
     var currentDisplayData = undefined; // this is the data that has the filters applied to it and we want to use
     var entireFilterData = undefined;
     var searching_para = undefined;
+    var sortable_fields = [];
     var metadata_show = undefined;
     var sort_by = undefined;
     var sort_asc = undefined;
@@ -133,9 +134,49 @@ var GridPanel = undefined;
             //  would have to be async and could introduce race conditions (unexpected behaviour).
             let response = await getCatalog(LIBRARY + "/" + name + '.json');
         }
+        if (!data_initialized)
+            setSortableDropdownValues();
         data_initialized = true;
     }
     panel.getData = getData;
+
+    function setSortableDropdownValues() {
+        const $dropdown = $('#sort');
+        $dropdown.empty();
+        sortable_fields.forEach(field => {
+            console.log("FIELD: " + field);
+            $dropdown.append($('<option>', {
+                value: field,
+                text: field.charAt(0).toUpperCase() + field.slice(1)
+            }))
+        });
+
+        $dropdown.selectpicker('refresh');
+
+
+        // $("#sort").change(function () {
+            
+        //     $("#sort").append($("<option/>", { html: "Temporary" }));
+        //     // if (this.checked) {
+        //     // }
+        //     // $("#policy2").change(function () {
+        //     //     if (this.checked) {
+        //     //         $("#policyShow").append(($("<option/>", { html: "employee" }));
+        //     //     }
+        //     // });
+        // });
+        // $("#sort").ready(function() {
+        //     $('#sort').append('<option value="1">One</option>');
+        //     console.log("SHORT IS READY");
+        //     $val = $("#sort");
+        //     $val.append(new Option("Text", 'value'));   
+        //     $('#sort').trigger('change', true);
+        // })
+        // // $dropdown.on('change', 'select', function () {
+        //     console.log("CALLED");
+        //     $dropdown.append("<option value=evan>Evan</option>");
+        // })
+    }
 
     /**
      * This is applies the current filters defined in searching_para to our entire dataset in resultData
@@ -172,8 +213,8 @@ var GridPanel = undefined;
      * @param {Object} data data for the lity object that needs to get verified
      */
     function validateParameters(data) {
-        if (!data.call_name) {
-            data.call_name = "Unknown";
+        if (!data.call_type) {
+            data.call_type = "Unknown";
         }
 
         if (!data.clan) {
@@ -205,7 +246,13 @@ var GridPanel = undefined;
     
             // get the filter data and set simple_datasource so it is just calls
             var filters = simple_datasource["filters"];
+            var searchable = simple_datasource["sortable"];
             simple_datasource = simple_datasource["calls"];
+
+            searchable.slice(1).forEach(field => {
+                if (!sortable_fields.includes(field))
+                    sortable_fields.push(field);
+            })
             updateFiltersFromJSON(filters);
     
             var keys = Object.keys(simple_datasource);
@@ -287,7 +334,7 @@ var GridPanel = undefined;
             $('#paging > ul > li:nth-child(5)').addClass('disabled');
         }
 
-        // TODO: sorting is not compatible. Hardcoded to sort by call_name
+        // TODO: sorting is not compatible. Hardcoded to sort by call_type
         //Sort by: sort_by, sort_asc
         current_sort = (a, b) => {
             if (Array.isArray(a)) {
@@ -513,7 +560,7 @@ var GridPanel = undefined;
                 var tmpid = window.crypto.getRandomValues(new Uint32Array(1))[0].toString(16) + window.crypto.getRandomValues(new Uint32Array(1))[0].toString(16);
             } while (id_to_seq[tmpid] !== undefined);
             id_to_seq[tmpid] = i;
-            var obj = pack_option(tmpid, LIBRARY + '/' + ele.image_file, ele.call_name, ele.pod, ele.clan, LIBRARY + '/' + ele.image_file);
+            var obj = pack_option(tmpid, LIBRARY + '/' + ele.image_file, ele.call_type, ele.pod, ele.clan, LIBRARY + '/' + ele.image_file);
             grid.append(obj);
         }
         selecting = 0;
@@ -716,7 +763,7 @@ var GridPanel = undefined;
             }
             let play_btn = '<button id="play" class="col btn btn-primary"><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-play" viewBox="0 0 16 16">\
                                 <path d="M10.804 8 5 4.633v6.734L10.804 8zm.792-.696a.802.802 0 0 1 0 1.392l-6.363 3.692C4.713 12.69 4 12.345 4 11.692V4.308c0-.653.713-.998 1.233-.696l6.363 3.692z"/>\
-                            </svg>Play (Call Name: '+ lity_data.call_name + ') </button>';
+                            </svg>Play (Call Name: '+ lity_data.call_type + ') </button>';
             let additional_row = '';
             //lity_data["subclan"] = "Testing Clan";
             //lity_data["subpopulation"] = "Testing Population";
@@ -781,7 +828,7 @@ var GridPanel = undefined;
             audio_element = document.createElement('audio');
             $(this).html('<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-play" viewBox="0 0 16 16">\
             <path d="M10.804 8 5 4.633v6.734L10.804 8zm.792-.696a.802.802 0 0 1 0 1.392l-6.363 3.692C4.713 12.69 4 12.345 4 11.692V4.308c0-.653.713-.998 1.233-.696l6.363 3.692z"/>\
-          </svg>Playing  (Call Name: '+ lity_data.call_name + ')');
+          </svg>Playing  (Call Name: '+ lity_data.call_type + ')');
             $(this).removeClass('btn-primary').addClass('btn-success');
             audio_element.setAttribute('src', '');
             audio_element.setAttribute('src', LIBRARY + '/' + lity_data.wav_file);
@@ -790,7 +837,7 @@ var GridPanel = undefined;
             audio_element.addEventListener('ended', function () {
                 $("#play").html('<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-play" viewBox="0 0 16 16">\
                 <path d="M10.804 8 5 4.633v6.734L10.804 8zm.792-.696a.802.802 0 0 1 0 1.392l-6.363 3.692C4.713 12.69 4 12.345 4 11.692V4.308c0-.653.713-.998 1.233-.696l6.363 3.692z"/>\
-              </svg>Play  (Call Name: '+ lity_data.call_name + ')').addClass('btn-primary').removeClass('btn-success');
+              </svg>Play  (Call Name: '+ lity_data.call_type + ')').addClass('btn-primary').removeClass('btn-success');
 
             })
         });
@@ -827,6 +874,8 @@ var GridPanel = undefined;
         });
         $('#sort').on('changed.bs.select', (e, clickedIndex, isSelected, previousValue) => {
             sort_by = $('#sort').selectpicker('val');
+            sort_by = sort_by.replace(/-/g, "_");
+            console.log("SORTING ON: " + sort_by);
             getData();
         });
         $('#sort_a').on('changed.bs.select', (e, clickedIndex, isSelected, previousValue) => {
