@@ -6,17 +6,20 @@ Each `catalog` must adhere to the structure portrayed below
 id:
     - sample
     - call-type
+display:
+  - display-one:
+    - pod
+  - display-two:
+    - clan
 fields:
     - sample
     - call-type
     - image-file
     - wav-file
     - description-file
-    - pod:
-        - J,K
-    - clan:
-        - J,L
     # Any additional fields can be added, but the above are required.
+    - pod
+    - clan
     - matrilines
     - population
 calls:
@@ -24,16 +27,52 @@ calls:
   call-type: S01
   image-file: srkw-call-catalogue-files/media/S01-J,L.png
   wav-file: srkw-call-catalogue-files/media/S01-J,L.wav
-  pod: J,L
-  clan: J
   description-file: srkw-call-catalogue-files/call-type-description/call-type-S01.md
   # Additional fields included
+  pod: J,L
+  clan: J
   matrilines:
   population: SRKW
 ```
+# `display` section
+
+The `display` section outlines which data points to display for each of the calls in the catalog. It is required for the YAML to have these values, but they may be left blank. 
+```yaml
+display:
+  - display-one: # both values will default to display 'sample' data for the call
+  - display-two:
+```
+
+The only possible fields in this section are `display-one` and `display-two`. The values for each of these fields must also be present in the `fields` section of the YAML
+
+![Sample display of call data](./single-view.png "Example of call data") 
+
+In the above example the `display` section would look like
+
+```yaml
+display:
+  - display-one:
+    - pod
+  - display-two:
+    - clan
+```
+The entry in the `calls` section for this call would look like the following
+```yaml
+calls:
+- sample: 0
+  call-type: S01
+  image-file: srkw-call-catalogue-files/media/S01-J,L.png
+  wav-file: srkw-call-catalogue-files/media/S01-J,L.wav
+  description-file: srkw-call-catalogue-files/call-type-description/call-type-S01.md
+  pod: J,L # field being showcased in display-one
+  clan: J # field being showcased in display-two
+  matrilines:
+  population: SRKW
+```
+
 # `fields` section
 
-Each of the `fields` corresponds to a point of data that will be used in the catalog display. There are `7 required fields` to ensure the most optimal display of the call data, but additional fields can be added to filter calls. 
+Each of the `fields` corresponds to a point of data that will be used in the catalog display. There are `5 required fields`, but additional fields can be added to filter calls. 
 
 ## Required `fields`
 - sample
@@ -46,12 +85,8 @@ Each of the `fields` corresponds to a point of data that will be used in the cat
   - Path to the sound file
 - description-file
   - Path to the markdown description file
-- pod
-  - Pod data for the call
-- clan
-  - Clan data for the call
 
-Each of the above must be included in the `fields` section of the .yaml file, as well as in each additional entry in the `calls` section.
+Each of the above must be included in the `fields` section of the YAML file. Each of the fields and must also appear in each additional entry in the `calls` section
 
 
 Valid `fields` section
@@ -70,14 +105,13 @@ fields:
     - population:
         - NRKW,SRKW,TRANSIENT
 
-    # contains all required fields and additional 'matrilines' and 'population' fields
+    # contains all required fields and additional 'pod', 'clan', 'matrilines', and'population' fields
 ```
 
 Invalid `fields` section
 ```yaml
 fields:
     - sample
-    - call-type
     - image-file
     - wav-file
     - description-file
@@ -86,12 +120,12 @@ fields:
     - population:
         - NRKW,SRKW,TRANSIENT
     
-    # Missing the 'clan' required field
+    # Missing the 'call-type' required field
 ```
 
 ## Filtering `fields`
 
-Each of the entires in `fields` can be used to filter the results displayed in the catalog. Which fields to filter on and the allowable values must be specified in the `fields` section.
+Each of the entries in `fields` can be used to filter the results displayed in the catalog. Which fields to filter on and the allowable values must be specified in the `fields` section.
 
 To allow for filtering add the field entry as a key to a value of allowable values for the field.
 
@@ -207,37 +241,4 @@ calls:
     population: # value will default to 'Unknown'
 
   # May leave blank fields, but they must still be present
-```
-
-# Displaying Catalog Data
-
-Each of the required entries in the `fields` section will be displayed with the values given in each `call` entry
-
-## Sample display data 
-![Sample display of call data](./single-view.png "Example of call data")
-
-The corresponding `fields` and `calls` categories for the above would look as follows
-```yaml
-fields:
-    - sample
-    - call-type
-    - image-file
-    - wav-file
-    - description-file
-    - pod:
-        - J,K,L # Options to filter on
-    - clan:
-        - J,L
-
-calls:
-  - sample: 0
-    call-type: S01
-    image-file: srkw-call-catalogue-files/media/S01-J,L.png
-    wav-file: srkw-call-catalogue-files/media/S01-J,L.wav
-    pod:
-      - J,L
-    clan: J
-    description-file: srkw-call-catalogue-files/call-type-description/call-type-S01.md
-
-  # Each of the specified data fields are shwon in the catalog
 ```
