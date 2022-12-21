@@ -126,9 +126,22 @@ def read_yaml(yaml_file):
         f = resource_list['fields'] # is a list a dictionary objects containing all of the filterable datas
         fields = list()
         filters = list()
+        sortables = list()
         for val in f:
             if type(val) == dict: # this means that it is filterable item
                 key = list(dict(val).keys())[0]
+                
+                if key == 'sortable':
+                    if val[key] is None or len(val[key])  == 0:
+                        sortables = ['sortable', 'call-type']
+                    else:
+                        params = [x.split(',') for x in val[key]]
+                        arr = [key]
+                        for x in params[0]:
+                            arr.append(x)
+                        sortables = arr
+                    continue
+                    
                 params = [x.split(',') for x in val[key]] # options are put in as a comma seperated string. This splits them
                 arr = [key]
                 for x in params[0]:
@@ -137,7 +150,6 @@ def read_yaml(yaml_file):
                 fields.append(key)
             else:
                 fields.append(val)
-
 
         REQUIRED_FIELDS = ['sample', 'call-type', 'image-file', 'wav-file', 'description-file', 'pod', 'clan']
         for field in REQUIRED_FIELDS:
@@ -195,10 +207,10 @@ def read_yaml(yaml_file):
     
         #rename columns for better compatibility in GridPanel
         # call-type is in there for testing purposes
-        df = df.rename(columns={"image-file": "image_file", "wav-file": "wav_file", "description-file": "description_file", "call-type": "call_name"})
+        df = df.rename(columns={"image-file": "image_file", "wav-file": "wav_file", "description-file": "description_file", "call-type": "call_type"})
 
     # returns the dataframe and the filters dictionary
-    return (df, filters)
+    return (df, filters, sortables)
 
 def represent_none(self, _):
     return self.represent_scalar('tag:yaml.org,2002:null', '')
@@ -214,13 +226,14 @@ def str_presenter(dumper, data):
         return dumper.represent_scalar('tag:yaml.org,2002:str', data)
     return dumper.represent_scalar('tag:yaml.org,2002:str', data)
 
-def export_file(df, data_folder, filters, file_name, file_format = 'json'):
+def export_file(df, data_folder, filters, sortables, file_name, file_format = 'json'):
     from json import dump
     #df['thumb'] = data_folder + "/" + df['thumb']
     if (file_format == 'json'):
         with open(file_name+'.json', 'w') as f: # this is where it writes to the json.
             json = dict()
             json['filters'] = filters
+            json['sortable'] = sortables
             json['calls'] = df.to_dict('records')
             # print(json['calls'])
             # filters.append(df.to_dict('records'))
@@ -268,8 +281,8 @@ if __name__ == '__main__':
         print("read_files.py: Generate json file...")
 
     if inputs.endswith('.yaml'):    # input file is a yaml. Read it
-        df, filter = read_yaml(inputs)
-        export_file(df, data_folder, filter, output, file_format = file_format)
+        df, filter, sortables = read_yaml(inputs)
+        export_file(df, data_folder, filter, sortables, output, file_format = file_format)
         print("read_files.py: Completed reading yaml file...")
     else:   #read resource directory
         df = read_data_folder(inputs)

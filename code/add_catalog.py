@@ -168,7 +168,6 @@ def add(catalog_name: str, source_folder, catalog_listing, force=False):
     cmd = f"{sys.executable} code/read_files.py {LIBRARY}/{catalog_name}/{catalog_listing.name} {LIBRARY}/{catalog_name}"  # {'--force' if force else ''}
     print(f"  {cmd}")
     cmd = shlex.split(cmd)
-    print(f'SHELL: {cmd}')
 
     output = subprocess.run(cmd, universal_newlines=True) # before it wouldn't run if not --force?
     EXIT_CODE = output.returncode
