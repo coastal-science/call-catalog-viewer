@@ -66,44 +66,24 @@ var GridPanel = undefined;
         return 1;
     }
 
-    function pack_option(id, image_file, callname, pod, clan, full) {
-        if (Array.isArray(pod)) {
-            if (pod.length >= 1) {
-                pod = '[' + pod.join(', ') + ']';
-            }
-            else if (pod.length === 1) {
-                pod = pod[0];
-            }
-            else {
-                pod = 'N/A';
-            }
-        }
-
-        // checking if values exist in the data. If they do, they will be put there, else they will be unkown or N/A
-        if (callname === undefined || callname === null) {
-            callname = "Not Specified";
-        }
-        if (pod === undefined) {
-            pod = "N/A";
-        }
-        if (clan === undefined) {
-            clan = "N/A";
-        }
-
+    function pack_option(id, image_file, callname, d1_category, d1_value, d2_category, d2_value, full) {
+        var d1 = (d1_category == undefined || d1_category == null) ? "" : d1_category.charAt(0).toUpperCase() + d1_category.slice(1) + ': ' + d1_value;
+        var d2 = (d2_category == undefined || d2_category == null) ? "" : d2_category.charAt(0).toUpperCase() + d2_category.slice(1) + ': ' + d2_value;
 
         return '<div class="col-xxl-2 col-xl-2 col-lg-3 col-md-3 col-sm-4 mb-4 itemblock" id="gi-' + id + '">\
-            <div class="bg-white rounded shadow-sm"><a href="'+ media_folder_path + full + '" data-toggle="lightbox" class="image_pop_source text-decoration-none"">\
-            <img src="'+ media_folder_path + image_file + '" loading="lazy" alt="" class="img-fluid card-img-top"></a>\
-            <div class="p-4">\
-                <h5> <a class="play_btn" href="#" style="text-decoration:none">'+ play_icon + '<span class="text-dark">&nbsp;' + callname + '</span></a></h5>\
-                <p class="small mb-0 meta-p"><span class="font-weight-bold">Pods: '+ pod + '</span></p>\
-                <div class="meta-p d-flex align-items-center justify-content-between rounded-pill bg-light px-3 py-2 mt-4">\
-                <div class="badge badge-warning px-3 rounded-pill font-weight-normal"><span class="font-weight-bold  text-dark">Clan: '+ clan + '</span></div>\
+        <div class="bg-white rounded shadow-sm"><a href="'+ media_folder_path + full + '" data-toggle="lightbox" class="image_pop_source text-decoration-none"">\
+                <img src="'+ media_folder_path + image_file + '" loading="lazy" alt="" class="img-fluid card-img-top"></a>\
+                    <div class="p-4">\
+                        <h5> <a class="play_btn" href="#" style="text-decoration:none">'+ play_icon + '<span class="text-dark">&nbsp;' + callname + '</span></a></h5>\
+                        <p class="small mb-0 meta-p"><span class="font-weight-bold">' + d1 + '</span></p>\
+                        <div class="meta-p d-flex align-items-center justify-content-between rounded-pill bg-light px-3 py-2 mt-4">\
+                        <div class="badge badge-warning px-3 rounded-pill font-weight-normal"><span class="font-weight-bold  text-dark">' + d2 + '</span></div>\
+                    </div>\
                 </div>\
-            </div>\
             </div>\
         </div>';
     }
+
     async function getData(catalog_json) {
         // let catalog_json = "catalogs/srkw-call-catalogue-files.json";
         // let response = getCatalog(catalog_json)
@@ -144,7 +124,6 @@ var GridPanel = undefined;
         const $dropdown = $('#sort');
         $dropdown.empty();
         sortable_fields.forEach(field => {
-            console.log("FIELD: " + field);
             $dropdown.append($('<option>', {
                 value: field,
                 text: field.charAt(0).toUpperCase() + field.slice(1)
@@ -189,17 +168,12 @@ var GridPanel = undefined;
      * @param {Object} data data for the lity object that needs to get verified
      */
     function validateParameters(data) {
-        if (!data.call_type) {
-            data.call_type = "Unknown";
-        }
-
-        if (!data.clan) {
-            data.clan = "Unknown";
-        }
-
-        if (!data.pod) {
-            data.pod = "Unknown";
-        }
+        var keys = Object.keys(data);
+        keys.forEach(p => {
+            if (data[p] == undefined || data[p] == null) {
+                data[p] = "Unknown";
+            }
+        })
         return data;
     }
 
@@ -217,12 +191,13 @@ var GridPanel = undefined;
             // only proceed once promise is resolved
             let data = await response.text();
             // only proceed once second promise is resolved
-    
+
             var simple_datasource = JSON.parse(data); // json representation the catalogue.json file
-    
+
             // get the filter data and set simple_datasource so it is just calls
             var filters = simple_datasource["filters"];
             var searchable = simple_datasource["sortable"];
+            var display_data = simple_datasource["display"];
             simple_datasource = simple_datasource["calls"];
 
             searchable.slice(1).forEach(field => {
@@ -230,9 +205,11 @@ var GridPanel = undefined;
                     sortable_fields.push(field);
             })
             updateFiltersFromJSON(filters);
-    
+
             var keys = Object.keys(simple_datasource);
             keys.forEach(item => { // this will append all of the items to the resultdata
+                simple_datasource[item]['d1'] = (display_data[0]['d1']).replace(/-/g, '_');
+                simple_datasource[item]['d2'] = (display_data[1]['d2']).replace(/-/g, '_');
                 resultData[data_index] = validateParameters(simple_datasource[item]);
                 data_index++;
             });
@@ -333,7 +310,7 @@ var GridPanel = undefined;
         };
         entireFilterData.sort(current_sort);
 
-        currentDisplayData = entireFilterData.slice((current_page-1) * page_size, (current_page) * page_size); // obtain the data to display on this page from the entireData slice
+        currentDisplayData = entireFilterData.slice((current_page - 1) * page_size, (current_page) * page_size); // obtain the data to display on this page from the entireData slice
         redraw_items(); // draws our new updated items
 
         var encoded = btoa(JSON.stringify(searching_para));
@@ -359,14 +336,14 @@ var GridPanel = undefined;
         return;
     }
     panel.getCatalog = getCatalog;
-    
+
     /**
      * Update the current filters to include the new ones from given catalogue
      * @param {JSON} filters JSON representation of filters for given catalogue
      */
     function updateFiltersFromJSON(filters) {
         filters.forEach(element => {
-            var filterable = element[0];            
+            var filterable = element[0];
             if (!(filterable in searching_para)) { // filterable is not already in the searchable
                 searching_para[filterable] = element.slice(1); // add the filterable param to the searching_params
             } else { // filterable is already in the parameters. Add all the elements that are not already in it
@@ -536,7 +513,7 @@ var GridPanel = undefined;
                 var tmpid = window.crypto.getRandomValues(new Uint32Array(1))[0].toString(16) + window.crypto.getRandomValues(new Uint32Array(1))[0].toString(16);
             } while (id_to_seq[tmpid] !== undefined);
             id_to_seq[tmpid] = i;
-            var obj = pack_option(tmpid, LIBRARY + '/' + ele.image_file, ele.call_type, ele.pod, ele.clan, LIBRARY + '/' + ele.image_file);
+            var obj = pack_option(tmpid, LIBRARY + '/' + ele.image_file, ele.call_type, ele['d1'], ele[ele.d1], ele.d2, ele[ele.d2], LIBRARY + '/' + ele.image_file);
             grid.append(obj);
         }
         selecting = 0;
@@ -851,7 +828,6 @@ var GridPanel = undefined;
         $('#sort').on('changed.bs.select', (e, clickedIndex, isSelected, previousValue) => {
             sort_by = $('#sort').selectpicker('val');
             sort_by = sort_by.replace(/-/g, "_");
-            console.log("SORTING ON: " + sort_by);
             getData();
         });
         $('#sort_a').on('changed.bs.select', (e, clickedIndex, isSelected, previousValue) => {
