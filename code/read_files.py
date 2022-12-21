@@ -120,28 +120,12 @@ def read_yaml(yaml_file):
         # scalar values to Python the dictionary format
         resource_list = yaml.safe_load(file) # generates a dictionary from the yaml file
         # print(resource_list)
-
-        # create a list of lists with the parameter name as 0th element and everything else after
-        #  makes for easier handling in json than dictionaries with unknown keys
-        f = resource_list['fields'] # is a list a dictionary objects containing all of the filterable datas
-        fields = list()
-        filters = list()
-        sortables = list()
+        
+        d = resource_list['display']
         display = list()
-        for val in f:
-            if type(val) == dict: # this means that it is filterable item
+        for val in d:
+            if type(val) == dict:
                 key = list(dict(val).keys())[0]
-                
-                if key == 'sortable':
-                    if val[key] is None or len(val[key])  == 0:
-                        sortables = ['sortable', 'call-type']
-                    else:
-                        params = [x.split(',') for x in val[key]]
-                        arr = [key]
-                        for x in params[0]:
-                            arr.append(x)
-                        sortables = arr
-                    continue
                 
                 if key == 'display-one':
                     if val[key] is None or len(val[key]) == 0:
@@ -155,6 +139,28 @@ def read_yaml(yaml_file):
                         display.append({'d2': 'sample'})
                     else:
                         display.append({'d2': val[key][0]})
+                    continue
+                    
+
+        # create a list of lists with the parameter name as 0th element and everything else after
+        #  makes for easier handling in json than dictionaries with unknown keys
+        f = resource_list['fields'] # is a list a dictionary objects containing all of the filterable datas
+        fields = list()
+        filters = list()
+        sortables = list()
+        for val in f:
+            if type(val) == dict: # this means that it is filterable item
+                key = list(dict(val).keys())[0]
+                
+                if key == 'sortable':
+                    if val[key] is None or len(val[key])  == 0:
+                        sortables = ['sortable', 'call-type']
+                    else:
+                        params = [x.split(',') for x in val[key]]
+                        arr = [key]
+                        for x in params[0]:
+                            arr.append(x)
+                        sortables = arr
                     continue
                 
                 params = [x.split(',') for x in val[key]] # options are put in as a comma seperated string. This splits them
