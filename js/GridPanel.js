@@ -287,8 +287,6 @@ var GridPanel = undefined;
             $('#paging > ul > li:nth-child(5)').addClass('disabled');
         }
 
-        // TODO: sorting is not compatible. Hardcoded to sort by call_type
-        //Sort by: sort_by, sort_asc
         current_sort = (a, b) => {
             if (Array.isArray(a)) {
                 a = a.join(', ');
@@ -301,6 +299,14 @@ var GridPanel = undefined;
             }
             var smaller = (sort_asc === "as") ? a[sort_by] : b[sort_by];
             var larger = (sort_asc === "as") ? b[sort_by] : a[sort_by];
+            
+            // moves fields not filter on to the back of list
+            if (larger == undefined)
+                return -1;
+
+            if (smaller == undefined) 
+                return 1;
+
             if (larger > smaller) {
                 return -1;
             }
