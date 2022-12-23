@@ -6,6 +6,7 @@ var GridPanel = undefined;
     var currentDisplayData = undefined; // this is the data that has the filters applied to it and we want to use
     var entireFilterData = undefined;
     var searching_para = undefined;
+    var all_fields = [];
     var sortable_fields = [];
     var metadata_show = undefined;
     var sort_by = undefined;
@@ -386,7 +387,7 @@ var GridPanel = undefined;
             s2: ["J"],
             s3: ["J", "K", "L"],
         };
-        sort_by = 'cn';
+        sort_by = 'call_type';
         sort_asc = 'as';
 
         const queryString = window.location.search;
@@ -724,53 +725,80 @@ var GridPanel = undefined;
                                 <path d="M10.804 8 5 4.633v6.734L10.804 8zm.792-.696a.802.802 0 0 1 0 1.392l-6.363 3.692C4.713 12.69 4 12.345 4 11.692V4.308c0-.653.713-.998 1.233-.696l6.363 3.692z"/>\
                             </svg>Play (Call Name: '+ lity_data.call_type + ') </button>';
             let additional_row = '';
+
+            
+            var temp = Object.keys(lity_data);
+            const fields = temp.filter(item => {
+                return (!['image_file', 'wav_file', 'description_file', 'call_type', 'filename', 'd1', 'd2'].includes(item));
+            })
+            var count = fields.length;
+            var is_odd = count % 2;
+
+            for (let i = 0; i <= Math.floor(count/2); i+=2) {
+                var first = fields[i];
+                var second = fields[i+1];
+
+                additional_row += '<div class="row text-sm-center text-start text-info border-2 border-light border-bottom"><div class="col-12 col-sm-6"><span>' + first + ': ' + lity_data[first] + '</span></div>';
+                additional_row += '<div class="col-12 col-sm-6"><span>' + second + ': ' + lity_data[second] + '</span></div></div>';
+            }
+
+            if (is_odd) {
+                additional_row += '<div class="row text-sm-center text-start text-info border-2 border-light border-bottom">';
+                var field = fields[count-1];
+                additional_row += '<div class="col"><span>' + field + ': ' + lity_data[field] + '</span></div>';
+            }
+            // all_fields.forEach(field => {
+            //     if (lity_data[field] !== undefined && lity_data[field] !== null && lity_data[field].length !== 0) {
+            //         additional_row += '<div class="row text-start text-info border-2 border-light border-bottom"><div class="col-12 col-sm-6"><span>' + field.charAt(0).toUpperCase() + field.slice(1) + ': ' + lity_data[field] + '</span></div>';
+            //     }
+            // })
             //lity_data["subclan"] = "Testing Clan";
             //lity_data["subpopulation"] = "Testing Population";
-            if (lity_data["subpopulation"] !== undefined &&
-                lity_data["subpopulation"] !== null &&
-                lity_data["subpopulation"].length > 0) {
-                let population = { 'SRKW': "Southern Resident", 'NRKW': "Northern Resident" }[lity_data['population']];
+            // if (lity_data["subpopulation"] !== undefined &&
+            //     lity_data["subpopulation"] !== null &&
+            //     lity_data["subpopulation"].length > 0) {
+            //     let population = { 'SRKW': "Southern Resident", 'NRKW': "Northern Resident" }[lity_data['population']];
 
-                additional_row += '<div class="row text-start text-info border-2 border-light border-bottom"><div class="col-12 col-sm-6"><span>Population: ' + population + '</span></div>';
-                additional_row += '<div class="col-12 col-sm-6"><span>Sub-Population: ' + lity_data['subpopulation'] + '</span></div></div>';
-            }
-            if (lity_data["subclan"] !== undefined &&
-                lity_data["subclan"] !== null &&
-                lity_data["subclan"].length > 0) {
-                additional_row += '<div class="row text-start text-info border-2 border-light border-bottom"><div class="col-12 col-sm-6"><span>Clan: ' + lity_data['clan'] + '</span></div>';
-                additional_row += '<div class="col-12 col-sm-6"><span>Sub-Clan: ' + lity_data['subclan'] + '</span></div></div>';
-            }
-            let items_count = ((lity_data["sample"] !== undefined &&
-                lity_data["sample"] !== null &&
-                lity_data["sample"].length > 0) ? 1 : 0) +
-                ((lity_data["mar"] !== undefined &&
-                    lity_data["mar"] !== null &&
-                    lity_data["mar"].length > 0) ? 1 : 0);
-            let alignment = "text-sm-center";
-            if (items_count > 1) {
-                alignment = "";
-            }
-            if (items_count) {
-                additional_row += '<div class="row ' + alignment + ' text-start text-info border-2 border-light border-bottom">';
-            }
+            //     additional_row += '<div class="row text-start text-info border-2 border-light border-bottom"><div class="col-12 col-sm-6"><span>Population: ' + population + '</span></div>';
+            //     additional_row += '<div class="col-12 col-sm-6"><span>Sub-Population: ' + lity_data['subpopulation'] + '</span></div></div>';
+            // }
+            // if (lity_data["subclan"] !== undefined &&
+            //     lity_data["subclan"] !== null &&
+            //     lity_data["subclan"].length > 0) {
+            //     additional_row += '<div class="row text-start text-info border-2 border-light border-bottom"><div class="col-12 col-sm-6"><span>Clan: ' + lity_data['clan'] + '</span></div>';
+            //     additional_row += '<div class="col-12 col-sm-6"><span>Sub-Clan: ' + lity_data['subclan'] + '</span></div></div>';
+            // }
+            // let items_count = ((lity_data["sample"] !== undefined &&
+            //     lity_data["sample"] !== null &&
+            //     lity_data["sample"].length > 0) ? 1 : 0) +
+            //     ((lity_data["mar"] !== undefined &&
+            //         lity_data["mar"] !== null &&
+            //         lity_data["mar"].length > 0) ? 1 : 0);
+            // let alignment = "text-sm-center";
+            // if (items_count > 1) {
+            //     alignment = "";
+            // }
+            // if (items_count) {
+            //     additional_row += '<div class="row ' + alignment + ' text-start text-info border-2 border-light border-bottom">';
+            // }
 
-            if (lity_data["sample"] !== undefined &&
-                lity_data["sample"] !== null &&
-                lity_data["sample"].length > 0) {
-                additional_row += '<div class="col"><span>Sample: ' + lity_data['sample'] + '</span></div>';
-            }
-            if (lity_data["mar"] !== undefined &&
-                lity_data["mar"] !== null &&
-                lity_data["mar"].length > 0) {
-                additional_row += '<div class="col"><span>Matrilines: ' + lity_data['mar'] + '</span></div>';
-            }
-            if (items_count) {
-                additional_row += '</div';
-            }
+            // if (lity_data["sample"] !== undefined &&
+            //     lity_data["sample"] !== null &&
+            //     lity_data["sample"].length > 0) {
+            //     additional_row += '<div class="col"><span>Sample: ' + lity_data['sample'] + '</span></div>';
+            // }
+            // if (lity_data["mar"] !== undefined &&
+            //     lity_data["mar"] !== null &&
+            //     lity_data["mar"].length > 0) {
+            //     additional_row += '<div class="col"><span>Matrilines: ' + lity_data['mar'] + '</span></div>';
+            // }
+            // if (items_count) {
+            //     additional_row += '</div';
+            // }
             $('.lity-container').append('<div class="container-fluid litybottom"><div class="row">' + play_btn + '</div>' + additional_row + '</div>');
 
             // file = 'resources_config/sample.md'
-            file = media_folder_path + lity_data['description-file']
+            file = LIBRARY + '/' + media_folder_path + lity_data['description_file']
             css_file = 'css/darkdown.css'
             $('.lity-container').append(
                 `<div class="container-fluid litybottom"> 

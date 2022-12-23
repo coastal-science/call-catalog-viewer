@@ -217,14 +217,14 @@ def read_yaml(yaml_file):
             # output all files not found
             # selecting rows based on condition
             no_image_df = df[df['image_exists'] == False]
-            print("The following image files are not found:\n", no_image_df[['call-type', 'clan', 'population','image-file']])
+            print("The following image files are not found:\n", no_image_df[['call-type', 'image-file']])
             
         #output if there is case of file not found in wav
         if False in df['wav_exists'].unique():
             # output all files not found
             # selecting rows based on condition
             no_wav_df = df[df['wav_exists'] == False]
-            print("The following wav files are not found:\n", no_wav_df[['call-type', 'clan', 'population','wav-file']])
+            print("The following wav files are not found:\n", no_wav_df[['call-type', 'wav-file']])
     
         #drop 'image_exists' and 'wav_exists' columns
         df.drop(['image_exists', 'wav_exists'], inplace=True, axis=1)
