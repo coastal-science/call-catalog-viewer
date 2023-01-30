@@ -1,0 +1,49 @@
+viewer: https://github.com/coastal-science/call-catalog-viewer
+files:
+  - https://github.com/sfu-bigdata/srkw-call-catalogue-files
+
+Bootstrap.script #(in viewers)
+1. perform clone 
+
+bootstrap/
+call-catalog-viewer/
+call-catalog-files/
+
+# viewer
+
+library.yaml
+```yaml
+- https://github.com/sfu-bigdata/srkw-call-catalogue-files
+```
+
+  A user clones the viewer repo. The viewer repo contains a readme how to add catalogs.
+  catalogs is .gitignore
+  code/catalog_refresh.py --yaml --meta
+    1. discover folders or load folder names from yaml
+    2. add_catalog.py for each folder
+    
+
+  A user clones the -files repo. The viewer repo contains a readme how to add catalogs.
+
+set_root_catalog.py --catalog-name-or-url
+
+1. check/touch for root-catalog-name/library.yaml 
+1. symlink to root-catalog-name/library.yaml --> library/library.yaml
+
+add_library.py:
+for each line in library.yaml:
+  if url and check url != self
+      git clone url
+  add_catalog.py
+
+add_catalog.py
+  if library.yaml exists:
+    update library.yaml
+  else:
+
+add_root_catalog.py
+  c/p code of add_catalog.py
+  set_root_catalog.py (creates library.yaml)
+
+bootstrap.py --root_catalog_url
+
