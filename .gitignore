@@ -4,7 +4,8 @@
 
 .vscode
 __pycache__
-catalogs/srkw-call-catalogue-files
 env/
 notes.txt
 prob.txt
+catalogs/srkw-call-catalogue-files
+catalogs/srkw-call-catalogue-files.json
