@@ -4,7 +4,7 @@
 
 .vscode
 __pycache__
-catalogs/index.yaml
+catalogs/srkw-call-catalogue-files
 env/
 notes.txt
 prob.txt
