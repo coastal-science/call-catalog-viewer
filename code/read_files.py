@@ -101,7 +101,7 @@ def generate_yaml(data_folder, df):
     new_df['wav-file'] = data_folder + "/" + new_df['wav-file'] + ".wav" #data_folder + "/" + 
     new_df['image-file'] = data_folder + "/" + new_df['image-file'] #data_folder + "/" + 
     new_df = new_df.drop(['pod_cat'], axis=1)
-    print("GEnerate yaml called")
+    print("Generate yaml called")
     #new_df['sample'] = new_df['sample'].astype('float').astype('Int8')  #accommodate None
     
     #print(new_df)
@@ -120,6 +120,8 @@ def read_yaml(yaml_file):
         # scalar values to Python the dictionary format
         resource_list = yaml.safe_load(file) # generates a dictionary from the yaml file
         # print(resource_list)
+
+        site_details = resource_list['site-details']
         
         d = resource_list['display']
         display = list()
@@ -163,7 +165,7 @@ def read_yaml(yaml_file):
                         sortables = arr
                     continue
                 
-                params = [x.split(',') for x in val[key]] # options are put in as a comma seperated string. This splits them
+                params = [x.split(',') for x in val[key]] # options are put in as a comma separated string. This splits them
                 arr = [key]
                 for x in params[0]:
                     arr.append(x)
@@ -195,7 +197,7 @@ def read_yaml(yaml_file):
         for index, row in df.iterrows():
             for field in fields:
                 if field in ['image-file', 'wav-file']:
-                    continue # don't want to change anything with the image or sound files. They could be vaild commas
+                    continue # don't want to change anything with the image or sound files. They could be valid commas
                 if (type(row[field]) == str and ',' in row[field]):
                     df.at[index,field] = row[field].split(',')
 
@@ -234,7 +236,7 @@ def read_yaml(yaml_file):
         df = df.rename(columns={"image-file": "image_file", "wav-file": "wav_file", "description-file": "description_file", "call-type": "call_type"})
 
     # returns the dataframe and the filters dictionary
-    return (df, filters, sortables, display)
+    return (df, filters, sortables, display, site_details)
 
 def represent_none(self, _):
     return self.represent_scalar('tag:yaml.org,2002:null', '')
@@ -250,12 +252,13 @@ def str_presenter(dumper, data):
         return dumper.represent_scalar('tag:yaml.org,2002:str', data)
     return dumper.represent_scalar('tag:yaml.org,2002:str', data)
 
-def export_file(df, data_folder, filters, sortables, display, file_name, file_format = 'json'):
+def export_file(df, data_folder, filters, sortables, display, site_details, file_name, file_format = 'json'):
     from json import dump
     #df['thumb'] = data_folder + "/" + df['thumb']
     if (file_format == 'json'):
         with open(file_name+'.json', 'w') as f: # this is where it writes to the json.
             json = dict()
+            json['site-details'] = site_details
             json['filters'] = filters
             json['sortable'] = sortables
             json['display'] = display
@@ -302,8 +305,8 @@ if __name__ == '__main__':
         print("read_files.py: Generate json file...")
 
     if inputs.endswith('.yaml'):    # input file is a yaml. Read it
-        df, filter, sortables, display = read_yaml(inputs)
-        export_file(df, data_folder, filter, sortables, display, output, file_format = file_format)
+        df, filter, sortables, display, site_details = read_yaml(inputs)
+        export_file(df, data_folder, filter, sortables, display, site_details, output, file_format = file_format)
         print("read_files.py: Completed reading yaml file...")
     else:   #read resource directory
         df = read_data_folder(inputs)
