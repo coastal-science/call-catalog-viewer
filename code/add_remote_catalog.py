@@ -47,7 +47,22 @@ def create_library_yaml():
             f.seek(0)
             yaml.dump(catalogs, f)
         print(f'Succesfully added {url} to {catalogs_path}/library.yaml')   
-  
+
+def add_index_yaml():
+    print(f'Adding {repo_name} to index.yaml')
+    path = catalogs_path + '/index.yaml'
+    with open(path, 'r+') as f:
+        catalogs = yaml.safe_load(f)
+        
+        # this is the first time we are making index.yaml
+        if not catalogs:
+            print(f'Creating {catalogs_path}/index.yaml')
+            catalogs = {'catalogs': []}
+        catalogs['catalogs'].append(repo_name)
+        
+        f.seek(0)
+        yaml.dump(catalogs, f)
+        print('Succesfully added {catalogs_path}/index.yaml')  
     
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(
@@ -89,3 +104,5 @@ if __name__ == '__main__':
     # else we create repo/library.yaml and symlink to catalogs/library.yaml
     create_library_yaml()
     
+    # create/append catalogs/index.yaml
+    add_index_yaml()
