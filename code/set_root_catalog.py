@@ -15,6 +15,20 @@ import argparse
 REPO_NAME = ''
 CATALOG_PATH = ''
 REPO_ROOT_PATH = ''
+
+def is_remote_catalog(repo_name):
+    found = False
+    with open(CATALOG_PATH + '/library.yaml') as f:
+        catalogs = yaml.safe_load(f)
+        remotes = catalogs['catalogs']
+        
+        for remote in remotes:
+            if f'{repo_name}.git' in remote:
+                found = True
+                break
+    
+    return found
+    
 def is_root_catalog(repo_path):
     return exists(f'{repo_path}/library.yaml')
 
@@ -84,6 +98,11 @@ if __name__ == '__main__':
     if is_root_catalog(REPO_ROOT_PATH):
         print(f'The repo {REPO_NAME} is already the root catalog. Doing nothing')
         exit()
+    
+    # check if the new repo is a remote one, cannot set a local as a root catalogs
+    if not is_remote_catalog(REPO_NAME):
+        print(f'The local direcoty {REPO_NAME} is not a remote catalog. Cannot be set as the root catalog')
+        exit(-1)
         
     # open the old root catalog and store the old data
     old_catalog = retrieve_old_root_data()
