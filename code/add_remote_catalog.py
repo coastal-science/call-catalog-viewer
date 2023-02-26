@@ -1,5 +1,5 @@
 '''
-Used to add a new catalog from a git url
+Used to add a new catalog from a git URL
 Clones the catalog into the catalogs/ directory, generates the necessary files, and adds references to library.yaml and index.yaml
 If it is the first catalog, it will be set as the root catalog, creating the library.yaml inside of the cloned directory and linking it
 Also takes parameter for yaml file, this is the name (or path if not in root of repo) that contains the call data
@@ -17,62 +17,65 @@ import pandas as pd
 from json import dump
 import numpy as np
 
-repo_name = ''
-catalogs_path = ''
-repo_root_path = ''
+REPO_NAME = ''
+CATALOGS_PATH = ''
+REPO_ROOT_PATH = ''
+URL = ''
 
-def clone_repo(url):
-    print(f'Cloning repo {url} into catalogs/{repo_name}...')    
+def clone_repo(URL):
+    print(f'Cloning repo {URL} into catalogs/{REPO_NAME}...')    
     
     # create repo and set ownership
-    repo_directory = catalogs_path + '/' + repo_name
+    repo_directory = CATALOGS_PATH + '/' + REPO_NAME
     makedirs(repo_directory)
     chmod(repo_directory, 0o0777)
     
     # clone the repo into it
     try:
-        Repo.clone_from(url, repo_directory)
+        Repo.clone_from(URL, repo_directory)
     except:
         print('Unable to clone repository')
         exit(1)
         
-    print(f'Successfully cloned reposity {url}', end='\n\n')   
+    print(f'Successfully cloned reposity {URL}', end='\n\n')   
     
 def create_library_yaml():
-    library_yaml_path = catalogs_path + '/library.yaml'
-    if not exists(library_yaml_path):
-        print(f'Creating library.yaml in {repo_name}...')
-        with open(repo_root_path + '/library.yaml', 'w') as f:
-            catalogs = {'catalogs': [url]}
-            yaml.dump(catalogs, f)
-        print(f'Succesfully created library.yaml in {repo_name}')
-        
-        print(f'Creating symlink from {repo_name}/library.yaml to catalogs/library.yaml...')
-        symlink(repo_root_path + '/library.yaml', catalogs_path + '/library.yaml')
-        print(f'Succesfully created symlink to {repo_name}/library.yaml', end='\n\n')
-        
-    else:
-        print(f'Appending {url} to catalogs/library.yaml')
-        with open(catalogs_path + '/library.yaml', 'r+') as f:
-            catalogs = yaml.safe_load(f)
-            catalogs['catalogs'].append(url)
-            
-            # ensure old data is overwritten not appended to end
-            f.seek(0)
-            yaml.dump(catalogs, f)
-        print(f'Succesfully added {url} to catalogs/library.yaml', end='\n\n')   
+    print(f'Creating library.yaml in {REPO_NAME}...')
+    
+    with open(REPO_ROOT_PATH + '/library.yaml', 'w') as f:
+        catalogs = {'catalogs': [URL]}
+        yaml.dump(catalogs, f)
+    print(f'Succesfully created library.yaml in {REPO_NAME}')
+    
+    print(f'Creating symlink from {REPO_NAME}/library.yaml to catalogs/library.yaml...')
+    symlink(REPO_ROOT_PATH + '/library.yaml', CATALOGS_PATH + '/library.yaml')
+    print(f'Succesfully created symlink to {REPO_NAME}/library.yaml', end='\n\n')
 
+
+def add_library_yaml():
+    print(f'Appending {URL} to catalogs/library.yaml...')
+    
+    with open(CATALOGS_PATH + '/library.yaml', 'r+') as f:
+        catalogs = yaml.safe_load(f)
+        catalogs['catalogs'].append(URL)
+        
+        # ensure that the old data is properly overwritten
+        f.seek(0)
+        yaml.dump(catalogs, f)
+    
+    print(f'Succesfully added {URL} to catalogs/library.yaml', end='\n\n')
+    
 def add_index_yaml():
-    print(f'Adding {repo_name} to catalogs/index.yaml')
-    path = catalogs_path + '/index.yaml'
+    print(f'Adding {REPO_NAME} to catalogs/index.yaml')
+    path = CATALOGS_PATH + '/index.yaml'
     with open(path, 'r+') as f:
         catalogs = yaml.safe_load(f)
         
         # this is the first time we are making index.yaml
         if not catalogs:
-            print(f'Creating {catalogs_path}/index.yaml')
+            print(f'Creating {CATALOGS_PATH}/index.yaml')
             catalogs = {'catalogs': []}
-        catalogs['catalogs'].append(repo_name)
+        catalogs['catalogs'].append(REPO_NAME)
         
         f.seek(0)
         yaml.dump(catalogs, f)
@@ -166,8 +169,8 @@ def parse_yaml_to_json(yaml_file):
 
         #check image-file and wav-file
         from os.path import exists
-        df['image_exists'] = df['image-file'].apply(lambda x: exists(catalogs_path + '/' + x))
-        df['wav_exists'] = df['wav-file'].apply(lambda x: exists(catalogs_path + '/' + x))
+        df['image_exists'] = df['image-file'].apply(lambda x: exists(CATALOGS_PATH + '/' + x))
+        df['wav_exists'] = df['wav-file'].apply(lambda x: exists(CATALOGS_PATH + '/' + x))
     
         if False in df['image_exists'].unique():
             # output all files not found
@@ -193,7 +196,7 @@ def parse_yaml_to_json(yaml_file):
 
 def export_to_json(df, filters, sortables, display, site_details, file_name):
     print(f'Exporting {file_name} to catalogs/{file_name}.json...')
-    with open(catalogs_path + '/' + file_name+'.json', 'w') as f:
+    with open(CATALOGS_PATH + '/' + file_name+'.json', 'w') as f:
         json = dict()
         json['site-details'] = site_details
         json['filters'] = filters
@@ -211,42 +214,45 @@ if __name__ == '__main__':
     )
     
     parser.add_argument(
-        'url', 
+        'URL', 
         help='Url for git repo to display in viewer',
     )
     
     parser.add_argument(
         'yaml_file',
-        help='Path to .yaml file containing call data. repo_name/{yaml_file}'
+        help='Path to .yaml file containing call data. REPO_NAME/{yaml_file}'
     )
     
     args = parser.parse_args()
-    url = args.url
+    URL = args.URL
     yaml_file = args.yaml_file
     
     if not yaml_file.endswith('.yaml'):
         print(f'File {yaml_file} does not end with .yaml')
         exit(-1)
 
-    # extract catalogs path and repo_name from url and store in global
-    catalogs_path = dirname(dirname(abspath(__file__))) + '/catalogs'
-    repo_name = url[url.rfind('/')+1:len(url)-4]
-    repo_root_path = catalogs_path + '/' + repo_name
+    # extract catalogs path and REPO_NAME from URL and store in global
+    CATALOGS_PATH = dirname(dirname(abspath(__file__))) + '/catalogs'
+    REPO_NAME = URL[URL.rfind('/')+1:len(URL)-4]
+    REPO_ROOT_PATH = CATALOGS_PATH + '/' + REPO_NAME
     
-    if exists(catalogs_path + '/' + repo_name):
-        print(f'Unable to add repo {repo_name} as it alreay exists')
+    if exists(CATALOGS_PATH + '/' + REPO_NAME):
+        print(f'Unable to add repo {REPO_NAME} as it alreay exists')
         exit(-1)
     
     # clone the repository
-    clone_repo(url)
+    clone_repo(URL)
 
-    # If the library.yaml exists just add to it
-    # else we create repo/library.yaml and symlink to catalogs/library.yaml
-    create_library_yaml()
+    # If thee library doesn't exist (this is the first one), then create the library.yaml and symlink int
+    # else we just append it to the existing library.yaml
+    if not exists(CATALOGS_PATH + '/library.yaml'):
+        create_library_yaml()
+    else:
+        add_library_yaml()
     
     # create/append catalogs/index.yaml
     add_index_yaml()
     
     # parse the yaml, creating the json output used by website
-    df, filter, sortables, display, site_details = parse_yaml_to_json(repo_root_path + '/' + yaml_file)
-    export_to_json(df, filter, sortables, display, site_details, repo_name)
+    df, filter, sortables, display, site_details = parse_yaml_to_json(REPO_ROOT_PATH + '/' + yaml_file)
+    export_to_json(df, filter, sortables, display, site_details, REPO_NAME)
