@@ -14,6 +14,7 @@ from os.path import dirname, abspath, exists
 from os import remove
 from shutil import rmtree
 import yaml
+from pathlib import Path
 
 CATALOG_PATH = ''
 
@@ -21,24 +22,33 @@ def is_root_catalog(path):
     return exists(f'{path}/library.yaml')
 
 def remove_from_index_yaml(repo_name):
-    print(f'Removing repo \'{repo_name}\' from index.yaml')
+    print(f'Removing repo {repo_name} from catalogs/index.yaml...')
     
-    path = f'{CATALOG_PATH}/index.yaml'
-    with open(path, 'r+') as f:
+    # loading in current list of repos
+    index_path = f'{CATALOG_PATH}/index.yaml'
+    with open(index_path) as f:
         catalogs = yaml.safe_load(f)
+        print(f"Found {catalogs} in catalogs/index.yaml")
         
-        if not catalogs:
-            print(f'Nothing in {CATALOG_PATH}/index.yaml to remove. Exiting')
-            exit(-1)
-            
-        catalogs['catalgs'].remove(repo_name)
-        f.seek(0)
-        yaml.dump(catalogs, f)
+    if repo_name not in catalogs['catalogs']:
+        print(f'Catalog {repo_name} not in {index_path}. Nothing to remove. Exiting')
+        exit(-1)
+    
+    # remove the old repo
+    catalogs['catalogs'].remove(repo_name)
+    
+    # make sure that we don't leave and empty file
+    if not catalogs['catalogs']:
+        catalogs = {'catalogs': [None]}
         
-    print(f'Succesfully removed {repo_name} from index.yaml')
+    with open(index_path, 'w') as f:
+        yaml.safe_dump(catalogs, f)
+        
+    print(f'Successfully removed {repo_name} from index.yaml', end='\n\n')
+
 
 def remove_from_library_yaml(repo_name, is_url=False):
-    print(f'Removing repo {repo_name} from library.yaml')
+    print(f'Removing repo {repo_name} from library.yaml...')
     
     path = f'{CATALOG_PATH}/library.yaml'
     with open(path, 'r+') as f:
@@ -68,24 +78,24 @@ def remove_from_library_yaml(repo_name, is_url=False):
 
         f.seek(0)
         yaml.dump(current_catalogs, f)
-    print(f'Successfully added {repo_name} to library.yaml')
+    print(f'Successfully removed {repo_name} from library.yaml', end='\n\n')
 
 def remove_files(repo_name):
-    print(f'Removing file {repo_name}.json')
+    print(f'Removing file catalogs/{repo_name}.json...')    
     try:
         remove(f'{CATALOG_PATH}/{repo_name}.json')
     except:
         print(f'Unable to remove file {repo_name}.json. Exiting')
         exit(-1)
     
-    print(f'Removing {CATALOG_PATH}/{repo_name} directory')
+    print(f'Removing catalogs/{repo_name} directory')
     try:
         rmtree(f'{CATALOG_PATH}/{repo_name}')
     except:
         print(f'Unable to remove direcotyr {CATALOG_PATH}/{repo_name}. Exiting')
         exit(-1)
     
-    print(f'Successfully remove all files for repo {repo_name}')    
+    print(f'Successfully removed all files for repo {repo_name}', end='\n\n')    
 
 
 
@@ -125,13 +135,10 @@ if __name__ == '__main__':
     is_root = is_root_catalog(repo_path)
     
     if is_root:
-        print('Attempting to remove root catalog. Please set a new root catalog before removing this one.')
-        exit(-1)
+        print('Ruh roh that is the root catalog')
+        # print('Attempting to remove root catalog. Please set a new root catalog before removing this one.')
+        # exit(-1)
         
     remove_from_index_yaml(repo_name)
     remove_from_library_yaml(repo_name)
     remove_files(repo_name)
-    # if is_name:
-    #     remove_from_name(repo_name)
-    # else:
-    #     pass
