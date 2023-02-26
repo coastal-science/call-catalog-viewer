@@ -9,12 +9,18 @@
 # If it is the root catalog, can check through the len of lbrary.yaml, then delete link
 # Else it will be very similar to the index.yaml removal, just with library.yaml instead
 
+'''
+This file is used to remove a catalog that was previously added with add_remote_catalog.py
+It will remove the reference to the repo in index.yaml, library.yaml, as well as all the associated files. 
+A root catalog cannot be removed. A new root catalog must be set with set_root_catalog.py before removing the catalog.
+
+Usage: python code/remove_remote_catalog.py {catalog_to_remove}
+'''
 import argparse
-from os.path import dirname, abspath, exists
+from os.path import dirname, exists
 from os import remove
 from shutil import rmtree
 import yaml
-from pathlib import Path
 
 CATALOG_PATH = ''
 
@@ -124,7 +130,7 @@ if __name__ == '__main__':
     repo_url = args.repo_name
     is_name = args.is_name
     
-    # extrac information
+    # extract information
     CATALOG_PATH = dirname(dirname(__file__)) + '/catalogs'
     if not is_name:
         repo_name = repo_url[repo_url.refind('/')+1:len(repo_url)-4]
