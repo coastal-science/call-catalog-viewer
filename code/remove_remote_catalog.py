@@ -53,10 +53,11 @@ def remove_from_index_yaml(repo_name):
     print(f'Successfully removed {repo_name} from index.yaml', end='\n\n')
 
 
-def remove_from_library_yaml(repo_name, is_url=False):
+def remove_from_library_yaml(repo_name):
     print(f'Removing repo {repo_name} from library.yaml...')
     
     path = f'{CATALOG_PATH}/library.yaml'
+    found = False
     with open(path, 'r+') as f:
         catalogs = yaml.safe_load(f)
         
@@ -65,25 +66,41 @@ def remove_from_library_yaml(repo_name, is_url=False):
             exit(-1)
         
         current_catalogs = catalogs['catalogs']
-        if is_url:
-            if repo_name not in current_catalogs:
-                print(f'Could not remove {repo_name} from library.yaml. Please add if before removing')
-                exit(-1)
-            else:
-                current_catalogs.remove(repo_name)
-        else:
-            found = False
-            for index, catalog in enumerate(current_catalogs):
-                if f'{repo_name}.git' in catalog:
-                    current_catalogs.pop(index)
-                    found = True
+        for index, url in enumerate(current_catalogs):
+            if f'{repo_name}.git' in url:
+                found = True
+                current_catalogs.pop(index)
+                break
             
-            if not found:
-                print(f'Could not find repo {repo_name} in library.yaml. Please add it before removing.')
-                exit(-1)
+    # could not find a matching url        
+    if not found:
+        print(f'Could not find repo {repo_name} in library.yaml. Please add it before removing it')
+        exit(-1)
+    
+    catalogs['catalogs'] = current_catalogs
+    with open(path, 'w') as f:
+        yaml.safe_dump(catalogs, f)
+        
+        # print(current_catalogs)
+        # if is_url:
+        #     if repo_name not in current_catalogs:
+        #         print(f'Could not remove {repo_name} from library.yaml. Please add if before removing')
+        #         exit(-1)
+        #     else:
+        #         current_catalogs.remove(repo_name)
+        # else:
+        #     found = False
+        #     for index, catalog in enumerate(current_catalogs):
+        #         if f'{repo_name}.git' in catalog:
+        #             current_catalogs.pop(index)
+        #             found = True
+            
+        #     if not found:
+        #         print(f'Could not find repo {repo_name} in library.yaml. Please add it before removing.')
+        #         exit(-1)
 
-        f.seek(0)
-        yaml.dump(current_catalogs, f)
+        # f.seek(0)
+        # yaml.dump(current_catalogs, f)
     print(f'Successfully removed {repo_name} from library.yaml', end='\n\n')
 
 def remove_files(repo_name):
@@ -113,37 +130,22 @@ if __name__ == '__main__':
     
     parser.add_argument(
         'repo_name',
-        help='Url (or repo name with --name flag) to be remove'
-    )
-    
-    parser.add_argument(
-        '--name',
-        dest='is_name',
-        required=False,
-        help='Use flag when specifying repo name, not the git url',
-        default=False,
-        action=argparse.BooleanOptionalAction,
+        help='Repo name to be removed'
     )
     
     args = parser.parse_args()
     
-    repo_url = args.repo_name
-    is_name = args.is_name
+    repo_name = args.repo_name
     
     # extract information
     CATALOG_PATH = dirname(dirname(__file__)) + '/catalogs'
-    if not is_name:
-        repo_name = repo_url[repo_url.refind('/')+1:len(repo_url)-4]
-    else:
-        repo_name = repo_url
     repo_path = f'{CATALOG_PATH}/{repo_name}'
     
     is_root = is_root_catalog(repo_path)
     
     if is_root:
-        print('Ruh roh that is the root catalog')
-        # print('Attempting to remove root catalog. Please set a new root catalog before removing this one.')
-        # exit(-1)
+        print('Attempting to remove root catalog. Please set a new root catalog before removing this one.')
+        exit(-1)
         
     remove_from_index_yaml(repo_name)
     remove_from_library_yaml(repo_name)
