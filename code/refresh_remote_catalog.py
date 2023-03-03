@@ -17,13 +17,20 @@ from git import Repo
 import yaml
 from os.path import dirname, exists
 
-def pull_from_remote(git_url):
-    pass
+def pull_from_remote(path_to_repo, repo_name):
+    repo = Repo(path_to_repo)
+    try:
+        repo.remotes.origin.pull()
+    except:
+        print(f'There was a problem pulling the changes for repo {repo_name}')    
 
 def get_list_catalogs():
     with open(CATALOGS_PATH + '/library.yaml') as f:
         return yaml.safe_load(f)['catalogs']
-    
+
+def get_name_from_url(url):
+    return url[url.rfind('/')+1:len(url)-4]
+
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(
@@ -65,12 +72,14 @@ if __name__ == '__main__':
         
     # we need to do all of the catalogs
     elif do_all:
-        print('Updating all catalogs')
+        print('Updating all catalogs', end='\n\n')
         catalog_list = get_list_catalogs()
         
         for catalog in catalog_list:
-            print(f'Pulling changes from {catalog}')
-            pull_from_remote(catalog)
+            name = get_name_from_url(catalog)
+            print(f'Pulling changes from {name}...')
+            pull_from_remote(CATALOGS_PATH + '/' + name, name)
+            print(f'Succesfully pulled changes from {name}...', end='\n\n')
             
         print('Succesfully updated all remote catalogs')
 
@@ -82,15 +91,16 @@ if __name__ == '__main__':
     # if we don't find it, that means it isn't a remote catalog and we print that error
     else:
         catalog_list = get_list_catalogs()
-        git_url = ''
+        found = False
         
         for catalog in catalog_list:
             if f'{repo_name}.git' in catalog:
-                git_url = catalog
+                found = True
                 break
             
-        if git_url == '':
+        if not found:
             print(f'The catalog {repo_name} is not a remote catalog')
         else:
-            print(f'Pulling remote changes from {git_url}...')
-            pull_from_remote(git_url)
+            print(f'Pulling remote changes from {repo_name}...')
+            pull_from_remote(REPO_ROOT_PATH, repo_name)
+            print(f'Succesfully pulled all changes and {repo_name} is up to date')
