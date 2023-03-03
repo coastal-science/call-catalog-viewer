@@ -14,16 +14,16 @@ Repo Name
 
 import argparse
 from git import Repo
+import yaml
 from os.path import dirname, exists
 
 def pull_from_remote(git_url):
     pass
 
 def get_list_catalogs():
-    pass
-
-def get_repo_url(repo_name):
-    pass
+    with open(CATALOGS_PATH + '/library.yaml') as f:
+        return yaml.safe_load(f)['catalogs']
+    
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(
@@ -49,36 +49,48 @@ if __name__ == '__main__':
     
     args = parser.parse_args()
     
-    name = args.repo_name
+    repo_name = args.repo_name
     do_all = args.all
     
     CATALOGS_PATH = dirname(dirname(__file__)) + '/catalogs'
-    REPO_ROOT_PATH = CATALOGS_PATH + '/' + name
+    REPO_ROOT_PATH = CATALOGS_PATH + '/' + repo_name
     
-    # There is not a repo that has been added yet
-    if not exists(CATALOGS_PATH + '/library.yaml'):
-        print('No repos were found. Please add one before refreshing')
-        exit(-1)
-        
-    if not exists(REPO_ROOT_PATH):
-        print(f'Could not find the catalog {name}. Please add it before refreshing')
-        exit(-1)
-    
-    if name == 'no_repo' and not do_all:
+    # a value wasn't passed for the repo name, and do all was not specified
+    if repo_name == 'no_repo' and not do_all:
         print('Please specify a catalog name, or use the --all flag to update all catalogs')
-        exit(-1)
         
-    if do_all:
-        print('Getting list of all catalogs')
-        catalogs_list = get_list_catalogs()
-        print(f'Retrieved {len(catalogs_list)} catalogs to update')
+    # make sure that there is a library.yaml to check before we break it
+    elif not exists(CATALOGS_PATH + '/library.yaml'):
+        print('No remote catalogs are added. Please add one before updating.')
         
-        for catalogs in catalogs_list:
-            pull_from_remote(catalogs)
+    # we need to do all of the catalogs
+    elif do_all:
+        print('Updating all catalogs')
+        catalog_list = get_list_catalogs()
+        
+        for catalog in catalog_list:
+            print(f'Pulling changes from {catalog}')
+            pull_from_remote(catalog)
+            
+        print('Succesfully updated all remote catalogs')
+
+    # make sure that the catalog exists
+    elif not exists(REPO_ROOT_PATH):
+        print(f'The catalog {repo_name} does not exist. Please add it before updating')
+        
+    # go through the list of catalogs and find the one we are looking for
+    # if we don't find it, that means it isn't a remote catalog and we print that error
     else:
-        repo_url = get_repo_url(name)
-        pull_from_remote(repo_url)
+        catalog_list = get_list_catalogs()
+        git_url = ''
         
-    print(name)
-    print(do_all)
-    pass
+        for catalog in catalog_list:
+            if f'{repo_name}.git' in catalog:
+                git_url = catalog
+                break
+            
+        if git_url == '':
+            print(f'The catalog {repo_name} is not a remote catalog')
+        else:
+            print(f'Pulling remote changes from {git_url}...')
+            pull_from_remote(git_url)
