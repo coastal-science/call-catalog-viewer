@@ -10,7 +10,8 @@ Usage: python code/add_remote_catalog.py {catalog_git_url} {yaml_file_name}
 
 import argparse
 import yaml
-from os.path import dirname, abspath, exists, join
+from os.path import dirname, abspath, exists, realpath
+from pathlib import Path
 from os import makedirs, chmod, symlink
 from git import Repo
 import pandas as pd
@@ -21,6 +22,15 @@ REPO_NAME = ''
 CATALOGS_PATH = ''
 REPO_ROOT_PATH = ''
 URL = ''
+
+def is_root_catalog():
+    link_path = Path(CATALOGS_PATH + '/library.yaml')
+    real_path = realpath(link_path)
+    
+    if real_path == REPO_ROOT_PATH:
+        return True
+
+    return False
 
 def clone_repo(URL):
     print(f'Cloning repo {URL} into catalogs/{REPO_NAME}...')    
@@ -87,8 +97,13 @@ def parse_yaml_to_json(yaml_file):
     with open(yaml_file) as file:
         resources = yaml.safe_load(file)
         
+        # will only be true on the first time
         site_details = resources['site-details']
-        
+        if is_root_catalog():
+            site_details['is_root'] = 'true'
+        else:
+            site_details['is_root'] = 'false'
+                    
         display_info = resources['display']
         display = []
         for value in display_info:
@@ -198,7 +213,7 @@ def export_to_json(df, filters, sortables, display, site_details, file_name):
     print(f'Exporting {file_name} to catalogs/{file_name}.json...')
     with open(CATALOGS_PATH + '/' + file_name+'.json', 'w') as f:
         json = dict()
-        json['site-details'] = site_details
+        json['site-details'] = site_details            
         json['filters'] = filters
         json['sortable'] = sortables
         json['display'] = display
