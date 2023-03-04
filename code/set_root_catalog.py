@@ -11,6 +11,7 @@ from os import remove, symlink
 from pathlib import Path
 import yaml
 import argparse
+import json
 
 REPO_NAME = ''
 CATALOG_PATH = ''
@@ -31,14 +32,14 @@ def is_remote_catalog(repo_name):
     
 def is_root_catalog(repo_path):
     return exists(f'{repo_path}/library.yaml')
-
+  
 def retrieve_old_root_data():
     print(f'Retrieving data from old root catalog...')
     
     root_path = CATALOG_PATH + '/library.yaml'
     with open(root_path, 'r') as f:
         old_data = yaml.safe_load(f)
-    
+            
     print('Succesfully retrieved old root catalog data', end='\n\n')
     return old_data    
 
@@ -58,7 +59,34 @@ def remove_old_library():
         exit(-1)
     
     print('Successfully remove symlink and old library file', end='\n\n')
+   
+def update_old_site_details(repo_name):
+    # Open the json file, named repo_name.json
+    # Edit the site details so that is_root is false
     
+    with open(repo_name + '.json', 'r+') as f:
+        print('Updating old site data...')
+        data = json.load(f)
+        data['site-details']['is_root'] = 'false'
+        
+        f.seek(0)
+        json.dump(data, f)
+        print('Old data updated')
+
+def update_new_site_details():
+    # Open the repo_name.json file
+    # write the site details with the data that is in the yaml
+    # Set the is_root to be true
+    
+    with open(CATALOG_PATH + '/' + REPO_NAME + '.json', 'r+') as f:
+        print('Setting new site details...')
+        data = json.load(f)
+        data['site-details']['is_root'] = 'true'
+        
+        f.seek(0)
+        json.dump(data, f)
+        print('Site details updated')
+ 
 def create_new_files(old_library_data):
     print(f'Creating library.yaml in {REPO_NAME}...')
     with open(REPO_ROOT_PATH + '/library.yaml', 'w') as f:
@@ -104,6 +132,12 @@ if __name__ == '__main__':
         print(f'The local direcoty {REPO_NAME} is not a remote catalog. Cannot be set as the root catalog')
         exit(-1)
         
+    # get the old root repository
+    old_repo = dirname(realpath(CATALOG_PATH + '/library.yaml'))
+    
+    # setting the old json site-details is_root to false
+    update_old_site_details(old_repo)
+    
     # open the old root catalog and store the old data
     old_catalog = retrieve_old_root_data()
 
@@ -112,5 +146,8 @@ if __name__ == '__main__':
     
     # create new files and symlnks
     create_new_files(old_catalog)
+    
+    # set the new json site-details is_root as true
+    update_new_site_details()
     
     print(f'Succesfully set {REPO_NAME} as new root catalog')

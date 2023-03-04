@@ -197,7 +197,9 @@ var GridPanel = undefined;
 
             // get the filter data and set simple_datasource so it is just calls
             var site_details = simple_datasource["site-details"];
-            document.getElementById("catalogue-title").innerHTML = site_details['catalogue']['title'];
+            if (site_details['is_root'] === 'true') {
+                document.getElementById("catalogue-title").innerHTML = site_details['catalogue']['title'];
+            }
             
             var filters = simple_datasource["filters"];
             var searchable = simple_datasource["sortable"];
