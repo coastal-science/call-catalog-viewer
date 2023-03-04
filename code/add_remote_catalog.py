@@ -209,10 +209,13 @@ def parse_yaml_to_json(yaml_file):
     print('Succesfuly paresed yaml file', end='\n\n')
     return (df, filters, sortables, display, site_details)
 
-def export_to_json(df, filters, sortables, display, site_details, file_name):
+def export_to_json(df, filters, sortables, display, site_details, file_name, yaml_file):
     print(f'Exporting {file_name} to catalogs/{file_name}.json...')
     with open(CATALOGS_PATH + '/' + file_name+'.json', 'w') as f:
         json = dict()
+        # adding the yaml file to the json since we know the json file name, but we don't know the yaml
+        # this allows for much easier access to them
+        json['yaml-file'] = yaml_file
         json['site-details'] = site_details            
         json['filters'] = filters
         json['sortable'] = sortables
@@ -270,4 +273,4 @@ if __name__ == '__main__':
     
     # parse the yaml, creating the json output used by website
     df, filter, sortables, display, site_details = parse_yaml_to_json(REPO_ROOT_PATH + '/' + yaml_file)
-    export_to_json(df, filter, sortables, display, site_details, REPO_NAME)
+    export_to_json(df, filter, sortables, display, site_details, REPO_NAME, yaml_file)
