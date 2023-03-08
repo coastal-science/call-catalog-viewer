@@ -21,11 +21,9 @@ from os.path import dirname, exists
 from os import remove
 from shutil import rmtree
 import yaml
+import RemoteUtils
 
 CATALOG_PATH = ''
-
-def is_root_catalog(path):
-    return exists(f'{path}/library.yaml')
 
 def remove_from_index_yaml(repo_name):
     print(f'Removing repo {repo_name} from catalogs/index.yaml...')
@@ -80,27 +78,7 @@ def remove_from_library_yaml(repo_name):
     catalogs['catalogs'] = current_catalogs
     with open(path, 'w') as f:
         yaml.safe_dump(catalogs, f)
-        
-        # print(current_catalogs)
-        # if is_url:
-        #     if repo_name not in current_catalogs:
-        #         print(f'Could not remove {repo_name} from library.yaml. Please add if before removing')
-        #         exit(-1)
-        #     else:
-        #         current_catalogs.remove(repo_name)
-        # else:
-        #     found = False
-        #     for index, catalog in enumerate(current_catalogs):
-        #         if f'{repo_name}.git' in catalog:
-        #             current_catalogs.pop(index)
-        #             found = True
-            
-        #     if not found:
-        #         print(f'Could not find repo {repo_name} in library.yaml. Please add it before removing.')
-        #         exit(-1)
 
-        # f.seek(0)
-        # yaml.dump(current_catalogs, f)
     print(f'Successfully removed {repo_name} from library.yaml', end='\n\n')
 
 def remove_files(repo_name):
@@ -139,9 +117,9 @@ if __name__ == '__main__':
     
     # extract information
     CATALOG_PATH = dirname(dirname(__file__)) + '/catalogs'
-    repo_path = f'{CATALOG_PATH}/{repo_name}'
+    REPO_PATH = f'{CATALOG_PATH}/{repo_name}'
     
-    is_root = is_root_catalog(repo_path)
+    is_root = RemoteUtils.is_root_catalog(CATALOG_PATH + '/library.yaml', REPO_PATH)
     
     if is_root:
         print('Attempting to remove root catalog. Please set a new root catalog before removing this one.')
