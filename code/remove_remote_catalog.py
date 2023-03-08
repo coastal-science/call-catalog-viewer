@@ -1,14 +1,3 @@
-# will have to pass the remote url or repo name to remove
-# Possibly a flag to determine this
-# python code/remove_remote_catalog.py ssh@github.....
-# python code/remove_remote_catalog.py --name repo-name
-
-# Will steal logic from remove_catalog.py to remove from index.yaml 
-# Delete the json generated file
-# Will have to do some funky things maybe with library.yaml
-# If it is the root catalog, can check through the len of lbrary.yaml, then delete link
-# Else it will be very similar to the index.yaml removal, just with library.yaml instead
-
 '''
 This file is used to remove a catalog that was previously added with add_remote_catalog.py
 It will remove the reference to the repo in index.yaml, library.yaml, as well as all the associated files. 
@@ -17,7 +6,7 @@ A root catalog cannot be removed. A new root catalog must be set with set_root_c
 Usage: python code/remove_remote_catalog.py {catalog_to_remove}
 '''
 import argparse
-from os.path import dirname, exists
+from os.path import dirname
 from os import remove
 from shutil import rmtree
 import yaml
