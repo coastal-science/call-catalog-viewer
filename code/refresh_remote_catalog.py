@@ -16,9 +16,7 @@ import argparse
 from git import Repo
 import yaml
 from os.path import dirname, exists
-import pandas as pd
-import numpy as np
-from json import dump, load
+from json import load
 import RemoteUtils
 
 def pull_from_remote(path_to_repo, repo_name):
