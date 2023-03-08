@@ -47,4 +47,22 @@ python code/set_root_catalog.py srkw-call-catalogue-files
 
 ## Refreshing catalogs
 
-### In progress
+To pull any of the remote changes to a catalog and refresh the local catalogs and site the name of the catalog or the --all flag must be specified
+
+Refreshing the srkw-call-catalogue-files remote catalogue
+```bash
+python code/refresh_remote_catalog.py srkw-call-catalogue-files 
+```
+
+Refreshing all of the remote catalogues
+```bash
+python code/refresh_remote_catalog.py --all
+```
+
+## Getting the root catalogs
+
+To determine which of the remote catalogs is currently set as the root catalog
+
+```bash
+python code/get_root_catalog.py
+```
