@@ -71,6 +71,7 @@ def update_old_site_details(repo_name):
         
         f.seek(0)
         json.dump(data, f)
+        f.truncate()
         print('Old data updated')
 
 def update_new_site_details():
@@ -85,6 +86,7 @@ def update_new_site_details():
         
         f.seek(0)
         json.dump(data, f)
+        f.truncate()
         print('Site details updated')
  
 def create_new_files(old_library_data):
