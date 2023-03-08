@@ -10,28 +10,15 @@ Usage: python code/add_remote_catalog.py {catalog_git_url} {yaml_file_name}
 
 import argparse
 import yaml
-from os.path import dirname, abspath, exists, realpath
-from pathlib import Path
+from os.path import dirname, abspath, exists
 from os import makedirs, chmod, symlink
 from git import Repo
-import pandas as pd
-from json import dump
-import numpy as np
 import RemoteUtils
 
 REPO_NAME = ''
 CATALOGS_PATH = ''
 REPO_ROOT_PATH = ''
 URL = ''
-
-# def is_root_catalog():
-#     link_path = Path(CATALOGS_PATH + '/library.yaml')
-#     real_path = realpath(link_path)
-    
-#     if real_path == REPO_ROOT_PATH:
-#         return True
-
-#     return False
 
 def clone_repo(URL):
     print(f'Cloning repo {URL} into catalogs/{REPO_NAME}...')    
@@ -93,139 +80,6 @@ def add_index_yaml():
     
     print('Succesfully added catalogs/index.yaml', end='\n\n')  
     
-# def parse_yaml_to_json(yaml_file):
-#     print('Parsing yaml file to prepare for json dump...')
-#     with open(yaml_file) as file:
-#         resources = yaml.safe_load(file)
-        
-#         # will only be true on the first time
-#         site_details = resources['site-details']
-#         if RemoteUtils.is_root_catalog(CATALOGS_PATH + '/library.yaml', REPO_ROOT_PATH):
-#             site_details['is_root'] = 'true'
-#         else:
-#             site_details['is_root'] = 'false'
-                    
-#         display_info = resources['display']
-#         display = []
-#         for value in display_info:
-#             if type(value) == dict:
-#                 key = list(dict(value).keys())[0]
-                
-#                 if key == 'display-one':
-#                     if value[key] is None or len(value[key]) == 0:
-#                         display.append({'d1': 'sample'})
-#                     else:
-#                         display.append({'d1': value[key][0]})
-#                     continue
-#                 if key == 'display-two':
-#                     if value[key] is None or len(value[key]) == 0:
-#                         display.append({'d2': 'sample'})
-#                     else:
-#                         display.append({'d2': value[key][0]})
-#                     continue
-        
-#         # create a list of lists with the param name as 0th element for easier handling in json
-#         f = resources['fields']
-#         fields, filters, sortables = [], [], []
-        
-#         for val in f:
-#             # if type is dict then it is key in key, value pair and thus is filterable
-#             if type(val) == dict:
-#                 key = list(dict(val).keys())[0]
-                
-#                 if key == 'sortable':
-#                     if val[key] is None or len(val[key]) == 0:
-#                         sortables = ['sortable', 'call-type']
-#                     else:
-#                         params = [x.split(',') for x in val[key]]
-#                         arr = [key]
-#                         for x in params[0]:
-#                             arr.append(x)
-#                         sortables = arr
-#                     continue
-                        
-#                 params = [x.split(',') for x in val[key]]
-#                 arr = [key]
-#                 for x in params[0]:
-#                     arr.append(x)
-#                 filters.append(arr)
-#                 fields.append(key)
-#             else:
-#                 fields.append(val)
-                
-#         # Set the required fields for each call
-#         REQUIRED_FIELDS = ['sample', 'call-type', 'image-file', 'wav-file', 'description-file']
-#         for field in REQUIRED_FIELDS:
-#             if field not in fields:
-#                 print(f"Field '{field}' is required")
-#                 exit(-1)
-            
-#         if len(display) != 2:
-#             print("The fields 'display-one' and 'display-two' must both be included")
-#             exit(-1)
-            
-        
-#         # create df and process for json dump
-#         df = pd.DataFrame.from_dict(resources['calls'])
-        
-#         # split any comma seperated values, excluding files
-#         for index, row in df.iterrows():
-#             for field in fields:
-#                 if field in ['image-file', 'wav-file', 'description-file']:
-#                     continue
-#                 if (type(row[field]) == str and ',' in row[field]):
-#                     df.at[index, field] = row[field].split(',')
-        
-#         # extract the filename from the path
-#         df['filename'] =  df['image-file'].str.split(".", expand=True)[0]
-#         df['filename'] =  [x.split("/")[-1] for x in df['filename']]
-
-#         # keeping for testing
-#         df['sample'] = df['sample'].apply(lambda x: 0 if np.isnan(x) else str(int(x)))
-
-#         #check image-file and wav-file
-#         from os.path import exists
-#         df['image_exists'] = df['image-file'].apply(lambda x: exists(CATALOGS_PATH + '/' + x))
-#         df['wav_exists'] = df['wav-file'].apply(lambda x: exists(CATALOGS_PATH + '/' + x))
-    
-#         if False in df['image_exists'].unique():
-#             # output all files not found
-#             no_image_df = df[df['image_exists'] == False]
-#             print("The following image files are not found:\n", no_image_df[['call-type', 'image-file']])
-            
-#         #output if there is case of file not found in wav
-#         if False in df['wav_exists'].unique():
-#             # output all files not found
-#             no_wav_df = df[df['wav_exists'] == False]
-#             print("The following wav files are not found:\n", no_wav_df[['call-type', 'wav-file']])
-    
-#         #drop 'image_exists' and 'wav_exists' columns
-#         df.drop(['image_exists', 'wav_exists'], inplace=True, axis=1)
-    
-#         #rename columns for better compatibility in GridPanel
-#         # call-type is in there for testing purposes
-#         df = df.rename(columns={"image-file": "image_file", "wav-file": "wav_file", "description-file": "description_file", "call-type": "call_type"})
-
-#     # returns the dataframe and the filters dictionary
-#     print('Succesfuly paresed yaml file', end='\n\n')
-#     return (df, filters, sortables, display, site_details)
-
-# def export_to_json(df, filters, sortables, display, site_details, file_name, yaml_file):
-#     print(f'Exporting {file_name} to catalogs/{file_name}.json...')
-#     with open(CATALOGS_PATH + '/' + file_name+'.json', 'w') as f:
-#         json = dict()
-#         # adding the yaml file to the json since we know the json file name, but we don't know the yaml
-#         # this allows for much easier access to them
-#         json['yaml-file'] = yaml_file
-#         json['site-details'] = site_details            
-#         json['filters'] = filters
-#         json['sortable'] = sortables
-#         json['display'] = display
-#         json['calls'] = df.to_dict('records')
-#         dump(json, f)
-        
-#     print(f'Successfuly exported call data to catalogs/{file_name}.json', end='\n\n')
-        
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(
         description='Add a remote repo to display in viewer',
