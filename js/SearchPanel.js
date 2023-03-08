@@ -133,5 +133,10 @@ var SearchPanel = undefined;
             originalData = $.extend(true, {}, tmpResult);
             GridPanel.get_new(originalData);
         });
+
+        Panel.find('#testing').off('click').click(function (e) {
+            var tab = window.open("about:blank", "_blank");
+            tab.document.body.innerHTML = "<pre>" + JSON.stringify(window.currentDisplayData) + "</pre>";
+        });
     }
 }(SearchPanel || (SearchPanel = {})));

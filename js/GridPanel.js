@@ -3,7 +3,7 @@ var GridPanel = undefined;
     var Panel = undefined;
     var resultData = undefined; // this is all of the data read from catalogs initially
     var data_index = 0;
-    var currentDisplayData = undefined; // this is the data that has the filters applied to it and we want to use
+    window.currentDisplayData = undefined; // this is the data that has the filters applied to it and we want to use
     var entireFilterData = undefined;
     var searching_para = undefined;
     var all_fields = [];
@@ -322,7 +322,7 @@ var GridPanel = undefined;
         };
         entireFilterData.sort(current_sort);
 
-        currentDisplayData = entireFilterData.slice((current_page - 1) * page_size, (current_page) * page_size); // obtain the data to display on this page from the entireData slice
+        window.currentDisplayData = entireFilterData.slice((current_page - 1) * page_size, (current_page) * page_size); // obtain the data to display on this page from the entireData slice
         redraw_items(); // draws our new updated items
 
         var encoded = btoa(JSON.stringify(searching_para));
@@ -519,8 +519,8 @@ var GridPanel = undefined;
     function append_items() {
         var i = next_drawn;
         var grid = $('#gi-area').empty();
-        for (; i < currentDisplayData.length; i++) {
-            var ele = currentDisplayData[i];
+        for (; i < window.currentDisplayData.length; i++) {
+            var ele = window.currentDisplayData[i];
             do {
                 var tmpid = window.crypto.getRandomValues(new Uint32Array(1))[0].toString(16) + window.crypto.getRandomValues(new Uint32Array(1))[0].toString(16);
             } while (id_to_seq[tmpid] !== undefined);
@@ -688,7 +688,7 @@ var GridPanel = undefined;
             const urlParams = new URLSearchParams(queryString);
             if (poped != undefined && !urlParams.has('popup')) {
                 var data_target_seq = id_to_seq[poped];
-                var data_target = currentDisplayData[data_target_seq];
+                var data_target = window.currentDisplayData[data_target_seq];
                 validateParameters(data_target);
                 lity_data = data_target;
                 var encoded_data = btoa(JSON.stringify(data_target));
