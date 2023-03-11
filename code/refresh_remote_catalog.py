@@ -119,5 +119,5 @@ if __name__ == '__main__':
         else:
             print(f'Pulling remote changes from {repo_name}...')
             pull_from_remote(REPO_ROOT_PATH, repo_name)
-            update_json_file()
+            update_json_file(repo_name)
             print(f'Succesfully pulled all changes and {repo_name} is up to date')
