@@ -6,7 +6,7 @@ Versions
 
 Usage 
 python code/catalog_versions.py {catalog_name} {version_name}
-python code/catalog_versions.py {cadtalog_name} --list
+python code/catalog_versions.py {catalog_name} --list
 python code/catalog_versions.py {catalog_name} --latest
 '''
 
@@ -16,9 +16,10 @@ from git import Repo
 import RemoteUtils
 import json
 
-def list_versions(path_to_catalog):
-    repo = Repo(path_to_catalog)
-    
+def list_versions(repo):
+    '''
+    List all of the versions available for the repo. Lists all tags that have been pulled to local
+    '''   
     if len(repo.tags) == 0:
         print('Not versions available for the catalog. View documentation for instructions to create')
         exit(-1)
@@ -26,9 +27,10 @@ def list_versions(path_to_catalog):
     for v in repo.tags:
         print(v)
 
-def tag_exists(path_to_catalog, tag):
-    repo = Repo(path_to_catalog)
-    
+def tag_exists(repo, tag):
+    '''
+    Check whether a tag exists for a specific repository
+    '''   
     if len(repo.tags) == 0:
         print('Not versions available for the catalog. View documentation for instructions to create')
         exit(-1)
@@ -41,16 +43,21 @@ def tag_exists(path_to_catalog, tag):
     
     return found
 
-def checkout_version(path_to_catalog, tag):
-    repo = Repo(path_to_catalog)
-    
+def checkout_version(repo, tag):
+    '''
+    Checkout a specific version of the catalog. i.e. v1.0
+    If the 'latest' tag has not been created already, then create it. It should be made in add_catalog and refresh_catalog, but this is safeguard
+    '''
     if 'latest' not in [x.name for x in repo.tags]:
         repo.create_tag('latest')
         
     repo.git.checkout(tag)
 
 def rebuild_files():
-    # get the yaml file from the json
+    '''
+    Update the files after a different tag has been checked out
+    '''
+    # fetch the yaml file name from the json since we know json, but not yaml all the time. Stops from having to specify
     with open(CATALOGS_PATH + '/' + REPO_NAME + '.json') as f:
         data = json.load(f)
         yaml_file = data['yaml-file']
@@ -59,7 +66,11 @@ def rebuild_files():
     df, filter, sortables, display, site_details = RemoteUtils.parse_yaml_to_json(CATALOGS_PATH, CATALOGS_PATH + '/' + REPO_NAME + '/' + yaml_file)
     RemoteUtils.export_to_json(CATALOGS_PATH, df, filter, sortables, display, site_details, REPO_NAME, yaml_file)
 
+
 def checkout_latest():
+    '''
+    Checkout the most up to date revision of the repository
+    '''
     repo = Repo(ROOT_REPO_PATH)
     
     if 'latest' not in [x.name for x in repo.tags]:
@@ -126,8 +137,9 @@ if __name__ == '__main__':
         print(f'The catalog {catalog_name} does not exist. Please enter a valid catalog name')
         exit(-1)
     
-    # we have a valid catalog, so we can set the path
+    # we have a valid catalog, so we can set the path and create the repo reference
     ROOT_REPO_PATH = CATALOGS_PATH + '/' + catalog_name
+    catalog_repo = Repo(ROOT_REPO_PATH)
     
     # didn't specify what action to do
     if version == 'no_version' and not list_all and not latest:
@@ -141,13 +153,14 @@ if __name__ == '__main__':
         
     # we are down to have only one valid action and can handle all of them
     if list_all:
-        list_versions(ROOT_REPO_PATH)
+        list_versions(catalog_repo)
     elif latest:
         checkout_latest()
+        rebuild_files()
     else:
-        if not tag_exists(ROOT_REPO_PATH, version):
+        if not tag_exists(catalog_repo, version):
             print(f'The version {version} does not exist. To view available options use --list')
             exit(-1)
             
-        checkout_version(ROOT_REPO_PATH, version)
+        checkout_version(catalog_repo, version)
         rebuild_files()
