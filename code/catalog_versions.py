@@ -43,16 +43,6 @@ def tag_exists(repo, tag):
     
     return found
 
-def checkout_version(repo, tag):
-    '''
-    Checkout a specific version of the catalog. i.e. v1.0
-    If the 'latest' tag has not been created already, then create it. It should be made in add_catalog and refresh_catalog, but this is safeguard
-    '''
-    if 'latest' not in [x.name for x in repo.tags]:
-        repo.create_tag('latest')
-        
-    repo.git.checkout(tag)
-
 def rebuild_files():
     '''
     Update the files after a different tag has been checked out
@@ -65,19 +55,6 @@ def rebuild_files():
     # pass the yaml file to create the new json
     df, filter, sortables, display, site_details = RemoteUtils.parse_yaml_to_json(CATALOGS_PATH, CATALOGS_PATH + '/' + REPO_NAME + '/' + yaml_file)
     RemoteUtils.export_to_json(CATALOGS_PATH, df, filter, sortables, display, site_details, REPO_NAME, yaml_file)
-
-
-def checkout_latest():
-    '''
-    Checkout the most up to date revision of the repository
-    '''
-    repo = Repo(ROOT_REPO_PATH)
-    
-    if 'latest' not in [x.name for x in repo.tags]:
-        print(f'Already at the most up to date version of the catalog {REPO_NAME}')
-        exit(-1)
-        
-    repo.git.checkout('latest')
     
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(
@@ -155,12 +132,13 @@ if __name__ == '__main__':
     if list_all:
         list_versions(catalog_repo)
     elif latest:
-        checkout_latest()
+        # checkout the main to avoid weird git states and conflicts
+        catalog_repo.git.checkout('main')
         rebuild_files()
     else:
         if not tag_exists(catalog_repo, version):
             print(f'The version {version} does not exist. To view available options use --list')
             exit(-1)
             
-        checkout_version(catalog_repo, version)
+        catalog_repo.git.checkout(version)
         rebuild_files()
