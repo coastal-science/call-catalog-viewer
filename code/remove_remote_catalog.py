@@ -12,9 +12,11 @@ from shutil import rmtree
 import yaml
 import RemoteUtils
 
-CATALOG_PATH = ''
-
 def remove_from_index_yaml(repo_name):
+    '''
+    Remove the repo name from the index.yaml to stop it from showing up
+    '''
+    
     print(f'Removing repo {repo_name} from catalogs/index.yaml...')
     
     # loading in current list of repos
@@ -41,6 +43,9 @@ def remove_from_index_yaml(repo_name):
 
 
 def remove_from_library_yaml(repo_name):
+    '''
+    Remove the catalog url from the library.yaml
+    '''
     print(f'Removing repo {repo_name} from library.yaml...')
     
     path = f'{CATALOG_PATH}/library.yaml'
@@ -71,6 +76,9 @@ def remove_from_library_yaml(repo_name):
     print(f'Successfully removed {repo_name} from library.yaml', end='\n\n')
 
 def remove_files(repo_name):
+    '''
+    Remove all of the old files from the catalog that was added
+    '''
     print(f'Removing file catalogs/{repo_name}.json...')    
     try:
         remove(f'{CATALOG_PATH}/{repo_name}.json')
@@ -85,7 +93,7 @@ def remove_files(repo_name):
         print(f'Unable to remove direcotyr {CATALOG_PATH}/{repo_name}. Exiting')
         exit(-1)
     
-    print(f'Successfully removed all files for repo {repo_name}', end='\n\n')    
+    print(f'Successfully removed all files for repo {repo_name}', end='\n')    
 
 
 

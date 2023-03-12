@@ -20,23 +20,38 @@ from json import load
 import RemoteUtils
 
 def pull_from_remote(path_to_repo, repo_name):
+    '''
+    Pulls all of the changes from the remote repository
+    '''
     repo = Repo(path_to_repo)
     try:
+        # checkout main to avoid weird stuff with git states
+        repo.git.checkout('main')
         repo.remotes.origin.pull()
     except:
-        print(f'There was a problem pulling the changes for repo {repo_name}')    
+        print(f'There was a problem pulling the changes for repo {repo_name}')
+        exit(-1)
 
 def get_list_catalogs():
     with open(CATALOGS_PATH + '/library.yaml') as f:
         return yaml.safe_load(f)['catalogs']
 
 def get_name_from_url(url):
+    '''
+    Gets the name of the catalogue from the git url
+    '''
     return url[url.rfind('/')+1:len(url)-4]
 
 def is_root_catalog():
+    '''
+    Returns if the specified catalog is the current root catalog
+    '''
     return exists(f'{REPO_ROOT_PATH}/library.yaml')
 
 def update_json_file(repo_name):
+    '''
+    Update the values in the json with the new yaml data
+    '''
     yaml_file = ''
     
     with open(CATALOGS_PATH + '/' + repo_name + '.json', 'r+') as f:
