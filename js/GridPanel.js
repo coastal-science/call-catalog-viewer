@@ -214,8 +214,24 @@ var GridPanel = undefined;
 
             var keys = Object.keys(simple_datasource);
             keys.forEach(item => { // this will append all of the items to the resultdata
-                simple_datasource[item]['d1'] = (display_data[0]['d1']).replace(/-/g, '_');
-                simple_datasource[item]['d2'] = (display_data[1]['d2']).replace(/-/g, '_');
+                // get the old name
+                old_d1 = display_data[0]['d1']
+                old_d2 = display_data[1]['d2']
+
+                // get the new keys that we want to use
+                new_d1 = old_d1.replace(/-/g, '_');
+                new_d2 = old_d2.replace(/-/g, '_');
+
+                // create the new display name property in call object and update the display reference
+                simple_datasource[item][new_d1] = simple_datasource[item][old_d1];
+                simple_datasource[item][new_d2] = simple_datasource[item][old_d2];
+                simple_datasource[item]['d1'] = new_d1;
+                simple_datasource[item]['d2'] = new_d2;
+
+                // remove the old key that contained '-'s
+                delete simple_datasource.old_d1
+                delete simple_datasource.old_d2
+
                 resultData[data_index] = validateParameters(simple_datasource[item]);
                 data_index++;
             });
