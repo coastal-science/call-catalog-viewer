@@ -3,8 +3,8 @@ var GridPanel = undefined;
     var Panel = undefined;
     var resultData = undefined; // this is all of the data read from catalogs initially
     var data_index = 0;
-    window.currentDisplayData = undefined; // this is the data that has the filters applied to it and we want to use
-    var entireFilterData = undefined;
+    var currentDisplayData = undefined; // this is the data that has the filters applied to it and we want to use
+    window.entireFilterData = undefined;
     var searching_para = undefined;
     var all_fields = [];
     var sortable_fields = [];
@@ -139,11 +139,11 @@ var GridPanel = undefined;
      * This filtered data is then assigned to entireFilterData for later access
      */
     async function updateCurrentData() {
-        entireFilterData = resultData; // this resets so that we are checking all of the values
+        window.entireFilterData = resultData; // this resets so that we are checking all of the values
         var params = Object.keys(searching_para);
         params.forEach(p => {
             if (!(["s1", "s2", "s3"].includes(p))) {
-                entireFilterData = entireFilterData.filter(item => { // item is all of the calls in the catalogs
+                window.entireFilterData = window.entireFilterData.filter(item => { // item is all of the calls in the catalogs
                     if (searching_para[p].length == 0) // if it is empty then it is just true for all
                         return true;
 
@@ -238,7 +238,7 @@ var GridPanel = undefined;
             await updateCurrentData(); // apply filters on resultData, populating currentFilteredData accordingly
         }
 
-        filter_result = entireFilterData.length; // update the length based off of the filtered data
+        filter_result = window.entireFilterData.length; // update the length based off of the filtered data
 
         $("#total").text(filter_result);
         total_page = Math.floor((filter_result - 1) / page_size) + 1;
@@ -336,9 +336,9 @@ var GridPanel = undefined;
                 return 1;
             }
         };
-        entireFilterData.sort(current_sort);
+        window.entireFilterData.sort(current_sort);
 
-        window.currentDisplayData = entireFilterData.slice((current_page - 1) * page_size, (current_page) * page_size); // obtain the data to display on this page from the entireData slice
+        currentDisplayData = window.entireFilterData.slice((current_page - 1) * page_size, (current_page) * page_size); // obtain the data to display on this page from the entireData slice
         redraw_items(); // draws our new updated items
 
         var encoded = btoa(JSON.stringify(searching_para));
@@ -535,8 +535,8 @@ var GridPanel = undefined;
     function append_items() {
         var i = next_drawn;
         var grid = $('#gi-area').empty();
-        for (; i < window.currentDisplayData.length; i++) {
-            var ele = window.currentDisplayData[i];
+        for (; i < currentDisplayData.length; i++) {
+            var ele = currentDisplayData[i];
             do {
                 var tmpid = window.crypto.getRandomValues(new Uint32Array(1))[0].toString(16) + window.crypto.getRandomValues(new Uint32Array(1))[0].toString(16);
             } while (id_to_seq[tmpid] !== undefined);
@@ -704,7 +704,7 @@ var GridPanel = undefined;
             const urlParams = new URLSearchParams(queryString);
             if (poped != undefined && !urlParams.has('popup')) {
                 var data_target_seq = id_to_seq[poped];
-                var data_target = window.currentDisplayData[data_target_seq];
+                var data_target = currentDisplayData[data_target_seq];
                 validateParameters(data_target);
                 lity_data = data_target;
                 var encoded_data = btoa(JSON.stringify(data_target));

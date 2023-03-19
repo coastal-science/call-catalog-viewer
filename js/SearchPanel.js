@@ -134,9 +134,9 @@ var SearchPanel = undefined;
             GridPanel.get_new(originalData);
         });
 
-        Panel.find('#testing').off('click').click(function (e) {
+        Panel.find('#retrieve_data').off('click').click(function (e) {
             var tab = window.open("about:blank", "_blank");
-            tab.document.body.innerHTML = "<pre>" + JSON.stringify(window.currentDisplayData) + "</pre>";
+            tab.document.body.innerHTML = "<pre>" + JSON.stringify(window.entireFilterData) + "</pre>";
         });
     }
 }(SearchPanel || (SearchPanel = {})));
