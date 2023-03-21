@@ -129,7 +129,7 @@ def parse_yaml_to_json(path_to_catalogs_directory, yaml_file_path):
         df = df.rename(columns={"image-file": "image_file", "wav-file": "wav_file", "description-file": "description_file", "call-type": "call_type"})
 
         # returns the dataframe and the filters dictionary
-        print('Succesfuly paresed yaml file', end='\n\n')
+        print('Succesfuly parsed yaml file', end='\n\n')
         return (df, filters, sortables, display, site_details)
     
 def export_to_json(path_to_catalogs_directory, df, filters, sortables, display, site_details, file_name, yaml_file):
