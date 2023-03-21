@@ -66,17 +66,26 @@ def add_library_yaml():
 def add_index_yaml():
     print(f'Adding {REPO_NAME} to catalogs/index.yaml')
     path = CATALOGS_PATH + '/index.yaml'
-    with open(path, 'r+') as f:
-        catalogs = yaml.safe_load(f)
+    
+    # index.yaml does not exist, creating it
+    if not exists(path):
+        print(f'catalogs/index.yaml does not exist, creating it before adding files....')
         
-        # this is the first time we are making index.yaml
-        if not catalogs:
-            print(f'Creating {CATALOGS_PATH}/index.yaml')
-            catalogs = {'catalogs': []}
-        catalogs['catalogs'].append(REPO_NAME)
-        
-        f.seek(0)
-        yaml.dump(catalogs, f)
+        with open(path, 'w') as f:
+            # catalogs = yaml.safe_load(f)
+            catalogs = dict()
+            catalogs['catalogs'] = [REPO_NAME]
+            
+            yaml.dump(catalogs, f)
+            
+    else: 
+        with open(path, 'r+') as f:
+            catalogs = yaml.safe_load(f)
+            
+            catalogs['catalogs'].append(REPO_NAME)
+            
+            f.seek(0)
+            yaml.dump(catalogs, f)
     
     print('Succesfully added catalogs/index.yaml', end='\n\n')  
     
