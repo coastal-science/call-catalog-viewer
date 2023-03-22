@@ -57,12 +57,36 @@ var SearchPanel = undefined;
                 '</div>'
     }
 
+    function fileExists(url) {
+        exists = false;
+
+        $.ajax({
+            url: url,
+            type:'HEAD',
+            async: false,
+            error: function() 
+            {
+                exists = false;
+            },
+            success: function()
+            {
+                exists = true;
+            }
+        });
+
+        return exists;
+    }
+
     function init() {
         originalData = {};
 
         var queryString = location.search;
         urlParams = new URLSearchParams(queryString);
 
+        // check whether the index.yaml exists. This stops just constant refreshing on an empty catalog
+        url = LIBRARY + '/' + LIBRARY_INDEX;
+        if (!fileExists(url))
+            return;
         // if the values have not already been set in the GridPanel line 300-310 then wait 500 milliseconds for them to get set, and then refresh the page 
         if (!urlParams.has('f')) {
             setTimeout(function() {
