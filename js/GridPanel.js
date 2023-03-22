@@ -100,11 +100,16 @@ var GridPanel = undefined;
         //   });
         // await response of fetch call
         let response = await fetch(LIBRARY + "/" + LIBRARY_INDEX);
+
         // only proceed once promise is resolved
         let text = await response.text();
         var yaml = jsyaml.load(text);
 
         console.log("Catalogs library contains:", yaml[LIBRARY]);
+
+        // if index.yaml does not exist (empty viewer) then it stops some other errors
+        if (yaml[LIBRARY] === undefined)
+            return;
 
         yaml = yaml[LIBRARY].reverse(); // reverse() ensures that the catalog added first is the most recent loaded
 
@@ -200,7 +205,7 @@ var GridPanel = undefined;
             if (site_details['catalogue']['is_root'] === 'true') {
                 document.getElementById("catalogue-title").innerHTML = site_details['catalogue']['title'];
             }
-            
+
             var filters = simple_datasource["filters"];
             var searchable = simple_datasource["sortable"];
             var display_data = simple_datasource["display"];
@@ -321,12 +326,12 @@ var GridPanel = undefined;
             }
             var smaller = (sort_asc === "as") ? a[sort_by] : b[sort_by];
             var larger = (sort_asc === "as") ? b[sort_by] : a[sort_by];
-            
+
             // moves fields not filter on to the back of list
             if (larger == undefined)
                 return -1;
 
-            if (smaller == undefined) 
+            if (smaller == undefined)
                 return 1;
 
             if (larger > smaller) {
@@ -747,7 +752,7 @@ var GridPanel = undefined;
                             </svg>Play (Call Name: '+ lity_data.call_type + ') </button>';
             let additional_row = '';
 
-            
+
             var temp = Object.keys(lity_data);
             const fields = temp.filter(item => {
                 return (!['image_file', 'wav_file', 'description_file', 'call_type', 'filename', 'd1', 'd2'].includes(item));
@@ -755,9 +760,9 @@ var GridPanel = undefined;
             var count = fields.length;
             var is_odd = count % 2;
 
-            for (let i = 0; i <= Math.floor(count/2); i+=2) {
+            for (let i = 0; i <= Math.floor(count / 2); i += 2) {
                 var first = fields[i];
-                var second = fields[i+1];
+                var second = fields[i + 1];
 
                 additional_row += '<div class="row text-sm-center text-start text-info border-2 border-light border-bottom"><div class="col-12 col-sm-6"><span>' + first + ': ' + lity_data[first] + '</span></div>';
                 additional_row += '<div class="col-12 col-sm-6"><span>' + second + ': ' + lity_data[second] + '</span></div></div>';
@@ -765,7 +770,7 @@ var GridPanel = undefined;
 
             if (is_odd) {
                 additional_row += '<div class="row text-sm-center text-start text-info border-2 border-light border-bottom">';
-                var field = fields[count-1];
+                var field = fields[count - 1];
                 additional_row += '<div class="col"><span>' + field + ': ' + lity_data[field] + '</span></div>';
             }
             // all_fields.forEach(field => {
