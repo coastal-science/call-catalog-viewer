@@ -67,7 +67,7 @@ def update_old_site_details(repo_name):
     with open(repo_name + '.json', 'r+') as f:
         print('Updating old site data...')
         data = json.load(f)
-        data['site-details']['is_root'] = 'false'
+        data['site-details']['catalogue']['is_root'] = 'false'
         
         f.seek(0)
         json.dump(data, f)
@@ -82,7 +82,7 @@ def update_new_site_details():
     with open(CATALOG_PATH + '/' + REPO_NAME + '.json', 'r+') as f:
         print('Setting new site details...')
         data = json.load(f)
-        data['site-details']['is_root'] = 'true'
+        data['site-details']['catalogue']['is_root'] = 'true'
         
         f.seek(0)
         json.dump(data, f)
