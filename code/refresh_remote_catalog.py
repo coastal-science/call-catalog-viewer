@@ -27,7 +27,7 @@ def pull_from_remote(path_to_repo, repo_name):
     try:
         # checkout main to avoid weird stuff with git states
         repo.git.checkout('main')
-        repo.remotes.origin.pull()
+        repo.remotes.origin.pull("--tags")
     except:
         print(f'There was a problem pulling the changes for repo {repo_name}')
         exit(-1)
