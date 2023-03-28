@@ -27,7 +27,12 @@ def pull_from_remote(path_to_repo, repo_name):
     try:
         # checkout main to avoid weird stuff with git states
         repo.git.checkout('main')
-        repo.remotes.origin.pull('main')
+            
+        # Wouldn't work with passing kwargs so doing it manually
+        # Fetch the tags first, then any of the other changes
+        repo.git.execute(['git', 'fetch', '--tags'])
+        repo.git.execute(['git', 'pull', 'origin', 'main'])
+        
     except Exception as e:
         print(str(e))
         print(f'There was a problem pulling the changes for repo {repo_name}')
