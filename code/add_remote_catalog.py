@@ -136,5 +136,5 @@ if __name__ == '__main__':
     add_index_yaml()
     
     # parse the yaml, creating the json output used by website
-    df, filter, sortables, display, site_details = RemoteUtils.parse_yaml_to_json(CATALOGS_PATH, REPO_ROOT_PATH + '/' + yaml_file)
-    RemoteUtils.export_to_json(CATALOGS_PATH, df, filter, sortables, display, site_details, REPO_NAME, yaml_file)
+    df, population, filter, sortables, display, site_details = RemoteUtils.parse_yaml_to_json(CATALOGS_PATH, REPO_ROOT_PATH + '/' + yaml_file)
+    RemoteUtils.export_to_json(CATALOGS_PATH, df, population, filter, sortables, display, site_details, REPO_NAME, yaml_file)
