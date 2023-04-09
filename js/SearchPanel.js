@@ -183,7 +183,8 @@ var SearchPanel = undefined;
 
         updateFilterOptions(originalData);
         
-        tmpResult = $.extend(true, {}, originalData);
+        tmpResult = {}
+        // tmpResult = $.extend(true, {}, originalData);
         Panel = $('.panel');
         Panel.find("#search_rows").empty(); // clear the search rows panel so that we can append the data
 
@@ -210,11 +211,16 @@ var SearchPanel = undefined;
         for (let i = 1; i <= num_dropdowns; i++) {
             var object = s_options[i-1];
             $('#s' + i).on('changed.bs.select', (e, clickedIndex, isSelected, previousValue) => { // sets the listener when dropdowns are changed
-                // const list = [tmpResult['s' + i][0]];
-                // tmpResult['s' + i] = list.concat($('#s' + i).selectpicker('val'));
-                console.log(" HELLO " + element_id_to_title['s' + i]);
+                var title = element_id_to_title['s' + i];
+
+                if (tmpResult[title] === undefined)     
+                    tmpResult[title] = []
+                tmpResult[element_id_to_title['s' + i]] = $('#s' + i).selectpicker('val');
+
+                
                 if (element_id_to_title['s' + i] === 'population'){
-                    buildPopulationSpecificDropdown($('#s' + i).val(), previousValue);
+                    tmpResult['population'] = $('#s' + i).val();
+                    buildPopulationSpecificDropdown($('#s' + i).val());
                 }
                 // buildPopulationSpecificDropdown($('#s' + i).val());
             });
@@ -222,6 +228,7 @@ var SearchPanel = undefined;
         Panel.find('#search_now').off('click').click(function (e) { // function that is called when the filter button is clicked. 
             dirty = false;
             originalData = $.extend(true, {}, tmpResult);
+            console.log("PASSING NEW: " + JSON.stringify(originalData));
             GridPanel.get_new(originalData);
         });
 
