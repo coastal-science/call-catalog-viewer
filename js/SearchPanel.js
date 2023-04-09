@@ -20,6 +20,7 @@ var SearchPanel = undefined;
      * @param {object} filter_options object of key value pairs where the key is the thing to filter on and the values are the possible values
      */
     function updateFilterOptions(filter_options) {
+        console.log("FILTER OPTIONS: " + JSON.stringify(filter_options));
         // construct the object and then add it to the s_options
         let count = 1;
         var keys = Object.keys(filter_options);
@@ -43,6 +44,7 @@ var SearchPanel = undefined;
             s_options.push(obj);
             count++;
         });
+        console.log("OPTIONS: " + JSON.stringify(s_options[2]));
     }
 
     /**
@@ -111,7 +113,16 @@ var SearchPanel = undefined;
         if (urlParams.has('f')) {
             const filter = urlParams.get('f');
             const obj = atob(filter);
+
+            console.log("OBJ: " + obj);
             if (obj !== undefined) {
+                // we don't need the below, all we ned is the population 
+                // const ev = eval('(' + obj + ')');
+                // var list = ['population'];
+                // list = list.concat(ev['population']);
+                // originalData['s1'] = list;
+                // element_id_to_title['s1'] = 'population';
+                // console.log("LIST: " + list);
                 try {
                     const ev = eval('(' + obj + ')');
                     let count = 1;
@@ -128,6 +139,8 @@ var SearchPanel = undefined;
                     console.log(e);
                 }
             }
+        } else {
+            
         }
 
         updateFilterOptions(originalData);
@@ -138,9 +151,13 @@ var SearchPanel = undefined;
 
         buildPopulationDropdown();
         bindEvents();
+        buildPopulationSpecificDropdown(selected_value);
     };
     panel.init = init;
 
+    function timeout(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
     /**
      * blocking sleep function used to wait for filters to come through
      * @param {int} ms number of milliseconds to sleep
@@ -156,10 +173,11 @@ var SearchPanel = undefined;
     function bindEvents() {
         // for the number of values, in s_options, do this thing
         for (let i = 1; i <= s_options.length; i++) {
-            var object = s_options[i];
+            var object = s_options[i-1];
             $('#s' + i).on('changed.bs.select', (e, clickedIndex, isSelected, previousValue) => { // sets the listener when dropdowns are changed
-                const list = [tmpResult['s' + i][0]]
+                const list = [tmpResult['s' + i][0]];
                 tmpResult['s' + i] = list.concat($('#s' + i).selectpicker('val'));
+                buildPopulationSpecificDropdown($('#s' + i).val());
             });
         }
         Panel.find('#search_now').off('click').click(function (e) { // function that is called when the filter button is clicked. 
