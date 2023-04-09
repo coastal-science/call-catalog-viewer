@@ -3,7 +3,8 @@ var SearchPanel = undefined;
     var Panel = undefined;
     var originalData = undefined;
     var tmpResult = undefined;
-    var s_options = [];
+    var s_options = {};
+    var num_dropdowns;
     var dirty = false;
     var s_index = 1;
     var element_id_to_title = {};
@@ -20,30 +21,70 @@ var SearchPanel = undefined;
      * @param {object} filter_options object of key value pairs where the key is the thing to filter on and the values are the possible values
      */
     function updateFilterOptions(filter_options) {
+        
         console.log("FILTER OPTIONS: " + JSON.stringify(filter_options));
         // construct the object and then add it to the s_options
         let count = 1;
         var keys = Object.keys(filter_options);
         keys.forEach((key) => {
-            var obj = {};
+            // if this is 'population' then things are simple, add everything we need as array of values
+            // if it is not, then it is populatoin specific filters and we need to be more careful
+            var population_value = filter_options[key][0];
 
-            // set all of the values that we need
-            obj.s = "s" + count;
-            obj.b = "b" + count;
-            obj.display = key;
-            obj.title = filter_options[key][0];
-            
-            // create array of all of the values
-            const arr = [];
-            filter_options[key].slice(1).forEach((val) => {
-                arr.push(val);
-            });
-            obj.values = arr;
+            if (population_value === 'population') {
+                var obj = {};
 
-            // add to the options
-            s_options.push(obj);
-            count++;
+                // set all of the values that we need
+                obj.s = "s" + count;
+                obj.b = "b" + count;
+                obj.display = 's' + count;
+
+                obj.title = filter_options[key][0];
+
+                // create array of all of the values
+                const arr = [];
+                filter_options[key].slice(1).forEach((val) => {
+                    arr.push(val);
+                });
+                obj.values = arr;
+    
+                // add to the options
+                s_options.population = obj;
+                // s_options.push(obj);
+                count++;
+            } else {
+                // handling the population specific filters
+                var dropdown_keys = Object.keys(filter_options[key][1]);
+
+                console.log(filter_options[key][0]);
+                console.log("DROPPIES: " + dropdown_keys);
+                dropdown_keys.forEach((drop_key) => {
+                    var obj = {};
+
+                    // set all of the values that we need
+                    obj.s = "s" + count;
+                    obj.b = "b" + count;
+                    obj.display = 's' + count;
+
+                    obj.title = drop_key;
+
+                    // create an array of all of the values
+                    const arr = [];
+                    filter_options[key][1][drop_key].forEach((value) => {
+                        arr.push(value);
+                    });
+                    obj.values = arr;
+
+                    if (!(s_options[population_value]))
+                        s_options[population_value] = [];
+                    
+                    s_options[population_value].push(obj);
+                    count++;
+                    console.log("KEY" + drop_key);
+                })
+            } 
         });
+        num_dropdowns = count;
         console.log("OPTIONS: " + JSON.stringify(s_options[2]));
     }
 
@@ -116,13 +157,6 @@ var SearchPanel = undefined;
 
             console.log("OBJ: " + obj);
             if (obj !== undefined) {
-                // we don't need the below, all we ned is the population 
-                // const ev = eval('(' + obj + ')');
-                // var list = ['population'];
-                // list = list.concat(ev['population']);
-                // originalData['s1'] = list;
-                // element_id_to_title['s1'] = 'population';
-                // console.log("LIST: " + list);
                 try {
                     const ev = eval('(' + obj + ')');
                     let count = 1;
@@ -151,13 +185,10 @@ var SearchPanel = undefined;
 
         buildPopulationDropdown();
         bindEvents();
-        buildPopulationSpecificDropdown(selected_value);
+        // buildPopulationSpecificDropdown(selected_value);
     };
     panel.init = init;
 
-    function timeout(ms) {
-        return new Promise(resolve => setTimeout(resolve, ms));
-    }
     /**
      * blocking sleep function used to wait for filters to come through
      * @param {int} ms number of milliseconds to sleep
@@ -172,7 +203,7 @@ var SearchPanel = undefined;
      */
     function bindEvents() {
         // for the number of values, in s_options, do this thing
-        for (let i = 1; i <= s_options.length; i++) {
+        for (let i = 1; i <= num_dropdowns; i++) {
             var object = s_options[i-1];
             $('#s' + i).on('changed.bs.select', (e, clickedIndex, isSelected, previousValue) => { // sets the listener when dropdowns are changed
                 const list = [tmpResult['s' + i][0]];
@@ -197,24 +228,30 @@ var SearchPanel = undefined;
      * Changes to this dropdown will result in changes to the dropdowns displayed to reflect 
      */
     function buildPopulationDropdown() {
+        console.log("S OPTOINS: " + JSON.stringify(s_options));
         Panel = $('.panel');
         // find the population dropdown from all of the options
-        var population_data = undefined;
-        s_options.forEach((dropwdown_options) => {
-            if (dropwdown_options.title === 'population') {
-                population_data = dropwdown_options;
-            }
-        });
+        var population_data = s_options['population'];
+        console.log("POPULATION DATA: " + JSON.stringify(population_data));
+        // s_options.forEach((dropwdown_options) => {
+        //     if (dropwdown_options.title === 'population') {
+        //         population_data = dropwdown_options;
+        //     }
+        // });
         
         // create the dropdown
-        Panel.find('#search_rows').append(pack_dropdown(population_data.title, population_data.display));
+        Panel.find('#search_rows').append(pack_dropdown(population_data.title, population_data.s));
          
         // append all of the options
         population_data.values.forEach((value) => {
-            Panel.find("#" + population_data.s).append(pack_option(value));
+            Panel.find("#" + population_data.display).append(pack_option(value));
         });
 
         $('#' + population_data.s).selectpicker();
-        $('#' + population_data.s).selectpicker('refresh');
+        $('#' + population_data.display).selectpicker('refresh');
+    }
+
+    function buildPopulationSpecificDropdown(selected_value) {
+        console.log(selected_value);
     }
 }(SearchPanel || (SearchPanel = {})));
