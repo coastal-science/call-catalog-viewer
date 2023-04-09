@@ -516,10 +516,10 @@ var GridPanel = undefined;
     function updateFiltersFromURLParams(params) {
         Object.keys(params).forEach((key) => {
             const arr = params[key];
-            var filterable = arr[0];
+            var filterable = key;
 
             if (!(filterable in searching_para))
-                searching_para[filterable] = arr.slice(1);
+                searching_para[filterable] = arr;
             else {
                 arr.slice(1).forEach(val => {
                     if (!searching_para[filterable].includes(val)) {

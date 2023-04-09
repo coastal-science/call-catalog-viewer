@@ -217,7 +217,7 @@ var SearchPanel = undefined;
                     tmpResult[title] = []
                 tmpResult[element_id_to_title['s' + i]] = $('#s' + i).selectpicker('val');
 
-                
+
                 if (element_id_to_title['s' + i] === 'population'){
                     tmpResult['population'] = $('#s' + i).val();
                     buildPopulationSpecificDropdown($('#s' + i).val());
@@ -229,7 +229,7 @@ var SearchPanel = undefined;
             dirty = false;
             originalData = $.extend(true, {}, tmpResult);
             console.log("PASSING NEW: " + JSON.stringify(originalData));
-            GridPanel.get_new(originalData);
+            GridPanel.get_new(tmpResult);
         });
 
         Panel.find('#retrieve_data').off('click').click(function (e) {
