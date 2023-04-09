@@ -20,6 +20,8 @@ var GridPanel = undefined;
     var total_page = undefined;
     var data_initialized = false;
 
+    var encoded = undefined;
+
     var poped = undefined;
     var pop_opening = undefined;
     var lity_data = undefined;
@@ -347,7 +349,8 @@ var GridPanel = undefined;
         currentDisplayData = window.entireFilterData.slice((current_page - 1) * page_size, (current_page) * page_size); // obtain the data to display on this page from the entireData slice
         redraw_items(); // draws our new updated items
 
-        var encoded = btoa(JSON.stringify(searching_para));
+        if (!data_initialized)
+            encoded = btoa(JSON.stringify(searching_para));
         const state = { 'f': encoded, 'p': current_page, 's': sort_by, 'sa': sort_asc };
         const title = '';
         const queryString = window.location.search;
