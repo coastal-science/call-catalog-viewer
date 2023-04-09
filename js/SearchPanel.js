@@ -41,6 +41,8 @@ var SearchPanel = undefined;
 
                 obj.title = filter_options[key][0];
 
+                element_id_to_title['s' + count] = obj.title;
+
                 // create array of all of the values
                 const arr = [];
                 filter_options[key].slice(1).forEach((val) => {
@@ -67,6 +69,8 @@ var SearchPanel = undefined;
                     obj.display = 's' + count;
 
                     obj.title = drop_key;
+
+                    element_id_to_title['s' + count] = obj.title;
 
                     // create an array of all of the values
                     const arr = [];
@@ -206,9 +210,13 @@ var SearchPanel = undefined;
         for (let i = 1; i <= num_dropdowns; i++) {
             var object = s_options[i-1];
             $('#s' + i).on('changed.bs.select', (e, clickedIndex, isSelected, previousValue) => { // sets the listener when dropdowns are changed
-                const list = [tmpResult['s' + i][0]];
-                tmpResult['s' + i] = list.concat($('#s' + i).selectpicker('val'));
-                buildPopulationSpecificDropdown($('#s' + i).val());
+                // const list = [tmpResult['s' + i][0]];
+                // tmpResult['s' + i] = list.concat($('#s' + i).selectpicker('val'));
+                console.log(" HELLO " + element_id_to_title['s' + i]);
+                if (element_id_to_title['s' + i] === 'population'){
+                    buildPopulationSpecificDropdown($('#s' + i).val(), previousValue);
+                }
+                // buildPopulationSpecificDropdown($('#s' + i).val());
             });
         }
         Panel.find('#search_now').off('click').click(function (e) { // function that is called when the filter button is clicked. 
@@ -227,31 +235,50 @@ var SearchPanel = undefined;
      * This builds the population dropdown as a single selecteable dropdown
      * Changes to this dropdown will result in changes to the dropdowns displayed to reflect 
      */
-    function buildPopulationDropdown() {
-        console.log("S OPTOINS: " + JSON.stringify(s_options));
+    function buildPopulationDropdown(last_value) {
         Panel = $('.panel');
         // find the population dropdown from all of the options
         var population_data = s_options['population'];
-        console.log("POPULATION DATA: " + JSON.stringify(population_data));
-        // s_options.forEach((dropwdown_options) => {
-        //     if (dropwdown_options.title === 'population') {
-        //         population_data = dropwdown_options;
-        //     }
-        // });
         
         // create the dropdown
         Panel.find('#search_rows').append(pack_dropdown(population_data.title, population_data.s));
          
         // append all of the options
         population_data.values.forEach((value) => {
-            Panel.find("#" + population_data.display).append(pack_option(value));
+            Panel.find("#" + population_data.s).append(pack_option(value));
         });
 
-        $('#' + population_data.s).selectpicker();
-        $('#' + population_data.display).selectpicker('refresh');
+        $('#' + population_data.s).val(last_value);
+        $('#' + population_data.s).selectpicker('refresh');
+    }
+
+    function buildDropdown(dropdown_data) {
+        console.log("DROPDOWN DATA: " + JSON.stringify(dropdown_data));
+        Panel = $('.panel');
+
+        Panel.find('#search_rows').append(pack_dropdown(dropdown_data.title, dropdown_data.s));
+
+        dropdown_data.values.forEach((value) => {
+            Panel.find('#' + dropdown_data.s).append(pack_option(value));
+        })
+
+        $('#' + dropdown_data.s).selectpicker('refresh');
     }
 
     function buildPopulationSpecificDropdown(selected_value) {
-        console.log(selected_value);
+        Panel = $('.panel');
+        Panel.find('#search_rows').empty();
+
+        buildPopulationDropdown(selected_value);
+        console.log(JSON.stringify(selected_value));
+
+        if (s_options[selected_value] !== undefined) {
+            s_options[selected_value].forEach((dropdown)=> {
+                buildDropdown(dropdown);
+            })
+        }
+            
+
+        bindEvents();
     }
 }(SearchPanel || (SearchPanel = {})));
