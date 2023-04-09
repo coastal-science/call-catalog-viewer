@@ -88,7 +88,7 @@ var SearchPanel = undefined;
         return exists;
     }
 
-    function init() {
+    async function init() {
         originalData = {};
 
         var queryString = location.search;
@@ -100,6 +100,7 @@ var SearchPanel = undefined;
             return;
         // if the values have not already been set in the GridPanel line 300-310 then wait 500 milliseconds for them to get set, and then refresh the page 
         if (!urlParams.has('f')) {
+            await sleep(300);
             setTimeout(function() {
                 queryString = location.search;
                 urlParams = new URLSearchParams(queryString);
@@ -139,6 +140,15 @@ var SearchPanel = undefined;
         bindEvents();
     };
     panel.init = init;
+
+    /**
+     * blocking sleep function used to wait for filters to come through
+     * @param {int} ms number of milliseconds to sleep
+     * @returns 
+     */
+    function sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
 
     /**
      * create and set listeners for all of the dropdowns 
