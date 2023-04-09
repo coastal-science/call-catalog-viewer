@@ -11,8 +11,8 @@ var SearchPanel = undefined;
     const LIBRARY = 'catalogs';
     const LIBRARY_INDEX = 'index.yaml';
 
-    function pack_option(v, a) {
-        return '<option value="' + v + '">' + a + '</option>'
+    function pack_option(v) {
+        return '<option value="' + v + '">' + v + '</option>'
     }
 
     /**
@@ -25,34 +25,45 @@ var SearchPanel = undefined;
         var keys = Object.keys(filter_options);
         keys.forEach((key) => {
             var obj = {};
-            // for compatibility
+
+            // set all of the values that we need
             obj.s = "s" + count;
             obj.b = "b" + count;
             obj.display = key;
-
-            const arr = []
-            filter_options[key].forEach((val) => {
-                var temp = {}
-                temp.v = val;  
-                temp.text = val;
-                arr.push(temp);  
+            obj.title = filter_options[key][0];
+            
+            // create array of all of the values
+            const arr = [];
+            filter_options[key].slice(1).forEach((val) => {
+                arr.push(val);
             });
-            obj.option = arr;
+            obj.values = arr;
+
+            // add to the options
             s_options.push(obj);
             count++;
         });
     }
 
     /**
-     * create HTML representation of the dropdown to append to the panel
-     * @param {string} value the id of the panel to add s1, s2, s3.... 
-     * @returns HTML representation of dropdown to append to the panel
+     * create an HTML representation of the dropdown to append to the panel
+     * @param {string} title the title of the dropdown to put next to it
+     * @param {string} id the id to the dropdown in html
      */
-    function pack_dropdown(value) {
-        element_id_to_title[value] = element_id_to_title[value].charAt(0).toUpperCase() + element_id_to_title[value].slice(1);
+    function pack_dropdown(title, id) {
+        title = title.charAt(0).toUpperCase() + title.slice(1);
+
+        if (title === 'Population') {
+            return '<div class="col col-12 col-sm-12 col-md-12 col-lg-12 col-xl-10 col-xxl-10 align-items-center align-middle align-right d-flex flex-nowrap">' + 
+                    '<span class="col-4 text-end">' + title  + ': &nbsp;</span>' +
+                    '<select id="' + id + '" class="col-8" aria-label="size 3 select">' +
+                    '</select><br>&nbsp;' +
+                '</div>'
+        }
+
         return '<div class="col col-12 col-sm-12 col-md-12 col-lg-12 col-xl-10 col-xxl-10 align-items-center align-middle align-right d-flex flex-nowrap">' + 
-                    '<span class="col-4 text-end">' + element_id_to_title[value]  + ': &nbsp;</span>' +
-                    '<select id="' + value + '" class="col-8" multiple aria-label="size 3 select">' +
+                    '<span class="col-4 text-end">' + title  + ': &nbsp;</span>' +
+                    '<select id="' + id + '" class="col-8" multiple aria-label="size 3 select">' +
                     '</select><br>&nbsp;' +
                 '</div>'
     }
@@ -117,25 +128,14 @@ var SearchPanel = undefined;
                 }
             }
         }
+
         updateFilterOptions(originalData);
         
         tmpResult = $.extend(true, {}, originalData);
         Panel = $('.panel');
-
         Panel.find("#search_rows").empty(); // clear the search rows panel so that we can append the data
-        s_options.forEach((value) => {
-            Panel.find('#' + value.s).empty();
-            var default_option = [];
-            Panel.find("#search_rows").append(pack_dropdown(value.display)); // the dropdown to the panel
-            value.option.slice(1).forEach((op_val) => { // slice the string to not include the category {s1: ['pod', 'value1', 'value2']}
-                Panel.find('#' + value.s).append(pack_option(op_val.v, op_val.text)); // add all of the options to the dropdown
-                if (originalData[value.display].indexOf(op_val.v) >= 0) {
-                    default_option.push(op_val.v);
-                }
-            });
-            $('#' + value.s).selectpicker();
-            $('#' + value.s).selectpicker('val', default_option);
-        });
+
+        buildPopulationDropdown();
         bindEvents();
     };
     panel.init = init;
@@ -162,5 +162,31 @@ var SearchPanel = undefined;
             var tab = window.open("about:blank", "_blank");
             tab.document.body.innerHTML = "<pre>" + JSON.stringify(window.entireFilterData) + "</pre>";
         });
+    }
+
+    /**
+     * This builds the population dropdown as a single selecteable dropdown
+     * Changes to this dropdown will result in changes to the dropdowns displayed to reflect 
+     */
+    function buildPopulationDropdown() {
+        Panel = $('.panel');
+        // find the population dropdown from all of the options
+        var population_data = undefined;
+        s_options.forEach((dropwdown_options) => {
+            if (dropwdown_options.title === 'population') {
+                population_data = dropwdown_options;
+            }
+        });
+        
+        // create the dropdown
+        Panel.find('#search_rows').append(pack_dropdown(population_data.title, population_data.display));
+         
+        // append all of the options
+        population_data.values.forEach((value) => {
+            Panel.find("#" + population_data.s).append(pack_option(value));
+        });
+
+        $('#' + population_data.s).selectpicker();
+        $('#' + population_data.s).selectpicker('refresh');
     }
 }(SearchPanel || (SearchPanel = {})));
