@@ -217,10 +217,10 @@ var SearchPanel = undefined;
                     tmpResult[title] = []
                 tmpResult[element_id_to_title['s' + i]] = $('#s' + i).selectpicker('val');
 
-
                 if (element_id_to_title['s' + i] === 'population'){
                     tmpResult['population'] = $('#s' + i).val();
                     buildPopulationSpecificDropdown($('#s' + i).val());
+                    GridPanel.get_new(tmpResult);   
                 }
                 // buildPopulationSpecificDropdown($('#s' + i).val());
             });
