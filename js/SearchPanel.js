@@ -8,10 +8,72 @@ var SearchPanel = undefined;
     var dirty = false;
     var s_index = 1;
     var element_id_to_title = {};
-
+    
     const LIBRARY = 'catalogs';
     const LIBRARY_INDEX = 'index.yaml';
 
+
+    async function init() {
+        originalData = {};
+
+        var queryString = location.search;
+        urlParams = new URLSearchParams(queryString);
+
+        // check whether the index.yaml exists. This stops just constant refreshing on an empty catalog
+        url = LIBRARY + '/' + LIBRARY_INDEX;
+        if (!fileExists(url))
+            return;
+        // if the values have not already been set in url 'f' parameters, wait 300ms for them to get set, and then refresh the page 
+        if (!urlParams.has('f')) {
+            setTimeout(function() {
+                queryString = location.search;
+                urlParams = new URLSearchParams(queryString);
+                location.reload();
+            }, 500)
+        }
+
+        // the 'f' parameters have been set, 
+        if (urlParams.has('f')) {
+            const filter = urlParams.get('f');
+            const obj = atob(filter);
+
+            if (obj !== undefined) {
+                try {
+                    const ev = eval('(' + obj + ')');
+                    let count = 1;
+                    Object.keys(ev).forEach((item) => {
+                        if (!['s1', 's2', 's3'].includes(item)) {
+                            var list = [item];
+                            list = list.concat(ev[item]);
+                            originalData['s' + count] = list; // set data using s1, s2, s3.... notation for easier access later
+                            element_id_to_title['s' + count] = item; // update lookup table for accessible lookup
+                            count++;
+                        }
+                    });
+                } catch (e) {
+                    console.log(e);
+                }
+            }
+        }
+
+        // originalData is our filters that we want to translate into dropdowns
+        updateFilterOptions(originalData);
+        
+        tmpResult = {}
+        // find the panel and clear the search rows so that we can rebuild from fresh
+        Panel = $('.panel');
+        Panel.find("#search_rows").empty();
+
+        buildPopulationDropdown();
+        bindEvents();
+        // buildPopulationSpecificDropdown(selected_value);
+    };
+    panel.init = init;
+    
+    /** 
+     * @param {string} v value for the option in dropdown
+     * @returns an HTML represntation of the option to add
+     */
     function pack_option(v) {
         return '<option value="' + v + '">' + v + '</option>'
     }
@@ -21,8 +83,6 @@ var SearchPanel = undefined;
      * @param {object} filter_options object of key value pairs where the key is the thing to filter on and the values are the possible values
      */
     function updateFilterOptions(filter_options) {
-        
-        console.log("FILTER OPTIONS: " + JSON.stringify(filter_options));
         // construct the object and then add it to the s_options
         let count = 1;
         var keys = Object.keys(filter_options);
@@ -55,47 +115,47 @@ var SearchPanel = undefined;
                 // s_options.push(obj);
                 count++;
             } else {
-                // handling the population specific filters
+                // this means that we are looking at population specific filters
+
+                // get the keys for to population specific, each one represnting a dropdown that we need to create
                 var dropdown_keys = Object.keys(filter_options[key][1]);
 
-                console.log(filter_options[key][0]);
-                console.log("DROPPIES: " + dropdown_keys);
                 dropdown_keys.forEach((drop_key) => {
                     var obj = {};
 
-                    // set all of the values that we need
+                    // set the s, b, and display values for access later
                     obj.s = "s" + count;
                     obj.b = "b" + count;
                     obj.display = 's' + count;
 
+                    // the title of the dropdown is just the key that we are currently looking at, then for values iterate through the values for this key
                     obj.title = drop_key;
 
                     element_id_to_title['s' + count] = obj.title;
 
-                    // create an array of all of the values
                     const arr = [];
                     filter_options[key][1][drop_key].forEach((value) => {
                         arr.push(value);
                     });
                     obj.values = arr;
 
+                    // add the object to the population specific section of the s_options
                     if (!(s_options[population_value]))
                         s_options[population_value] = [];
                     
                     s_options[population_value].push(obj);
                     count++;
-                    console.log("KEY" + drop_key);
                 })
             } 
         });
+        // used when bidnding on changes to dropdowns
         num_dropdowns = count;
-        console.log("OPTIONS: " + JSON.stringify(s_options[2]));
     }
 
     /**
-     * create an HTML representation of the dropdown to append to the panel
      * @param {string} title the title of the dropdown to put next to it
      * @param {string} id the id to the dropdown in html
+     * @returns an HTML representation of the dropdown to append to the panel
      */
     function pack_dropdown(title, id) {
         title = title.charAt(0).toUpperCase() + title.slice(1);
@@ -115,6 +175,10 @@ var SearchPanel = undefined;
                 '</div>'
     }
 
+    /**
+     * @param {string} url path to file
+     * @returns true if file exists, false otherwise
+     */
     function fileExists(url) {
         exists = false;
 
@@ -135,74 +199,6 @@ var SearchPanel = undefined;
         return exists;
     }
 
-    async function init() {
-        originalData = {};
-
-        var queryString = location.search;
-        urlParams = new URLSearchParams(queryString);
-
-        // check whether the index.yaml exists. This stops just constant refreshing on an empty catalog
-        url = LIBRARY + '/' + LIBRARY_INDEX;
-        if (!fileExists(url))
-            return;
-        // if the values have not already been set in the GridPanel line 300-310 then wait 500 milliseconds for them to get set, and then refresh the page 
-        if (!urlParams.has('f')) {
-            await sleep(300);
-            setTimeout(function() {
-                queryString = location.search;
-                urlParams = new URLSearchParams(queryString);
-                location.reload();
-            }, 500)
-        }
-
-        if (urlParams.has('f')) {
-            const filter = urlParams.get('f');
-            const obj = atob(filter);
-
-            console.log("OBJ: " + obj);
-            if (obj !== undefined) {
-                try {
-                    const ev = eval('(' + obj + ')');
-                    let count = 1;
-                    Object.keys(ev).forEach((item) => {
-                        if (!['s1', 's2', 's3'].includes(item)) {
-                            var list = [item];
-                            list = list.concat(ev[item]);
-                            originalData['s' + count] = list; // set data using s1, s2, s3.... notation for easier access later
-                            element_id_to_title['s' + count] = item;
-                            count++;
-                        }
-                    });
-                } catch (e) {
-                    console.log(e);
-                }
-            }
-        } else {
-            
-        }
-
-        updateFilterOptions(originalData);
-        
-        tmpResult = {}
-        // tmpResult = $.extend(true, {}, originalData);
-        Panel = $('.panel');
-        Panel.find("#search_rows").empty(); // clear the search rows panel so that we can append the data
-
-        buildPopulationDropdown();
-        bindEvents();
-        // buildPopulationSpecificDropdown(selected_value);
-    };
-    panel.init = init;
-
-    /**
-     * blocking sleep function used to wait for filters to come through
-     * @param {int} ms number of milliseconds to sleep
-     * @returns 
-     */
-    function sleep(ms) {
-        return new Promise(resolve => setTimeout(resolve, ms));
-    }
-
     /**
      * create and set listeners for all of the dropdowns 
      */
@@ -213,6 +209,7 @@ var SearchPanel = undefined;
             $('#s' + i).on('changed.bs.select', (e, clickedIndex, isSelected, previousValue) => { // sets the listener when dropdowns are changed
                 var title = element_id_to_title['s' + i];
 
+                // tmpResult holds the currently applied filters that are passed back to GridPanel in get_new callss
                 if (tmpResult[title] === undefined)     
                     tmpResult[title] = []
                 tmpResult[element_id_to_title['s' + i]] = $('#s' + i).selectpicker('val');
@@ -222,7 +219,6 @@ var SearchPanel = undefined;
                     buildPopulationSpecificDropdown($('#s' + i).val());
                     GridPanel.get_new(tmpResult);   
                 }
-                // buildPopulationSpecificDropdown($('#s' + i).val());
             });
         }
         Panel.find('#search_now').off('click').click(function (e) { // function that is called when the filter button is clicked. 
@@ -239,18 +235,14 @@ var SearchPanel = undefined;
     }
 
     /**
-     * This builds the population dropdown as a single selecteable dropdown
-     * Changes to this dropdown will result in changes to the dropdowns displayed to reflect 
+     * Builds the population dropdown populates it with values
+     * Tracks the selection in 'selected_value' so that it doesn't total reset when we rebuild 
      */
     function buildPopulationDropdown(last_value) {
-        Panel = $('.panel');
-        // find the population dropdown from all of the options
         var population_data = s_options['population'];
         
-        // create the dropdown
         Panel.find('#search_rows').append(pack_dropdown(population_data.title, population_data.s));
          
-        // append all of the options
         population_data.values.forEach((value) => {
             Panel.find("#" + population_data.s).append(pack_option(value));
         });
@@ -259,10 +251,11 @@ var SearchPanel = undefined;
         $('#' + population_data.s).selectpicker('refresh');
     }
 
+    /**
+     * build the dropdown and append it to the searching panel
+     * @param {Object} dropdown_data data representing the dropdown to create
+     */
     function buildDropdown(dropdown_data) {
-        console.log("DROPDOWN DATA: " + JSON.stringify(dropdown_data));
-        Panel = $('.panel');
-
         Panel.find('#search_rows').append(pack_dropdown(dropdown_data.title, dropdown_data.s));
 
         dropdown_data.values.forEach((value) => {
@@ -272,8 +265,10 @@ var SearchPanel = undefined;
         $('#' + dropdown_data.s).selectpicker('refresh');
     }
 
+    /**
+     * @param {string} selected_value population value to construct all of the required dropdowns for
+     */
     function buildPopulationSpecificDropdown(selected_value) {
-        Panel = $('.panel');
         Panel.find('#search_rows').empty();
 
         buildPopulationDropdown(selected_value);
