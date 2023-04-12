@@ -17,7 +17,7 @@ Example:
 
 `python remove_catalog.py srkw-call-catalogue-files`
 
-`python remove_catalog.py srkw-call-catalogue-files catalog catlogs.yaml --force`
+`python remove_catalog.py srkw-call-catalogue-files catalog catalogs.yaml --force`
 """
 
 
@@ -51,7 +51,7 @@ def remove(
         force (bool, optional): Remove a catalog even if it already exists. Applies to removing symlinks and parsed json  Defaults to False.
 
     Returns:
-        bool: True is removal is sucessful. False if 'catalog_name' is already part of {library_index}.
+        bool: True is removal is successful. False if 'catalog_name' is already part of {library_index}.
     """
 
     listings = Path(library, library_index).resolve()
@@ -92,7 +92,7 @@ def remove(
     with open(listings, "w") as f:
         yaml.dump(all_catalogs, f)
 
-    print("Removal presisted")
+    print("Removal persisted")
 
     return True
 
