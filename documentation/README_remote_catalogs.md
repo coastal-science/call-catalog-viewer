@@ -1,10 +1,10 @@
 # Common Questions
 
 ## What is a viewer?
-A viewer (this repository) contains all of the files that are used in running the website, as well as manage which catalogs are displyaed in it. Keeping the viewer seperate from the catalogs allows for easier control in adding and removing catalogs to be shown on the website. 
+A viewer (this repository) contains all of the files that are used in running the website, as well as manage which catalogs are displayed in it. Keeping the viewer separate from the catalogs allows for easier control in adding and removing catalogs to be shown on the website. 
 
 ## What is a catalog and a remote catalog?
-A catalog is a collection of files containing infromation about a group of calls. It contains information such as a sound file, an image file, and information about the pod or call-type. A remote catalog is just a catalog that has been added to a remote git repository for easier collaboration and sharing.
+A catalog is a collection of files containing information about a group of calls. It contains information such as a sound file, an image file, and information about the pod or call-type. A remote catalog is just a catalog that has been added to a remote git repository for easier collaboration and sharing.
 
 ## What is a root catalog?
 A root catalog is one of the added remote catalogs that is designated to store the library.yaml file. A symbolic link is created from the root catalog library.yaml to the catalogs directory root. Doing it this way allows for the viewer and catalog to remain totally independent. 
@@ -44,13 +44,13 @@ Pushing a version to the remote catalog allows for it to become part of the cata
 Pushing a version to remote catalog
 ```bash
 # Replace 'version_name' with the version name specified in the creation of the tag
-# If forgotton, all versions can be listed by using executing 'git tag'
+# If forgotten, all versions can be listed by using executing 'git tag'
 git push {version_name}
 ```
 
 ## Catalog Version in the Viewer
 
-Now that a catalog verison has been created, it can now be revisited in the catalog viewer, showcasing the state of the catalog at the time of the version creation. If the version must be retrieved from the remote (the version was created in a different instances of the catalog and pushed to the remote), then executing the below command will make it available. If it was created on the same version, disregard the next command and continue to the 'Catalog Version Options' section. 
+Now that a catalog version has been created, it can now be revisited in the catalog viewer, showcasing the state of the catalog at the time of the version creation. If the version must be retrieved from the remote (the version was created in a different instances of the catalog and pushed to the remote), then executing the below command will make it available. If it was created on the same version, disregard the next command and continue to the 'Catalog Version Options' section. 
 
 Retrieving tag pushed to remote catalog
 ```bash
@@ -142,7 +142,6 @@ To pull any of the remote changes to a catalog and refresh the local catalogs an
 # Command for refreshing all remote catalogs that are added to the viewer
 python code/refresh_remote_catalog.py --all
 
-# Generic command for refreshing and pulling reomte changes of a catalog
 python code/refresh_remote_catalog.py {catalog_name}
 
 # Refreshes the catalog called whale-catalogue
