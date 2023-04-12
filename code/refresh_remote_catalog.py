@@ -116,9 +116,9 @@ if __name__ == '__main__':
             print(f'Pulling changes from {name}...')
             pull_from_remote(CATALOGS_PATH + '/' + name, name)
             update_json_file(name)
-            print(f'Succesfully pulled changes from {name}...', end='\n\n')
+            print(f'Successfully pulled changes from {name}...', end='\n\n')
             
-        print('Succesfully updated all remote catalogs')
+        print('Successfully updated all remote catalogs')
 
     # make sure that the catalog exists
     elif not exists(REPO_ROOT_PATH):
@@ -141,4 +141,4 @@ if __name__ == '__main__':
             print(f'Pulling remote changes from {repo_name}...')
             pull_from_remote(REPO_ROOT_PATH, repo_name)
             update_json_file(repo_name)
-            print(f'Succesfully pulled all changes and {repo_name} is up to date')
+            print(f'Successfully pulled all changes and {repo_name} is up to date')
