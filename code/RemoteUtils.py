@@ -90,7 +90,7 @@ def parse_yaml_to_json(path_to_catalogs_directory, yaml_file_path):
         # create df and process for json dump
         df = pd.DataFrame.from_dict(resources['calls'])
         
-        # split any comma seperated values, excluding files
+        # split any comma separated values, excluding files
         for index, row in df.iterrows():
             for field in fields:
                 if field in ['image-file', 'wav-file', 'description-file']:
@@ -129,7 +129,7 @@ def parse_yaml_to_json(path_to_catalogs_directory, yaml_file_path):
         df = df.rename(columns={"image-file": "image_file", "wav-file": "wav_file", "description-file": "description_file", "call-type": "call_type"})
 
         # returns the dataframe and the filters dictionary
-        print('Succesfuly parsed yaml file', end='\n\n')
+        print('Successfully parsed yaml file', end='\n\n')
         return (df, filters, sortables, display, site_details)
     
 def export_to_json(path_to_catalogs_directory, df, filters, sortables, display, site_details, file_name, yaml_file):
@@ -146,4 +146,4 @@ def export_to_json(path_to_catalogs_directory, df, filters, sortables, display, 
         data['calls'] = df.to_dict('records')
         json.dump(data, f)
             
-    print(f'Successfuly exported call data to catalogs/{file_name}.json', end='\n\n')
+    print(f'Successfully exported call data to catalogs/{file_name}.json', end='\n\n')

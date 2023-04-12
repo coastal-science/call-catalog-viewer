@@ -35,7 +35,7 @@ def clone_repo(URL):
         print('Unable to clone repository')
         exit(1)
         
-    print(f'Successfully cloned reposity {URL}', end='\n\n')   
+    print(f'Successfully cloned repository {URL}', end='\n\n')   
     
 def create_library_yaml():
     print(f'Creating library.yaml in {REPO_NAME}...')
@@ -43,11 +43,11 @@ def create_library_yaml():
     with open(REPO_ROOT_PATH + '/library.yaml', 'w') as f:
         catalogs = {'catalogs': [URL]}
         yaml.dump(catalogs, f)
-    print(f'Succesfully created library.yaml in {REPO_NAME}')
+    print(f'Successfully created library.yaml in {REPO_NAME}')
     
     print(f'Creating symlink from {REPO_NAME}/library.yaml to catalogs/library.yaml...')
     symlink(REPO_ROOT_PATH + '/library.yaml', CATALOGS_PATH + '/library.yaml')
-    print(f'Succesfully created symlink to {REPO_NAME}/library.yaml', end='\n\n')
+    print(f'Successfully created symlink to {REPO_NAME}/library.yaml', end='\n\n')
 
 
 def add_library_yaml():
@@ -119,7 +119,7 @@ if __name__ == '__main__':
     REPO_ROOT_PATH = CATALOGS_PATH + '/' + REPO_NAME
     
     if exists(CATALOGS_PATH + '/' + REPO_NAME):
-        print(f'Unable to add repo {REPO_NAME} as it alreay exists')
+        print(f'Unable to add repo {REPO_NAME} as it already exists')
         exit(-1)
     
     # clone the repository

@@ -17,6 +17,7 @@ REPO_NAME = ''
 CATALOG_PATH = ''
 REPO_ROOT_PATH = ''
 
+
 def is_remote_catalog(repo_name):
     found = False
     with open(CATALOG_PATH + '/library.yaml') as f:
@@ -40,7 +41,7 @@ def retrieve_old_root_data():
     with open(root_path, 'r') as f:
         old_data = yaml.safe_load(f)
             
-    print('Succesfully retrieved old root catalog data', end='\n\n')
+    print('Successfully retrieved old root catalog data', end='\n\n')
     return old_data    
 
 def remove_old_library():
@@ -93,11 +94,11 @@ def create_new_files(old_library_data):
     print(f'Creating library.yaml in {REPO_NAME}...')
     with open(REPO_ROOT_PATH + '/library.yaml', 'w') as f:
         yaml.dump(old_library_data, f)
-    print(f'Succesfully created library.yaml in {REPO_NAME}')
+    print(f'Successfully created library.yaml in {REPO_NAME}')
     
     print(f'Creating symlink to catalogs/library.yaml from {REPO_NAME}/library.yaml...')
     symlink(REPO_ROOT_PATH + '/library.yaml', CATALOG_PATH + '/library.yaml')
-    print(f'Succesfully created symlink to catalogs/library.yaml', end='\n\n')
+    print(f'Successfully created symlink to catalogs/library.yaml', end='\n\n')
 
 
 if __name__ == '__main__':
@@ -131,7 +132,7 @@ if __name__ == '__main__':
     
     # check if the new repo is a remote one, cannot set a local as a root catalogs
     if not is_remote_catalog(REPO_NAME):
-        print(f'The local direcoty {REPO_NAME} is not a remote catalog. Cannot be set as the root catalog')
+        print(f'The local directory {REPO_NAME} is not a remote catalog. Cannot be set as the root catalog')
         exit(-1)
         
     # get the old root repository
@@ -146,10 +147,10 @@ if __name__ == '__main__':
     # removing the symlink and deleting the old file
     remove_old_library()
     
-    # create new files and symlnks
+    # create new files and symlinks
     create_new_files(old_catalog)
     
     # set the new json site-details is_root as true
     update_new_site_details()
     
-    print(f'Succesfully set {REPO_NAME} as new root catalog')
+    print(f'Successfully set {REPO_NAME} as new root catalog')
