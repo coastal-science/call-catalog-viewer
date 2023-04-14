@@ -1,11 +1,17 @@
 import yaml
 import json
 from os.path import realpath, dirname
-import Utils
 from pathlib import Path
 import pandas as pd
 import numpy as np
+from os.path import exists
 
+def is_root_catalog(path_to_repo_root):
+    '''
+    Determines if the catalog is the current root repo
+    '''
+    return exists(path_to_repo_root + '/library.yaml')
+    
 def parse_yaml_to_json(path_to_catalogs_directory, yaml_file_path):
     print('Parsing yaml file to prepare for json dump...')
     path_to_repo_root = dirname(yaml_file_path)
@@ -14,8 +20,7 @@ def parse_yaml_to_json(path_to_catalogs_directory, yaml_file_path):
         
         # will only be true on the first time
         site_details = resources['site-details']
-        # This is going to die anyway
-        if Utils.is_root_catalog(path_to_catalogs_directory + '/library.yaml', path_to_repo_root):
+        if is_root_catalog(path_to_catalogs_directory + '/library.yaml', path_to_repo_root):
             site_details['catalogue']['is_root'] = 'true'
         else:
             site_details['catalogue']['is_root'] = 'false'
@@ -63,10 +68,6 @@ def parse_yaml_to_json(path_to_catalogs_directory, yaml_file_path):
                 arr = [key]
                 for x in params[0]:
                     arr.append(x)
-                    
-                if key == 'population':
-                    population = params[0]
-                    
                 filters.append(arr)
                 fields.append(key)
             else:
@@ -87,18 +88,13 @@ def parse_yaml_to_json(path_to_catalogs_directory, yaml_file_path):
         # create df and process for json dump
         df = pd.DataFrame.from_dict(resources['calls'])
         
-        # split any comma separated values, excluding files
+        # split any comma seperated values, excluding files
         for index, row in df.iterrows():
             for field in fields:
                 if field in ['image-file', 'wav-file', 'description-file']:
                     continue
-                
-                try:
-                    if (type(row[field]) == str and ',' in row[field]):
-                        df.at[index, field] = row[field].split(',')
-                except KeyError:
-                    print(f"Please make sure that all fields specified in 'fields' in the yaml are included in all the calls")
-                    exit(1)
+                if (type(row[field]) == str and ',' in row[field]):
+                    df.at[index, field] = row[field].split(',')
         
         # extract the filename from the path
         df['filename'] =  df['image-file'].str.split(".", expand=True)[0]
@@ -132,21 +128,20 @@ def parse_yaml_to_json(path_to_catalogs_directory, yaml_file_path):
 
         # returns the dataframe and the filters dictionary
         print('Succesfuly parsed yaml file', end='\n\n')
-        return (df, population, filters, sortables, display, site_details)
+        return (df, filters, sortables, display, site_details)
     
-def export_to_json(path_to_catalogs_directory, df, population, filters, sortables, display, site_details, file_name, yaml_file):
+def export_to_json(path_to_catalogs_directory, df, filters, sortables, display, site_details, file_name, yaml_file):
     print(f'Exporting {file_name} to catalogs/{file_name}.json...')
     with open(path_to_catalogs_directory + '/' + file_name+'.json', 'w') as f:
         data = dict()
         # adding the yaml file to the json since we know the json file name, but we don't know the yaml
         # this allows for much easier access to them
         data['yaml-file'] = yaml_file
-        data['site-details'] = site_details  
-        data['population'] = population          
+        data['site-details'] = site_details            
         data['filters'] = filters
         data['sortable'] = sortables
         data['display'] = display
         data['calls'] = df.to_dict('records')
         json.dump(data, f)
             
-    print(f'Successfully exported call data to catalogs/{file_name}.json', end='\n\n')
+    print(f'Successfuly exported call data to catalogs/{file_name}.json', end='\n\n')
