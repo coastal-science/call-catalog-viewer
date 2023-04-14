@@ -13,7 +13,6 @@ python src/catalog_versions.py {catalog_name} --latest
 import argparse
 from os.path import dirname, exists
 from git import Repo
-import RemoteUtils
 import Utils
 import json
 
@@ -54,8 +53,8 @@ def rebuild_files():
         yaml_file = data['yaml-file']
     
     # pass the yaml file to create the new json
-    df, population, filter, sortables, display, site_details = RemoteUtils.parse_yaml_to_json(CATALOGS_PATH, CATALOGS_PATH + '/' + REPO_NAME + '/' + yaml_file)
-    RemoteUtils.export_to_json(CATALOGS_PATH, df, population, filter, sortables, display, site_details, REPO_NAME, yaml_file)
+    df, population, filter, sortables, display, site_details = Utils.parse_yaml_to_json(CATALOGS_PATH, CATALOGS_PATH + '/' + REPO_NAME + '/' + yaml_file)
+    Utils.export_to_json(CATALOGS_PATH, df, population, filter, sortables, display, site_details, REPO_NAME, yaml_file)
     
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(
