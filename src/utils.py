@@ -7,12 +7,6 @@ from pathlib import Path
 import yaml
 
 
-is_yaml = lambda file: re.search(r"\.ya?ml$", str(file), flags=re.IGNORECASE)  # .yaml or .yml
-is_yaml = lambda file: Path(file).resolve().suffix.lower() in [".yaml", ".yaml"]  # .yaml or .yml
-
-
-def is_yaml(file) -> bool:
-    return Path(file).resolve().suffix.lower() in [".yaml", ".yaml"]  # .yaml or .yml
 
 
 def represent_none(self, _):

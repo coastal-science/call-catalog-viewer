@@ -100,7 +100,7 @@ from pathlib import Path
 import yaml
 
 import remove_catalog
-from utils import yaml, is_yaml  # represent 'None' values as empty strings ''
+import Utils
 
 ADD_EXIT_ERROR = -1
 
@@ -219,7 +219,7 @@ def touch(index_file: str):
     index_file = path.name  # index.yaml
     print(index_file)
 
-    if not is_yaml(index_file):
+    if not Utils.is_yaml(index_file):
         # if not any([catalog_file.lower().endswith(x) for x in [".yaml", ".yml"]]):
         print(f"{thisfile}: {cmd}: {index_file} does not have yaml extension", end="\n\n")
         exit(ADD_EXIT_ERROR)
@@ -334,7 +334,7 @@ if __name__ == "__main__":
     # print(p)
     # if not file.endswith(".yaml") or not file.endswith('.yml'):
     # if not p.is_file() or not any([p.suffix.lower() in [".yaml", ".yml"]]):
-    if not is_yaml(p):
+    if not Utils.is_yaml(p):
         print(f"{thisfile}: {cmd}: {catalog_listing=} does not exist or does not have yaml extension.", end="\n\n",)
         exit(ADD_EXIT_ERROR)
 
