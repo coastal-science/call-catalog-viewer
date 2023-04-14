@@ -14,6 +14,7 @@ from os.path import dirname, abspath, exists
 from os import makedirs, chmod, symlink
 from git import Repo
 import RemoteUtils
+import Utils
 
 REPO_NAME = ''
 CATALOGS_PATH = ''

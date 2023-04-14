@@ -14,6 +14,7 @@ import argparse
 from os.path import dirname, exists
 from git import Repo
 import RemoteUtils
+import Utils
 import json
 
 def list_versions(repo):
