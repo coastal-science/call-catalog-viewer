@@ -10,7 +10,7 @@ from os.path import dirname
 from os import remove
 from shutil import rmtree
 import yaml
-import RemoteUtils
+import Utils
 from pathlib import Path
 
 
@@ -154,7 +154,7 @@ if __name__ == '__main__':
     CATALOG_PATH = dirname(dirname(__file__)) + '/catalogs'
     REPO_PATH = f'{CATALOG_PATH}/{repo_name}'
     
-    is_root = RemoteUtils.is_root_catalog(CATALOG_PATH + '/library.yaml', REPO_PATH)
+    is_root = Utils.is_root_catalog(REPO_PATH)
     
     if is_root and force_remove:
         if not is_last_catalog():

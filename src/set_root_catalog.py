@@ -12,6 +12,7 @@ from pathlib import Path
 import yaml
 import argparse
 import json
+import Utils
 
 REPO_NAME = ''
 CATALOG_PATH = ''
@@ -30,9 +31,6 @@ def is_remote_catalog(repo_name):
                 break
     
     return found
-    
-def is_root_catalog(repo_path):
-    return exists(f'{repo_path}/library.yaml')
   
 def retrieve_old_root_data():
     print(f'Retrieving data from old root catalog...')
@@ -126,7 +124,7 @@ if __name__ == '__main__':
         exit(-1)
         
     # check if the repo is already the root catalog
-    if is_root_catalog(REPO_ROOT_PATH):
+    if Utils.is_root_catalog(REPO_ROOT_PATH):
         print(f'The repo {REPO_NAME} is already the root catalog. Doing nothing')
         exit()
     

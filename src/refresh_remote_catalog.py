@@ -48,12 +48,6 @@ def get_name_from_url(url):
     '''
     return url[url.rfind('/')+1:len(url)-4]
 
-def is_root_catalog():
-    '''
-    Returns if the specified catalog is the current root catalog
-    '''
-    return exists(f'{REPO_ROOT_PATH}/library.yaml')
-
 def update_json_file(repo_name):
     '''
     Update the values in the json with the new yaml data
