@@ -28,7 +28,7 @@ from pathlib import Path
 
 import yaml
 
-from utils import is_yaml
+import Utils
 
 REMOVE_EXIT_ERROR = -1
 
@@ -177,7 +177,7 @@ if __name__ == "__main__":
     p = Path(library, library_index).resolve()
     # print(p)
 
-    if not is_yaml(p):
+    if not Utils.is_yaml(p):
         print(f"{thisfile}: {cmd}: library/{library_index=} does not exist or does not have yaml extension.", end="\n\n",)
         exit(REMOVE_EXIT_ERROR)
 
