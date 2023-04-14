@@ -18,6 +18,7 @@ import yaml
 from os.path import dirname, exists
 from json import load
 import RemoteUtils
+import Utils
 
 def pull_from_remote(path_to_repo, repo_name):
     '''
