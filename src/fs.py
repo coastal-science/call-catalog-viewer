@@ -200,6 +200,98 @@ def smaller_on_left(left, right):
 # left, right, left_path, right_path = smaller_on_left(left, right)
 
 
+def compare_fs(left_dir, right_dir) -> tuple[bool, list]:
+    """Compare folder structure.
+
+    Args:
+        left_name (str): path to folder
+        right_name (str): path to folder
+
+    Returns:
+        bool: Returns True when all document names match and file content (docs with extensions) seem equal
+                For more details see [`filecmp.cmp`](https://docs.python.org/3/library/filecmp.html).
+              Otherwise, returns False
+    """
+
+    left_path, right_path = Path(left_dir), Path(right_dir)
+
+    # folder_left = [re.sub(f"^{left_name}", "", str(p))
+    #                for p in left_path.rglob("*")]
+    left_all = left_path.rglob("*")
+    # remove the leading {left_name} from the paths so that the comparisons can ignore it
+    folder_left = [remove_leading_path(left_dir, p)
+                   for p in left_all]
+    folder_left = sorted(folder_left)  # for printing purposes
+
+    # files_left = list(left_path.rglob("*.*"))
+    files_left = [p for p in left_path.rglob("*") if p.is_file()]
+
+    print(f"{left_dir}...",
+          *folder_left, sep='\n  ', end='\n\n')
+    print(*files_left, sep='\n', end='\n\n\n')
+
+    # folder_right = [re.sub(f"^{right_name}", "", str(p))
+    #                 for p in right_path.rglob("*")]
+    right_all = right_path.rglob("*")
+    folder_right = [remove_leading_path(right_dir, p)
+                    for p in right_all]
+    folder_right = sorted(folder_right)
+
+    # files_right = list(right_path.rglob("*.*"))
+    files_right = [p for p in right_path.rglob("*") if p.is_file()]
+
+    print(f"{right_dir}...",
+          *folder_right, sep='\n  ', end='\n\n')
+    print(*files_right, sep='\n', end='\n\n\n')
+
+    # Compare document names
+    names_cmp = set(folder_left) == set(folder_right)
+    print(f"Compare folder and file names: {names_cmp=}")
+
+    left_all = left_path.rglob("*")
+    right_all = right_path.rglob("*")
+    diff_all = {
+        # (f"{p1}", f"{p2}"): f"{remove_leading_path(left_name, p1)} {remove_leading_path(right_name, p2)}"
+        (f"{p1}", f"{p2}"): remove_leading_path(left_dir, p1) == remove_leading_path(right_dir, p2)
+        for p1, p2 in zip(left_all, right_all)
+    }
+
+    # Compare file contents
+    filecmp.clear_cache()
+    # Key: tuple(str, str) with left and right paths
+    # Value: bool evaluation of comparison
+    diff = {
+        (f"{f1}", f"{f2}"): filecmp.cmp(f1, f2, shallow=False)
+        for f1, f2 in zip(files_left, files_right)
+    }
+    # in case there are no files to compare, all() will evaluate to True
+    files_cmp = all(diff.values())
+
+    print(f"Compare content of all files: {files_cmp=}")
+    print(diff.values())
+    print(f"{names_cmp=} and {files_cmp=} = {names_cmp and files_cmp}", end='\n\n')
+
+    mismatch = []
+    if not names_cmp:
+        miss = set(folder_left).symmetric_difference(set(folder_right))
+        print("Mismatched folder(s):\n", miss)
+        mismatch.extend(miss)
+
+    if not files_cmp:
+        miss = [k for k, v in diff.items() if v is False]
+        print("Mismatched file(s):\n", miss)
+        mismatch.extend([*miss])
+
+    [print(k, ":", v) for k, v in diff_all]
+    print(diff_all.keys())
+    print(diff_all.values())
+
+    print(end='\n\n')
+    return (names_cmp and files_cmp), mismatch
+
+
+def remove_leading_path(leading_path, p):
+    return re.sub(f"^{leading_path}", "", str(p))
 
 
 if __name__ == '__main__':
