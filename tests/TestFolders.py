@@ -1,4 +1,4 @@
-from test.TestCase import TestCase
+from tests.TestCase import TestCase
 
 all_tests = []
 case_id = 0
