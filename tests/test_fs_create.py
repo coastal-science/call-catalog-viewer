@@ -1,5 +1,5 @@
 from pathlib import Path
-import fs
+from src import fs
 import filecmp
 
 class TestCreate:
