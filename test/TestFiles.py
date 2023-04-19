@@ -92,5 +92,4 @@ all_tests.append(TestCase(case_id, test_case, expected, desc))
 case_id += 1
 
 
-
 print(*all_tests, sep='\n', end='\n\n')
