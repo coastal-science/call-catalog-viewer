@@ -1,15 +1,10 @@
-"""Run with: `srkw-call-catalogue$ python -m test.TestCase`
-Returns:
-    _type_: _description_
+"""Create files and folders to function as expected test cases for the comparison.
+Using the `create_fs` function to bootstrap the creation of files/folders. Subsequently, manually check whether the documents are created as expected.
+
+Usage: `srkw-call-catalogue$ python -m test.TestCase`
 """
-# import __init__ as __
-# import fs
+
 from src import fs
-import sys
-
-from pathlib import Path
-
-print(Path.cwd(), sys.path)
 
 
 class TestCase:
@@ -34,8 +29,8 @@ class TestCase:
 
 if __name__ == '__main__':
     """Create files and folders to function as expected test cases for the comparison.
-    Use the `create_fs` function to bootstrap the creation of files/folders.
-    Subsequently a person should check whether the documents are created as expected.
+    Using the `create_fs` function to bootstrap the creation of files/folders. 
+    Subsequently, manually check whether the documents are created as expected.
     """
 
     from test.TestFiles import all_tests as files_tests
@@ -44,12 +39,12 @@ if __name__ == '__main__':
 
     all_tests = files_tests + folders_tests  # + corner_tests
 
-
     print(*all_tests, sep='\n', end='\n\n')
 
     for _ in all_tests:
         try:
             print(_)
-            print(fs.create_fs(fs.read_str(_.test_case), tempdir='test/test_fs_create'))
+            print(fs.create_fs(fs.read_str(_.test_case),
+                  tempdir='test/test_fs_create'))
         except Exception as err:
             print(err)
