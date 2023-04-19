@@ -18,7 +18,8 @@ case_id += 1
 ###############
 # TEST CASE 0
 ###############
-desc = "Create a file with a nested folder which means a folder"  ## BUG?: expected a folder, but got a file with 1 line of text
+# BUG?: expected a folder, but got a file with 1 line of text
+desc = "Create a file with a nested folder which means a folder"
 test_case = f"""
 corner/{case_id}-{desc}/file: a/new/folder
 """
