@@ -179,7 +179,7 @@ var GridPanel = undefined;
         var keys = Object.keys(data);
         keys.forEach(p => {
             if (data[p] == undefined || data[p] == null) {
-                data[p] = "Unknown";
+                data[p] = ""; //"Unknown"
             }
         })
         return data;
@@ -382,39 +382,22 @@ var GridPanel = undefined;
         console.log("CALLING FILTER UPDATE");
         filters.forEach(element => {
             var filterable = element[0];
-            // population will be a global filterable, other ones will be nested inside of the population
-            if (filterable === 'population') {
-                if (!(filterable in searching_para)) { // filterable is not already in the searchable
-                    searching_para[filterable] = element.slice(1); // add the filterable param to the searching_params
-                } else { // filterable is already in the parameters. Add all the elements that are not already in it
-                    element.slice(1).forEach(val => {
-                        if (!searching_para[filterable].includes(val)) {
-                            searching_para[filterable].push(val);
-                        }
-                    });
-                }
-            } else {
-                if (!(population in searching_para)) {
-                    searching_para[population] = {}
-                }
-
-                if (!(filterable in searching_para[population])) { // filterable is not already in the searchable
-                    searching_para[population][filterable] = element.slice(1); // add the filterable param to the searching_params
-                } else { // filterable is already in the parameters. Add all the elements that are not already in it
-                    element.slice(1).forEach(val => {
-                        if (!searching_para[population][filterable].includes(val)) {
-                            searching_para[population][filterable].push(val);
-                        }
-                    });
-                }
+            if (!(filterable in searching_para)) { // filterable is not already in the searchable
+                searching_para[filterable] = element.slice(1); // add the filterable param to the searching_params
+            } else { // filterable is already in the parameters. Add all the elements that are not already in it
+                element.slice(1).forEach(val => {
+                    if (!val && !searching_para[filterable].includes(val)) { // not an empty string and doesn't already exist.
+                        searching_para[filterable].push(val);
+                    }
+                });
             }
-            // // ensure that the 'Unknown' field is at the bottom of the dropdown
-            // var index = searching_para[filterable].indexOf("Unknown");
-            // if (index != -1) {
-                //     searching_para[filterable].splice(index, 1);
-                //     searching_para[filterable].push('Unknown');
-                // }
-            });
+            // ensure that the 'Unknown' field is at the bottom of the dropdown
+            var index = searching_para[filterable].indexOf("Unknown"); //Unknown deprecated with empty string.
+            if (index != -1) {
+                searching_para[filterable].splice(index, 1);
+                searching_para[filterable].push('Unknown');
+            }
+        });
     }
 
 
