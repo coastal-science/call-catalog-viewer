@@ -65,8 +65,8 @@ def update_json_file(repo_name):
         yaml_file = data['yaml-file']
         
     if yaml_file.endswith('.yaml'):
-        df, filter, sortables, display, site_details = RemoteUtils.parse_yaml_to_json(CATALOGS_PATH, CATALOGS_PATH + '/' + repo_name + '/' + yaml_file)
-        RemoteUtils.export_to_json(CATALOGS_PATH, df, filter, sortables, display, site_details, repo_name, yaml_file)
+        df, population, filter, sortables, display, site_details = RemoteUtils.parse_yaml_to_json(CATALOGS_PATH, CATALOGS_PATH + '/' + repo_name + '/' + yaml_file)
+        RemoteUtils.export_to_json(CATALOGS_PATH, df, population, filter, sortables, display, site_details, repo_name, yaml_file)
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(
