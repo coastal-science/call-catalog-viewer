@@ -34,8 +34,8 @@ case_id += 1
 desc = "Create nested folders"
 test_case = f"""
 folders/{case_id}-{desc}/folder: 
-                                    subdir1:
-                                    subdir2:
+                                subdir1:
+                                subdir2:
 """
 expected = f"folders/{case_id}-{desc}"
 
