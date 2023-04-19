@@ -28,7 +28,7 @@ def parse_yaml_to_json(path_to_catalogs_directory, yaml_file_path):
         
         # will only be true on the first time
         site_details = resources['site-details']
-        if is_root_catalog(path_to_catalogs_directory + '/library.yaml', path_to_repo_root):
+        if is_root_catalog(path_to_repo_root):
             site_details['catalogue']['is_root'] = 'true'
         else:
             site_details['catalogue']['is_root'] = 'false'
@@ -76,6 +76,10 @@ def parse_yaml_to_json(path_to_catalogs_directory, yaml_file_path):
                 arr = [key]
                 for x in params[0]:
                     arr.append(x)
+                    
+                if key == 'population':
+                    population = params[0]
+                    
                 filters.append(arr)
                 fields.append(key)
             else:
@@ -136,16 +140,17 @@ def parse_yaml_to_json(path_to_catalogs_directory, yaml_file_path):
 
         # returns the dataframe and the filters dictionary
         print('Succesfuly parsed yaml file', end='\n\n')
-        return (df, filters, sortables, display, site_details)
+        return (df, population, filters, sortables, display, site_details)
     
-def export_to_json(path_to_catalogs_directory, df, filters, sortables, display, site_details, file_name, yaml_file):
+def export_to_json(path_to_catalogs_directory, df, population, filters, sortables, display, site_details, file_name, yaml_file):
     print(f'Exporting {file_name} to catalogs/{file_name}.json...')
     with open(path_to_catalogs_directory + '/' + file_name+'.json', 'w') as f:
         data = dict()
         # adding the yaml file to the json since we know the json file name, but we don't know the yaml
         # this allows for much easier access to them
         data['yaml-file'] = yaml_file
-        data['site-details'] = site_details            
+        data['site-details'] = site_details 
+        data['population'] = population           
         data['filters'] = filters
         data['sortable'] = sortables
         data['display'] = display
