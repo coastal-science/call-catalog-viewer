@@ -99,8 +99,13 @@ def parse_yaml_to_json(path_to_catalogs_directory, yaml_file_path):
             for field in fields:
                 if field in ['image-file', 'wav-file', 'description-file']:
                     continue
-                if (type(row[field]) == str and ',' in row[field]):
-                    df.at[index, field] = row[field].split(',')
+                
+                try:
+                    if (type(row[field]) == str and ',' in row[field]):
+                        df.at[index, field] = row[field].split(',')
+                except KeyError:
+                    print(f"Please make sure that all fields specified in 'fields' in the yaml are included in all the calls")
+                    exit(1)
         
         # extract the filename from the path
         df['filename'] =  df['image-file'].str.split(".", expand=True)[0]
