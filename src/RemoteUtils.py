@@ -94,7 +94,7 @@ def parse_yaml_to_json(path_to_catalogs_directory, yaml_file_path):
         # create df and process for json dump
         df = pd.DataFrame.from_dict(resources['calls'])
         
-        # split any comma seperated values, excluding files
+        # split any comma separated values, excluding files
         for index, row in df.iterrows():
             for field in fields:
                 if field in ['image-file', 'wav-file', 'description-file']:
@@ -151,4 +151,4 @@ def export_to_json(path_to_catalogs_directory, df, population, filters, sortable
         data['calls'] = df.to_dict('records')
         json.dump(data, f)
             
-    print(f'Successfuly exported call data to catalogs/{file_name}.json', end='\n\n')
+    print(f'Successfully exported call data to catalogs/{file_name}.json', end='\n\n')

@@ -231,7 +231,7 @@ def touch(index_file: str):
     with open(path, "r+") as f:
         all_catalogs = yaml.safe_load(f)
         if not all_catalogs:
-            print(f"{thisfile}: {cmd}: {index_file} must containg one key 'catalog' with a list of catalog names.")
+            print(f"{thisfile}: {cmd}: {index_file} must containing one key 'catalog' with a list of catalog names.")
 
             empty = {"catalogs": []}
             print(empty)
