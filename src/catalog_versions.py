@@ -5,9 +5,9 @@ Versions
 - Have another option for -latest that will automatically update to the latest commit 
 
 Usage 
-python code/catalog_versions.py {catalog_name} {version_name}
-python code/catalog_versions.py {catalog_name} --list
-python code/catalog_versions.py {catalog_name} --latest
+python src/catalog_versions.py {catalog_name} {version_name}
+python src/catalog_versions.py {catalog_name} --list
+python src/catalog_versions.py {catalog_name} --latest
 '''
 
 import argparse
