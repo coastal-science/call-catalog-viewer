@@ -3,7 +3,7 @@ This file is used to remove a catalog that was previously added with add_remote_
 It will remove the reference to the repo in index.yaml, library.yaml, as well as all the associated files. 
 A root catalog cannot be removed. A new root catalog must be set with set_root_catalog.py before removing the catalog.
 
-Usage: python code/remove_remote_catalog.py {catalog_to_remove}
+Usage: python src/remove_remote_catalog.py {catalog_to_remove}
 '''
 import argparse
 from os.path import dirname

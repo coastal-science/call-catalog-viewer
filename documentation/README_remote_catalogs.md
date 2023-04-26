@@ -56,7 +56,7 @@ Retrieving tag pushed to remote catalog
 ```bash
 # Replacing catalog_name with the catalog that has the new version
 # For more information on refreshing remote catalogs look at documentation/README_remote_catalogs.md
-python code/refresh_remote_catalog.py {catalog_name}
+python src/refresh_remote_catalog.py {catalog_name}
 ```
 
 ### Catalog Version Options
@@ -68,16 +68,16 @@ Base command for working with catalog versions
 # Replace catalog_name with the name of catalog the action should be performed on 
 # Specify one of --list, --latest, version_name, where version_name is replaced by the version you wish to checkout
 # Note that more than one option cannot be specified. See below for how each one can be used 
-python code/catalog_versions.py {catalog_name} [{--list} {--latest} {version_name}]
+python src/catalog_versions.py {catalog_name} [{--list} {--latest} {version_name}]
 
 # This will list all of the versions for the specified catalog_name
-python code/catalog_versions.py {catalog_name} --list
+python src/catalog_versions.py {catalog_name} --list
 
 # This will revert the catalog to the most up to date commit that has been retrieved locally
-python code/catalog_versions.py {catalog_name} --latest
+python src/catalog_versions.py {catalog_name} --latest
 
 # This will checkout the version 'v2.0' in the catalog specified by catalog_name
-python code/catalog_versions.py {catalog_name} v2.0
+python src/catalog_versions.py {catalog_name} v2.0
 ```
 
 
@@ -91,13 +91,13 @@ To add a remote catalog the `git url` and the `yaml file` containing the call da
 
 ``` bash
 # Generic command for adding a remote catalog
-python code/add_remote_catalog.py {remote_catalog_git_url} {call_data_yaml_file}
+python src/add_remote_catalog.py {remote_catalog_git_url} {call_data_yaml_file}
 
 # Example 1: Adds the srkw-call-catalogue-files catalog with the call data file called 'call-catalog.yaml' via git SSH
-python code/add_remote_catalog.py git@github.com:sfu-bigdata/srkw-call-catalogue-files.git call-catalog.yaml
+python src/add_remote_catalog.py git@github.com:sfu-bigdata/srkw-call-catalogue-files.git call-catalog.yaml
 
 # Example 2: Adds the srkw-call-catalogue-files catalog with the call data file called 'whale-call-data.yaml' via git HTTPS
-python code/add_remote_catalog.py https://github.com/sfu-bigdata/srkw-call-catalogue-files.git whale-call-data.yaml
+python src/add_remote_catalog.py https://github.com/sfu-bigdata/srkw-call-catalogue-files.git whale-call-data.yaml
 ```
 Note: If this is the first catalog to be added, it will default to being the root catalog and store the library.yaml file. 
 
@@ -107,10 +107,10 @@ To remove a remote catalog the `catalog name` as seen in index.yaml must be spec
 
 ``` bash
 # Generic command for removing a remote catalog
-python code/remove_remote_catalog.py {catalog_name_to_remove}
+python src/remove_remote_catalog.py {catalog_name_to_remove}
 
 # Removes the remote catalog from the current viewer
-python code/remove_remote_catalog.py srkw-call-catalogue-files 
+python src/remove_remote_catalog.py srkw-call-catalogue-files 
 ```
 Note: The root catalog cannot be removed and must be changed before removing the catalog
 
@@ -120,10 +120,10 @@ To set a new root catalog the `catalog name` of the new root catalog must be spe
 
 ``` bash
 # Generic command for setting a new root catalog
-python code/set_root_catalog.py {new_root_catalog_name}
+python src/set_root_catalog.py {new_root_catalog_name}
 
 # Sets the catalog srkw-call-catalogue-files as the new root catalog
-python code/set_root_catalog.py srkw-call-catalogue-files
+python src/set_root_catalog.py srkw-call-catalogue-files
 ```
 
 ## Getting Root Catalog
@@ -131,7 +131,7 @@ python code/set_root_catalog.py srkw-call-catalogue-files
 To determine which of the remote catalogs is currently set as the root catalog
 
 ```bash
-python code/get_root_catalog.py
+python src/get_root_catalog.py
 ```
 
 ## Refreshing Catalogs
@@ -140,10 +140,10 @@ To pull any of the remote changes to a catalog and refresh the local catalogs an
 
 ```bash
 # Command for refreshing all remote catalogs that are added to the viewer
-python code/refresh_remote_catalog.py --all
+python src/refresh_remote_catalog.py --all
 
-python code/refresh_remote_catalog.py {catalog_name}
+python src/refresh_remote_catalog.py {catalog_name}
 
 # Refreshes the catalog called whale-catalogue
-python code/refresh_remote_catalog.py whale-catalogue
+python src/refresh_remote_catalog.py whale-catalogue
 ```

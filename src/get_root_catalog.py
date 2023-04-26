@@ -1,6 +1,6 @@
 '''
 This file returns the name of the current root catalog
-Usage: python code/get_root_catalog.py
+Usage: python src/get_root_catalog.py
 '''
 
 from os.path import dirname, exists, realpath, basename

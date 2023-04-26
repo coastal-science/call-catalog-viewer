@@ -3,7 +3,7 @@ This file is used to change the root catalog of the viewer
 Setting the root catalog changes where the library.yaml file is stored.
 It does not remove any of the data, it just changes the file location and where the symlink points
 
-Usage: python code/set_root_catalog.py {new_root_catalog_name}
+Usage: python src/set_root_catalog.py {new_root_catalog_name}
 '''
 
 from os.path import exists, dirname, realpath
