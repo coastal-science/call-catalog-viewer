@@ -4,7 +4,7 @@ Clones the catalog into the catalogs/ directory, generates the necessary files, 
 If it is the first catalog, it will be set as the root catalog, creating the library.yaml inside of the cloned directory and linking it
 Also takes parameter for yaml file, this is the name (or path if not in root of repo) that contains the call data
 
-Usage: python code/add_remote_catalog.py {catalog_git_url} {yaml_file_name}
+Usage: python src/add_remote_catalog.py {catalog_git_url} {yaml_file_name}
 '''
 
 

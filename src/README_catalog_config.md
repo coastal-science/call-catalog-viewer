@@ -3,17 +3,17 @@
 A `catalog-viewer` can host parallel catalogs. To add or remove catalogs to a viewer (`cd /var/www/html/catalog-viewer/`) use the commands:
 
 ```bash
-$ python code/add_catalog.py ...
-$ python code/remove_catalog.py ...
-$ python code/catalog_config.py {add,remove} ...
+$ python src/add_catalog.py ...
+$ python src/remove_catalog.py ...
+$ python src/catalog_config.py {add,remove} ...
 ```
 
 Further details and examples are documented in their `--help` and docstring.
 
 |Equivalent | |
 |---|---|
-| `python code/catalog_config.py add ...` | `python code/add_catalog.py ...` |
-| `python code/catalog_config.py remove ...` | `python code/remove_catalog.py ...` |
+| `python src/catalog_config.py add ...` | `python src/add_catalog.py ...` |
+| `python src/catalog_config.py remove ...` | `python src/remove_catalog.py ...` |
 
 ## `add` a catalog
 
@@ -24,11 +24,11 @@ The required arguments to `add` a catalog are
 
 Add the srkw-call-catalogue with:
 ```bash
-python code/catalog_config.py add <name> <source-folder> <index.yaml>
+python src/catalog_config.py add <name> <source-folder> <index.yaml>
 ```
 e.g.
 ```
-python code/catalog_config.py add srkw-call-catalogue-files ../srkw-call-catalogue-files call-catalog.yaml
+python src/catalog_config.py add srkw-call-catalogue-files ../srkw-call-catalogue-files call-catalog.yaml
 ```
 
 ## `remove` a catalog
@@ -37,11 +37,11 @@ python code/catalog_config.py add srkw-call-catalogue-files ../srkw-call-catalog
 
 Remove the srkw-call-catalogue with:
 ```bash
-python code/catalog_config.py remove <name>
+python src/catalog_config.py remove <name>
 ```
 e.g.
 ```
-python code/catalog_config.py remove srkw-call-catalogue-files
+python src/catalog_config.py remove srkw-call-catalogue-files
 ```
 
 # How and Why?
@@ -110,7 +110,7 @@ cd /var/www/html/catalog-viewer/
 Then, to `add` a catalog use the command 
 
 ```bash
-$ python code/add_catalog.py srkw-call-catalogue-files ../srkw-call-catalogue-files call-catalog.yaml
+$ python src/add_catalog.py srkw-call-catalogue-files ../srkw-call-catalogue-files call-catalog.yaml
 ```
 
 `index.yaml` updates like so
@@ -142,17 +142,17 @@ And the directories update symbolic links accordingly
         └── media   # containing jpg, wav, etc
 ```
 
-To `remove` a catalog use the command `$ python code/remove_catalog.py srkw-call-catalogue-files`
+To `remove` a catalog use the command `$ python src/remove_catalog.py srkw-call-catalogue-files`
 
 <!-- ## Generic Sample
 
 The folder structure after `add`ing 3 catalogs (pacific-whales, atlantic-sharks, antarctic-dolphins)
 ```bash
-python code/catalog_config.py add pacific-whales ./pacific-whales listing.yaml
+python src/catalog_config.py add pacific-whales ./pacific-whales listing.yaml
 
-python code/catalog_config.py add atlantic-sharks ./atlantic-sharks call-catalog.yaml
+python src/catalog_config.py add atlantic-sharks ./atlantic-sharks call-catalog.yaml
 
-python code/catalog_config.py add antarctic-dolphins ./antarctic-dolphins data.yaml
+python src/catalog_config.py add antarctic-dolphins ./antarctic-dolphins data.yaml
 ```
  looks like:
 
