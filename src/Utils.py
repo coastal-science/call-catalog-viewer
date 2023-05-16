@@ -1,15 +1,11 @@
 import yaml
 import re
 import json
-from os.path import realpath, dirname
+from os.path import dirname
 from pathlib import Path
 import pandas as pd
 import numpy as np
 from os.path import exists
-
-
-is_yaml = lambda file: re.search(r"\.ya?ml$", str(file), flags=re.IGNORECASE)  # .yaml or .yml
-is_yaml = lambda file: Path(file).resolve().suffix.lower() in [".yaml", ".yaml"]  # .yaml or .yml
 
 def is_yaml(file) -> bool:
     return Path(file).resolve().suffix.lower() in [".yaml", ".yaml"]  # .yaml or .yml
