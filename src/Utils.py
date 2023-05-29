@@ -75,6 +75,10 @@ def parse_yaml_to_json(path_to_catalogs_directory, yaml_file_path):
                     
                 if key == 'population':
                     population = params[0]
+
+                    if type(population) == list and len(population) > 1:
+                        print("There are multiple populations specified in one catalog, please only use one")
+                        exit(-1)
                     
                 filters.append(arr)
                 fields.append(key)
