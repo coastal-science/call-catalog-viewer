@@ -33,11 +33,11 @@ if __name__ == '__main__':
     Subsequently, manually check whether the documents are created as expected.
     """
 
-    from test.TestFiles import all_tests as files_tests
-    from test.TestFolders import all_tests as folders_tests
-    from test.TestFolders import all_tests as corner_tests
+    from tests.TestFiles import all_tests as files_tests
+    from tests.TestFolders import all_tests as folders_tests
+    from tests.TestCornerCases import all_tests as corner_tests
 
-    all_tests = files_tests + folders_tests  # + corner_tests
+    all_tests = files_tests + folders_tests + corner_tests
 
     print(*all_tests, sep='\n', end='\n\n')
 
@@ -45,6 +45,6 @@ if __name__ == '__main__':
         try:
             print(_)
             print(fs.create_fs(fs.read_str(_.test_case),
-                  tempdir='test/test_fs_create'))
+                  tempdir='tests/test_fs'))
         except Exception as err:
             print(err)

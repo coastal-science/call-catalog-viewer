@@ -5,6 +5,7 @@
 A folder is any document name (key) without content (value) and without an extension (suffix).
 Anything else is considered a file.
 
+Usage: `srkw-call-catalogue$ python -m src.fs`
 """
 
 
@@ -12,7 +13,7 @@ import re
 from pathlib import Path
 import filecmp
 import flatdict
-from utils import yaml, FORMAT_VERBOSE # multiline strings and None values written as empty strings.
+from src.utils import yaml, FORMAT_VERBOSE # multiline strings and None values written as empty strings.
 import logging
 
 global DEBUG
