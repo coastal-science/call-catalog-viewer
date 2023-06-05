@@ -1,3 +1,5 @@
 # python>=3.9
+-r requirements
+autopep
 pytest
 pytest-datadir
