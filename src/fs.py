@@ -11,16 +11,13 @@ Anything else is considered a file.
 import re
 from pathlib import Path
 import filecmp
-import flatdict  # multiline strings and None values written as empty strings.
-from utils import yaml
+import flatdict
+from utils import yaml, FORMAT_VERBOSE # multiline strings and None values written as empty strings.
 import logging
 
 global DEBUG
 
-FORMAT = '%(levelname)s - %(asctime)s - %(message)s'
-FORMAT_VERBOSE = '%(asctime)s: - %(levelname)s:%(name)s - %(module)s/%(filename)s/%(funcName)s/%(lineno)d:\t%(message)s'
-
-logging.basicConfig(level=logging.INFO, format=FORMAT_VERBOSE)
+# logging.basicConfig(level=logging.INFO, format=FORMAT_VERBOSE)
 
 logger = logging.getLogger(__name__)
 # logger.setLevel('DEBUG')
@@ -50,7 +47,7 @@ test/data/create:
 
 def create_fs(yaml_dict: dict, tempdir=""):
     """Create files and directories as defined in the yaml document.
-    An path with a suffix (file extension) is considered a file, otherwise a folder.
+    Any path with a suffix (file extension) is considered a file, otherwise a folder.
 
     Args:
         yaml_str (str): String formatted in yaml format
@@ -101,7 +98,7 @@ def create_fs(yaml_dict: dict, tempdir=""):
 
 
 def read_str(yaml_str: str) -> dict:
-    """Load yaml dictionary from a string definition
+    """Load yaml dictionary from a string definition (safe yaml-syntax).
 
     Args:
         yaml_str (str): String formatted in yaml format
