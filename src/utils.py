@@ -3,9 +3,13 @@
 import re
 import sys
 from pathlib import Path
-
+import logging
 import yaml
 
+FORMAT = '%(levelname)s - %(asctime)s - %(message)s'
+FORMAT_VERBOSE = '%(asctime)s: - %(levelname)s:%(name)s - %(module)s/%(filename)s/%(funcName)s/%(lineno)d:\t%(message)s'
+
+logging.basicConfig(level=logging.INFO, format=FORMAT_VERBOSE)
 
 is_yaml = lambda file: re.search(r"\.ya?ml$", str(file), flags=re.IGNORECASE)  # .yaml or .yml
 is_yaml = lambda file: Path(file).resolve().suffix.lower() in [".yaml", ".yaml"]  # .yaml or .yml
