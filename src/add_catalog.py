@@ -104,8 +104,8 @@ from utils import yaml, is_yaml  # represent 'None' values as empty strings ''
 
 ADD_EXIT_ERROR = -1
 
-LIBRARY = "catalogs"
-LIBRARY_INDEX = "index.yaml"
+# LIBRARY = None #"catalogs"
+# LIBRARY_INDEX = None #"index.yaml"
 
 # TODO: index.yaml holds catalog-name as well as path to catalog listing (call-catalog.yaml)
 """`index.yaml` updates like so
@@ -118,7 +118,7 @@ catalogs:
 """
 
 
-def add(catalog_name: str, source_folder, catalog_listing, force=False):
+def add(catalog_name: str, source_folder, catalog_listing, force=False, LIBRARY="catalogs", LIBRARY_INDEX="index.yaml"):
     """Add a catalog to the viewer.
 
     Args:
@@ -137,7 +137,7 @@ def add(catalog_name: str, source_folder, catalog_listing, force=False):
 
     removed = remove_catalog.remove(catalog_name, force=force)
     if not removed:  # early stopping because `force` could not remove
-        exit(ADD_EXIT_ERROR)
+        return ADD_EXIT_ERROR
 
     print()
 
@@ -222,7 +222,7 @@ def touch(index_file: str):
     if not is_yaml(index_file):
         # if not any([catalog_file.lower().endswith(x) for x in [".yaml", ".yml"]]):
         print(f"{thisfile}: {cmd}: {index_file} does not have yaml extension", end="\n\n")
-        exit(ADD_EXIT_ERROR)
+        return ADD_EXIT_ERROR
 
     if not path.is_file():
         print(f"{thisfile}: {cmd}: {index_file} does not exist. Creating an empty file.")
@@ -253,7 +253,11 @@ def is_valid_file(parser, arg):
         return arg
 
 
-if __name__ == "__main__":
+# if __name__ == "__main__":
+def cli(args=None):
+    print(f"{args}")
+    if not args:
+        args = sys.argv[1:]
 
     parser = argparse.ArgumentParser(
         description="Add catalogs that this viewer can display", allow_abbrev=True
@@ -275,7 +279,7 @@ if __name__ == "__main__":
 
     parser.add_argument(
         "--LIBRARY",
-        default=LIBRARY,
+        default="catalogs", #LIBRARY,
         required=False,
         help="Library folder for the viewer. This is directory must exist beforehand.",
         type=lambda x: is_valid_file(parser, x),
@@ -283,7 +287,7 @@ if __name__ == "__main__":
 
     parser.add_argument(
         "--LIBRARY-INDEX",
-        default=LIBRARY_INDEX,
+        default="index.yaml", #LIBRARY_INDEX,
         required=False,
         help="Index yaml within LIBRARY",
     )
@@ -308,7 +312,7 @@ if __name__ == "__main__":
         action=argparse.BooleanOptionalAction,  # Python 3.7+
     )
 
-    args = parser.parse_args()
+    args = parser.parse_args(args)
     print(args)
 
     cmd = "add"
@@ -328,7 +332,7 @@ if __name__ == "__main__":
     # Check whether `source_folder` exists and `file` has yaml extension
     if not os.path.isdir(source_folder):
         print(f"{thisfile}: {cmd}: {source_folder=} is not a directory", end="\n\n")
-        exit(ADD_EXIT_ERROR)
+        return ADD_EXIT_ERROR
 
     p = Path(source_folder, catalog_listing).resolve()
     # print(p)
@@ -336,7 +340,7 @@ if __name__ == "__main__":
     # if not p.is_file() or not any([p.suffix.lower() in [".yaml", ".yml"]]):
     if not is_yaml(p):
         print(f"{thisfile}: {cmd}: {catalog_listing=} does not exist or does not have yaml extension.", end="\n\n",)
-        exit(ADD_EXIT_ERROR)
+        return ADD_EXIT_ERROR
 
     print(f" {name=}")
     print(f" source_folder={Path(source_folder).resolve()}")
@@ -350,7 +354,11 @@ if __name__ == "__main__":
 
     # Add catalog
     print(f"{thisfile}: add catalog named {name=} with entries {catalog_listing=} from {source_folder=}")
-    EXIT_CODE = add(name, source_folder, catalog_listing, force=force)
+    EXIT_CODE = add(name, source_folder, catalog_listing, force=force, LIBRARY=LIBRARY, LIBRARY_INDEX=LIBRARY_INDEX)
 
     print(f"{thisfile}: {cmd}: Complete", end="\n\n")
-    exit(EXIT_CODE)
+    return EXIT_CODE
+
+
+if __name__ == "__main__":
+    cli()
