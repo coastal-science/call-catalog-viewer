@@ -55,7 +55,7 @@ and the following folder structure:
 └── index.html
 ```
 
-To `add` a catalog use the command `$ python code/add_catalog.py srkw-call-catalogue-files ./srkw-call-catalogue-files call-catalog.yaml`
+To `add` a catalog use the command `$ python src/add_catalog.py srkw-call-catalogue-files ./srkw-call-catalogue-files call-catalog.yaml`
 
 `index.yaml` updates like so
 ```yaml
@@ -83,7 +83,7 @@ And the directories update symbolic links accordingly
         └── media   # containing jpg, wav, etc
 ```
 
-To `remove` a catalog use the command `$ python code/remove_catalog.py srkw-call-catalogue-files`
+To `remove` a catalog use the command `$ python src/remove_catalog.py srkw-call-catalogue-files`
 """
 
 
@@ -164,7 +164,7 @@ def add(catalog_name: str, source_folder, catalog_listing, force=False, LIBRARY=
     # cd $REPO_DIR/call-catalog-viewer/ || exit # in case cd fails.
 
     logger.info("\nCalling src/read_files.py...")
-    # python code/read_files.py resources_config/call-catalog-desc.yaml resources_config/call-catalog
+    # python src/read_files.py resources_config/call-catalog-desc.yaml resources_config/call-catalog
     cmd = f"{sys.executable} src/read_files.py {LIBRARY}/{catalog_name}/{catalog_listing.name} {LIBRARY}/{catalog_name}"  # {'--force' if force else ''}
     logger.info(f"{cmd}")
     cmd = shlex.split(cmd)
