@@ -97,8 +97,6 @@ from datetime import datetime
 from os import PathLike
 from pathlib import Path
 
-import yaml
-
 import remove_catalog
 from utils import yaml, is_yaml  # represent 'None' values as empty strings ''
 from utils import logging
@@ -140,7 +138,6 @@ def add(catalog_name: str, source_folder, catalog_listing, force=False, LIBRARY=
     removed = remove_catalog.remove(catalog_name, force=force)
     if not removed:  # early stopping because `force` could not remove
         return ADD_EXIT_ERROR
-
 
     catalog_listing = Path(catalog_listing).resolve()
     source_folder = Path(source_folder).resolve()
@@ -350,7 +347,8 @@ def cli(args=None):
 
     # Add catalog
     logger.info(f"add catalog named {name=} with entries {catalog_listing=} from {source_folder=}")
-    EXIT_CODE = add(name, source_folder, catalog_listing, force=force, LIBRARY=LIBRARY, LIBRARY_INDEX=LIBRARY_INDEX)
+    EXIT_CODE = add(name, source_folder, catalog_listing, 
+                    force=force, LIBRARY=LIBRARY, LIBRARY_INDEX=LIBRARY_INDEX)
 
     logger.info(f"Catalog addition complete\n")
     return EXIT_CODE

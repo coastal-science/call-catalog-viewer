@@ -14,7 +14,7 @@ from pathlib import Path
 import filecmp
 import flatdict
 from src.utils import yaml, FORMAT_VERBOSE # multiline strings and None values written as empty strings.
-import logging
+from utils import logging
 
 global DEBUG
 
