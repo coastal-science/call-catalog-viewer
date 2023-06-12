@@ -310,11 +310,6 @@ def cli(args=None):
     )
 
     args = parser.parse_args(args)
-    
-    thisfile = Path(__file__).name
-    logger.info(f"{thisfile}: {cmd}:")
-    logger.info(str(args).replace("Namespace", "Args"))
-
     cmd = "add"
     name = args.name
     source_folder = args.source
@@ -326,18 +321,21 @@ def cli(args=None):
     LIBRARY_INDEX = args.LIBRARY_INDEX  # LIBRARY_INDEX
     EXIT_CODE = 0
 
+    thisfile = Path(__file__).name
+    logger.info(f"{thisfile}: {cmd}:")
+    logger.info(str(args).replace("Namespace", "Args"))
 
     # Check whether `source_folder` exists and `file` has yaml extension
     if not os.path.isdir(source_folder):
-        logger.error(f"{source_folder=} is not a directory", end="\n\n")
+        logger.error(f"{source_folder=} is not a directory")
         return ADD_EXIT_ERROR
 
     p = Path(source_folder, catalog_listing).resolve()
-    # print(p)
+
     # if not file.endswith(".yaml") or not file.endswith('.yml'):
     # if not p.is_file() or not any([p.suffix.lower() in [".yaml", ".yml"]]):
     if not is_yaml(p):
-        logger.error(f"{catalog_listing=} does not exist or does not have yaml extension.", end="\n\n",)
+        logger.error(f"{catalog_listing=} does not exist or does not have yaml extension.")
         return ADD_EXIT_ERROR
 
     print(f" {name=}")
