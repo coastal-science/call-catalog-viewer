@@ -164,7 +164,7 @@ def add(catalog_name: str, source_folder, catalog_listing, force=False, LIBRARY=
     # cd $REPO_DIR/call-catalog-viewer/ || exit # in case cd fails.
 
     logger.info("\nCalling src/read_files.py...")
-    # python code/read_files.py resources_config/call-catalog-desc.yaml resources_config/call-catalog
+    # python src/read_files.py resources_config/call-catalog-desc.yaml resources_config/call-catalog
     cmd = f"{sys.executable} src/read_files.py {LIBRARY}/{catalog_name}/{catalog_listing.name} {LIBRARY}/{catalog_name}"  # {'--force' if force else ''}
     logger.info(f"{cmd}")
     cmd = shlex.split(cmd)
