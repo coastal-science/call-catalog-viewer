@@ -29,6 +29,9 @@ from pathlib import Path
 import yaml
 
 from utils import is_yaml
+from utils import logging
+
+logger = logging.getLogger(__name__)
 
 REMOVE_EXIT_ERROR = -1
 
@@ -59,14 +62,14 @@ def remove(
 
     with open(listings) as f:
         all_catalogs = yaml.safe_load(f)
-        print(f"In {library_index} found: {all_catalogs}")
+        logger.debug(f"In {library_index} found: {all_catalogs}")
 
     if catalog_name not in all_catalogs["catalogs"]:
-        print(f"Catalog named '{catalog_name}' is not part of {library_index}, nothing to remove here.")
+        logger.info(f"Catalog named '{catalog_name}' is not part of {library_index}, nothing to remove here.")
 
     elif force:
         # catalog_name already exists and remove anyway.
-        print(f"{catalog_name=} already exists in the catalogs listed in {library_index}. Replacing anyway...")
+        logger.warning(f"{catalog_name=} already exists in the catalogs listed in {library_index}. Replacing anyway...")
         all_catalogs["catalogs"].remove(catalog_name)
 
         if not all_catalogs:
@@ -75,24 +78,23 @@ def remove(
 
     else:
         # catalog_name already exists and skip removal.
-        print(f"{catalog_name=} is already part of {library_index}. Use `--force` to remove anyway.\n")
+        logger.warning(f"{catalog_name=} is already part of {library_index}. Use `--force` to remove anyway.\n")
         return False
 
     # remove symlink and parsed json
-    print("Removing symlink folders and parsed json")
-    p = Path(library, catalog_name)
-    print(f"  {p}")
+    logger.info("Removing symlink folders and parsed json")
+    d = Path(library, catalog_name)
     # If missing_ok is true, FileNotFoundError exceptions will be ignored (same behavior as the POSIX rm -f command).
-    p.unlink(missing_ok=True)
+    d.unlink(missing_ok=True)
 
-    p = Path(library, catalog_name + ".json")
-    print(f"  {p}")
-    p.unlink(missing_ok=True)
+    f = Path(library, catalog_name + ".json")
+    f.unlink(missing_ok=True)
+    logger.info(f"Removed folder {d} and json {f}")
 
     with open(listings, "w") as f:
         yaml.dump(all_catalogs, f)
 
-    print("Removal persisted")
+    logger.info("Removal persisted")
 
     return True
 
@@ -109,8 +111,11 @@ def is_valid_file(parser, arg):
         return arg
 
 
-if __name__ == "__main__":
-
+# if __name__ == "__main__":
+def cli(args=None):
+    if not args:
+        args = sys.argv[1:]
+    
     parser = argparse.ArgumentParser(
         description="Remove catalogs available for this viewer to display",
         allow_abbrev=True,
@@ -120,14 +125,14 @@ if __name__ == "__main__":
 
     parser.add_argument(
         "--LIBRARY",
-        default=LIBRARY,
+        default="catalogs", #LIBRARY,
         help=f"Folder containing catalog data files. (default: '{LIBRARY}')",
         type=lambda x: is_valid_file(parser, x),
     )
 
     parser.add_argument(
         "--LIBRARY-INDEX",
-        default=LIBRARY_INDEX,
+        default="index.yaml", #LIBRARY_INDEX,
         help=f"Yaml file within `folder` containing the catalog entries for the viewer. (default: '{LIBRARY_INDEX}')",
         # type=lambda x: is_valid_file(parser, x)
     )
@@ -152,7 +157,7 @@ if __name__ == "__main__":
         action=argparse.BooleanOptionalAction,  # Python 3.7+
     )
 
-    args = parser.parse_args()
+    args = parser.parse_args(args)
     print(args)
 
     cmd = "remove"
@@ -172,14 +177,14 @@ if __name__ == "__main__":
     # Check for existence of `library` and `library/library_index` (and yaml extension)
     if not os.path.isdir(library):
         print(f"{thisfile}: {cmd}: {library=} is not a directory", end="\n\n")
-        exit(REMOVE_EXIT_ERROR)
+        return REMOVE_EXIT_ERROR
 
     p = Path(library, library_index).resolve()
     # print(p)
 
     if not is_yaml(p):
         print(f"{thisfile}: {cmd}: library/{library_index=} does not exist or does not have yaml extension.", end="\n\n",)
-        exit(REMOVE_EXIT_ERROR)
+        return REMOVE_EXIT_ERROR
 
     print(f" {name=}")
     print(f" folder={Path(library).resolve()}")
@@ -191,4 +196,9 @@ if __name__ == "__main__":
 
     print(f"{thisfile}: {cmd}: Complete", end="\n\n")
 
-    exit(EXIT_CODE)
+    return EXIT_CODE
+
+
+if __name__ == "__main__":
+    cli()
+
