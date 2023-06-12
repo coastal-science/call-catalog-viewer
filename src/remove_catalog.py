@@ -25,6 +25,7 @@ import argparse
 import os
 import re
 from pathlib import Path
+import sys
 
 import yaml
 
@@ -58,7 +59,6 @@ def remove(
     """
 
     listings = Path(library, library_index).resolve()
-    # print(catalog, catalog/library_index)
 
     with open(listings) as f:
         all_catalogs = yaml.safe_load(f)
@@ -158,8 +158,6 @@ def cli(args=None):
     )
 
     args = parser.parse_args(args)
-    print(args)
-
     cmd = "remove"
     name = args.name
     library = args.LIBRARY
@@ -172,18 +170,18 @@ def cli(args=None):
     EXIT_CODE = 0
 
     thisfile = Path(__file__).name
-    print(f"{thisfile}: {cmd}:")
+    logger.info(f"{thisfile}: {cmd}:")
+    logger.info(str(args).replace("Namespace", "Args"))
 
     # Check for existence of `library` and `library/library_index` (and yaml extension)
     if not os.path.isdir(library):
-        print(f"{thisfile}: {cmd}: {library=} is not a directory", end="\n\n")
+        logger.error(f"{library=} is not a directory")
         return REMOVE_EXIT_ERROR
 
     p = Path(library, library_index).resolve()
-    # print(p)
 
     if not is_yaml(p):
-        print(f"{thisfile}: {cmd}: library/{library_index=} does not exist or does not have yaml extension.", end="\n\n",)
+        logger.error(f"library/{library_index=} does not exist or does not have yaml extension.")
         return REMOVE_EXIT_ERROR
 
     print(f" {name=}")
@@ -191,10 +189,10 @@ def cli(args=None):
     print(f" file={Path(library, library_index).resolve()}", end="\n\n")
 
     # Remove catalog
-    print(f"{thisfile}: remove the catalog named {name=} listed in {library}/{library_index=}")
+    logger.info(f"remove the catalog named {name=} listed in {library}/{library_index=}")
     EXIT_CODE = remove(name, library_index, library, force=force)
 
-    print(f"{thisfile}: {cmd}: Complete", end="\n\n")
+    logger.info(f"Catalog removal complete\n")
 
     return EXIT_CODE
 
