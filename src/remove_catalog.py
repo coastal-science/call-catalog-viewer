@@ -17,7 +17,7 @@ Example:
 
 `python remove_catalog.py srkw-call-catalogue-files`
 
-`python remove_catalog.py srkw-call-catalogue-files catalog catalogs.yaml --force`
+`python remove_catalog.py srkw-call-catalogue-files catalog index.yaml --force`
 """
 
 
@@ -49,8 +49,8 @@ def remove(
     """Remove the specified 'catalog_name' from the viewer.
 
     Args:
-        catalog_name (str): _Name of the catalog to remove. This name must listed in `library_index`
-        library_index (str, optional): Yaml file containing a list of the catalogs. Defaults to "catalog.yaml".
+        catalog_name (str): Name of the catalog to remove. This name must listed in `library_index`
+        library_index (str, optional): Yaml file containing a list of the catalogs. Defaults to "index.yaml".
         library (str, optional): Parent folder of `library_index`. Defaults to "catalogs".
         force (bool, optional): Remove a catalog even if it already exists. Applies to removing symlinks and parsed json  Defaults to False.
 
@@ -134,7 +134,7 @@ def cli(args=None):
         "--LIBRARY-INDEX",
         default="index.yaml", #LIBRARY_INDEX,
         help=f"Yaml file within `folder` containing the catalog entries for the viewer. (default: '{LIBRARY_INDEX}')",
-        # type=lambda x: is_valid_file(parser, x)
+        type=lambda x: is_valid_file(parser, x)
     )
 
     parser.add_argument(

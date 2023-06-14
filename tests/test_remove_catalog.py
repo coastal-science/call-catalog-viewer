@@ -13,14 +13,20 @@ def test_remove_cli_empty():
     assert pytest_wrapped_e.type == SystemExit
     assert pytest_wrapped_e.value.code != 0
 
+def test_remove_from_uninitialized_library(tmp_path: Path, capsys, caplog):
+    """Attempt to remove a catalog from uninitialized index.yaml"""
+    
+    # arrange
 
-def test_remove_to_nonfolder(tmp_path: Path):
-    """Attempt to remove a catalog to a nonexistent catalog folder should exit"""
-
+    # act
     print(f"{tmp_path=}")
     with pytest.raises(SystemExit) as pytest_wrapped_e:
-        exit_code = remove_catalog(["my_catalog",
-                                 "nonexistent_catalog_folder",
-                                 "catalog.yaml"])
+        exit_code = remove_catalog(["nonexistent_catalog_name"])
+    
+    # assert
     assert pytest_wrapped_e.type == SystemExit
     assert pytest_wrapped_e.value.code != 0
+    
+    # cleanup
+    # operations occur in the `tmp_path` folder,
+    # which is unique to each invocation of the test function.
