@@ -134,7 +134,7 @@ def cli(args=None):
         "--LIBRARY-INDEX",
         default="index.yaml", #LIBRARY_INDEX,
         help=f"Yaml file within `folder` containing the catalog entries for the viewer. (default: '{LIBRARY_INDEX}')",
-        type=lambda x: is_valid_file(parser, x)
+        # type=lambda x: is_valid_file(parser, x) The parent --LIBRARY argument is not yet available
     )
 
     parser.add_argument(
