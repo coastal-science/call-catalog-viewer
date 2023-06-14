@@ -135,7 +135,7 @@ def add(catalog_name: str, source_folder, catalog_listing, force=False, LIBRARY=
     # Remove existing catalog
     logger.warning(f"Remove {catalog_name=} if already present")
 
-    removed = remove_catalog.remove(catalog_name, force=force)
+    removed = remove_catalog.remove(catalog_name, library_index=LIBRARY_INDEX, library=LIBRARY, force=force)
     if not removed:  # early stopping because `force` could not remove
         return ADD_EXIT_ERROR
 
