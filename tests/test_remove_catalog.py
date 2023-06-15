@@ -12,7 +12,7 @@ def test_remove_cli_empty(tmp_path: Path, monkeypatch: pytest.MonkeyPatch):
     monkeypatch.chdir(tmp_path)
 
     with pytest.raises(SystemExit) as pytest_wrapped_e:
-        exit_code = remove_catalog()
+        exit_code = remove_catalog([""])
 
     assert pytest_wrapped_e.type == SystemExit
     assert pytest_wrapped_e.value.code != 0
@@ -26,6 +26,7 @@ def test_remove_from_uninitialized_library(tmp_path: Path, capsys: pytest.Captur
 
     # act
     print(f"{tmp_path=}")
+    monkeypatch.chdir(tmp_path)
     with pytest.raises(SystemExit) as pytest_wrapped_e:
         exit_code = remove_catalog(["nonexistent_catalog_name"])
     

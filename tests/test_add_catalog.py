@@ -11,7 +11,7 @@ def test_add_cli_empty(tmp_path: Path, monkeypatch: pytest.MonkeyPatch):
     monkeypatch.chdir(tmp_path)
 
     with pytest.raises(SystemExit) as pytest_wrapped_e:
-        exit_code = add_catalog()
+        exit_code = add_catalog([""])
 
     assert pytest_wrapped_e.type == SystemExit
     assert pytest_wrapped_e.value.code != 0
@@ -70,6 +70,8 @@ def test_add(tmp_path: Path, tmp_path_factory: Path, shared_datadir: Path, monke
                              "--LIBRARY", str(lib_name)])
 
     # assert
+    assert exit_code == 0
+
     assert lib_name.exists() and lib_name.name == "catalogs"
     
     assert (lib_name / "ABCW").is_dir()
@@ -79,8 +81,6 @@ def test_add(tmp_path: Path, tmp_path_factory: Path, shared_datadir: Path, monke
     with open(index) as f:
         content = yaml.safe_load(f)
         assert "ABCW" in content['catalogs']
-    
-    assert exit_code == 0
 
     # cleanup
     # operations occur in the `tmp_path` folder,
@@ -105,6 +105,8 @@ def test_add_2(tmp_path: Path, tmp_path_factory: Path, shared_datadir: Path, mon
                             "--LIBRARY-INDEX", 'directory.yaml'])
     
     # assert
+    assert exit_code == 0
+    
     assert lib_name.exists() and lib_name.name == "library"
     
     assert (lib_name / "ABCW").is_dir()
@@ -114,8 +116,6 @@ def test_add_2(tmp_path: Path, tmp_path_factory: Path, shared_datadir: Path, mon
     with open(index) as f:
         content = yaml.safe_load(f)
         assert "ABCW" in content['catalogs']
-    
-    assert exit_code == 0
     
     # cleanup
     # operations occur in the `tmp_path` folder,
@@ -166,8 +166,8 @@ def test_add_3(tmp_path: Path, tmp_path_factory: Path, shared_datadir: Path, cap
                             "--LIBRARY", str(lib_name)])
     # assert
     captured = caplog.text
-    assert "Use `--force`" in str(captured)
     assert exit_code != 0
+    assert "Use `--force`" in str(captured)
 
     # cleanup
     # operations occur in the `tmp_path` folder,
@@ -196,6 +196,8 @@ def test_add_4(tmp_path: Path, tmp_path_factory: Path, shared_datadir: Path, mon
     if pytest_wrapped_e.type == PermissionError:
         pytest.skip("Cannot complete test due to file permission error, skipping the rest of the test scenario. {LIBRARY}/{catalog_name} may be a non-empty folder.")
 
+    assert exit_code == 0
+
     assert lib_name.exists() and lib_name.name == "catalogs"
 
     assert (lib_name / "ABCW").is_dir()
@@ -207,8 +209,6 @@ def test_add_4(tmp_path: Path, tmp_path_factory: Path, shared_datadir: Path, mon
         assert "ABCW" in content['catalogs']
         assert len(content['catalogs']) == 1
    
-    assert exit_code == 0
-
     # cleanup
     # operations occur in the `tmp_path` folder,
     # which is unique to each invocation of the test function.
@@ -229,6 +229,8 @@ def test_add_5(tmp_path: Path, tmp_path_factory: Path, shared_datadir: Path, mon
                         "call-catalog.yaml",
                         "--LIBRARY", str(lib_name)])
     # assert
+    assert exit_code == 0
+
     assert lib_name.exists() and lib_name.name == "catalogs"
 
     assert (lib_name / "ABCW").is_dir()
@@ -243,8 +245,6 @@ def test_add_5(tmp_path: Path, tmp_path_factory: Path, shared_datadir: Path, mon
         assert "XYZW" in content['catalogs']
         assert len(content['catalogs']) == 2
     
-    assert exit_code == 0
-
     # cleanup
     # operations occur in the `tmp_path` folder,
     # which is unique to each invocation of the test function.
@@ -265,6 +265,8 @@ def test_add_6(tmp_path: Path, tmp_path_factory: Path, shared_datadir: Path, mon
                             "call-catalog.yaml",
                             "--LIBRARY", str(lib_name)])
     # assert
+    assert exit_code == 0
+
     assert lib_name.exists() and lib_name.name == "catalogs"
 
     assert (lib_name / "ABCW").is_dir()
@@ -279,8 +281,6 @@ def test_add_6(tmp_path: Path, tmp_path_factory: Path, shared_datadir: Path, mon
         assert "IJKW" in content['catalogs']
         assert len(content['catalogs']) == 2
     
-    assert exit_code == 0
-
     # cleanup
     # operations occur in the `tmp_path` folder,
     # which is unique to each invocation of the test function.
