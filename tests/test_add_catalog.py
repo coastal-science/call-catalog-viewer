@@ -4,8 +4,11 @@ from src.add_catalog import cli as add_catalog
 from src.utils import yaml
 
 
-def test_add_cli_empty():
+def test_add_cli_empty(tmp_path: Path, monkeypatch: pytest.MonkeyPatch):
     """Calling cli without arguments should exit and want about missing arguments"""
+
+    # arrange
+    monkeypatch.chdir(tmp_path)
 
     with pytest.raises(SystemExit) as pytest_wrapped_e:
         exit_code = add_catalog()
@@ -14,10 +17,13 @@ def test_add_cli_empty():
     assert pytest_wrapped_e.value.code != 0
 
 
-def test_add_to_nonfolder(tmp_path: Path):
+def test_add_to_nonfolder(tmp_path: Path, monkeypatch: pytest.MonkeyPatch):
     """Attempt to add a catalog to a nonexistent catalog folder should exit"""
-
+    
+    # arrange
     print(f"{tmp_path=}")
+    monkeypatch.chdir(tmp_path)
+
     with pytest.raises(SystemExit) as pytest_wrapped_e:
         exit_code = add_catalog(["my_catalog",
                                  "nonexistent_catalog_folder",
@@ -42,14 +48,13 @@ def make_index(lib_name=None, index_name="index.yaml"):
     return index
 
 
-def test_add(tmp_path: Path, tmp_path_factory: Path, shared_datadir):
+def test_add(tmp_path: Path, tmp_path_factory: Path, shared_datadir: Path, monkeypatch: pytest.MonkeyPatch):
     """Add a files directory to the catalog in the default folder names/space and index.
     Using a real files directory and yaml."""
     
     # arrange
     print(f"{tmp_path=},{shared_datadir=}")
-    lib_name = make_library(tmp_path, library_name="catalogs")
-    print(f"test_add:{lib_name=}")
+    monkeypatch.chdir(tmp_path)
     index = make_index(lib_name, index_name="index.yaml")
     
     # print(f"test_add:{f=}")
@@ -82,12 +87,13 @@ def test_add(tmp_path: Path, tmp_path_factory: Path, shared_datadir):
     # which is unique to each invocation of the test function.
 
 
-def test_add_2(tmp_path: Path, tmp_path_factory: Path, shared_datadir):
+def test_add_2(tmp_path: Path, tmp_path_factory: Path, shared_datadir: Path, monkeypatch: pytest.MonkeyPatch):
     """Add a files directory to the catalog in a custom folder names/space and index.
     Using a real files directory and yaml"""
 
     # arrange
-    lib_name = make_library(tmp_path, library_name="library")
+    monkeypatch.chdir(tmp_path)
+
 
     index = make_index(lib_name, index_name="directory.yaml")
     
@@ -116,9 +122,9 @@ def test_add_2(tmp_path: Path, tmp_path_factory: Path, shared_datadir):
     # which is unique to each invocation of the test function.
 
 
-def test_sub(tmp_path: Path, tmp_path_factory: Path):
+def test_sub(tmp_path: Path, tmp_path_factory: Path, monkeypatch: pytest.MonkeyPatch):
     print(f"{tmp_path=}")
-    lib_name = make_library(tmp_path, library_name="library")
+    monkeypatch.chdir(tmp_path)
     print(f"test_sub:{lib_name=}")
     f = make_index(lib_name, index_name="list.yaml")
     print(f"test_sub:{f=}")
@@ -144,11 +150,11 @@ def make_existing(lib_name: Path, index: Path):
     return
 
 
-def test_add_3(tmp_path: Path, tmp_path_factory: Path, shared_datadir, capsys, caplog):
+def test_add_3(tmp_path: Path, tmp_path_factory: Path, shared_datadir: Path, capsys: pytest.CaptureFixture[str], caplog: pytest.LogCaptureFixture, monkeypatch: pytest.MonkeyPatch):
     """Adding a catalog twice should keep refuse the addition"""
 
     # arrange
-    lib_name = make_library(tmp_path)
+    monkeypatch.chdir(tmp_path)
 
     index = make_index(lib_name)
     make_existing(lib_name, index)
@@ -168,12 +174,12 @@ def test_add_3(tmp_path: Path, tmp_path_factory: Path, shared_datadir, capsys, c
     # which is unique to each invocation of the test function.
 
 
-def test_add_4(tmp_path: Path, tmp_path_factory: Path, shared_datadir):
+def test_add_4(tmp_path: Path, tmp_path_factory: Path, shared_datadir: Path, monkeypatch: pytest.MonkeyPatch):
     """Adding a catalog twice with `--force` should allow the addition. 
     This test may be skipped if the execution is unable to complete due to file PermissionError."""
 
     # arrange
-    lib_name = make_library(tmp_path)
+    monkeypatch.chdir(tmp_path)
 
     index = make_index(lib_name)
     make_existing(lib_name, index)
@@ -208,11 +214,11 @@ def test_add_4(tmp_path: Path, tmp_path_factory: Path, shared_datadir):
     # which is unique to each invocation of the test function.
 
 
-def test_add_5(tmp_path: Path, tmp_path_factory: Path, shared_datadir):
+def test_add_5(tmp_path: Path, tmp_path_factory: Path, shared_datadir: Path, monkeypatch: pytest.MonkeyPatch):
     """Adding two catalogs: Adding the same catalog with 2 different names"""
 
     # arrange
-    lib_name = make_library(tmp_path)
+    monkeypatch.chdir(tmp_path)
 
     index = make_index(lib_name)
     make_existing(lib_name, index)
@@ -244,11 +250,11 @@ def test_add_5(tmp_path: Path, tmp_path_factory: Path, shared_datadir):
     # which is unique to each invocation of the test function.
 
 
-def test_add_6(tmp_path: Path, tmp_path_factory: Path, shared_datadir):
+def test_add_6(tmp_path: Path, tmp_path_factory: Path, shared_datadir: Path, monkeypatch: pytest.MonkeyPatch):
     """Adding the same catalog with 2 different names"""
 
     # arrange
-    lib_name = make_library(tmp_path)
+    monkeypatch.chdir(tmp_path)
 
     index = make_index(lib_name)
     make_existing(lib_name, index)
