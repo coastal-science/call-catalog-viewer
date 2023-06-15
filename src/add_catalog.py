@@ -98,6 +98,7 @@ from os import PathLike
 from pathlib import Path
 
 import remove_catalog
+from read_files import cli as read_files
 from utils import yaml, is_yaml  # represent 'None' values as empty strings ''
 from utils import logging
 
@@ -162,12 +163,19 @@ def add(catalog_name: str, source_folder, catalog_listing, force=False, LIBRARY=
 
     logger.info("\nCalling src/read_files.py...")
     # python src/read_files.py resources_config/call-catalog-desc.yaml resources_config/call-catalog
+    
     cmd = f"{sys.executable} src/read_files.py {LIBRARY}/{catalog_name}/{catalog_listing.name} {LIBRARY}/{catalog_name}"  # {'--force' if force else ''}
     logger.info(f"{cmd}")
-    cmd = shlex.split(cmd)
+    # cmd = shlex.split(cmd)
 
-    output = subprocess.run(cmd, universal_newlines=True) # before it wouldn't run if not --force?
-    EXIT_CODE = output.returncode
+    # output = subprocess.run(cmd, universal_newlines=True) # before it wouldn't run if not --force?
+    # EXIT_CODE = output.returncode
+
+    EXIT_CODE = read_files([str(f"{LIBRARY}/{catalog_name}/{catalog_listing.name}"),
+                            str(f"{LIBRARY}/{catalog_name}"),
+                            # f"{'--force' if force else ''}""
+                            ])
+    
     # if force:
     #     output = subprocess.run(cmd, universal_newlines=True)
     #     EXIT_CODE = output.returncode
