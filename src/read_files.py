@@ -284,12 +284,14 @@ def export_file(df, data_folder, filters, sortables, display, site_details, file
             #file.write(yaml_text.as_yaml())
             
 
-if __name__ == '__main__':
+# if __name__ == '__main__':
+def main(args=None):
     """
     example:
         python3 read_files.py call-catalog.yaml <--read resources info from yaml file
         python3 read_files.py simple call-catalog yaml<--read resources info from the directory containing resources
     """
+
     inputs = sys.argv[1] # inputs is path to index file in the catalog to be added
     if len(sys.argv) == 3:
         output = sys.argv[2]
@@ -314,3 +316,20 @@ if __name__ == '__main__':
         export_file(df, inputs, output, file_format = file_format)
         print("read_files.py: Completed reading resource directory...")
         #print("\n".join(df.apply(make_row_html, axis=1)))
+    return 0
+
+def cli(args=None):
+    try:
+        if not args:
+            args = sys.argv[1:]
+        else:
+            sys.argv = [sys.argv[0]] + args
+        return main(args)
+    except Exception as err:
+        print(err.with_traceback())
+        return -1    
+    
+
+if __name__ == '__main__':
+    cli()
+    
