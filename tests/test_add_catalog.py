@@ -196,15 +196,16 @@ def test_add_4(tmp_path: Path, tmp_path_factory: Path, shared_datadir: Path, mon
     
     # act
     # with pytest.raises(FileExistsError) as pytest_wrapped_e:
-    with pytest.raises(PermissionError) as pytest_wrapped_e:
-        exit_code = add_catalog(["ABCW",
-                                str(shared_datadir / 'abcw-call-catalog-files'), #"catalogs",
-                                "call-catalog.yaml",
-                                "--LIBRARY", str(lib_name),
-                                "--force"])
+    # with pytest.raises(PermissionError) as pytest_wrapped_e:
+    exit_code = add_catalog(["ABCW",
+                            str(shared_datadir / 'abcw-call-catalog-files'), #"catalogs",
+                            "call-catalog.yaml",
+                            "--LIBRARY", str(lib_name),
+                            "--force"])
+
     # assert
-    if pytest_wrapped_e.type == PermissionError:
-        pytest.skip("Cannot complete test due to file permission error, skipping the rest of the test scenario. {LIBRARY}/{catalog_name} may be a non-empty folder.")
+    # if pytest_wrapped_e.type == PermissionError:
+    #     pytest.skip("Cannot complete test due to file permission error, skipping the rest of the test scenario. {LIBRARY}/{catalog_name} may be a non-empty folder.")
 
     assert exit_code == 0
 
