@@ -84,8 +84,12 @@ def remove(
     # remove symlink and parsed json
     logger.info("Removing symlink folders and parsed json")
     d = Path(library, catalog_name)
-    # If missing_ok is true, FileNotFoundError exceptions will be ignored (same behavior as the POSIX rm -f command).
-    d.unlink(missing_ok=True)
+    if d.is_symlink() or d.is_file():
+        # If missing_ok is true, FileNotFoundError exceptions will be ignored (same behavior as the POSIX rm -f command).
+        d.unlink(missing_ok=True)
+    elif d.is_dir():
+        logger.warning(f"{catalog_name=} is a folder (not a symbolic link), the directory must be empty.\n")
+        d.rmdir()
 
     f = Path(library, catalog_name + ".json")
     f.unlink(missing_ok=True)
