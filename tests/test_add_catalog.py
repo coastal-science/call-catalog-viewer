@@ -32,9 +32,9 @@ def test_add_to_nonfolder(tmp_path: Path, monkeypatch: pytest.MonkeyPatch):
     assert pytest_wrapped_e.value.code != 0
 
 
-def make_library(tmp_path: Path, library_name="catalogs"):
+def make_library(library_name="catalogs"):
     # print(f"make_library:{tmp_path}:")
-    d = tmp_path / library_name
+    d = Path(library_name)
     d.mkdir()
     # print(f"{d}")
     return d
@@ -44,7 +44,10 @@ def make_index(lib_name=None, index_name="index.yaml"):
     # print(f"make_index:{index_name=}")
     index = lib_name / index_name
     index.touch()
-    # print(f"make_index:{index}:")
+    index.write_text(yaml.dump(
+        {"catalogs": []}
+        ))
+    print(f"make_index:{index}:")
     return index
 
 
@@ -55,6 +58,9 @@ def test_add(tmp_path: Path, tmp_path_factory: Path, shared_datadir: Path, monke
     # arrange
     print(f"{tmp_path=},{shared_datadir=}")
     monkeypatch.chdir(tmp_path)
+
+    lib_name = make_library(library_name="catalogs")
+    print(f"test_add:{lib_name=}m {Path.cwd()}")
     index = make_index(lib_name, index_name="index.yaml")
     
     # print(f"test_add:{f=}")
@@ -94,6 +100,7 @@ def test_add_2(tmp_path: Path, tmp_path_factory: Path, shared_datadir: Path, mon
     # arrange
     monkeypatch.chdir(tmp_path)
 
+    lib_name = make_library(library_name="library")
 
     index = make_index(lib_name, index_name="directory.yaml")
     
@@ -125,6 +132,7 @@ def test_add_2(tmp_path: Path, tmp_path_factory: Path, shared_datadir: Path, mon
 def test_sub(tmp_path: Path, tmp_path_factory: Path, monkeypatch: pytest.MonkeyPatch):
     print(f"{tmp_path=}")
     monkeypatch.chdir(tmp_path)
+    lib_name = make_library(library_name="library")
     print(f"test_sub:{lib_name=}")
     f = make_index(lib_name, index_name="list.yaml")
     print(f"test_sub:{f=}")
@@ -135,11 +143,11 @@ def test_sub(tmp_path: Path, tmp_path_factory: Path, monkeypatch: pytest.MonkeyP
 
 
 def make_existing(lib_name: Path, index: Path):
-    """Setup library and index with an existing catalog entry"""
+    """Configure library and index with an existing catalog entry"""
 
     index.write_text(yaml.dump(
         {"catalogs": ["ABCW"]}
-        ))
+        )) # overwrites previous file
     
     p = (lib_name / "ABCW")
     p.mkdir()
@@ -155,6 +163,7 @@ def test_add_3(tmp_path: Path, tmp_path_factory: Path, shared_datadir: Path, cap
 
     # arrange
     monkeypatch.chdir(tmp_path)
+    lib_name = make_library()
 
     index = make_index(lib_name)
     make_existing(lib_name, index)
@@ -180,6 +189,7 @@ def test_add_4(tmp_path: Path, tmp_path_factory: Path, shared_datadir: Path, mon
 
     # arrange
     monkeypatch.chdir(tmp_path)
+    lib_name = make_library()
 
     index = make_index(lib_name)
     make_existing(lib_name, index)
@@ -219,6 +229,7 @@ def test_add_5(tmp_path: Path, tmp_path_factory: Path, shared_datadir: Path, mon
 
     # arrange
     monkeypatch.chdir(tmp_path)
+    lib_name = make_library()
 
     index = make_index(lib_name)
     make_existing(lib_name, index)
@@ -255,6 +266,7 @@ def test_add_6(tmp_path: Path, tmp_path_factory: Path, shared_datadir: Path, mon
 
     # arrange
     monkeypatch.chdir(tmp_path)
+    lib_name = make_library()
 
     index = make_index(lib_name)
     make_existing(lib_name, index)
