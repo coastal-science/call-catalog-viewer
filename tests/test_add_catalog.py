@@ -142,20 +142,20 @@ def test_sub(tmp_path: Path, tmp_path_factory: Path, monkeypatch: pytest.MonkeyP
     # assert True
 
 
-def make_existing(lib_name: Path, index: Path):
+def make_existing(lib_name: Path, index: Path, catalog_name="ABCW"):
     """Configure library and index with an existing catalog entry"""
 
     index.write_text(yaml.dump(
-        {"catalogs": ["ABCW"]}
+        {"catalogs": [catalog_name]}
         )) # overwrites previous file
     
-    p = (lib_name / "ABCW")
+    p = (lib_name / catalog_name)
     p.mkdir()
     
     p.touch("call-catalog.yaml")
-    (lib_name / "ABCW.json").touch()
+    (lib_name / f"{catalog_name}.json").touch()
     
-    return
+    return p
 
 
 def test_add_3(tmp_path: Path, tmp_path_factory: Path, shared_datadir: Path, capsys: pytest.CaptureFixture[str], caplog: pytest.LogCaptureFixture, monkeypatch: pytest.MonkeyPatch):
