@@ -5,7 +5,7 @@ from src.utils import yaml
 
 
 def test_add_cli_empty(tmp_path: Path, monkeypatch: pytest.MonkeyPatch):
-    """Calling cli without arguments should exit and want about missing arguments"""
+    """Calling cli without arguments should exit and warn about missing arguments"""
 
     # arrange
     monkeypatch.chdir(tmp_path)
@@ -17,8 +17,8 @@ def test_add_cli_empty(tmp_path: Path, monkeypatch: pytest.MonkeyPatch):
     assert pytest_wrapped_e.value.code != 0
 
 
-def test_add_to_nonfolder(tmp_path: Path, monkeypatch: pytest.MonkeyPatch):
-    """Attempt to add a catalog to a nonexistent catalog folder should exit"""
+def test_add_null_folder_catalog(tmp_path: Path, monkeypatch: pytest.MonkeyPatch):
+    """Add a catalog of a nonexistent catalog folder should exit"""
     
     # arrange
     print(f"{tmp_path=}")
@@ -90,7 +90,7 @@ def test_add(tmp_path: Path, tmp_path_factory: Path, shared_datadir: Path, monke
 
     # cleanup
     # operations occur in the `tmp_path` folder,
-    # which is unique to each invocation of the test function.
+    # which is unique to each invocation of the test function handled by `monkeypatch`
 
 
 def test_add_2(tmp_path: Path, tmp_path_factory: Path, shared_datadir: Path, monkeypatch: pytest.MonkeyPatch):
@@ -126,7 +126,7 @@ def test_add_2(tmp_path: Path, tmp_path_factory: Path, shared_datadir: Path, mon
     
     # cleanup
     # operations occur in the `tmp_path` folder,
-    # which is unique to each invocation of the test function.
+    # which is unique to each invocation of the test function handled by `monkeypatch`
 
 
 def test_sub(tmp_path: Path, tmp_path_factory: Path, monkeypatch: pytest.MonkeyPatch):
@@ -159,7 +159,7 @@ def make_existing(lib_name: Path, index: Path, catalog_name="ABCW"):
 
 
 def test_add_3(tmp_path: Path, tmp_path_factory: Path, shared_datadir: Path, capsys: pytest.CaptureFixture[str], caplog: pytest.LogCaptureFixture, monkeypatch: pytest.MonkeyPatch):
-    """Adding a catalog twice should keep refuse the addition"""
+    """Adding a catalog twice must reject the addition"""
 
     # arrange
     monkeypatch.chdir(tmp_path)
@@ -180,12 +180,11 @@ def test_add_3(tmp_path: Path, tmp_path_factory: Path, shared_datadir: Path, cap
 
     # cleanup
     # operations occur in the `tmp_path` folder,
-    # which is unique to each invocation of the test function.
+    # which is unique to each invocation of the test function handled by `monkeypatch`
 
 
 def test_add_4(tmp_path: Path, tmp_path_factory: Path, shared_datadir: Path, monkeypatch: pytest.MonkeyPatch):
-    """Adding a catalog twice with `--force` should allow the addition. 
-    This test may be skipped if the execution is unable to complete due to file PermissionError."""
+    """Adding a catalog twice with `--force` should allow the addition."""
 
     # arrange
     monkeypatch.chdir(tmp_path)
@@ -222,7 +221,7 @@ def test_add_4(tmp_path: Path, tmp_path_factory: Path, shared_datadir: Path, mon
    
     # cleanup
     # operations occur in the `tmp_path` folder,
-    # which is unique to each invocation of the test function.
+    # which is unique to each invocation of the test function handled by `monkeypatch`
 
 
 def test_add_5(tmp_path: Path, tmp_path_factory: Path, shared_datadir: Path, monkeypatch: pytest.MonkeyPatch):
@@ -259,11 +258,11 @@ def test_add_5(tmp_path: Path, tmp_path_factory: Path, shared_datadir: Path, mon
     
     # cleanup
     # operations occur in the `tmp_path` folder,
-    # which is unique to each invocation of the test function.
+    # which is unique to each invocation of the test function handled by `monkeypatch`
 
 
 def test_add_6(tmp_path: Path, tmp_path_factory: Path, shared_datadir: Path, monkeypatch: pytest.MonkeyPatch):
-    """Adding the same catalog with 2 different names"""
+    """Adding the same catalog folder with 2 different names"""
 
     # arrange
     monkeypatch.chdir(tmp_path)
@@ -296,4 +295,4 @@ def test_add_6(tmp_path: Path, tmp_path_factory: Path, shared_datadir: Path, mon
     
     # cleanup
     # operations occur in the `tmp_path` folder,
-    # which is unique to each invocation of the test function.
+    # which is unique to each invocation of the test function handled by `monkeypatch`
