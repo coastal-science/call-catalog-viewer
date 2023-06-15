@@ -65,7 +65,7 @@ def remove(
         logger.debug(f"In {library_index} found: {all_catalogs}")
 
     if catalog_name not in all_catalogs["catalogs"]:
-        logger.info(f"Catalog named '{catalog_name}' is not part of {library_index}, nothing to remove here.")
+        logger.warning(f"Catalog named '{catalog_name}' is not part of {library_index}, nothing to remove here.")
 
     elif force:
         # catalog_name already exists and remove anyway.
@@ -126,6 +126,7 @@ def cli(args=None):
     parser.add_argument(
         "--LIBRARY",
         default="catalogs", #LIBRARY,
+        required=False,
         help=f"Folder containing catalog data files. (default: '{LIBRARY}')",
         type=lambda x: is_valid_file(parser, x),
     )
@@ -133,6 +134,7 @@ def cli(args=None):
     parser.add_argument(
         "--LIBRARY-INDEX",
         default="index.yaml", #LIBRARY_INDEX,
+        required=False,
         help=f"Yaml file within `folder` containing the catalog entries for the viewer. (default: '{LIBRARY_INDEX}')",
         # type=lambda x: is_valid_file(parser, x) The parent --LIBRARY argument is not yet available
     )
@@ -194,7 +196,7 @@ def cli(args=None):
 
     logger.info(f"Catalog removal complete\n")
 
-    return EXIT_CODE
+    return 0 if EXIT_CODE is True else -1
 
 
 if __name__ == "__main__":
