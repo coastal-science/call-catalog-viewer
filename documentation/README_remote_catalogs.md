@@ -103,7 +103,7 @@ Note: If this is the first catalog to be added, it will default to being the roo
 
 ## Removing Remote Catalog
 
-To remove a remote catalog the `catalog name` as seen in index.yaml must be specified
+To remove a remote catalog the `catalog name` as seen in index.yaml must be specified.
 
 ``` bash
 # Generic command for removing a remote catalog
@@ -112,7 +112,31 @@ python src/remove_remote_catalog.py {catalog_name_to_remove}
 # Removes the remote catalog from the current viewer
 python src/remove_remote_catalog.py srkw-call-catalogue-files 
 ```
-Note: The root catalog cannot be removed and must be changed before removing the catalog
+
+Note that a remote catalog that is also the root catalog cannot be remove in the same manner. In order to remove a root catalog it must be the only catalog remaining in the viewer, and the --force flag must be added to the command. See below for two examples.
+
+``` bash
+# Incorrect Usage
+File Structure 1
+
+catalogs
+    - test-catalog (root)
+    - test-catalog-other
+
+# If we try to remove `test-catalog` we will not be able to, even if we specify the --force option. We are only able to remove the root when it is the only catalog in the viewer. 
+python src/remove_remote_catalog.py test-catalog or python src/remove_remote_catalog.py --force test-catalog
+```
+
+```bash
+# Correct Usage
+File Structure 2
+
+catalogs
+    - test-catlog (root)
+
+# we can now remove `test-catalog` by specifying --force as it is the only catalog in the viewer
+python src/remove_remote_catalog.py test-csatalog
+```
 
 ## Setting New Root Catalog
 
