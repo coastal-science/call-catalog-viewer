@@ -224,7 +224,6 @@ var SearchPanel = undefined;
         Panel.find('#search_now').off('click').click(function (e) { // function that is called when the filter button is clicked. 
             dirty = false;
             originalData = $.extend(true, {}, tmpResult);
-            console.log("PASSING NEW: " + JSON.stringify(originalData));
             GridPanel.get_new(tmpResult);
         });
 
