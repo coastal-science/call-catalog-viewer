@@ -147,7 +147,7 @@ def make_existing(lib_name: Path, index: Path, catalog_name="ABCW"):
 
     index.write_text(yaml.dump(
         {"catalogs": [catalog_name]}
-        )) # overwrites previous file
+        ))  # overwrites previous file
     
     p = (lib_name / catalog_name)
     p.mkdir()
@@ -273,9 +273,9 @@ def test_add_6(tmp_path: Path, tmp_path_factory: Path, shared_datadir: Path, mon
     
     # act
     exit_code = add_catalog(["IJKW",
-                            str(shared_datadir / 'ijkw-call-catalog-files'), #"catalogs",
-                            "call-catalog.yaml",
-                            "--LIBRARY", str(lib_name)])
+                             str(shared_datadir / 'ijkw-call-catalog-files'), # "catalogs",
+                             "call-catalog.yaml",
+                             "--LIBRARY", str(lib_name)])
     # assert
     assert exit_code == 0
 
