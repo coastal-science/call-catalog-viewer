@@ -1,7 +1,7 @@
 """Create files and folders to function as expected test cases for the comparison.
 Using the `create_fs` function to bootstrap the creation of files/folders. Subsequently, manually check whether the documents are created as expected.
 
-Usage: `srkw-call-catalogue$ python -m test.TestCase`
+Usage: `srkw-call-catalogue$ python -m tests.TestCase`
 """
 
 from src import fs

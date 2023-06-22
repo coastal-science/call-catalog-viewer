@@ -100,7 +100,7 @@ def test_remove_last_catalog(tmp_path: Path, capsys: pytest.CaptureFixture[str],
     assert index.exists() and index.name == "index.yaml"
     with open(index) as f:
         content = yaml.safe_load(f)
-        assert not content['catalogs'] # must be an empty array
+        assert not content['catalogs']  # must be an empty array
         assert len(content['catalogs']) == 0
 
     # cleanup
