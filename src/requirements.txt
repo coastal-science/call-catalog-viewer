@@ -4,3 +4,4 @@ numpy
 PyYAML
 json
 gitpython
+flatdict
