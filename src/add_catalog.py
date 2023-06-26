@@ -97,15 +97,17 @@ from datetime import datetime
 from os import PathLike
 from pathlib import Path
 
-import yaml
-
 import remove_catalog
-import Utils
+from read_files import cli as read_files
+import utils
+from utils import logging
+
+logger = logging.getLogger(__name__)
 
 ADD_EXIT_ERROR = -1
 
-LIBRARY = "catalogs"
-LIBRARY_INDEX = "index.yaml"
+# LIBRARY = None #"catalogs"
+# LIBRARY_INDEX = None #"index.yaml"
 
 # TODO: index.yaml holds catalog-name as well as path to catalog listing (call-catalog.yaml)
 """`index.yaml` updates like so
@@ -118,7 +120,7 @@ catalogs:
 """
 
 
-def add(catalog_name: str, source_folder, catalog_listing, force=False):
+def add(catalog_name: str, source_folder, catalog_listing, force=False, LIBRARY="catalogs", LIBRARY_INDEX="index.yaml"):
     """Add a catalog to the viewer.
 
     Args:
@@ -132,14 +134,11 @@ def add(catalog_name: str, source_folder, catalog_listing, force=False):
     """
 
     # Remove existing catalog
+    logger.warning(f"Remove {catalog_name=} if already present")
 
-    print(f"\nRemove {catalog_name=} if already present")
-
-    removed = remove_catalog.remove(catalog_name, force=force)
+    removed = remove_catalog.remove(catalog_name, library_index=LIBRARY_INDEX, library=LIBRARY, force=force)
     if not removed:  # early stopping because `force` could not remove
-        exit(ADD_EXIT_ERROR)
-
-    print()
+        return ADD_EXIT_ERROR
 
     catalog_listing = Path(catalog_listing).resolve()
     source_folder = Path(source_folder).resolve()
@@ -147,30 +146,36 @@ def add(catalog_name: str, source_folder, catalog_listing, force=False):
     filename, extension = catalog_listing.stem, catalog_listing.suffix
 
     # Create
-    print(f"Create symlinks to {source_folder.name}")
+    logger.info(f"Create symlinks to {source_folder.name}")
 
     # print(f"  mkdir -p catalogs/{catalog_name}/")
     # mkdir -p catalogs/"$name"/
     # source_folder.mkdir(parents=True, exist_ok=True)
 
-    print(f"  ln -s {source_folder} {LIBRARY}/{catalog_name}")
+    logger.info(f"  ln -s {source_folder} {LIBRARY}/{catalog_name}")
     catalogs = Path(LIBRARY, catalog_name).resolve()
 
-    # print(f"{folder=}, {catalogs=}")
     catalogs.symlink_to(source_folder, target_is_directory=True)
 
-    print(f"Created folder {LIBRARY}/{catalog_name}/ and linked to {source_folder}")
+    logger.info(f"Created folder {LIBRARY}/{catalog_name}/ and linked to {source_folder}")
     # print(f"{catalogs}, {catalogs.resolve()}")
     # cd $REPO_DIR/call-catalog-viewer/ || exit # in case cd fails.
 
-    print("\nCalling src/read_files.py...")
+    logger.info("\nCalling src/read_files.py...")
     # python src/read_files.py resources_config/call-catalog-desc.yaml resources_config/call-catalog
+    
     cmd = f"{sys.executable} src/read_files.py {LIBRARY}/{catalog_name}/{catalog_listing.name} {LIBRARY}/{catalog_name}"  # {'--force' if force else ''}
-    print(f"  {cmd}")
-    cmd = shlex.split(cmd)
+    logger.info(f"{cmd}")
+    # cmd = shlex.split(cmd)
 
-    output = subprocess.run(cmd, universal_newlines=True) # before it wouldn't run if not --force?
-    EXIT_CODE = output.returncode
+    # output = subprocess.run(cmd, universal_newlines=True) # before it wouldn't run if not --force?
+    # EXIT_CODE = output.returncode
+
+    EXIT_CODE = read_files([str(f"{LIBRARY}/{catalog_name}/{catalog_listing.name}"),
+                            str(f"{LIBRARY}/{catalog_name}"),
+                            # f"{'--force' if force else ''}""
+                            ])
+    
     # if force:
     #     output = subprocess.run(cmd, universal_newlines=True)
     #     EXIT_CODE = output.returncode
@@ -182,7 +187,7 @@ def add(catalog_name: str, source_folder, catalog_listing, force=False):
         # now=`date +%F-%T-%Z`
         now = datetime.now().strftime("%Y/%m/%d-%H:%M:%S")
         # now = datetime.now()
-        print(f"{now}: Could not complete read_files.py operation ({EXIT_CODE}).")
+        logger.error(f"Could not complete read_files.py operation ({EXIT_CODE}).")
         STATE = "failure"
     else:
         # print(f"{now}: python exit code is {EXIT_CODE}")
@@ -217,27 +222,25 @@ def touch(index_file: str):
 
     path = Path(index_file).resolve()
     index_file = path.name  # index.yaml
-    print(index_file)
 
-    if not Utils.is_yaml(index_file):
+    if not utils.is_yaml(index_file):
         # if not any([catalog_file.lower().endswith(x) for x in [".yaml", ".yml"]]):
-        print(f"{thisfile}: {cmd}: {index_file} does not have yaml extension", end="\n\n")
-        exit(ADD_EXIT_ERROR)
+        logger.error(f"{index_file} does not have yaml extension", end="\n\n")
+        return ADD_EXIT_ERROR
 
     if not path.is_file():
-        print(f"{thisfile}: {cmd}: {index_file} does not exist. Creating an empty file.")
+        logger.warning(f"{index_file} does not exist. Creating an empty file.")
         path.touch()
 
     with open(path, "r+") as f:
         all_catalogs = yaml.safe_load(f)
         if not all_catalogs:
-            print(f"{thisfile}: {cmd}: {index_file} must containing one key 'catalog' with a list of catalog names.")
+            logger.warning(f"{index_file} must containing one key 'catalog' with a list of catalog names.")
 
             empty = {"catalogs": []}
-            print(empty)
 
             yaml.dump(empty, f)
-            print(f"{thisfile}: {cmd}: Created {index_file}")
+            logger.info(f"Created {index_file}")
 
 
 def is_valid_file(parser, arg):
@@ -253,7 +256,10 @@ def is_valid_file(parser, arg):
         return arg
 
 
-if __name__ == "__main__":
+# if __name__ == "__main__":
+def cli(args=None):
+    if not args:
+        args = sys.argv[1:]
 
     parser = argparse.ArgumentParser(
         description="Add catalogs that this viewer can display", allow_abbrev=True
@@ -275,7 +281,7 @@ if __name__ == "__main__":
 
     parser.add_argument(
         "--LIBRARY",
-        default=LIBRARY,
+        default="catalogs",
         required=False,
         help="Library folder for the viewer. This is directory must exist beforehand.",
         type=lambda x: is_valid_file(parser, x),
@@ -283,7 +289,7 @@ if __name__ == "__main__":
 
     parser.add_argument(
         "--LIBRARY-INDEX",
-        default=LIBRARY_INDEX,
+        default="index.yaml",
         required=False,
         help="Index yaml within LIBRARY",
     )
@@ -308,9 +314,7 @@ if __name__ == "__main__":
         action=argparse.BooleanOptionalAction,  # Python 3.7+
     )
 
-    args = parser.parse_args()
-    print(args)
-
+    args = parser.parse_args(args)
     cmd = "add"
     name = args.name
     source_folder = args.source
@@ -323,20 +327,21 @@ if __name__ == "__main__":
     EXIT_CODE = 0
 
     thisfile = Path(__file__).name
-    print(f"{thisfile}: {cmd}:")
+    logger.info(f"{thisfile}: {cmd}:")
+    logger.info(str(args).replace("Namespace", "Args"))
 
     # Check whether `source_folder` exists and `file` has yaml extension
     if not os.path.isdir(source_folder):
-        print(f"{thisfile}: {cmd}: {source_folder=} is not a directory", end="\n\n")
-        exit(ADD_EXIT_ERROR)
+        logger.error(f"{source_folder=} is not a directory")
+        return ADD_EXIT_ERROR
 
     p = Path(source_folder, catalog_listing).resolve()
-    # print(p)
+
     # if not file.endswith(".yaml") or not file.endswith('.yml'):
     # if not p.is_file() or not any([p.suffix.lower() in [".yaml", ".yml"]]):
-    if not Utils.is_yaml(p):
-        print(f"{thisfile}: {cmd}: {catalog_listing=} does not exist or does not have yaml extension.", end="\n\n",)
-        exit(ADD_EXIT_ERROR)
+    if not utils.is_yaml(p):
+        logger.error(f"{catalog_listing=} does not exist or does not have yaml extension.")
+        return ADD_EXIT_ERROR
 
     print(f" {name=}")
     print(f" source_folder={Path(source_folder).resolve()}")
@@ -349,8 +354,13 @@ if __name__ == "__main__":
     touch(Path(LIBRARY, LIBRARY_INDEX).resolve())
 
     # Add catalog
-    print(f"{thisfile}: add catalog named {name=} with entries {catalog_listing=} from {source_folder=}")
-    EXIT_CODE = add(name, source_folder, catalog_listing, force=force)
+    logger.info(f"add catalog named {name=} with entries {catalog_listing=} from {source_folder=}")
+    EXIT_CODE = add(name, source_folder, catalog_listing, 
+                    force=force, LIBRARY=LIBRARY, LIBRARY_INDEX=LIBRARY_INDEX)
 
-    print(f"{thisfile}: {cmd}: Complete", end="\n\n")
-    exit(EXIT_CODE)
+    logger.info(f"Catalog addition complete\n")
+    return EXIT_CODE
+
+
+if __name__ == "__main__":
+    cli()

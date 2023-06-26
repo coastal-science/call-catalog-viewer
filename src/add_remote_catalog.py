@@ -13,7 +13,7 @@ import yaml
 from os.path import dirname, abspath, exists
 from os import makedirs, chmod, symlink
 from git import Repo
-import Utils
+import utils
 
 REPO_NAME = ''
 CATALOGS_PATH = ''
@@ -136,5 +136,5 @@ if __name__ == '__main__':
     add_index_yaml()
     
     # parse the yaml, creating the json output used by website
-    df, population, filter, sortables, display, site_details = Utils.parse_yaml_to_json(CATALOGS_PATH, REPO_ROOT_PATH + '/' + yaml_file)
-    Utils.export_to_json(CATALOGS_PATH, df, population, filter, sortables, display, site_details, REPO_NAME, yaml_file)
+    df, population, filter, sortables, display, site_details = utils.parse_yaml_to_json(CATALOGS_PATH, REPO_ROOT_PATH + '/' + yaml_file)
+    utils.export_to_json(CATALOGS_PATH, df, population, filter, sortables, display, site_details, REPO_NAME, yaml_file)

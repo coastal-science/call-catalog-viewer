@@ -17,7 +17,7 @@ Example:
 
 `python remove_catalog.py srkw-call-catalogue-files`
 
-`python remove_catalog.py srkw-call-catalogue-files catalog catalogs.yaml --force`
+`python remove_catalog.py srkw-call-catalogue-files catalog index.yaml --force`
 """
 
 
@@ -25,10 +25,14 @@ import argparse
 import os
 import re
 from pathlib import Path
+import sys
 
 import yaml
 
-import Utils
+import utils
+from utils import logging
+
+logger = logging.getLogger(__name__)
 
 REMOVE_EXIT_ERROR = -1
 
@@ -45,8 +49,8 @@ def remove(
     """Remove the specified 'catalog_name' from the viewer.
 
     Args:
-        catalog_name (str): _Name of the catalog to remove. This name must listed in `library_index`
-        library_index (str, optional): Yaml file containing a list of the catalogs. Defaults to "catalog.yaml".
+        catalog_name (str): Name of the catalog to remove. This name must listed in `library_index`
+        library_index (str, optional): Yaml file containing a list of the catalogs. Defaults to "index.yaml".
         library (str, optional): Parent folder of `library_index`. Defaults to "catalogs".
         force (bool, optional): Remove a catalog even if it already exists. Applies to removing symlinks and parsed json  Defaults to False.
 
@@ -55,18 +59,17 @@ def remove(
     """
 
     listings = Path(library, library_index).resolve()
-    # print(catalog, catalog/library_index)
 
     with open(listings) as f:
         all_catalogs = yaml.safe_load(f)
-        print(f"In {library_index} found: {all_catalogs}")
+        logger.debug(f"In {library_index} found: {all_catalogs}")
 
     if catalog_name not in all_catalogs["catalogs"]:
-        print(f"Catalog named '{catalog_name}' is not part of {library_index}, nothing to remove here.")
+        logger.warning(f"Catalog named '{catalog_name}' is not part of {library_index}, nothing to remove here.")
 
     elif force:
         # catalog_name already exists and remove anyway.
-        print(f"{catalog_name=} already exists in the catalogs listed in {library_index}. Replacing anyway...")
+        logger.warning(f"{catalog_name=} already exists in the catalogs listed in {library_index}. Replacing anyway...")
         all_catalogs["catalogs"].remove(catalog_name)
 
         if not all_catalogs:
@@ -75,24 +78,27 @@ def remove(
 
     else:
         # catalog_name already exists and skip removal.
-        print(f"{catalog_name=} is already part of {library_index}. Use `--force` to remove anyway.\n")
+        logger.warning(f"{catalog_name=} is already part of {library_index}. Use `--force` to remove anyway.\n")
         return False
 
     # remove symlink and parsed json
-    print("Removing symlink folders and parsed json")
-    p = Path(library, catalog_name)
-    print(f"  {p}")
-    # If missing_ok is true, FileNotFoundError exceptions will be ignored (same behavior as the POSIX rm -f command).
-    p.unlink(missing_ok=True)
+    logger.info("Removing symlink folders and parsed json")
+    d = Path(library, catalog_name)
+    if d.is_symlink() or d.is_file():
+        # If missing_ok is true, FileNotFoundError exceptions will be ignored (same behavior as the POSIX rm -f command).
+        d.unlink(missing_ok=True)
+    elif d.is_dir():
+        logger.warning(f"{catalog_name=} is a folder (not a symbolic link), the directory must be empty.\n")
+        d.rmdir()
 
-    p = Path(library, catalog_name + ".json")
-    print(f"  {p}")
-    p.unlink(missing_ok=True)
+    f = Path(library, catalog_name + ".json")
+    f.unlink(missing_ok=True)
+    logger.info(f"Removed folder {d} and json {f}")
 
     with open(listings, "w") as f:
         yaml.dump(all_catalogs, f)
 
-    print("Removal persisted")
+    logger.info("Removal persisted")
 
     return True
 
@@ -109,8 +115,11 @@ def is_valid_file(parser, arg):
         return arg
 
 
-if __name__ == "__main__":
-
+# if __name__ == "__main__":
+def cli(args=None):
+    if not args:
+        args = sys.argv[1:]
+    
     parser = argparse.ArgumentParser(
         description="Remove catalogs available for this viewer to display",
         allow_abbrev=True,
@@ -120,16 +129,18 @@ if __name__ == "__main__":
 
     parser.add_argument(
         "--LIBRARY",
-        default=LIBRARY,
+        default="catalogs", #LIBRARY,
+        required=False,
         help=f"Folder containing catalog data files. (default: '{LIBRARY}')",
         type=lambda x: is_valid_file(parser, x),
     )
 
     parser.add_argument(
         "--LIBRARY-INDEX",
-        default=LIBRARY_INDEX,
+        default="index.yaml", #LIBRARY_INDEX,
+        required=False,
         help=f"Yaml file within `folder` containing the catalog entries for the viewer. (default: '{LIBRARY_INDEX}')",
-        # type=lambda x: is_valid_file(parser, x)
+        # type=lambda x: is_valid_file(parser, x) The parent --LIBRARY argument is not yet available
     )
 
     parser.add_argument(
@@ -152,9 +163,7 @@ if __name__ == "__main__":
         action=argparse.BooleanOptionalAction,  # Python 3.7+
     )
 
-    args = parser.parse_args()
-    print(args)
-
+    args = parser.parse_args(args)
     cmd = "remove"
     name = args.name
     library = args.LIBRARY
@@ -167,28 +176,33 @@ if __name__ == "__main__":
     EXIT_CODE = 0
 
     thisfile = Path(__file__).name
-    print(f"{thisfile}: {cmd}:")
+    logger.info(f"{thisfile}: {cmd}:")
+    logger.info(str(args).replace("Namespace", "Args"))
 
     # Check for existence of `library` and `library/library_index` (and yaml extension)
     if not os.path.isdir(library):
-        print(f"{thisfile}: {cmd}: {library=} is not a directory", end="\n\n")
-        exit(REMOVE_EXIT_ERROR)
+        logger.error(f"{library=} is not a directory")
+        return REMOVE_EXIT_ERROR
 
     p = Path(library, library_index).resolve()
-    # print(p)
 
-    if not Utils.is_yaml(p):
-        print(f"{thisfile}: {cmd}: library/{library_index=} does not exist or does not have yaml extension.", end="\n\n",)
-        exit(REMOVE_EXIT_ERROR)
+    if not utils.is_yaml(p):
+        logger.error(f"library/{library_index=} does not exist or does not have yaml extension.")
+        return REMOVE_EXIT_ERROR
 
     print(f" {name=}")
     print(f" folder={Path(library).resolve()}")
     print(f" file={Path(library, library_index).resolve()}", end="\n\n")
 
     # Remove catalog
-    print(f"{thisfile}: remove the catalog named {name=} listed in {library}/{library_index=}")
+    logger.info(f"remove the catalog named {name=} listed in {library}/{library_index=}")
     EXIT_CODE = remove(name, library_index, library, force=force)
 
-    print(f"{thisfile}: {cmd}: Complete", end="\n\n")
+    logger.info(f"Catalog removal complete\n")
 
-    exit(EXIT_CODE)
+    return 0 if EXIT_CODE is True else -1
+
+
+if __name__ == "__main__":
+    cli()
+

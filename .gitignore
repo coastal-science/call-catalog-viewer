@@ -9,3 +9,6 @@ notes.txt
 prob.txt
 catalogs/*
 .venv/
+
+# Data
+tests/test_fs/*
