@@ -100,6 +100,7 @@ from pathlib import Path
 import remove_catalog
 from read_files import cli as read_files
 import utils
+from utils import yaml
 from utils import logging
 
 logger = logging.getLogger(__name__)
