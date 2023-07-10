@@ -91,6 +91,18 @@ def add_index_yaml(path_to_catalogs_dir, repo_name):
     
     logger.info('Successfully added catalogs/index.yaml\n')  
 
+def is_valid_git(parser, url):
+    if not url.endswith('.git'):
+        parser.error(f'{url} is not a valid git repo url. Must end in .git')
+    else:
+        return url
+
+def is_valid_yaml(parser, yaml):
+    if not yaml.endswith('.yaml') or yaml.endswith('.yml'):
+        parser.error(f'{yaml} is not a valid yaml file. Must end in `.yaml` or `.yml`')
+    else:
+        return yaml
+    
 def cli(args=None):
     if not args:
         args = sys.argv[1:]
@@ -103,14 +115,16 @@ def cli(args=None):
     parser.add_argument(
         'URL', 
         help='Url for git repo to display in viewer',
+        type=lambda x: is_valid_git(parser, x)
     )
     
     parser.add_argument(
         'yaml_file',
-        help='Path to .yaml file containing call data. REPO_NAME/{yaml_file}'
+        help='Path to .yaml file containing call data. REPO_NAME/{yaml_file}',
+        type=lambda x: is_valid_yaml(parser, x)
     )
     
-    args = parser.parse_args()
+    args = parser.parse_args(args)
     url = args.URL
     yaml_file = args.yaml_file
     cmd = 'Remote Add'
@@ -118,14 +132,6 @@ def cli(args=None):
     thisfile = Path(__file__).name
     logger.info(f"{thisfile}: {cmd}:")
     logger.info(str(args).replace("Namespace", "Args"))
-    
-    if not yaml_file.endswith('.yaml'):
-        logger.error(f'{yaml_file} must be a valid yaml file and end with \'.yaml\'')
-        return REMOTE_ADD_EXIT_ERROR
-
-    if not url.endswith('.git'):
-        logger.error(f'\'{url}\' must be a valid git repo and end with \'.git\'')
-        return REMOTE_ADD_EXIT_ERROR
     
     # extract catalogs path and reponame from url and store in global
     path_to_catalogs_dir = dirname(dirname(abspath(__file__))) + '/catalogs'
