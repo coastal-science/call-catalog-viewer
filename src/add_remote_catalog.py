@@ -172,6 +172,8 @@ def cli(args=None):
         return REMOTE_ADD_EXIT_ERROR
     
     utils.export_to_json(path_to_catalogs_dir, df, population, filter, sortables, display, site_details, repo_name, yaml_file)
+    
+    return 0
 
 if __name__ == '__main__':
     cli()
