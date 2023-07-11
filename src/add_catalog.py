@@ -100,7 +100,6 @@ from pathlib import Path
 import remove_catalog
 from read_files import cli as read_files
 import utils
-from utils import yaml
 from utils import logging
 
 logger = logging.getLogger(__name__)
@@ -224,7 +223,7 @@ def touch(index_file: str):
     path = Path(index_file).resolve()
     index_file = path.name  # index.yaml
 
-    if not is_yaml(index_file):
+    if not utils.is_yaml(index_file):
         # if not any([catalog_file.lower().endswith(x) for x in [".yaml", ".yml"]]):
         logger.error(f"{index_file} does not have yaml extension", end="\n\n")
         return ADD_EXIT_ERROR
@@ -340,7 +339,7 @@ def cli(args=None):
 
     # if not file.endswith(".yaml") or not file.endswith('.yml'):
     # if not p.is_file() or not any([p.suffix.lower() in [".yaml", ".yml"]]):
-    if not is_yaml(p):
+    if not utils.is_yaml(p):
         logger.error(f"{catalog_listing=} does not exist or does not have yaml extension.")
         return ADD_EXIT_ERROR
 

@@ -12,7 +12,7 @@ from pathlib import Path
 import yaml
 import argparse
 import json
-import Utils
+import utils
 
 REPO_NAME = ''
 CATALOG_PATH = ''
@@ -124,7 +124,7 @@ if __name__ == '__main__':
         exit(-1)
         
     # check if the repo is already the root catalog
-    if Utils.is_root_catalog(REPO_ROOT_PATH):
+    if utils.is_root_catalog(REPO_ROOT_PATH):
         print(f'The repo {REPO_NAME} is already the root catalog. Doing nothing')
         exit()
     
