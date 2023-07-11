@@ -156,7 +156,12 @@ def cli(args=None):
     add_index_yaml(path_to_catalogs_dir, repo_name)
     
     # parse the yaml, creating the json output used by website
-    df, population, filter, sortables, display, site_details = utils.parse_yaml_to_json(path_to_catalogs_dir, path_to_repo_dir + '/' + yaml_file)
+    try:
+        df, population, filter, sortables, display, site_details = utils.parse_yaml_to_json(path_to_catalogs_dir, path_to_repo_dir + '/' + yaml_file)
+    except FileNotFoundError:
+        logger.error(f'The yaml file {yaml_file} does not exist in {repo_name}. Could not complete add operation please delete cloned repo manually')
+        return REMOTE_ADD_EXIT_ERROR
+    
     utils.export_to_json(path_to_catalogs_dir, df, population, filter, sortables, display, site_details, repo_name, yaml_file)
 
 if __name__ == '__main__':
