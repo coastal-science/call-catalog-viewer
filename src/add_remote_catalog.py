@@ -124,9 +124,18 @@ def cli(args=None):
         type=lambda x: is_valid_yaml(parser, x)
     )
     
+    parser.add_argument(
+        '--path',
+        default="default",
+        required=False,
+        help='Optional paramater to override location of catalogs directory. Default will be ../../catalogs/'
+    )
+    
     args = parser.parse_args(args)
     url = args.URL
     yaml_file = args.yaml_file
+    path_to_catalogs_dir = args.path if args.path != "default" else dirname(dirname(abspath(__file__))) + '/catalogs'
+    # path_to_catalogs_dir = args.path_to_catalog
     cmd = 'Remote Add'
     
     thisfile = Path(__file__).name
@@ -134,7 +143,7 @@ def cli(args=None):
     logger.info(str(args).replace("Namespace", "Args"))
     
     # extract catalogs path and reponame from url and store in global
-    path_to_catalogs_dir = dirname(dirname(abspath(__file__))) + '/catalogs'
+    # path_to_catalogs_dir = dirname(dirname(abspath(__file__))) + '/catalogs'
     repo_name = url[url.rfind('/')+1:len(url)-4]
     path_to_repo_dir = path_to_catalogs_dir + '/' + repo_name
     
