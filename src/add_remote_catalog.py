@@ -33,8 +33,8 @@ def clone_repo(path_to_catalogs_dir, repo_name, url):
     # clone the repo into it
     try:
         Repo.clone_from(url, repo_directory)
-    except:
-        logger.error(f'Error cloning the git repository')
+    except Exception as e:
+        logger.error(f'Error cloning the git repository: ' + str(e))
         return REMOTE_ADD_EXIT_ERROR
     
     logger.info(f'Successfully cloned repository {url}\n')  
