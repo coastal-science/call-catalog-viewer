@@ -8,6 +8,7 @@ on:
        - develop
        - front-end
        - actions-patch-1
+       - johnford
 jobs:
   get_pushed_branch:
     name: Get relevant branch
