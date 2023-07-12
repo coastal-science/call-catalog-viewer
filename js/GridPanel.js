@@ -15,7 +15,7 @@ var GridPanel = undefined;
     var next_drawn = undefined;
 
     var current_page = undefined;
-    var page_size = 120;
+    var page_size = 240;
     var total_result = undefined;
     var total_page = undefined;
     var data_initialized = false;
@@ -172,7 +172,7 @@ var GridPanel = undefined;
         var keys = Object.keys(data);
         keys.forEach(p => {
             if (data[p] == undefined || data[p] == null) {
-                data[p] = "Unknown";
+                delete data[p];
             }
         })
         return data;
@@ -193,7 +193,7 @@ var GridPanel = undefined;
             let data = await response.text();
             // only proceed once second promise is resolved
 
-            var simple_datasource = JSON.parse(data); // json representation the catalogue.json file
+            var simple_datasource = JSON.parse(data.replace(/\bNaN\b/g, "null")); // json representation the catalogue.json file
 
             // get the filter data and set simple_datasource so it is just calls
             var site_details = simple_datasource["site-details"];
@@ -567,7 +567,7 @@ var GridPanel = undefined;
             audio_element = document.createElement('audio');
             audio_element.setAttribute('src', '');
             audio_element.setAttribute('src', LIBRARY + '/' + data_target.wav_file);
-            audio_element.setAttribute('autoplay', 'autoplay');
+            audio_element.setAttribute('preload', 'metadata');
             audio_element.load();
         });
         $('#gi-area').on('click', '.itemblock', function (e) {
@@ -822,7 +822,7 @@ var GridPanel = undefined;
             $(this).removeClass('btn-primary').addClass('btn-success');
             audio_element.setAttribute('src', '');
             audio_element.setAttribute('src', LIBRARY + '/' + lity_data.wav_file);
-            audio_element.setAttribute('autoplay', 'autoplay');
+            audio_element.setAttribute('preload', 'metadata');
             audio_element.load();
             audio_element.addEventListener('ended', function () {
                 $("#play").html('<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-play" viewBox="0 0 16 16">\
