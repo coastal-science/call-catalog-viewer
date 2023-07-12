@@ -48,6 +48,11 @@ var GridPanel = undefined;
                         </g>\
                     </svg>
     */
+
+    String.prototype.toTitleCase = function () {
+        return this.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.slice(1).toLowerCase();});
+    };
+                    
     function num_of_item_per_row() {
         if (window.matchMedia('(min-width: 1400px)').matches) {
             return 6;
@@ -741,8 +746,8 @@ var GridPanel = undefined;
                 var first = fields[i];
                 var second = fields[i+1];
 
-                additional_row += '<div class="row text-sm-center text-start text-info border-2 border-light border-bottom"><div class="col-12 col-sm-6"><span>' + first + ': ' + lity_data[first] + '</span></div>';
-                additional_row += '<div class="col-12 col-sm-6"><span>' + second + ': ' + lity_data[second] + '</span></div></div>';
+                additional_row += '<div class="row text-sm-center text-start text-info border-2 border-light border-bottom"><div class="col-12 col-sm-6"><span>' + first.toTitleCase() + ': ' + lity_data[first] + '</span></div>';
+                additional_row += '<div class="col-12 col-sm-6"><span>' + second.toTitleCase() + ': ' + lity_data[second] + '</span></div></div>';
             }
 
             if (is_odd) {
