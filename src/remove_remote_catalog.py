@@ -155,10 +155,18 @@ def cli(args=None):
         action=argparse.BooleanOptionalAction
     )
     
-    args = parser.parse_args()
+    parser.add_argument(
+        '--path',
+        default="default",
+        required=False,
+        help='Optional paramater to override location of catalogs directory. Default will be ../../catalogs/'
+    )
+    
+    args = parser.parse_args(args)
     
     repo_name = args.repo_name
     force_remove = args.force
+    path_to_catalog_dir = args.path if args.path != "default" else dirname(dirname(__file__)) + '/catalogs'
     cmd = "remote remove"
     
     thisfile = Path(__file__).name
@@ -166,7 +174,7 @@ def cli(args=None):
     logger.info(str(args).replace("Namespace", "Args"))
     
     # extract information
-    path_to_catalog_dir = dirname(dirname(__file__)) + '/catalogs'
+    # path_to_catalog_dir = dirname(dirname(__file__)) + '/catalogs'
     path_to_repo_dir = f'{path_to_catalog_dir}/{repo_name}'
     EXIT_CODE = 0
     
@@ -182,6 +190,7 @@ def cli(args=None):
     elif is_root and not force_remove:
         logger.error('Attempting to remove root catalog. Please set a new root catalog or specify --force.')
         return REMOVE_REMOTE_CATALOG_ERROR
+    
     else:
         EXIT_CODE = remove_from_index_yaml(path_to_catalog_dir, repo_name)
         if EXIT_CODE != 0:
@@ -197,6 +206,8 @@ def cli(args=None):
         if EXIT_CODE != 0:
             logger.error(f'Could not complete remove remote catalog operation ({EXIT_CODE})')
             return REMOVE_REMOTE_CATALOG_ERROR
+        
+        return EXIT_CODE
         
 if __name__ == '__main__':
     cli()
