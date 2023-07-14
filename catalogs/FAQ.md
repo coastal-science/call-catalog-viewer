@@ -2,9 +2,7 @@
 
 ## How to use this site?
 
-The catalogue contains waveforms and recordings of ...
-
-Use of information from this website is subject to terms under [Open Government License &ndash; Canada](https://open.canada.ca/en/open-government-licence-canada). The complete license is found on the [License](license.html) page.
+This website and all audio recordings it hosts are subject to the terms under [Open Government License &ndash; Canada 2.0](https://open.canada.ca/en/open-government-licence-canada). The complete license is found on the [License](license.html) page.
 
 ## Where do the sounds come from?
 
