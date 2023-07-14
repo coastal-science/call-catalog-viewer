@@ -15,18 +15,22 @@ def dummy_remote_add(catalog_url: str, catalog_name: str, path: Path):
     # create the directory we need
     mkdir(join(path, catalog_name))
     
-    # add or append our data as needed to index.yaml and library.yaml
+    # If our library doesn't exist, create a root catalog, else just append to already there library.yaml
     library_already_exists = exists(join(path, 'library.yaml'))
-    with open(join(path, catalog_name, 'library.yaml'), '+a') as f:
-        catalogs = yaml.safe_load(f) if yaml.safe_load(f) is not None else {'catalogs': []}
-        catalogs['catalogs'].append(catalog_url)
-        f.seek(0)
-        yaml.dump(catalogs, f)
-    
-    # if we do not already have a library file then this is the first so create symlink
     if not library_already_exists:
-        symlink(join(path, catalog_name, 'library.yaml'), join(path, 'library.yaml'))
-
+        with open(join(path, catalog_name, 'library.yaml'), 'w') as f:
+            catalogs = {'catalogs': []}
+            catalogs['catalogs'].append(catalog_url)
+            f.seek(0)
+            yaml.dump(catalogs, f)
+            symlink(join(path, catalog_name, 'library.yaml'), join(path, 'library.yaml'))
+    else:
+        with open(join(path, 'library.yaml'), 'r+') as f:
+            existing_catalogs = yaml.safe_load(f)
+            catalogs = existing_catalogs if existing_catalogs is not None else {'catalogs': []}
+            catalogs['catalogs'].append(catalog_url)
+            f.seek(0)
+            yaml.dump(catalogs, f)
 
     with open(join(path, 'index.yaml'), '+a') as f:
         catalogs = yaml.safe_load(f) if yaml.safe_load(f) is not None else {'catalogs': []}

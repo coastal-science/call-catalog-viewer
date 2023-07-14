@@ -6,7 +6,7 @@ A root catalog cannot be removed. A new root catalog must be set with set_root_c
 Usage: python src/remove_remote_catalog.py {catalog_to_remove}
 '''
 import argparse
-from os.path import dirname
+from os.path import dirname, exists
 from os import remove
 from shutil import rmtree
 import yaml
@@ -58,6 +58,11 @@ def remove_from_library_yaml(path_to_catalog_dir, repo_name):
     logger.info(f'Removing repo {repo_name} from library.yaml...')
     
     path = f'{path_to_catalog_dir}/library.yaml'
+    
+    if not exists(path):
+        logger.error(f'Library.yaml does not exist. Please add a remote catalog before removing')
+        return REMOVE_REMOTE_CATALOG_ERROR
+        
     found = False
     with open(path, 'r+') as f:
         catalogs = yaml.safe_load(f)
@@ -75,7 +80,7 @@ def remove_from_library_yaml(path_to_catalog_dir, repo_name):
             
     # could not find a matching url        
     if not found:
-        logger.error(f'Could not find repo {repo_name} in library.yaml. Please add it before removing it')
+        logger.error(f'Could not find repo {repo_name} in library.yaml. Please ensure it is a remote catalog')
         return REMOVE_REMOTE_CATALOG_ERROR
     
     catalogs['catalogs'] = current_catalogs
@@ -173,6 +178,9 @@ def cli(args=None):
     logger.info(f"{thisfile}: {cmd}:")
     logger.info(str(args).replace("Namespace", "Args"))
     
+    if repo_name == "":
+        logger.error("Please input a valid repo name to remove")
+        return REMOVE_REMOTE_CATALOG_ERROR
     # extract information
     # path_to_catalog_dir = dirname(dirname(__file__)) + '/catalogs'
     path_to_repo_dir = f'{path_to_catalog_dir}/{repo_name}'
@@ -192,22 +200,35 @@ def cli(args=None):
         return REMOVE_REMOTE_CATALOG_ERROR
     
     else:
-        EXIT_CODE = remove_from_index_yaml(path_to_catalog_dir, repo_name)
-        if EXIT_CODE != 0:
-            logger.error(f'Could not complete remove remote catalog operation ({EXIT_CODE})')
+        if remove_from_library_yaml(path_to_catalog_dir, repo_name):
+            logger.error(f'Error removing from library.yaml. Could not complete removal')
             return REMOVE_REMOTE_CATALOG_ERROR
         
-        EXIT_CODE = remove_from_library_yaml(path_to_catalog_dir, repo_name)
-        if EXIT_CODE != 0:
-            logger.error(f'Could not complete remove remote catalog operation ({EXIT_CODE})')
+        if remove_from_index_yaml(path_to_catalog_dir, repo_name):
+            logger.error('Error removing from index.yaml. Could not complete removal')
             return REMOVE_REMOTE_CATALOG_ERROR
         
-        EXIT_CODE = remove_catalog_files(path_to_catalog_dir, repo_name)
-        if EXIT_CODE != 0:
-            logger.error(f'Could not complete remove remote catalog operation ({EXIT_CODE})')
+        if remove_catalog_files(path_to_catalog_dir, repo_name):
+            logger.error('Error removing catalog files. Could not complete removal')
             return REMOVE_REMOTE_CATALOG_ERROR
+        # library first so we can check if it is remote
+        # EXIT_CODE = remove_from_library_yaml(path_to_catalog_dir, repo_name)
+        # if EXIT_CODE != 0:
+        #     logger.error(f'Could not complete remove remote catalog operation ({EXIT_CODE})')
+        #     return REMOVE_REMOTE_CATALOG_ERROR
         
-        return EXIT_CODE
+        # EXIT_CODE = remove_from_index_yaml(path_to_catalog_dir, repo_name)
+        # if EXIT_CODE != 0:
+        #     logger.error(f'Could not complete remove remote catalog operation ({EXIT_CODE})')
+        #     return REMOVE_REMOTE_CATALOG_ERROR
+        
+        
+        # EXIT_CODE = remove_catalog_files(path_to_catalog_dir, repo_name)
+        # if EXIT_CODE != 0:
+        #     logger.error(f'Could not complete remove remote catalog operation ({EXIT_CODE})')
+        #     return REMOVE_REMOTE_CATALOG_ERROR
+        
+    return EXIT_CODE
         
 if __name__ == '__main__':
     cli()
