@@ -37,7 +37,8 @@ def clone_repo(path_to_catalogs_dir, repo_name, url):
         logger.error(f'Error cloning the git repository: ' + str(e))
         return REMOTE_ADD_EXIT_ERROR
     
-    logger.info(f'Successfully cloned repository {url}\n')  
+    logger.info(f'Successfully cloned repository {url}\n') 
+    return 0 
     
 def create_library_yaml(path_to_catalogs_dir, path_to_repo_dir, repo_name, url):
     logger.info(f'Creating library.yaml in {repo_name}...')
@@ -152,7 +153,10 @@ def cli(args=None):
         return REMOTE_ADD_EXIT_ERROR
     
     # clone the repository
-    clone_repo(path_to_catalogs_dir, repo_name, url)
+    EXIT_CODE = clone_repo(path_to_catalogs_dir, repo_name, url)
+    if EXIT_CODE != 0:
+        logger.error(f'Could not clone the git repo {repo_name}. Please delete directory manually')
+        return REMOTE_ADD_EXIT_ERROR       
 
     # If the library doesn't exist (this is the first one), then create the library.yaml and symlink int
     # else we just append it to the existing library.yaml
