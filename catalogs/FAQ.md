@@ -4,9 +4,7 @@
 
 This website and all audio recordings it hosts are subject to the terms under [Open Government License &ndash; Canada 2.0](https://open.canada.ca/en/open-government-licence-canada). The complete license is found on the [License](license.html) page.
 
-## Where do the sounds come from?
-
-You are free to:
+As long as the terms in the [License](license.html) page are respected, you are free to:
 - Copy, modify, publish, translate, adapt, distribute or otherwise use the Information in any medium, mode or format for any lawful purpose.
 
 ## What is SRKW?
@@ -17,7 +15,7 @@ SRKW acronyms stands for *Southern Resident Killer Whale*
 
 Suggested citation for research use of catalogue:
 
->Ford, John K.B., Volker B. Deecke, and James F. Pilkington. 2022. Dialects of Killer Whales in Coastal Northeastern Pacific Waters: A Catalogue of Call Types.  [catalogue URL]  Accessed on [today’s date]
+>Ford, John K.B., Volker B. Deecke, and James F. Pilkington. 2022. Dialects of Killer Whales in Coastal Northeastern Pacific Waters: A Catalogue of Call Types.  [catalogue URL]()  Accessed on [today’s date]
 
 Bibtex
 ```
