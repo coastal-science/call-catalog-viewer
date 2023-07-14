@@ -15,7 +15,7 @@ SRKW acronyms stands for *Southern Resident Killer Whale*
 
 Suggested citation for research use of catalogue:
 
->Ford, John K.B., Volker B. Deecke, and James F. Pilkington. 2022. Dialects of Killer Whales in Coastal Northeastern Pacific Waters: A Catalogue of Call Types.  [catalogue URL]()  Accessed on [today’s date]
+>Ford, John K.B., Volker B. Deecke, and James F. Pilkington. 2022. Dialects of Killer Whales in Coastal Northeastern Pacific Waters: A Catalogue of Call Types.  [catalogue URL]()  Accessed on [today’s date]()
 
 Bibtex
 ```
@@ -61,11 +61,24 @@ This initial release of the catalogue currently includes call types produced by 
 
 Here are some clips from recordings of Southern Resident pods in action.
 
-| | |
-|-|-|
-|<audio controls> <source type="audio/wav" src="./catalogs/srkw-call-catalogue-files/media/J pod foraging_JFord.wav" title="J pod foraging, Boundary Pass. Call types S01 and S04 are most common in this activity state.">Your browser does not support the audio element.</audio> | J pod foraging, Boundary Pass. Call types S01 and S04 are most common in this activity state |
-|<audio controls> <source type="audio/wav" src="./catalogs/srkw-call-catalogue-files/media/J pod travelling_JFord.wav" title="J pod travelling, Boundary Pass. Call types S02, S40, and S42 are frequently produced when J pod is moving quickly as a group.">Your browser does not support the audio element.</audio> | J pod travelling, Boundary Pass. Call types S02, S40, and S42 are frequently produced when J pod is moving quickly as a group |
-|<audio controls> <source type="audio/wav" src="./catalogs/srkw-call-catalogue-files/media/L pod foraging_JFord.wav" title="L pod foraging, Juan de Fuca Strait">Your browser does not support the audio element.</audio> | L pod foraging, Juan de Fuca Strait |
-|<audio controls> <source type="audio/wav" src="./catalogs/srkw-call-catalogue-files/media/J K L pods together_JFord.wav"  title="J, K and L pods together, Juan de Fuca Strait">Your browser does not support the audio element.</audio> | J, K and L pods together, Juan de Fuca Strait |
-| | |
+| |
+|-|
+|<audio controls> <source type="audio/wav" src="./catalogs/srkw-call-catalogue-files/media/J pod foraging_JFord.wav" title="J pod foraging, Boundary Pass. Call types S01 and S04 are most common in this activity state.">Your browser does not support the audio element.</audio> |
+| J pod foraging, Boundary Pass. Call types S01 and S04 are most common in this activity state |
+
+| |
+|-|
+|<audio controls> <source type="audio/wav" src="./catalogs/srkw-call-catalogue-files/media/J pod travelling_JFord.wav" title="J pod travelling, Boundary Pass. Call types S02, S40, and S42 are frequently produced when J pod is moving quickly as a group.">Your browser does not support the audio element.</audio> |
+|J pod travelling, Boundary Pass. Call types S02, S40, and S42 are frequently produced when J pod is moving quickly as a group |
+
+| |
+|-|
+|<audio controls> <source type="audio/wav" src="./catalogs/srkw-call-catalogue-files/media/L pod foraging_JFord.wav" title="L pod foraging, Juan de Fuca Strait">Your browser does not support the audio element.</audio> |
+| L pod foraging, Juan de Fuca Strait |
+
+| |
+|-|
+|<audio controls> <source type="audio/wav" src="./catalogs/srkw-call-catalogue-files/media/J K L pods together_JFord.wav"  title="J, K and L pods together, Juan de Fuca Strait">Your browser does not support the audio element.</audio> |
+|J, K and L pods together, Juan de Fuca Strait |
+
 
