@@ -1,5 +1,5 @@
 from src.remove_remote_catalog import cli as remove_remote_catalog
-from test_add_remote_catalog import dummy_local_add, dummy_remote_add
+from testing_utils import dummy_local_add, dummy_remote_add
 import pytest
 from pathlib import Path
 from os.path import exists, join
