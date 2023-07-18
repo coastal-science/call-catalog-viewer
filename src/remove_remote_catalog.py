@@ -211,23 +211,8 @@ def cli(args=None):
         if remove_catalog_files(path_to_catalog_dir, repo_name):
             logger.error('Error removing catalog files. Could not complete removal')
             return REMOVE_REMOTE_CATALOG_ERROR
-        # library first so we can check if it is remote
-        # EXIT_CODE = remove_from_library_yaml(path_to_catalog_dir, repo_name)
-        # if EXIT_CODE != 0:
-        #     logger.error(f'Could not complete remove remote catalog operation ({EXIT_CODE})')
-        #     return REMOVE_REMOTE_CATALOG_ERROR
         
-        # EXIT_CODE = remove_from_index_yaml(path_to_catalog_dir, repo_name)
-        # if EXIT_CODE != 0:
-        #     logger.error(f'Could not complete remove remote catalog operation ({EXIT_CODE})')
-        #     return REMOVE_REMOTE_CATALOG_ERROR
-        
-        
-        # EXIT_CODE = remove_catalog_files(path_to_catalog_dir, repo_name)
-        # if EXIT_CODE != 0:
-        #     logger.error(f'Could not complete remove remote catalog operation ({EXIT_CODE})')
-        #     return REMOVE_REMOTE_CATALOG_ERROR
-        
+    logger.info(f'Successfully removed remote catalog {repo_name}')
     return EXIT_CODE
         
 if __name__ == '__main__':
