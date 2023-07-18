@@ -55,3 +55,35 @@ def dummy_local_add(catalog_name: str, path: Path):
     with open(join(path, catalog_name + '.json'), 'a') as f:
         f.write('dummy data for testing')
         
+def make_library(library_name="catalogs"):
+    # print(f"make_library:{tmp_path}:")
+    d = Path(library_name)
+    d.mkdir()
+    # print(f"{d}")
+    return d
+
+
+def make_index(lib_name=None, index_name="index.yaml"):
+    # print(f"make_index:{index_name=}")
+    index = lib_name / index_name
+    index.touch()
+    index.write_text(yaml.dump(
+        {"catalogs": []}
+        ))
+    print(f"make_index:{index}:")
+    return index
+
+def make_existing(lib_name: Path, index: Path, catalog_name="ABCW"):
+    """Configure library and index with an existing catalog entry"""
+
+    index.write_text(yaml.dump(
+        {"catalogs": [catalog_name]}
+        ))  # overwrites previous file
+    
+    p = (lib_name / catalog_name)
+    p.mkdir()
+    
+    p.touch("call-catalog.yaml")
+    (lib_name / f"{catalog_name}.json").touch()
+    
+    return p

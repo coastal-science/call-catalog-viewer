@@ -2,6 +2,7 @@ from pathlib import Path
 import pytest
 from src.add_catalog import cli as add_catalog
 from src.utils import yaml
+from testing_utils import make_index, make_library, make_existing
 
 
 def test_add_cli_empty(tmp_path: Path, monkeypatch: pytest.MonkeyPatch):
@@ -30,26 +31,6 @@ def test_add_null_folder_catalog(tmp_path: Path, monkeypatch: pytest.MonkeyPatch
                                  "catalog.yaml"])
     assert pytest_wrapped_e.type == SystemExit
     assert pytest_wrapped_e.value.code != 0
-
-
-def make_library(library_name="catalogs"):
-    # print(f"make_library:{tmp_path}:")
-    d = Path(library_name)
-    d.mkdir()
-    # print(f"{d}")
-    return d
-
-
-def make_index(lib_name=None, index_name="index.yaml"):
-    # print(f"make_index:{index_name=}")
-    index = lib_name / index_name
-    index.touch()
-    index.write_text(yaml.dump(
-        {"catalogs": []}
-        ))
-    print(f"make_index:{index}:")
-    return index
-
 
 def test_add(tmp_path: Path, tmp_path_factory: Path, shared_datadir: Path, monkeypatch: pytest.MonkeyPatch):
     """Add a files directory to the catalog in the default folder names/space and index.
@@ -140,22 +121,6 @@ def test_sub(tmp_path: Path, tmp_path_factory: Path, monkeypatch: pytest.MonkeyP
     print(*list( _.relative_to(tmp_path) for _ in tmp_path.rglob("*") ), sep='\n  ')
 
     # assert True
-
-
-def make_existing(lib_name: Path, index: Path, catalog_name="ABCW"):
-    """Configure library and index with an existing catalog entry"""
-
-    index.write_text(yaml.dump(
-        {"catalogs": [catalog_name]}
-        ))  # overwrites previous file
-    
-    p = (lib_name / catalog_name)
-    p.mkdir()
-    
-    p.touch("call-catalog.yaml")
-    (lib_name / f"{catalog_name}.json").touch()
-    
-    return p
 
 
 def test_add_3(tmp_path: Path, tmp_path_factory: Path, shared_datadir: Path, capsys: pytest.CaptureFixture[str], caplog: pytest.LogCaptureFixture, monkeypatch: pytest.MonkeyPatch):
