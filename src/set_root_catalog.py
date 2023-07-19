@@ -23,6 +23,10 @@ SET_ROOT_CATALOG_ERROR = -1
 
 def is_remote_catalog(repo_name, catalog_path):
     found = False
+    
+    if not exists(catalog_path + '/library.yaml'):
+        return False
+    
     with open(catalog_path + '/library.yaml') as f:
         catalogs = yaml.safe_load(f)
         remotes = catalogs['catalogs']
@@ -130,6 +134,10 @@ def cli(args=None):
     catalog_path = args.path if args.path != "default" else dirname(dirname(abspath(__file__))) + '/catalogs'
     repo_root_path = catalog_path + '/' + repo_name
     
+    if repo_name == '':
+        logger.error('Please enter a non-empty catalog name')
+        return SET_ROOT_CATALOG_ERROR
+    
     # check if the repo actually exists
     if not exists(repo_root_path):
         logger.error(f'The repo {repo_name} does not exist, cannot set it as root catalog.')
@@ -142,7 +150,7 @@ def cli(args=None):
     
     # check if the new repo is a remote one, cannot set a local as a root catalogs
     if not is_remote_catalog(repo_name, catalog_path):
-        logger.error(f'The local directory {repo_name} is not a remote catalog. Cannot be set as the root catalog')
+        logger.error(f'The local catalog {repo_name} is not a remote catalog. Cannot be set as the root catalog')
         return SET_ROOT_CATALOG_ERROR
         
     # get the old root repository
@@ -164,6 +172,7 @@ def cli(args=None):
     update_new_site_details(repo_name, catalog_path)
     
     logger.info(f'Successfully set {repo_name} as new root catalog')
+    return 0
     
 if __name__ == '__main__':
     cli()
