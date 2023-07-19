@@ -6,7 +6,7 @@ from os.path import exists, join
 import yaml
 import logging
 
-def test_add_cli_empty(tmp_path: Path, monkeypatch: pytest.MonkeyPatch, caplog: pytest.LogCaptureFixture):
+def test_remove_cli_empty(tmp_path: Path, monkeypatch: pytest.MonkeyPatch, caplog: pytest.LogCaptureFixture):
     """Calling cli without arguments should exit and warn about missing arguments"""
 
     # arrange
