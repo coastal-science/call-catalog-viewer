@@ -1,3 +1,6 @@
 [submodule "srkw-call-catalogue-files"]
 	path = srkw-call-catalogue-files
 	url = https://github.com/sfu-bigdata/srkw-call-catalogue-files.git
+[submodule "tests/data/catalogs/catalog-versions-test"]
+	path = tests/data/catalogs/catalog-versions-test
+	url = git@github.com:EvanDyce/catalog-versions-test.git
