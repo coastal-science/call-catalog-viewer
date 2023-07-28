@@ -15,31 +15,35 @@ Repo Name
 import argparse
 from git import Repo
 import yaml
-from os.path import dirname, exists
+from os.path import dirname, exists, abspath
 from json import load
 import utils
+import logging
 
-def pull_from_remote(path_to_repo, repo_name):
+logger = logging.getLogger(__name__)
+
+REFRESH_REMOTE_CATALOG_ERROR = -1
+
+def pull_from_remote(path_to_repo, repo_name, branch):
     '''
     Pulls all of the changes from the remote repository
     '''
     repo = Repo(path_to_repo)
     try:
         # checkout main to avoid weird stuff with git states
-        repo.git.checkout('main')
+        repo.git.checkout(branch)
             
         # Wouldn't work with passing kwargs so doing it manually
         # Fetch the tags first, then any of the other changes
         repo.git.execute(['git', 'fetch', '--tags'])
-        repo.git.execute(['git', 'pull', 'origin', 'main'])
+        repo.git.execute(['git', 'pull', 'origin', branch])
         
     except Exception as e:
-        print(str(e))
-        print(f'There was a problem pulling the changes for repo {repo_name}')
-        exit(-1)
+        logger.error(f'There was a problem pulling the changes for repo {repo_name}')
+        return REFRESH_REMOTE_CATALOG_ERROR
 
-def get_list_catalogs():
-    with open(CATALOGS_PATH + '/library.yaml') as f:
+def get_list_catalogs(path_to_catalogs_dir):
+    with open(path_to_catalogs_dir + '/library.yaml') as f:
         return yaml.safe_load(f)['catalogs']
 
 def get_name_from_url(url):
@@ -48,21 +52,21 @@ def get_name_from_url(url):
     '''
     return url[url.rfind('/')+1:len(url)-4]
 
-def update_json_file(repo_name):
+def update_json_file(path_to_catalogs_dir, repo_name):
     '''
     Update the values in the json with the new yaml data
     '''
     yaml_file = ''
     
-    with open(CATALOGS_PATH + '/' + repo_name + '.json', 'r+') as f:
+    with open(path_to_catalogs_dir + '/' + repo_name + '.json', 'r+') as f:
         data = load(f)
         yaml_file = data['yaml-file']
         
     if yaml_file.endswith('.yaml'):
-        df, population, filter, sortables, display, site_details = utils.parse_yaml_to_json(CATALOGS_PATH, CATALOGS_PATH + '/' + repo_name + '/' + yaml_file)
-        utils.export_to_json(CATALOGS_PATH, df, population, filter, sortables, display, site_details, repo_name, yaml_file)
+        df, population, filter, sortables, display, site_details = utils.parse_yaml_to_json(path_to_catalogs_dir, path_to_catalogs_dir + '/' + repo_name + '/' + yaml_file)
+        utils.export_to_json(path_to_catalogs_dir, df, population, filter, sortables, display, site_details, repo_name, yaml_file)
 
-if __name__ == '__main__':
+def cli(args=None):
     parser = argparse.ArgumentParser(
         description='Updating local changes from a remote repo',
         allow_abbrev=True
@@ -84,55 +88,80 @@ if __name__ == '__main__':
         action=argparse.BooleanOptionalAction
     )
     
-    args = parser.parse_args()
+    parser.add_argument(
+        '--branch',
+        help='Update all of the remote catalogs',
+        dest='branch',
+        default='main',
+        required=False
+    )
+    
+    parser.add_argument(
+        '--path',
+        default="default",
+        required=False,
+        help='Optional paramater to override location of catalogs directory. Default will be ../../catalogs/'
+    )
+    
+    args = parser.parse_args(args)
     
     repo_name = args.repo_name
     do_all = args.all
+    branch = args.branch
     
-    CATALOGS_PATH = dirname(dirname(__file__)) + '/catalogs'
-    REPO_ROOT_PATH = CATALOGS_PATH + '/' + repo_name
+    path_to_catalogs_dir = args.path if args.path != "default" else dirname(dirname(abspath(__file__))) + '/catalogs'
+    path_to_repo_dir = path_to_catalogs_dir + '/' + repo_name
     
     # a value wasn't passed for the repo name, and do all was not specified
-    if repo_name == 'no_repo' and not do_all:
-        print('Please specify a catalog name, or use the --all flag to update all catalogs')
-        
-    # make sure that there is a library.yaml to check before we break it
-    elif not exists(CATALOGS_PATH + '/library.yaml'):
-        print('No remote catalogs are added. Please add one before updating.')
-        
+    if (repo_name == 'no_repo' or repo_name == '') and not do_all:
+        logger.error('Please specify a catalog name, or use the --all flag to update all catalogs')
+        return REFRESH_REMOTE_CATALOG_ERROR
+    
+    # if there is no library.yaml, we have no remote catalogs added
+    if not exists(path_to_catalogs_dir + '/library.yaml'):
+        logger.error('No remote catalogs are added. Please add one before updating.')
+        return REFRESH_REMOTE_CATALOG_ERROR
+    
     # we need to do all of the catalogs
-    elif do_all:
-        print('Updating all catalogs', end='\n\n')
-        catalog_list = get_list_catalogs()
+    if do_all:
+        logger.info('Updating all catalogs')
+        catalog_list = get_list_catalogs(path_to_catalogs_dir)
         
         for catalog in catalog_list:
             name = get_name_from_url(catalog)
-            print(f'Pulling changes from {name}...')
-            pull_from_remote(CATALOGS_PATH + '/' + name, name)
-            update_json_file(name)
-            print(f'Successfully pulled changes from {name}...', end='\n\n')
+            logger.info(f'Pulling changes from {name}...')
+            pull_from_remote(path_to_catalogs_dir + '/' + name, name, branch)
+            update_json_file(path_to_catalogs_dir, name)
+            logger.info(f'Successfully pulled changes from {name}...')
             
-        print('Successfully updated all remote catalogs')
+        logger.info('Successfully updated all remote catalogs')
+        return 0
 
-    # make sure that the catalog exists
-    elif not exists(REPO_ROOT_PATH):
-        print(f'The catalog {repo_name} does not exist. Please add it before updating')
+    # make sure that the catalog specified exists
+    if not exists(path_to_repo_dir):
+        logger.error(f'The catalog {repo_name} does not exist. Please add it before updating')
+        return REFRESH_REMOTE_CATALOG_ERROR
         
     # go through the list of catalogs and find the one we are looking for
     # if we don't find it, that means it isn't a remote catalog and we print that error
-    else:
-        catalog_list = get_list_catalogs()
-        found = False
+    catalog_list = get_list_catalogs(path_to_catalogs_dir)
+    found = False
+    
+    for catalog in catalog_list:
+        if f'{repo_name}.git' in catalog:
+            found = True
+            break
         
-        for catalog in catalog_list:
-            if f'{repo_name}.git' in catalog:
-                found = True
-                break
-            
-        if not found:
-            print(f'The catalog {repo_name} is not a remote catalog')
-        else:
-            print(f'Pulling remote changes from {repo_name}...')
-            pull_from_remote(REPO_ROOT_PATH, repo_name)
-            update_json_file(repo_name)
-            print(f'Successfully pulled all changes and {repo_name} is up to date')
+    if not found:
+        logger.error(f'The catalog {repo_name} is not a remote catalog')
+        return REFRESH_REMOTE_CATALOG_ERROR
+    else:
+        logger.info(f'Pulling remote changes from {repo_name}...')
+        pull_from_remote(path_to_repo_dir, repo_name)
+        update_json_file(path_to_catalogs_dir, repo_name)
+        logger.info(f'Successfully pulled all changes and {repo_name} is up to date')
+
+    return 0
+
+if __name__ == '__main__':
+    cli()
