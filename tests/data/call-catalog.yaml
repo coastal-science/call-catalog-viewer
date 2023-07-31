@@ -1,0 +1,231 @@
+site-details:
+  catalogue:
+    title: NRKW CALLS
+  testing-field:
+    0
+id:
+  - call-type
+  - sample
+display:
+  - display-one:
+     - pod
+  - display-two:
+    - clan
+fields:
+  - sample
+  - call-type
+  - image-file
+  - wav-file
+  - description-file
+  - sortable:
+    - call-type,pod,clan,sample
+  - clan:
+    - J
+  - matrilines
+  - pod:
+    - J,K,L
+  - temperament:
+    - Nice Whale,Sad Whale,Angry Whale
+  - population:
+    - NRKW
+calls:
+- call-type: S44
+  clan: J
+  image-file: evans-catalogue/media/S44-J-5.png
+  matrilines:
+  pod: J
+  population: NRKW
+  sample: 5
+  wav-file: evans-catalogue/media/S44-J-5.wav
+  description-file:
+  temperament: Nice Whale
+- call-type: S44
+  clan: J
+  image-file: evans-catalogue/media/S44-J-6.png
+  matrilines:
+  pod: J
+  population: NRKW
+  sample: 6
+  wav-file: evans-catalogue/media/S44-J-6.wav
+  description-file:
+  temperament: Sad Whale
+- call-type: S44
+  clan: J
+  image-file: evans-catalogue/media/S44-J-7.jpg
+  matrilines:
+  pod: J
+  population: NRKW
+  sample: 7
+  wav-file: evans-catalogue/media/S44-J-7.wav
+  description-file:
+  temperament: Nice Whale
+- call-type: S60
+  clan: P
+  image-file: evans-catalogue/media/S44-J-7.jpg
+  matrilines:
+  pod: J
+  population: NRKW
+  sample: 7
+  wav-file: evans-catalogue/media/S44-J-7.wav
+  description-file:
+  temperament: Angry Whale
+- call-type: S60-1
+  clan: P
+  image-file: evans-catalogue/media/S44-J-7.jpg
+  matrilines:
+  pod: J
+  population: NRKW
+  sample: 7
+  wav-file: evans-catalogue/media/S44-J-7.wav
+  description-file:
+  temperament: Angry Whale
+- call-type: S44
+  clan: J
+  image-file: evans-catalogue/media/S44-J-5.png
+  matrilines:
+  pod: J
+  population: NRKW
+  sample: 5
+  wav-file: evans-catalogue/media/S44-J-5.wav
+  description-file:
+  temperament: Nice Whale
+- call-type: S44
+  clan: J
+  image-file: evans-catalogue/media/S44-J-6.png
+  matrilines:
+  pod: J
+  population: NRKW
+  sample: 6
+  wav-file: evans-catalogue/media/S44-J-6.wav
+  description-file:
+  temperament: Sad Whale
+- call-type: S44
+  clan: J
+  image-file: evans-catalogue/media/S44-J-7.jpg
+  matrilines:
+  pod: J
+  population: NRKW
+  sample: 7
+  wav-file: evans-catalogue/media/S44-J-7.wav
+  description-file:
+  temperament: Nice Whale
+- call-type: S60
+  clan: P
+  image-file: evans-catalogue/media/S44-J-7.jpg
+  matrilines:
+  pod: J
+  population: NRKW
+  sample: 7
+  wav-file: evans-catalogue/media/S44-J-7.wav
+  description-file:
+  temperament: Angry Whale
+- call-type: S60-1
+  clan: P
+  image-file: evans-catalogue/media/S44-J-7.jpg
+  matrilines:
+  pod: J
+  population: NRKW
+  sample: 7
+  wav-file: evans-catalogue/media/S44-J-7.wav
+  description-file:
+  temperament: Angry Whale
+- call-type: S44
+  clan: J
+  image-file: evans-catalogue/media/S44-J-5.png
+  matrilines:
+  pod: J
+  population: NRKW
+  sample: 5
+  wav-file: evans-catalogue/media/S44-J-5.wav
+  description-file:
+  temperament: Nice Whale
+- call-type: S44
+  clan: J
+  image-file: evans-catalogue/media/S44-J-6.png
+  matrilines:
+  pod: J
+  population: NRKW
+  sample: 6
+  wav-file: evans-catalogue/media/S44-J-6.wav
+  description-file:
+  temperament: Sad Whale
+- call-type: S44
+  clan: J
+  image-file: evans-catalogue/media/S44-J-7.jpg
+  matrilines:
+  pod: J
+  population: NRKW
+  sample: 7
+  wav-file: evans-catalogue/media/S44-J-7.wav
+  description-file:
+  temperament: Nice Whale
+- call-type: S60
+  clan: P
+  image-file: evans-catalogue/media/S44-J-7.jpg
+  matrilines:
+  pod: J
+  population: NRKW
+  sample: 7
+  wav-file: evans-catalogue/media/S44-J-7.wav
+  description-file:
+  temperament: Angry Whale
+- call-type: S60-1
+  clan: P
+  image-file: evans-catalogue/media/S44-J-7.jpg
+  matrilines:
+  pod: J
+  population: NRKW
+  sample: 7
+  wav-file: evans-catalogue/media/S44-J-7.wav
+  description-file:
+  temperament: Angry Whale
+- call-type: S44
+  clan: J
+  image-file: evans-catalogue/media/S44-J-5.png
+  matrilines:
+  pod: J
+  population: NRKW
+  sample: 5
+  wav-file: evans-catalogue/media/S44-J-5.wav
+  description-file:
+  temperament: Nice Whale
+- call-type: S44
+  clan: J
+  image-file: evans-catalogue/media/S44-J-6.png
+  matrilines:
+  pod: J
+  population: NRKW
+  sample: 6
+  wav-file: evans-catalogue/media/S44-J-6.wav
+  description-file:
+  temperament: Sad Whale
+- call-type: S44
+  clan: J
+  image-file: evans-catalogue/media/S44-J-7.jpg
+  matrilines:
+  pod: J
+  population: NRKW
+  sample: 7
+  wav-file: evans-catalogue/media/S44-J-7.wav
+  description-file:
+  temperament: Nice Whale
+- call-type: S60
+  clan: P
+  image-file: evans-catalogue/media/S44-J-7.jpg
+  matrilines:
+  pod: J
+  population: NRKW
+  sample: 7
+  wav-file: evans-catalogue/media/S44-J-7.wav
+  description-file:
+  temperament: Angry Whale
+- call-type: S60-1
+  clan: P
+  image-file: evans-catalogue/media/S44-J-7.jpg
+  matrilines:
+  pod: J
+  population: NRKW
+  sample: 7
+  wav-file: evans-catalogue/media/S44-J-7.wav
+  description-file:
+  temperament: Angry Whale

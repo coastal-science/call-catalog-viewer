@@ -28,8 +28,9 @@ def pull_from_remote(path_to_repo, repo_name, branch):
     '''
     Pulls all of the changes from the remote repository
     '''
-    repo = Repo(path_to_repo)
     try:
+        repo = Repo(path_to_repo)
+
         # checkout main to avoid weird stuff with git states
         repo.git.checkout(branch)
             
@@ -39,8 +40,9 @@ def pull_from_remote(path_to_repo, repo_name, branch):
         repo.git.execute(['git', 'pull', 'origin', branch])
         
     except Exception as e:
-        logger.error(f'There was a problem pulling the changes for repo {repo_name}')
         return REFRESH_REMOTE_CATALOG_ERROR
+
+    return 0
 
 def get_list_catalogs(path_to_catalogs_dir):
     with open(path_to_catalogs_dir + '/library.yaml') as f:
@@ -157,7 +159,9 @@ def cli(args=None):
         return REFRESH_REMOTE_CATALOG_ERROR
     else:
         logger.info(f'Pulling remote changes from {repo_name}...')
-        pull_from_remote(path_to_repo_dir, repo_name)
+        if pull_from_remote(path_to_repo_dir, repo_name, branch) != 0:
+            logger.error(f'There was a problem pulling the changes for repo {repo_name}')
+            return REFRESH_REMOTE_CATALOG_ERROR
         update_json_file(path_to_catalogs_dir, repo_name)
         logger.info(f'Successfully pulled all changes and {repo_name} is up to date')
 
