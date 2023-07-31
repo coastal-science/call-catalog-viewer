@@ -3,23 +3,24 @@ import json
 from pathlib import Path
 from os.path import join, exists
 from os import symlink, mkdir
+import shutil
 
 
-def dummy_remote_add(catalog_url: str, catalog_name: str, path: Path):
+def dummy_remote_add(catalog_url: str, catalog_name: str, tmp_path: Path, shared_data_path: Path):
     # create the directory we need
-    mkdir(join(path, catalog_name))
+    mkdir(join(tmp_path, catalog_name))
 
     # If our library doesn't exist, create a root catalog, else just append to already there library.yaml
-    library_already_exists = exists(join(path, 'library.yaml'))
+    library_already_exists = exists(join(tmp_path, 'library.yaml'))
     if not library_already_exists:
-        with open(join(path, catalog_name, 'library.yaml'), 'w') as f:
+        with open(join(tmp_path, catalog_name, 'library.yaml'), 'w') as f:
             catalogs = {'catalogs': [catalog_url]}
             f.seek(0)
             yaml.dump(catalogs, f)
-            symlink(join(path, catalog_name, 'library.yaml'),
-                    join(path, 'library.yaml'))
+            symlink(join(tmp_path, catalog_name, 'library.yaml'),
+                    join(tmp_path, 'library.yaml'))
     else:
-        with open(join(path, 'library.yaml'), 'r+') as f:
+        with open(join(tmp_path, 'library.yaml'), 'r+') as f:
             existing_catalogs = yaml.safe_load(f)
             catalogs = existing_catalogs if existing_catalogs is not None else {
                 'catalogs': []}
@@ -27,25 +28,30 @@ def dummy_remote_add(catalog_url: str, catalog_name: str, path: Path):
             f.seek(0)
             yaml.dump(catalogs, f)
 
-    index_already_exists = exists(join(path, 'index.yaml'))
+    index_already_exists = exists(join(tmp_path, 'index.yaml'))
     if not index_already_exists:
-        with open(join(path, 'index.yaml'), 'w') as f:
+        with open(join(tmp_path, 'index.yaml'), 'w') as f:
             catalogs = {'catalogs': [catalog_name]}
             f.seek(0)
             yaml.dump(catalogs, f)
     else:
-        with open(join(path, 'index.yaml'), 'r+') as f:
+        with open(join(tmp_path, 'index.yaml'), 'r+') as f:
             existing_catalogs = yaml.safe_load(f)
             catalogs = existing_catalogs if existing_catalogs is not None else {
                 'catalogs': []}
             catalogs['catalogs'].append(catalog_name)
             f.seek(0)
             yaml.dump(catalogs, f)
-
+            
+    # create the call-catalog.yaml file inside of the directory
+    # just going to copy a premade one from shared_data_dir. Can be modified there if need be
+    shutil.copyfile(join(shared_data_path, 'call-catalog.yaml'), join(tmp_path, catalog_name, 'call-catalog.yaml'))
+        
     # create the json file
-    with open(join(path, catalog_name + '.json'), 'a') as f:
+    with open(join(tmp_path, catalog_name + '.json'), 'a') as f:
         is_root = 'false' if library_already_exists else 'true'
         data = {
+            "yaml-file": "call-catalog.yaml",
             "site-details": {
                 "catalogue": {
                     "title": "Testing Data",
@@ -53,7 +59,6 @@ def dummy_remote_add(catalog_url: str, catalog_name: str, path: Path):
                 }}
         }
         json.dump(data, f)
-        # f.write('dummy data for testing')
 
 
 def dummy_local_add(catalog_name: str, path: Path):

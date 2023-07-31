@@ -18,12 +18,12 @@ def test_remove_cli_empty(tmp_path: Path, monkeypatch: pytest.MonkeyPatch, caplo
     assert EXIT_CODE != 0
     assert "Please input a valid repo name to remove" in caplog.text
     
-def test_remove_catalog_not_exist(tmp_path: Path, monkeypatch: pytest.MonkeyPatch, caplog: pytest.LogCaptureFixture):
+def test_remove_catalog_not_exist(tmp_path: Path, shared_datadir: Path, monkeypatch: pytest.MonkeyPatch, caplog: pytest.LogCaptureFixture):
     """Calling cli with empty catalog set up for a name that doesn't exist"""
 
     # arrange
     monkeypatch.chdir(tmp_path)
-    dummy_remote_add("fake.git", "catalog", tmp_path)
+    dummy_remote_add("fake.git", "catalog", tmp_path, shared_datadir)
     repo_name = "catalog-not-there"
 
     # act
@@ -75,13 +75,13 @@ def test_remove_local_catalog_force(tmp_path: Path, monkeypatch: pytest.MonkeyPa
     assert EXIT_CODE != 0
     assert 'Library.yaml does not exist. Please add a remote catalog before removing' in caplog.text
     
-def test_remove_root(tmp_path: Path, monkeypatch: pytest.MonkeyPatch, caplog: pytest.LogCaptureFixture):
+def test_remove_root(tmp_path: Path, shared_datadir: Path, monkeypatch: pytest.MonkeyPatch, caplog: pytest.LogCaptureFixture):
     """Attempting to remove a root catalog with no --force"""
     
     # arrange
     monkeypatch.chdir(tmp_path)
     remote_url, remote_name = "root.git", "root" # Notes: the name must be in the url
-    dummy_remote_add(remote_url, remote_name, tmp_path)
+    dummy_remote_add(remote_url, remote_name, tmp_path, shared_datadir)
     
     # act
     EXIT_CODE = remove_remote_catalog([
@@ -99,13 +99,13 @@ def test_remove_root(tmp_path: Path, monkeypatch: pytest.MonkeyPatch, caplog: py
     
     assert 'Attempting to remove root catalog' in caplog.text
 
-def test_remove_root_force(tmp_path: Path, monkeypatch: pytest.MonkeyPatch):
+def test_remove_root_force(tmp_path: Path, shared_datadir: Path, monkeypatch: pytest.MonkeyPatch):
     """Removing the root catalog with --force specified"""
     # arrange 
     monkeypatch.chdir(tmp_path)
     
     remote_url, remote_name = "root.git", "root"
-    dummy_remote_add(remote_url, remote_name, tmp_path)
+    dummy_remote_add(remote_url, remote_name, tmp_path, shared_datadir)
     
     # act
     EXIT_CODE = remove_remote_catalog([
@@ -122,15 +122,15 @@ def test_remove_root_force(tmp_path: Path, monkeypatch: pytest.MonkeyPatch):
     assert not exists(join(tmp_path, remote_name + '.json'))
     assert not exists(join(tmp_path, remote_name))
     
-def test_remove_root_not_last_catalog(tmp_path: Path, monkeypatch: pytest.MonkeyPatch, caplog: pytest.LogCaptureFixture):
+def test_remove_root_not_last_catalog(tmp_path: Path, shared_datadir: Path, monkeypatch: pytest.MonkeyPatch, caplog: pytest.LogCaptureFixture):
     """Attempt to remove root catalog with other catalogs present"""
     # arrange
     monkeypatch.chdir(tmp_path)
     # remote_1 will be the root as it is added first
     remote_url_1, remote_name_1 = "root.git", "root" # Note: the name must be in the url
     remote_url_2, remote_name_2 = "non-root.git", "non-root" # Note: the name must be in the url
-    dummy_remote_add(remote_url_1, remote_name_1, tmp_path)
-    dummy_remote_add(remote_url_2, remote_name_2, tmp_path)
+    dummy_remote_add(remote_url_1, remote_name_1, tmp_path, shared_datadir)
+    dummy_remote_add(remote_url_2, remote_name_2, tmp_path, shared_datadir)
     
     # act
     EXIT_CODE = remove_remote_catalog([
@@ -148,15 +148,15 @@ def test_remove_root_not_last_catalog(tmp_path: Path, monkeypatch: pytest.Monkey
     
     assert 'Attempting to remove root catalog' in caplog.text
 
-def test_remove_root_not_last_catalog_force(tmp_path: Path, monkeypatch: pytest.MonkeyPatch, caplog: pytest.LogCaptureFixture):
+def test_remove_root_not_last_catalog_force(tmp_path: Path, shared_datadir: Path, monkeypatch: pytest.MonkeyPatch, caplog: pytest.LogCaptureFixture):
     """Attempt to remove a root catalog with other catalogs present with --force"""
     # arrange
     monkeypatch.chdir(tmp_path)
     # remote_1 will be the root as it is added first
     remote_url_1, remote_name_1 = "root.git", "root" # Note: the name must be in the url
     remote_url_2, remote_name_2 = "non-root.git", "non-root" # Note: the name must be in the url
-    dummy_remote_add(remote_url_1, remote_name_1, tmp_path)
-    dummy_remote_add(remote_url_2, remote_name_2, tmp_path)
+    dummy_remote_add(remote_url_1, remote_name_1, tmp_path, shared_datadir)
+    dummy_remote_add(remote_url_2, remote_name_2, tmp_path, shared_datadir)
     
     # act
     EXIT_CODE = remove_remote_catalog([
@@ -175,7 +175,7 @@ def test_remove_root_not_last_catalog_force(tmp_path: Path, monkeypatch: pytest.
     
     assert f'Cannot remove the root catalog {remote_name_1} while other catalogs are in the viewer.' in caplog.text
     
-def test_remove_catalog(tmp_path: Path, monkeypatch: pytest.MonkeyPatch, caplog: pytest.LogCaptureFixture):
+def test_remove_catalog(tmp_path: Path, shared_datadir: Path, monkeypatch: pytest.MonkeyPatch, caplog: pytest.LogCaptureFixture):
     """Remove a non-root catalog from the viewer"""
     # arrange
     monkeypatch.chdir(tmp_path)
@@ -185,8 +185,8 @@ def test_remove_catalog(tmp_path: Path, monkeypatch: pytest.MonkeyPatch, caplog:
     # remote_1 will be the root as it is added first
     remote_url_root, remote_name_root = "root.git", "root" # Note: the name must be in the url
     remote_url_to_remove, remote_name_to_remove = "non-root.git", "non-root" # Note: the name must be in the url
-    dummy_remote_add(remote_url_root, remote_name_root, tmp_path)
-    dummy_remote_add(remote_url_to_remove, remote_name_to_remove, tmp_path)
+    dummy_remote_add(remote_url_root, remote_name_root, tmp_path, shared_datadir)
+    dummy_remote_add(remote_url_to_remove, remote_name_to_remove, tmp_path, shared_datadir)
     
     # act
     EXIT_CODE = remove_remote_catalog([
@@ -217,7 +217,7 @@ def test_remove_catalog(tmp_path: Path, monkeypatch: pytest.MonkeyPatch, caplog:
     
     assert f'Successfully removed remote catalog {remote_name_to_remove}' in caplog.text
     
-def test_remove_catalog_force(tmp_path: Path, monkeypatch: pytest.MonkeyPatch, caplog: pytest.LogCaptureFixture):
+def test_remove_catalog_force(tmp_path: Path, shared_datadir: Path, monkeypatch: pytest.MonkeyPatch, caplog: pytest.LogCaptureFixture):
     """Remove a non-root catalog from viewer with force"""
     # arrange
     monkeypatch.chdir(tmp_path)
@@ -227,8 +227,8 @@ def test_remove_catalog_force(tmp_path: Path, monkeypatch: pytest.MonkeyPatch, c
     # remote_1 will be the root as it is added first
     remote_url_root, remote_name_root = "root.git", "root" # Note: the name must be in the url
     remote_url_to_remove, remote_name_to_remove = "non-root.git", "non-root" # Note: the name must be in the url
-    dummy_remote_add(remote_url_root, remote_name_root, tmp_path)
-    dummy_remote_add(remote_url_to_remove, remote_name_to_remove, tmp_path)
+    dummy_remote_add(remote_url_root, remote_name_root, tmp_path, shared_datadir)
+    dummy_remote_add(remote_url_to_remove, remote_name_to_remove, tmp_path, shared_datadir)
     
     # act
     EXIT_CODE = remove_remote_catalog([

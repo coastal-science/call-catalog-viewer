@@ -126,14 +126,14 @@ def test_add_valid_parameters(tmp_path: Path, monkeypatch: pytest.MonkeyPatch):
         content = yaml.safe_load(library)
         assert VALID_GIT_URL in content['catalogs']
     
-def test_add_same_catalog_twice(tmp_path: Path, monkeypatch: pytest.MonkeyPatch, caplog: pytest.LogCaptureFixture):
+def test_add_same_catalog_twice(tmp_path: Path, shared_datadir: Path, monkeypatch: pytest.MonkeyPatch, caplog: pytest.LogCaptureFixture):
     """Adding same catalog twice should succeed the first time and fail the second"""
     
     # arrange
     monkeypatch.chdir(tmp_path)
     
     # create our 'existing' entry with same data
-    dummy_remote_add(VALID_GIT_URL, VALID_REPO_NAME, tmp_path)
+    dummy_remote_add(VALID_GIT_URL, VALID_REPO_NAME, tmp_path, shared_datadir)
     
     # act 
     EXIT_CODE = add_remote_catalog([
@@ -146,12 +146,12 @@ def test_add_same_catalog_twice(tmp_path: Path, monkeypatch: pytest.MonkeyPatch,
     
     assert f'Unable to add repo {VALID_REPO_NAME} as it already exists in this catalogue' in caplog.text
 
-def test_add_remote_to_existing_remote(tmp_path: Path, monkeypatch: pytest.MonkeyPatch):
+def test_add_remote_to_existing_remote(tmp_path: Path,   shared_datadir: Path, monkeypatch: pytest.MonkeyPatch):
     """Simulate adding one remote catalogs to create file structure and then add a real remote to verify allowance"""
     
     # arrange
     monkeypatch.chdir(tmp_path)
-    dummy_remote_add("fake-repo.git", "fake-repo", tmp_path)
+    dummy_remote_add("fake-repo.git", "fake-repo", tmp_path, shared_datadir)
     
     # act
     EXIT_CODE = add_remote_catalog([

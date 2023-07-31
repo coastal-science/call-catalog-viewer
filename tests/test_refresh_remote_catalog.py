@@ -31,12 +31,12 @@ def test_refresh_no_remote_catalogs(tmp_path: Path, monkeypatch: pytest.MonkeyPa
     assert EXIT_CODE != 0
     assert 'No remote catalogs are added. Please add one before updating.' in caplog.messages
 
-def test_refresh_remote_catalog_not_exist(tmp_path: Path, monkeypatch: pytest.MonkeyPatch, caplog: pytest.LogCaptureFixture):
+def test_refresh_remote_catalog_not_exist(tmp_path: Path, shared_datadir: Path, monkeypatch: pytest.MonkeyPatch, caplog: pytest.LogCaptureFixture):
     '''Adding a remote catalog so library.yaml exists, but passing invalid catalog name'''
     
     # arrange
     monkeypatch.chdir(tmp_path)
-    dummy_remote_add("fake-repo.git", "fake-repo", tmp_path)
+    dummy_remote_add("fake-repo.git", "fake-repo", tmp_path, shared_datadir)
     fake_name = "dummy-catalog-name"
     
     # act
@@ -49,13 +49,13 @@ def test_refresh_remote_catalog_not_exist(tmp_path: Path, monkeypatch: pytest.Mo
     assert EXIT_CODE != 0
     assert f'The catalog {fake_name} does not exist. Please add it before updating' in caplog.messages
 
-def test_refresh_local_catalog(tmp_path: Path, monkeypatch: pytest.MonkeyPatch, caplog: pytest.LogCaptureFixture):
+def test_refresh_local_catalog(tmp_path: Path, shared_datadir: Path, monkeypatch: pytest.MonkeyPatch, caplog: pytest.LogCaptureFixture):
     '''Adding a remote and local catalog in setup, attempting to refresh the local'''
     # arrange
     monkeypatch.chdir(tmp_path)
     remote_url, remote_name = 'fake-repo.git', 'fake-repo'
     local_name = 'local-repo'
-    dummy_remote_add(remote_url, remote_name, tmp_path)
+    dummy_remote_add(remote_url, remote_name, tmp_path, shared_datadir)
     dummy_local_add(local_name, tmp_path)  
       
     # act
@@ -68,11 +68,11 @@ def test_refresh_local_catalog(tmp_path: Path, monkeypatch: pytest.MonkeyPatch, 
     assert EXIT_CODE != 0
     assert f'The catalog {local_name} is not a remote catalog' in caplog.messages
     
-def test_invalid_git_repo(tmp_path: Path, monkeypatch: pytest.MonkeyPatch, caplog: pytest.LogCaptureFixture):
+def test_invalid_git_repo(tmp_path: Path, shared_datadir: Path, monkeypatch: pytest.MonkeyPatch, caplog: pytest.LogCaptureFixture):
     # arrange
     monkeypatch.chdir(tmp_path)
     remote_url, remote_name = 'fake-repo.git', 'fake-repo'
-    dummy_remote_add(remote_url, remote_name, tmp_path)
+    dummy_remote_add(remote_url, remote_name, tmp_path, shared_datadir)
     
     # act
     EXIT_CODE = refresh_remote_catalog([

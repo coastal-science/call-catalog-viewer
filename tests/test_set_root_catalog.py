@@ -33,13 +33,13 @@ def test_catalog_does_not_exist(tmp_path: Path, monkeypatch: pytest.MonkeyPatch,
     assert EXIT_CODE != 0
     assert f'The repo {repo_name} does not exist, cannot set it as root catalog.' in caplog.text
 
-def test_catalog_already_root(tmp_path: Path, monkeypatch: pytest.MonkeyPatch, caplog: pytest.LogCaptureFixture):
+def test_catalog_already_root(tmp_path: Path, shared_datadir: Path, monkeypatch: pytest.MonkeyPatch, caplog: pytest.LogCaptureFixture):
     '''Try to set the current root as the new root'''
     
     # arrange
     monkeypatch.chdir(tmp_path)
     root_catalog, root_catalog_url = 'root-catalog', 'root-catalog.git'
-    dummy_remote_add(root_catalog_url, root_catalog, tmp_path)
+    dummy_remote_add(root_catalog_url, root_catalog, tmp_path, shared_datadir)
     
     # act
     EXIT_CODE = set_root_catalog([
@@ -68,7 +68,7 @@ def test_set_local_no_remote_added(tmp_path: Path, monkeypatch: pytest.MonkeyPat
     assert EXIT_CODE != 0
     assert f'The local catalog {local_catalog_name} is not a remote catalog. Cannot be set as the root catalog' in caplog.text
     
-def test_set_local_remote_added(tmp_path: Path, monkeypatch: pytest.MonkeyPatch, caplog: pytest.LogCaptureFixture):
+def test_set_local_remote_added(tmp_path: Path, shared_datadir: Path, monkeypatch: pytest.MonkeyPatch, caplog: pytest.LogCaptureFixture):
     '''Try to set the new root catalog as a locally added one with existing remote added'''
     
     # arrange
@@ -78,7 +78,7 @@ def test_set_local_remote_added(tmp_path: Path, monkeypatch: pytest.MonkeyPatch,
     dummy_local_add(local_catalog_name, tmp_path)
     
     remote_catalog_name, remote_catalog_url = 'remote-catalog', 'remote-catalog.git'
-    dummy_remote_add(remote_catalog_url, remote_catalog_name, tmp_path)
+    dummy_remote_add(remote_catalog_url, remote_catalog_name, tmp_path, shared_datadir)
     
     # act
     EXIT_CODE = set_root_catalog([
@@ -90,7 +90,7 @@ def test_set_local_remote_added(tmp_path: Path, monkeypatch: pytest.MonkeyPatch,
     assert EXIT_CODE != 0
     assert f'The local catalog {local_catalog_name} is not a remote catalog. Cannot be set as the root catalog' in caplog.text
 
-def test_set_root_valid(tmp_path: Path, monkeypatch: pytest.MonkeyPatch, caplog: pytest.LogCaptureFixture):
+def test_set_root_valid(tmp_path: Path, shared_datadir: Path, monkeypatch: pytest.MonkeyPatch, caplog: pytest.LogCaptureFixture):
     '''Add two remote repos and set the non-root to the root'''
     
     # arrange
@@ -98,10 +98,10 @@ def test_set_root_valid(tmp_path: Path, monkeypatch: pytest.MonkeyPatch, caplog:
     caplog.set_level(logging.INFO)
     
     root_catalog_name, root_catalog_url = 'root-catalog', 'root-catalg.git'
-    dummy_remote_add(root_catalog_url, root_catalog_name, tmp_path)
+    dummy_remote_add(root_catalog_url, root_catalog_name, tmp_path, shared_datadir)
     
     new_root_catalog_name, new_root_catalog_url = 'new-root-catalog', 'new-root-catalog.git'
-    dummy_remote_add(new_root_catalog_url, new_root_catalog_name, tmp_path)
+    dummy_remote_add(new_root_catalog_url, new_root_catalog_name, tmp_path, shared_datadir)
     
     # act
     EXIT_CODE = set_root_catalog([
