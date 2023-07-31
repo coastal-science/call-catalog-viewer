@@ -56,7 +56,9 @@ def dummy_remote_add(catalog_url: str, catalog_name: str, tmp_path: Path, shared
                 "catalogue": {
                     "title": "Testing Data",
                     "is_root": is_root
-                }}
+                },
+                "testing-field": 0
+                }
         }
         json.dump(data, f)
 
