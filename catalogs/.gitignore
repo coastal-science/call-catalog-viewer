@@ -1,0 +1,6 @@
+# Have this so that the empty catalogs/ directory will stay. Else git will ignore empty directoy
+
+# Ignore everything in this directory
+*
+# Except this file
+!.gitignore

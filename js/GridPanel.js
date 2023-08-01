@@ -4,7 +4,7 @@ var GridPanel = undefined;
     var resultData = undefined; // this is all of the data read from catalogs initially
     var data_index = 0;
     var currentDisplayData = undefined; // this is the data that has the filters applied to it and we want to use
-    var entireFilterData = undefined;
+    window.entireFilterData = undefined;
     var searching_para = undefined;
     var all_fields = [];
     var sortable_fields = [];
@@ -19,6 +19,8 @@ var GridPanel = undefined;
     var total_result = undefined;
     var total_page = undefined;
     var data_initialized = false;
+
+    var encoded = undefined;
 
     var poped = undefined;
     var pop_opening = undefined;
@@ -100,11 +102,16 @@ var GridPanel = undefined;
         //   });
         // await response of fetch call
         let response = await fetch(LIBRARY + "/" + LIBRARY_INDEX);
+
         // only proceed once promise is resolved
         let text = await response.text();
         var yaml = jsyaml.load(text);
 
         console.log("Catalogs library contains:", yaml[LIBRARY]);
+
+        // if index.yaml does not exist (empty viewer) then it stops some other errors
+        if (yaml[LIBRARY] === undefined)
+            return;
 
         yaml = yaml[LIBRARY].reverse(); // reverse() ensures that the catalog added first is the most recent loaded
 
@@ -139,11 +146,11 @@ var GridPanel = undefined;
      * This filtered data is then assigned to entireFilterData for later access
      */
     async function updateCurrentData() {
-        entireFilterData = resultData; // this resets so that we are checking all of the values
+        window.entireFilterData = resultData; // this resets so that we are checking all of the values
         var params = Object.keys(searching_para);
         params.forEach(p => {
             if (!(["s1", "s2", "s3"].includes(p))) {
-                entireFilterData = entireFilterData.filter(item => { // item is all of the calls in the catalogs
+                window.entireFilterData = window.entireFilterData.filter(item => { // item is all of the calls in the catalogs
                     if (searching_para[p].length == 0) // if it is empty then it is just true for all
                         return true;
 
@@ -172,7 +179,7 @@ var GridPanel = undefined;
         var keys = Object.keys(data);
         keys.forEach(p => {
             if (data[p] == undefined || data[p] == null) {
-                data[p] = "Unknown";
+                data[p] = ""; //"Unknown"
             }
         })
         return data;
@@ -197,9 +204,12 @@ var GridPanel = undefined;
 
             // get the filter data and set simple_datasource so it is just calls
             var site_details = simple_datasource["site-details"];
-            document.getElementById("catalogue-title").innerHTML = site_details['catalogue']['title'];
-            
+            if (site_details['catalogue']['is_root'] === 'true') {
+                document.getElementById("catalogue-title").innerHTML = site_details['catalogue']['title'];
+            }
+
             var filters = simple_datasource["filters"];
+            var population = simple_datasource["population"];
             var searchable = simple_datasource["sortable"];
             var display_data = simple_datasource["display"];
             simple_datasource = simple_datasource["calls"];
@@ -208,19 +218,35 @@ var GridPanel = undefined;
                 if (!sortable_fields.includes(field))
                     sortable_fields.push(field);
             })
-            updateFiltersFromJSON(filters);
+            updateFiltersFromJSON(population, filters);
 
             var keys = Object.keys(simple_datasource);
             keys.forEach(item => { // this will append all of the items to the resultdata
-                simple_datasource[item]['d1'] = (display_data[0]['d1']).replace(/-/g, '_');
-                simple_datasource[item]['d2'] = (display_data[1]['d2']).replace(/-/g, '_');
+                // get the old name
+                old_d1 = display_data[0]['d1']
+                old_d2 = display_data[1]['d2']
+
+                // get the new keys that we want to use
+                new_d1 = old_d1.replace(/-/g, '_');
+                new_d2 = old_d2.replace(/-/g, '_');
+
+                // create the new display name property in call object and update the display reference
+                simple_datasource[item][new_d1] = simple_datasource[item][old_d1];
+                simple_datasource[item][new_d2] = simple_datasource[item][old_d2];
+                simple_datasource[item]['d1'] = new_d1;
+                simple_datasource[item]['d2'] = new_d2;
+
+                // remove the old key that contained '-'s
+                delete simple_datasource.old_d1
+                delete simple_datasource.old_d2
+
                 resultData[data_index] = validateParameters(simple_datasource[item]);
                 data_index++;
             });
             await updateCurrentData(); // apply filters on resultData, populating currentFilteredData accordingly
         }
 
-        filter_result = entireFilterData.length; // update the length based off of the filtered data
+        filter_result = window.entireFilterData.length; // update the length based off of the filtered data
 
         $("#total").text(filter_result);
         total_page = Math.floor((filter_result - 1) / page_size) + 1;
@@ -303,12 +329,12 @@ var GridPanel = undefined;
             }
             var smaller = (sort_asc === "as") ? a[sort_by] : b[sort_by];
             var larger = (sort_asc === "as") ? b[sort_by] : a[sort_by];
-            
+
             // moves fields not filter on to the back of list
             if (larger == undefined)
                 return -1;
 
-            if (smaller == undefined) 
+            if (smaller == undefined)
                 return 1;
 
             if (larger > smaller) {
@@ -318,12 +344,13 @@ var GridPanel = undefined;
                 return 1;
             }
         };
-        entireFilterData.sort(current_sort);
+        window.entireFilterData.sort(current_sort);
 
-        currentDisplayData = entireFilterData.slice((current_page - 1) * page_size, (current_page) * page_size); // obtain the data to display on this page from the entireData slice
+        currentDisplayData = window.entireFilterData.slice((current_page - 1) * page_size, (current_page) * page_size); // obtain the data to display on this page from the entireData slice
         redraw_items(); // draws our new updated items
 
-        var encoded = btoa(JSON.stringify(searching_para));
+        if (!data_initialized)
+            encoded = btoa(JSON.stringify(searching_para));
         const state = { 'f': encoded, 'p': current_page, 's': sort_by, 'sa': sort_asc };
         const title = '';
         const queryString = window.location.search;
@@ -351,25 +378,42 @@ var GridPanel = undefined;
      * Update the current filters to include the new ones from given catalogue
      * @param {JSON} filters JSON representation of filters for given catalogue
      */
-    function updateFiltersFromJSON(filters) {
+    function updateFiltersFromJSON(population, filters) {
         filters.forEach(element => {
             var filterable = element[0];
-            if (!(filterable in searching_para)) { // filterable is not already in the searchable
-                searching_para[filterable] = element.slice(1); // add the filterable param to the searching_params
-            } else { // filterable is already in the parameters. Add all the elements that are not already in it
-                element.slice(1).forEach(val => {
-                    if (!searching_para[filterable].includes(val)) {
-                        searching_para[filterable].push(val);
-                    }
-                });
+            // population will be a global filterable, other ones will be nested inside of the population
+            if (filterable === 'population') {
+                if (!(filterable in searching_para)) { // filterable is not already in the searchable
+                    searching_para[filterable] = element.slice(1); // add the filterable param to the searching_params
+                } else { // filterable is already in the parameters. Add all the elements that are not already in it
+                    element.slice(1).forEach(val => {
+                        if (val && !searching_para[filterable].includes(val)) { // not an empty string and doesn't already exist.
+                            searching_para[filterable].push(val);
+                        }
+                    });
+                }
+            } else {
+                if (!(population in searching_para)) {
+                    searching_para[population] = {}
+                }
+
+                if (!(filterable in searching_para[population])) { // filterable is not already in the searchable
+                    searching_para[population][filterable] = element.slice(1); // add the filterable param to the searching_params //Unknown deprecated with empty string.
+                } else { // filterable is already in the parameters. Add all the elements that are not already in it
+                    element.slice(1).forEach(val => {
+                        if (!searching_para[population][filterable].includes(val)) {
+                            searching_para[population][filterable].push(val);
+                        }
+                    });
+                }
             }
-            // ensure that the 'Unknown' field is at the bottom of the dropdown
-            var index = searching_para[filterable].indexOf("Unknown");
-            if (index != -1) {
-                searching_para[filterable].splice(index, 1);
-                searching_para[filterable].push('Unknown');
-            }
-        });
+            // // ensure that the 'Unknown' field is at the bottom of the dropdown
+            // var index = searching_para[filterable].indexOf("Unknown");
+            // if (index != -1) {
+                //     searching_para[filterable].splice(index, 1);
+                //     searching_para[filterable].push('Unknown');
+                // }
+            });
     }
 
 
@@ -386,9 +430,9 @@ var GridPanel = undefined;
         // Does this even matter?? Update params is called on teh loading anyway
         // these are passed through the url to the searching params. Can update these first and then send them to the fellas over there
         searching_para = {
-            s1: ["SRKW", "NRKW"],
-            s2: ["J"],
-            s3: ["J", "K", "L"],
+            // s1: ["SRKW", "NRKW"],
+            // s2: ["J"],
+            // s3: ["J", "K", "L"],
         };
         sort_by = 'call_type';
         sort_asc = 'as';
@@ -474,10 +518,10 @@ var GridPanel = undefined;
     function updateFiltersFromURLParams(params) {
         Object.keys(params).forEach((key) => {
             const arr = params[key];
-            var filterable = arr[0];
+            var filterable = key;
 
             if (!(filterable in searching_para))
-                searching_para[filterable] = arr.slice(1);
+                searching_para[filterable] = arr;
             else {
                 arr.slice(1).forEach(val => {
                     if (!searching_para[filterable].includes(val)) {
@@ -729,7 +773,7 @@ var GridPanel = undefined;
                             </svg>Play (Call Name: '+ lity_data.call_type + ') </button>';
             let additional_row = '';
 
-            
+
             var temp = Object.keys(lity_data);
             const fields = temp.filter(item => {
                 return (!['image_file', 'wav_file', 'description_file', 'call_type', 'filename', 'd1', 'd2'].includes(item));
@@ -737,9 +781,9 @@ var GridPanel = undefined;
             var count = fields.length;
             var is_odd = count % 2;
 
-            for (let i = 0; i <= Math.floor(count/2); i+=2) {
+            for (let i = 0; i <= Math.floor(count / 2); i += 2) {
                 var first = fields[i];
-                var second = fields[i+1];
+                var second = fields[i + 1];
 
                 additional_row += '<div class="row text-sm-center text-start text-info border-2 border-light border-bottom"><div class="col-12 col-sm-6"><span>' + first + ': ' + lity_data[first] + '</span></div>';
                 additional_row += '<div class="col-12 col-sm-6"><span>' + second + ': ' + lity_data[second] + '</span></div></div>';
@@ -747,7 +791,7 @@ var GridPanel = undefined;
 
             if (is_odd) {
                 additional_row += '<div class="row text-sm-center text-start text-info border-2 border-light border-bottom">';
-                var field = fields[count-1];
+                var field = fields[count - 1];
                 additional_row += '<div class="col"><span>' + field + ': ' + lity_data[field] + '</span></div>';
             }
             // all_fields.forEach(field => {

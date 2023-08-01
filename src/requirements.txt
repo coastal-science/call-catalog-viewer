@@ -3,6 +3,5 @@ pandas
 numpy
 PyYAML
 json
-
-
-
+gitpython
+flatdict

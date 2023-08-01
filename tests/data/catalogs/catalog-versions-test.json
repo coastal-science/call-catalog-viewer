@@ -1,0 +1,9 @@
+{
+    "yaml-file": "call-catalog.yaml",
+    "site-details": {
+        "catalogue": {
+            "title": "Catalog Versions Test",
+            "is_root": "true"
+        }
+    }
+}
