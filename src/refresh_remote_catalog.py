@@ -24,7 +24,7 @@ logger = logging.getLogger(__name__)
 
 REFRESH_REMOTE_CATALOG_ERROR = -1
 
-def pull_from_remote(path_to_repo, repo_name, branch):
+def pull_from_remote(path_to_repo, branch):
     '''
     Pulls all of the changes from the remote repository
     '''
@@ -132,7 +132,7 @@ def cli(args=None):
         for catalog in catalog_list:
             name = get_name_from_url(catalog)
             logger.info(f'Pulling changes from {name}...')
-            pull_from_remote(path_to_catalogs_dir + '/' + name, name, branch)
+            pull_from_remote(path_to_catalogs_dir + '/' + name, branch)
             update_json_file(path_to_catalogs_dir, name)
             logger.info(f'Successfully pulled changes from {name}...')
             
@@ -159,7 +159,7 @@ def cli(args=None):
         return REFRESH_REMOTE_CATALOG_ERROR
     else:
         logger.info(f'Pulling remote changes from {repo_name}...')
-        if pull_from_remote(path_to_repo_dir, repo_name, branch) != 0:
+        if pull_from_remote(path_to_repo_dir, branch) != 0:
             logger.error(f'There was a problem pulling the changes for repo {repo_name}')
             return REFRESH_REMOTE_CATALOG_ERROR
         update_json_file(path_to_catalogs_dir, repo_name)
