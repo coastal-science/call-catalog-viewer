@@ -168,3 +168,29 @@ def export_to_json(path_to_catalogs_directory, df, population, filters, sortable
         json.dump(data, f)
             
     print(f'Successfuly exported call data to catalogs/{file_name}.json', end='\n\n')
+
+def add_index_yaml(logger, path_to_catalogs_dir, repo_name):
+    logger.info(f'Adding {repo_name} to catalogs/index.yaml')
+    path = path_to_catalogs_dir + '/index.yaml'
+    
+    # index.yaml does not exist, creating it
+    if not exists(path):
+        logger.info(f'catalogs/index.yaml does not exist, creating it before adding files....')
+        
+        with open(path, 'w') as f:
+            # catalogs = yaml.safe_load(f)
+            catalogs = dict()
+            catalogs['catalogs'] = [repo_name]
+            
+            yaml.dump(catalogs, f)
+            
+    else: 
+        with open(path, 'r+') as f:
+            catalogs = yaml.safe_load(f)
+            
+            catalogs['catalogs'].append(repo_name)
+            
+            f.seek(0)
+            yaml.dump(catalogs, f)
+    
+    logger.info('Successfully added catalogs/index.yaml\n')  
