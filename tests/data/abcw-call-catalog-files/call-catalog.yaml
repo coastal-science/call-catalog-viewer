@@ -23,7 +23,7 @@ fields:
   - pod:
     - J,K,L
   - population:
-    - SRKW,NRKW,Transient
+    - SRKW
   - subclan
   - subpopulation
 calls:
