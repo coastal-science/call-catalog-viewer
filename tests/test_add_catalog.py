@@ -73,7 +73,6 @@ def test_add(tmp_path: Path, tmp_path_factory: Path, shared_datadir: Path, monke
     # operations occur in the `tmp_path` folder,
     # which is unique to each invocation of the test function handled by `monkeypatch`
 
-
 def test_add_2(tmp_path: Path, tmp_path_factory: Path, shared_datadir: Path, monkeypatch: pytest.MonkeyPatch):
     """Add a files directory to the catalog in a custom folder names/space and index.
     Using a real files directory and yaml"""
@@ -83,14 +82,13 @@ def test_add_2(tmp_path: Path, tmp_path_factory: Path, shared_datadir: Path, mon
 
     lib_name = make_library(library_name="library")
 
-    index = make_index(lib_name, index_name="directory.yaml")
+    index = make_index(lib_name, index_name="index.yaml")
     
     # act
     exit_code = add_catalog(["ABCW",
                              str(shared_datadir / 'abcw-call-catalog-files'), #"catalogs",
                              "call-catalog.yaml",
-                             "--LIBRARY", str(lib_name),
-                            "--LIBRARY-INDEX", 'directory.yaml'])
+                             "--LIBRARY", str(lib_name)])
     
     # assert
     assert exit_code == 0
@@ -100,7 +98,7 @@ def test_add_2(tmp_path: Path, tmp_path_factory: Path, shared_datadir: Path, mon
     assert (lib_name / "ABCW").is_dir()
     assert (lib_name / "ABCW.json").is_file()
     
-    assert index.exists() and index.name == "directory.yaml"
+    assert index.exists() and index.name == "index.yaml"
     with open(index) as f:
         content = yaml.safe_load(f)
         assert "ABCW" in content['catalogs']
