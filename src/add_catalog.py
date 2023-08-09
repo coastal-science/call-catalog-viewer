@@ -63,7 +63,7 @@ def cli(args=None):
     path_to_data_folder = Path(args.source).resolve()
     yaml_data_file_name = args.catalog
     path_to_catalog_dir = args.LIBRARY
-    path_to_repo_dir = Path(path_to_catalog_dir + '/' + repo_name).resolve()
+    path_to_repo_dir = Path(path_to_catalog_dir + '/' + repo_name)
     force = args.force
     
     thisfile = Path(__file__).name
@@ -80,23 +80,25 @@ def cli(args=None):
         logger.error(f"{yaml_data_file_name=} does not exist or does not have yaml extension.")
         return ADD_CATALOG_ERROR
     
-    # create or append to index.yaml 
-    utils.add_index_yaml(logger, str(path_to_catalog_dir), repo_name)
-    
-    logger.info(f'add catalog named {repo_name=} with entries {yaml_data_file_name} from {path_to_data_folder}')
-    
     # if force, then remove the old catalog
     if force:
         removed = remove_catalog([
             repo_name,
             '--LIBRARY', path_to_catalog_dir
         ])
+        
         if not removed == 0:
             return ADD_CATALOG_ERROR
-        
+    
+    # already added, and not removed (not force)
     if exists(path_to_repo_dir):
         logger.error('Catalog already exists in viewer. Use `--force` to reload it')
         return ADD_CATALOG_ERROR
+    
+     # create or append to index.yaml 
+    utils.add_index_yaml(logger, str(path_to_catalog_dir), repo_name)
+    
+    logger.info(f'add catalog named {repo_name=} with entries {yaml_data_file_name} from {path_to_data_folder}')
     
     logger.info(f"Creating symlinks for {repo_name}")
     path_to_repo_dir.symlink_to(path_to_data_folder, target_is_directory=True)
