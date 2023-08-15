@@ -572,7 +572,7 @@ var GridPanel = undefined;
             audio_element = document.createElement('audio');
             audio_element.setAttribute('src', '');
             audio_element.setAttribute('src', LIBRARY + '/' + data_target.wav_file);
-            audio_element.setAttribute('preload', 'metadata');
+            audio_element.setAttribute('autoplay', 'autoplay');
             audio_element.load();
         });
         $('#gi-area').on('click', '.itemblock', function (e) {
@@ -827,7 +827,7 @@ var GridPanel = undefined;
             $(this).removeClass('btn-primary').addClass('btn-success');
             audio_element.setAttribute('src', '');
             audio_element.setAttribute('src', LIBRARY + '/' + lity_data.wav_file);
-            audio_element.setAttribute('preload', 'metadata');
+            audio_element.setAttribute('autoplay', 'autoplay');
             audio_element.load();
             audio_element.addEventListener('ended', function () {
                 $("#play").html('<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-play" viewBox="0 0 16 16">\
