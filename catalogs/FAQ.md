@@ -7,23 +7,19 @@ This website and all audio recordings it hosts are subject to the terms under [O
 As long as the terms in the [Licence](license.html) page are respected, you are free to:
 - Copy, modify, publish, translate, adapt, distribute or otherwise use the Information in any medium, mode or format for any lawful purpose.
 
-## What is SRKW?
-
-SRKW acronyms stands for *Southern Resident Killer Whale*
-
 ## How to cite?
 
 Suggested citation for research use of catalogue:
 
->Ford, John K.B., Volker B. Deecke, and James F. Pilkington. 2022. Dialects of Killer Whales in Coastal Northeastern Pacific Waters: A Catalogue of Call Types.  [catalogue URL]()  Accessed on [today’s date]()
+>Ford, John K.B., Volker B. Deecke, and James F. Pilkington. 2023. Dialects of Killer Whales in Coastal Northeastern Pacific Waters: A Catalogue of Call Types. [orca.research.sfu.ca/call-library](https://orca.research.sfu.ca/call-library). Accessed 1 Aug. 2023.
 
 Bibtex
 ```
 @misc{Ford_Volker_Pilkington, 
-  author = {Ford, John K.B. and Volker, Deecke B and Pilkington, James F}
+  author = {Ford, John K.B. and Deecke, Volker B. and Pilkington, James F.}
   title = {Dialects of Killer Whales in Coastal Northeastern Pacific Waters: A Catalogue of Call Types}, 
-  howpublished = {\url{catalogue URL}}, 
-  year = {2022}
+  howpublished = {\url{orca.research.sfu.ca/call-library}}, 
+  year = {2023}
 } 
 ```
 
