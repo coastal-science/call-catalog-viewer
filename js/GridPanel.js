@@ -571,7 +571,7 @@ var GridPanel = undefined;
             }
             audio_element = document.createElement('audio');
             audio_element.setAttribute('src', '');
-            audio_element.setAttribute('src', LIBRARY + '/' + data_target.wav_file);
+            audio_element.setAttribute('src', LIBRARY + '/' + data_target.audio_file);
             audio_element.setAttribute('autoplay', 'autoplay');
             audio_element.load();
         });
@@ -737,7 +737,7 @@ var GridPanel = undefined;
             
             var temp = Object.keys(lity_data);
             const fields = temp.filter(item => {
-                return (!['image_file', 'wav_file', 'description_file', 'call_type', 'filename', 'd1', 'd2'].includes(item));
+                return (!['image_file', 'audio_file', 'description_file', 'call_type', 'filename', 'd1', 'd2'].includes(item));
             })
             var count = fields.length;
             var is_odd = count % 2;
@@ -826,7 +826,7 @@ var GridPanel = undefined;
           </svg>Playing  (Call Name: '+ lity_data.call_type + ')');
             $(this).removeClass('btn-primary').addClass('btn-success');
             audio_element.setAttribute('src', '');
-            audio_element.setAttribute('src', LIBRARY + '/' + lity_data.wav_file);
+            audio_element.setAttribute('src', LIBRARY + '/' + lity_data.audio_file);
             audio_element.setAttribute('autoplay', 'autoplay');
             audio_element.load();
             audio_element.addEventListener('ended', function () {
