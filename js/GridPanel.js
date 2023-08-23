@@ -15,7 +15,7 @@ var GridPanel = undefined;
     var next_drawn = undefined;
 
     var current_page = undefined;
-    var page_size = 240;
+    var page_size = 24;
     var total_result = undefined;
     var total_page = undefined;
     var data_initialized = false;
