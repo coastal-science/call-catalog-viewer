@@ -44,7 +44,21 @@
         .btn-filter {background-color:darkgray;border-color:darkgray;color:white;}
 
         .btn-filter a:hover {color:transparent;}
-       
+
+        #btn-back-to-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: none;
+        }
+        div.sticky {
+            position: -webkit-sticky;
+            position: sticky;
+            top: 0;
+            /* background-color: white; */
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(8px);
+        }
         .form-check-input:checked {background-color: darkgray;border-color:darkgray;}
         .itemblock > div{
             height:100%;
@@ -133,6 +147,9 @@
         kbd{
             font-size: 1.2rem;
         }
+        html {
+            scroll-padding-top: 100px; /* manually set to navbar height? */
+        }
     </style>
 
 
@@ -177,6 +194,17 @@
             <h1 id="catalogue-title" class="text-center text-capitalize font-weight-bold" style="font-family:'Segoe UI', sans-serif;letter-spacing:.1em;font-size:2rem;font-weight:400">Explore Catalogue</h1>
         </div>
       
+        <button
+            type="button"
+            class="btn btn-warning btn-floating btn-lg"
+            id="btn-back-to-top"
+            title="Go to top"
+        >Top
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-up" viewBox="0 0 16 16">
+            <path fill-rule="evenodd" d="M8 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L7.5 2.707V14.5a.5.5 0 0 0 .5.5z"/>
+        </svg>
+        </button>
+
         <div class="row"><div class="col">
         <div class="panel container-fluid" id="search_panel">
             <div class="row justify-content-md-center" id="search_rows">
@@ -207,7 +235,7 @@
             &nbsp;
         </span></div> </div>
         <div class="container-fluid" id="resultgrid">
-            <div class="container">
+            <div class="container sticky">
                 <div class="row justify-content-md-center">
                     <div class="col col-8 col-sm-8 col-md-4 col-lg-4 col-xl-3 col-xxl-3 row align-middle d-flex flex-nowrap align-items-center">
                         <div class="form-check form-switch align-middle d-flex flex-nowrap">
@@ -329,13 +357,36 @@
     }
     }
 
+    //Get the button
+    let mybutton = document.getElementById("btn-back-to-top");
+
+    // When the user scrolls down 20px from the top of the document, show the button
+    window.onscroll = function () {
+    scrollFunction();
+    };
+
+    function scrollFunction() {
+    if (
+        document.body.scrollTop > 20 ||
+        document.documentElement.scrollTop > 20
+    ) {
+        mybutton.style.display = "block";
+    } else {
+        mybutton.style.display = "none";
+    }
+    }
+    // When the user clicks on the button, scroll to the top of the document
+    mybutton.addEventListener("click", backToTop);
+
+    function backToTop() {
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
+    }
     
     $(function(){
         SearchPanel.init();
         GridPanel.init();
     })
-
-
 
 </script>
 
