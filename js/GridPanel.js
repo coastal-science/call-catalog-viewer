@@ -682,8 +682,7 @@ var GridPanel = undefined;
                 }
             }
             $('#resultgrid > div.container > div.row.justify-content-md-center > div.col.col-12.col-sm-12.col-md-12.col-lg-8.col-xl-6.col-xxl-6.row.align-items-center.align-middle > span').focus();
-            let mybutton = document.getElementById("btn-back-to-top");
-            mybutton.click()
+            scrollBackToResults()
             getData();
         });
 

@@ -385,6 +385,20 @@
     document.documentElement.scrollTop = 0;
     }
     
+    // buttonToTop.addEventListener("click", scrollBackToResults);
+    function scrollBackToResults() {
+        $('html, body').animate({
+        scrollTop: $("#resultgrid").offset().top
+        }, 0);
+    }
+
+    // buttonToTop.addEventListener("click", scrollBackToSearch);
+    function scrollBackToSearch() {
+        $('html, body').animate({
+        scrollTop: $("#search_now").offset().top
+        }, 0);
+    }
+    
     $(function(){
         SearchPanel.init();
         GridPanel.init();
