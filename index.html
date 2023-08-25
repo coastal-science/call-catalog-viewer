@@ -235,7 +235,7 @@
             &nbsp;
         </span></div> </div>
         <div class="container-fluid" id="resultgrid">
-            <div class="container sticky">
+            <div class="container">
                 <div class="row justify-content-md-center">
                     <div class="col col-8 col-sm-8 col-md-4 col-lg-4 col-xl-3 col-xxl-3 row align-middle d-flex flex-nowrap align-items-center">
                         <div class="form-check form-switch align-middle d-flex flex-nowrap">
@@ -272,6 +272,8 @@
                         </select>
                     </div>
                 </div>
+            </div>
+            <div class="container sticky" id="stickyDiv">
                 <div class="row justify-content-md-center">
                     <div class="col col-12 col-sm-8 col-md-8 col-lg-4 col-xl-4 col-xxl-3 row align-items-center align-middle">
                         <select id="page_size"  aria-label="size 3 select" class=" selectpicker col">
@@ -358,7 +360,7 @@
     }
 
     //Get the button
-    let mybutton = document.getElementById("btn-back-to-top");
+    let buttonToTop = document.getElementById("btn-back-to-top");
 
     // When the user scrolls down 20px from the top of the document, show the button
     window.onscroll = function () {
@@ -370,15 +372,15 @@
         document.body.scrollTop > 20 ||
         document.documentElement.scrollTop > 20
     ) {
-        mybutton.style.display = "block";
+        buttonToTop.style.display = "block";
     } else {
-        mybutton.style.display = "none";
+        buttonToTop.style.display = "none";
     }
     }
+    
     // When the user clicks on the button, scroll to the top of the document
-    mybutton.addEventListener("click", backToTop);
-
-    function backToTop() {
+    buttonToTop.addEventListener("click", scrollBackToTop);
+    function scrollBackToTop() {
     document.body.scrollTop = 0;
     document.documentElement.scrollTop = 0;
     }
