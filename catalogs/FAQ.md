@@ -7,9 +7,7 @@ This website and all audio recordings it hosts are subject to the terms under [O
 As long as the terms in the [Licence](license.html) page are respected, you are free to:
 - Copy, modify, publish, translate, adapt, distribute or otherwise use the Information in any medium, mode or format for any lawful purpose.
 
-## How to cite?
-
-Suggested citation for research use of catalogue:
+When refering to the catalogue please cite the following references:
 
 >Ford, John K.B., Volker B. Deecke, and James F. Pilkington. 2023. Dialects of Killer Whales in Coastal Northeastern Pacific Waters: A Catalogue of Call Types. [orca.research.sfu.ca/call-library](https://orca.research.sfu.ca/call-library). Accessed 1 Aug. 2023.
 
