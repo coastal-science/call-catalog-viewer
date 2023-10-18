@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.14.0-beta2/css/bootstrap-select.min.css" integrity="sha512-mR/b5Y7FRsKqrYZou7uysnOdCIJib/7r5QeJMFvLNHNhtye3xJp1TdJVPLtetkukFn227nKpXD9OjUc09lx97Q==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lity/2.4.1/lity.min.css" integrity="sha512-UiVP2uTd2EwFRqPM4IzVXuSFAzw+Vo84jxICHVbOA1VZFUyr4a6giD9O3uvGPFIuB2p3iTnfDVLnkdY7D/SJJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/w3-css/4.1.0/3/w3.min.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato&display=swap">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="./css/css">
     
@@ -44,7 +44,21 @@
         .btn-filter {background-color:darkgray;border-color:darkgray;color:white;}
 
         .btn-filter a:hover {color:transparent;}
-       
+
+        #btn-back-to-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: none;
+        }
+        div.sticky {
+            position: -webkit-sticky;
+            position: sticky;
+            top: 0;
+            /* background-color: white; */
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(8px);
+        }
         .form-check-input:checked {background-color: darkgray;border-color:darkgray;}
         .itemblock > div{
             height:100%;
@@ -133,6 +147,9 @@
         kbd{
             font-size: 1.2rem;
         }
+        html {
+            scroll-padding-top: 100px; /* manually set to navbar height? */
+        }
     </style>
 
 
@@ -177,6 +194,17 @@
             <h1 id="catalogue-title" class="text-center text-capitalize font-weight-bold" style="font-family:'Segoe UI', sans-serif;letter-spacing:.1em;font-size:2rem;font-weight:400">Explore Catalogue</h1>
         </div>
       
+        <button
+            type="button"
+            class="btn btn-warning btn-floating btn-lg"
+            id="btn-back-to-top"
+            title="Go to top"
+        >Top
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-up" viewBox="0 0 16 16">
+            <path fill-rule="evenodd" d="M8 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L7.5 2.707V14.5a.5.5 0 0 0 .5.5z"/>
+        </svg>
+        </button>
+
         <div class="row"><div class="col">
         <div class="panel container-fluid" id="search_panel">
             <div class="row justify-content-md-center" id="search_rows">
@@ -215,6 +243,20 @@
                             <label class="form-check-label" for="show_meta">&nbsp; Metadata</label>
                         </div>
                     </div>
+
+                    <div class="col col-12 col-sm-12 col-md-12 col-lg-8 col-xl-6 col-xxl-6 row align-items-center align-middle">
+                        <div class="col col-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 col-xxl-6">
+                            <label class="form-check-label" for="show-only">Show only &nbsp;</label>
+                            <input min="1" max="20" value="1" step="1" type="number" id="show-only" pattern="\d*" list="top_x"/>
+                            <!-- onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57"/>  -->
+                            <!-- onkeypress ensures that only whole numbers are accepted -->
+                        </div>
+                        <div class="col col-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 col-xxl-6 form-check form-switch">
+                            <input class="form-check-input" type="checkbox" role="switch" onclick="showAllOnly()" id="show-all">
+                            <label class="form-check-label" for="show-all">&nbsp; Show All</label>
+                        </div>
+                    </div> 
+                    
                     <div class="col col-12 col-sm-12 col-md-12 col-lg-8 col-xl-6 col-xxl-6 row align-items-center align-middle">
                         <span class="col col-4 col-sm-4 col-md-2 col-lg-2 col-xl-2 col-xxl-2">
                             Sort By: 
@@ -230,6 +272,8 @@
                         </select>
                     </div>
                 </div>
+            </div>
+            <div class="container sticky" id="stickyDiv">
                 <div class="row justify-content-md-center">
                     <div class="col col-12 col-sm-8 col-md-8 col-lg-4 col-xl-4 col-xxl-3 row align-items-center align-middle">
                         <select id="page_size"  aria-label="size 3 select" class=" selectpicker col">
@@ -304,13 +348,61 @@
     }
     }
 
+    function showAllOnly() {
+    var show_all = document.getElementById("show-all");
+    var show_only = document.getElementById("show-only");
+
+    if (show_all.checked == true) {
+        show_only.disabled = true
+    } else { 
+        show_only.disabled = false
+    }
+    }
+
+    //Get the button
+    let buttonToTop = document.getElementById("btn-back-to-top");
+
+    // When the user scrolls down 20px from the top of the document, show the button
+    window.onscroll = function () {
+        scrollFunction();
+    };
+
+    function scrollFunction() {
+    if (
+        document.body.scrollTop > 20 ||
+        document.documentElement.scrollTop > 20
+    ) {
+        buttonToTop.style.display = "block";
+    } else {
+        buttonToTop.style.display = "none";
+    }
+    }
     
+    // When the user clicks on the button, scroll to the top of the document
+    buttonToTop.addEventListener("click", scrollBackToTop);
+    function scrollBackToTop() {
+        document.body.scrollTop = 0;
+        document.documentElement.scrollTop = 0;
+    }
+  
+    // buttonToTop.addEventListener("click", scrollBackToResults);
+    function scrollBackToResults() {
+        $('html, body').animate({
+        scrollTop: $("#resultgrid").offset().top
+        }, 0);
+    }
+
+    // buttonToTop.addEventListener("click", scrollBackToSearch);
+    function scrollBackToSearch() {
+        $('html, body').animate({
+        scrollTop: $("#search_now").offset().top
+        }, 0);
+    }
+
     $(function(){
         SearchPanel.init();
         GridPanel.init();
     })
-
-
 
 </script>
 
