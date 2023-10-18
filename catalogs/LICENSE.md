@@ -9,4 +9,4 @@ You must, where you do any of the above, use the following attribution statement
 
 > *Contains information licensed under the Open Government Licence &ndash; Canada 2.0.*
 
-When refering to the catalogue please [cite](https://orca.research.sfu.ca/johnf/faq.html#how-to-use-this-site) the following references.
+When refering to the catalogue please [cite](https://orca.research.sfu.ca/johnf/faq.html#how-to-use-this-site) the following reference.
