@@ -75,4 +75,24 @@ Here are some clips from recordings of Southern Resident pods in action.
 |<audio controls> <source type="audio/wav" src="./catalogs/srkw-call-catalogue-files/media/J K L pods together_JFord.wav"  title="J, K and L pods together, Juan de Fuca Strait">Your browser does not support the audio element.</audio> |
 |J, K and L pods together, Juan de Fuca Strait |
 
+## What can we learn from killer whale sounds?
+
+The call dialect of a killer whale kin group is learned by calves as they grow up and are retained for life. Thus, dialects are passed on from generation to generation and are a cultural reflection of the lineage of a particular pod, clan, or population, which may persist for centuries. Patterns of similarities and differences in the dialects of resident pods have revealed much about their ancestry, with some pods being very closely related and others more distant.
+
+The dialects of orcas are also a useful and important tool for studying the seasonal movement patterns of different pods and populations. Remote underwater acoustical devices placed on the seafloor or hydrophones cabled to shore collect recordings of killer whale sounds, which can then be interpreted to identify the population and, for Resident orcas, the clan or pod(s) present. Passive acoustic monitoring is effective throughout the year, day and night, and during stormy weather.
+
+For those wishing to take a deeper dive into killer whale dialects and how they are used to monitor the seasonal movements of the whales, the following are some relevant scientific publications:
+
+- Deecke, V.B., Ford, J.K.B., and Slater, P.J.B. 2005. The vocal behaviour of mammal-eating killer whales: communicating with costly calls. _Animal Behaviour_, 69:395-405.
+
+- Ford, J.K.B. 1989. Acoustic behaviour of resident killer whales (Orcinus orca) in British Columbia. _Canadian Journal of Zoology_, 67:727-745.
+
+- Ford, J.K.B. 1991. Vocal traditions among resident killer whales (Orcinus orca) in coastal waters of British Columbia. _Canadian Journal of Zoology_, 69:1454-1483.
+
+- Riera, A., Pilkington, J.F., Ford, J.K.B., Stredulinsky, E.H., and Chapman, N.R. 2019. Passive acoustic monitoring off Vancouver Island reveals extensive use by at-risk Resident killer whale (Orcinus orca) populations. _Endangered Species Research_, 39:221-234.
+
+- Rice, A., Deecke, V.B., Ford, J.K.B, Pilkington, J.F., Oleson, E.M. and Hildebrand, J.A. 2017. Spatial and temporal occurrence of killer whale ecotypes off the outer coast of Washington State, USA. _Marine Ecology Progress Series_, 572:255-268.
+
+- Pilkington, J.F., Stredulinsky, E.H., Gavrilchuk, K., Thornton, S.J., Ford, J.K.B., and Doniol-Valcroze, T. 2023. Patterns of winter occurrence of three sympatric killer whale populations off eastern Vancouver Island, Canada, based on passive acoustic monitoring. _Frontiers in Marine Science_, 10, p.1204908.
+
 
