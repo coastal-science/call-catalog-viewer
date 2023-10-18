@@ -2,7 +2,7 @@
 
 ## How to use this site?
 
-This website and all audio recordings it hosts are subject to the terms under [Open Government Licence &ndash; Canada 2.0](https://open.canada.ca/en/open-government-licence-canada). The complete license is found on the [Licence](license.html) page.
+This website and all audio recordings it hosts are subject to the terms under [Open Government Licence &ndash; Canada 2.0](https://open.canada.ca/en/open-government-licence-canada). The complete licence is found on the [Licence](license.html) page.
 
 As long as the terms in the [Licence](license.html) page are respected, you are free to:
 - Copy, modify, publish, translate, adapt, distribute or otherwise use the Information in any medium, mode or format for any lawful purpose.
