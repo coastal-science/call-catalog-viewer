@@ -7,16 +7,16 @@ This website and all audio recordings it hosts are subject to the terms under [O
 As long as the terms in the [Licence](license.html) page are respected, you are free to:
 - Copy, modify, publish, translate, adapt, distribute or otherwise use the Information in any medium, mode or format for any lawful purpose.
 
-When refering to the catalogue please cite the following references:
+When referring to the catalogue please cite the following references:
 
->Ford, John K.B., Volker B. Deecke, and James F. Pilkington. 2023. Dialects of Killer Whales in Coastal Northeastern Pacific Waters: A Catalogue of Call Types. [orca.research.sfu.ca/call-library](https://orca.research.sfu.ca/call-library). Accessed 1 Aug. 2023.
+> Ford, John K.B., Volker B. Deecke, and James F. Pilkington. 2023. Dialects of Killer Whales in Coastal Northeastern Pacific Waters: A Catalogue of Call Types. [https://orca.research.sfu.ca/call-library](https://orca.research.sfu.ca/call-library). Accessed 1 Aug. 2023.
 
 Bibtex
 ```
 @misc{Ford_Volker_Pilkington, 
   author = {Ford, John K.B. and Deecke, Volker B. and Pilkington, James F.}
   title = {Dialects of Killer Whales in Coastal Northeastern Pacific Waters: A Catalogue of Call Types}, 
-  howpublished = {\url{orca.research.sfu.ca/call-library}}, 
+  howpublished = {\url{https://orca.research.sfu.ca/call-library}}, 
   year = {2023}
 } 
 ```
@@ -83,16 +83,16 @@ The dialects of orcas are also a useful and important tool for studying the seas
 
 For those wishing to take a deeper dive into killer whale dialects and how they are used to monitor the seasonal movements of the whales, the following are some relevant scientific publications:
 
-- Deecke, V.B., Ford, J.K.B., and Slater, P.J.B. 2005. The vocal behaviour of mammal-eating killer whales: communicating with costly calls. _Animal Behaviour_, 69:395-405.
+> Deecke, V.B., Ford, J.K.B., and Slater, P.J.B. 2005. The vocal behaviour of mammal-eating killer whales: communicating with costly calls. _Animal Behaviour_, 69:395-405. https://doi.org/10.1016/j.anbehav.2004.04.014
 
-- Ford, J.K.B. 1989. Acoustic behaviour of resident killer whales (Orcinus orca) in British Columbia. _Canadian Journal of Zoology_, 67:727-745.
+> Ford, J.K.B. 1989. Acoustic behaviour of resident killer whales (Orcinus orca) in British Columbia. _Canadian Journal of Zoology_, 67:727-745. https://doi.org/10.1139/z89-105
 
-- Ford, J.K.B. 1991. Vocal traditions among resident killer whales (Orcinus orca) in coastal waters of British Columbia. _Canadian Journal of Zoology_, 69:1454-1483.
+> Ford, J.K.B. 1991. Vocal traditions among resident killer whales (Orcinus orca) in coastal waters of British Columbia. _Canadian Journal of Zoology_, 69:1454-1483. https://doi.org/10.1139/z91-206
 
-- Riera, A., Pilkington, J.F., Ford, J.K.B., Stredulinsky, E.H., and Chapman, N.R. 2019. Passive acoustic monitoring off Vancouver Island reveals extensive use by at-risk Resident killer whale (Orcinus orca) populations. _Endangered Species Research_, 39:221-234.
+> Riera, A., Pilkington, J.F., Ford, J.K.B., Stredulinsky, E.H., and Chapman, N.R. 2019. Passive acoustic monitoring off Vancouver Island reveals extensive use by at-risk Resident killer whale (Orcinus orca) populations. _Endangered Species Research_, 39:221-234. https://doi.org/10.3354/esr00966
 
-- Rice, A., Deecke, V.B., Ford, J.K.B, Pilkington, J.F., Oleson, E.M. and Hildebrand, J.A. 2017. Spatial and temporal occurrence of killer whale ecotypes off the outer coast of Washington State, USA. _Marine Ecology Progress Series_, 572:255-268.
+> Rice, A., Deecke, V.B., Ford, J.K.B, Pilkington, J.F., Oleson, E.M. and Hildebrand, J.A. 2017. Spatial and temporal occurrence of killer whale ecotypes off the outer coast of Washington State, USA. _Marine Ecology Progress Series_, 572:255-268. https://doi.org/10.3354/meps12158
 
-- Pilkington, J.F., Stredulinsky, E.H., Gavrilchuk, K., Thornton, S.J., Ford, J.K.B., and Doniol-Valcroze, T. 2023. Patterns of winter occurrence of three sympatric killer whale populations off eastern Vancouver Island, Canada, based on passive acoustic monitoring. _Frontiers in Marine Science_, 10, p.1204908.
+> Pilkington, J.F., Stredulinsky, E.H., Gavrilchuk, K., Thornton, S.J., Ford, J.K.B., and Doniol-Valcroze, T. 2023. Patterns of winter occurrence of three sympatric killer whale populations off eastern Vancouver Island, Canada, based on passive acoustic monitoring. _Frontiers in Marine Science_, 10, p.1204908. https://doi.org/10.3389/fmars.2023.1204908
 
 
