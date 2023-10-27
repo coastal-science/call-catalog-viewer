@@ -565,7 +565,8 @@ var GridPanel = undefined;
             e.preventDefault();
             var obj_id = $(this).parents('.itemblock').attr('id').substring(3);
             var data_target_seq = id_to_seq[obj_id];
-            var data_target = resultData[data_target_seq];
+            page_offset = (current_page - 1) * page_size
+            var data_target = resultData[data_target_seq + page_offset];
             if (audio_element !== undefined && audio_element !== null && audio_element.pause !== undefined) {
                 audio_element.pause();
             }
@@ -574,8 +575,8 @@ var GridPanel = undefined;
             audio_element.setAttribute('src', LIBRARY + '/' + data_target.audio_file);
             audio_element.setAttribute('autoplay', 'autoplay');
             audio_element.load();
-            console.log(obj_id)
-            console.log(audio_element)
+            // console.log(obj_id)
+            // console.log(audio_element)
         });
         $('#gi-area').on('click', '.itemblock', function (e) {
             $(this).siblings('.itemblock').removeClass('selecting');
@@ -826,7 +827,7 @@ var GridPanel = undefined;
 
             pop_opening = true;
 
-            console.log(lity_data)
+            // console.log(lity_data)
         });
         $(document).on('click', '.lity-container #play', function () {
             audio_element = document.createElement('audio');
@@ -844,7 +845,7 @@ var GridPanel = undefined;
               </svg>Play  (Call Name: '+ lity_data.call_type + ')').addClass('btn-primary').removeClass('btn-success');
 
             })
-            console.log(lity_data)
+            // console.log(lity_data)
         });
         $(document).on('lity:close', function (event, instance) {
             if (audio_element !== undefined && audio_element.setAttribute !== undefined) {
