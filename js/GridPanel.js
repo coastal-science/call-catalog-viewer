@@ -819,6 +819,8 @@ var GridPanel = undefined;
                 </div>`);
 
             pop_opening = true;
+
+            console.log(lity_data)
         });
         $(document).on('click', '.lity-container #play', function () {
             audio_element = document.createElement('audio');
