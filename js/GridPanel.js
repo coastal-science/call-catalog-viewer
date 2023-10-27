@@ -634,7 +634,11 @@ var GridPanel = undefined;
                     if (target.length >= 0) {
                         $(target).siblings().removeClass('selecting');
                         $(target).addClass('selecting');
-                        target[0].scrollIntoView({ block: "end" });
+                        if (target[0]) { 
+                            // handle exception when navigating with arrow keys past the items on the page pagination, 
+                            // the additional items are on the next page
+                            target[0].scrollIntoView({ block: "end" });
+                        }
                         if (poped) {
                             if (delayed_pop !== undefined) {
                                 clearTimeout(delayed_pop);
