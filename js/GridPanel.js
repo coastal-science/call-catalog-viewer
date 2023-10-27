@@ -574,6 +574,8 @@ var GridPanel = undefined;
             audio_element.setAttribute('src', LIBRARY + '/' + data_target.audio_file);
             audio_element.setAttribute('autoplay', 'autoplay');
             audio_element.load();
+            console.log(obj_id)
+            console.log(audio_element)
         });
         $('#gi-area').on('click', '.itemblock', function (e) {
             $(this).siblings('.itemblock').removeClass('selecting');
@@ -842,6 +844,7 @@ var GridPanel = undefined;
               </svg>Play  (Call Name: '+ lity_data.call_type + ')').addClass('btn-primary').removeClass('btn-success');
 
             })
+            console.log(lity_data)
         });
         $(document).on('lity:close', function (event, instance) {
             if (audio_element !== undefined && audio_element.setAttribute !== undefined) {
