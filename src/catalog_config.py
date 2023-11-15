@@ -27,8 +27,8 @@ import subprocess
 import sys
 from pathlib import Path
 
-from add_catalog import add as add_catalog
-from remove_catalog import remove as remove_catalog
+from add_catalog import cli as add_catalog
+from remove_catalog import cli as remove_catalog
 
 LIBRARY = "catalogs"
 LIBRARY_INDEX = "index.yaml"
@@ -55,6 +55,7 @@ if __name__ == "__main__":
     cmdargs = ' '.join(cmdargs)  # to be split comprehensively with shlex.split()
 
     thisfile = Path(__file__).name
+    src = Path(__file__).parent.stem
 
     """
     The commented section below code is generic, precise, short but obscure.
@@ -76,13 +77,13 @@ if __name__ == "__main__":
 
     if cmd == "add":
         print("call 'add_catalog.py'")
-        fullcmd = f"{sys.executable} code/add_catalog.py {cmdargs}"  # instead of call add_catalog()
+        fullcmd = f"{sys.executable} {src}/add_catalog.py {cmdargs}"  # instead of call add_catalog()
         # system call instead of method call since add_catalog.py contains extra input arguments 
         # and file validation.
 
     if cmd == "remove":
         print("call 'remove_catalog.py'")
-        fullcmd = f"{sys.executable} code/remove_catalog.py {cmdargs}"
+        fullcmd = f"{sys.executable} {src}/remove_catalog.py {cmdargs}"
 
     print(f"{thisfile}: subprocess: {fullcmd}")
 
