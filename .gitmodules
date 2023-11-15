@@ -3,5 +3,4 @@
 	url = https://github.com/sfu-bigdata/srkw-call-catalogue-files.git
 [submodule "tests/data/catalogs/catalog-versions-test"]
 	path = tests/data/catalogs/catalog-versions-test
-#	url = git@github.com:EvanDyce/catalog-versions-test.git
-	url = https://github.com/octocat/Hello-World.git
+	url = git@github.com:EvanDyce/catalog-versions-test.git
