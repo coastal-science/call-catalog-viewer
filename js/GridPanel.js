@@ -15,7 +15,7 @@ var GridPanel = undefined;
     var next_drawn = undefined;
 
     var current_page = undefined;
-    var page_size = 120;
+    var page_size = 24;
     var total_result = undefined;
     var total_page = undefined;
     var data_initialized = false;
@@ -50,6 +50,11 @@ var GridPanel = undefined;
                         </g>\
                     </svg>
     */
+
+    String.prototype.toTitleCase = function () {
+        return this.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.slice(1).toLowerCase();});
+    };
+                    
     function num_of_item_per_row() {
         if (window.matchMedia('(min-width: 1400px)').matches) {
             return 6;
@@ -179,7 +184,7 @@ var GridPanel = undefined;
         var keys = Object.keys(data);
         keys.forEach(p => {
             if (data[p] == undefined || data[p] == null) {
-                data[p] = ""; //"Unknown"
+                delete data[p];
             }
         })
         return data;
@@ -200,7 +205,7 @@ var GridPanel = undefined;
             let data = await response.text();
             // only proceed once second promise is resolved
 
-            var simple_datasource = JSON.parse(data); // json representation the catalogue.json file
+            var simple_datasource = JSON.parse(data.replace(/\bNaN\b/g, "null")); // json representation the catalogue.json file
 
             // get the filter data and set simple_datasource so it is just calls
             var site_details = simple_datasource["site-details"];
@@ -604,15 +609,17 @@ var GridPanel = undefined;
             e.preventDefault();
             var obj_id = $(this).parents('.itemblock').attr('id').substring(3);
             var data_target_seq = id_to_seq[obj_id];
-            var data_target = resultData[data_target_seq];
+            var data_target = currentDisplayData[data_target_seq];
             if (audio_element !== undefined && audio_element !== null && audio_element.pause !== undefined) {
                 audio_element.pause();
             }
             audio_element = document.createElement('audio');
             audio_element.setAttribute('src', '');
-            audio_element.setAttribute('src', LIBRARY + '/' + data_target.wav_file);
+            audio_element.setAttribute('src', LIBRARY + '/' + data_target.audio_file);
             audio_element.setAttribute('autoplay', 'autoplay');
             audio_element.load();
+            // console.log(obj_id)
+            // console.log(audio_element)
         });
         $('#gi-area').on('click', '.itemblock', function (e) {
             $(this).siblings('.itemblock').removeClass('selecting');
@@ -673,7 +680,11 @@ var GridPanel = undefined;
                     if (target.length >= 0) {
                         $(target).siblings().removeClass('selecting');
                         $(target).addClass('selecting');
-                        target[0].scrollIntoView({ block: "end" });
+                        if (target[0]) { 
+                            // handle exception when navigating with arrow keys past the items on the page pagination, 
+                            // the additional items are on the next page
+                            target[0].scrollIntoView({ block: "end" });
+                        }
                         if (poped) {
                             if (delayed_pop !== undefined) {
                                 clearTimeout(delayed_pop);
@@ -721,6 +732,7 @@ var GridPanel = undefined;
                 }
             }
             $('#resultgrid > div.container > div.row.justify-content-md-center > div.col.col-12.col-sm-12.col-md-12.col-lg-8.col-xl-6.col-xxl-6.row.align-items-center.align-middle > span').focus();
+            scrollBackToResults()
             getData();
         });
 
@@ -776,7 +788,7 @@ var GridPanel = undefined;
 
             var temp = Object.keys(lity_data);
             const fields = temp.filter(item => {
-                return (!['image_file', 'wav_file', 'description_file', 'call_type', 'filename', 'd1', 'd2'].includes(item));
+                return (!['image_file', 'audio_file', 'description_file', 'call_type', 'filename', 'd1', 'd2'].includes(item));
             })
             var count = fields.length;
             var is_odd = count % 2;
@@ -785,8 +797,8 @@ var GridPanel = undefined;
                 var first = fields[i];
                 var second = fields[i + 1];
 
-                additional_row += '<div class="row text-sm-center text-start text-info border-2 border-light border-bottom"><div class="col-12 col-sm-6"><span>' + first + ': ' + lity_data[first] + '</span></div>';
-                additional_row += '<div class="col-12 col-sm-6"><span>' + second + ': ' + lity_data[second] + '</span></div></div>';
+                additional_row += '<div class="row text-sm-center text-start text-info border-2 border-light border-bottom"><div class="col-12 col-sm-6"><span>' + first.toTitleCase() + ': ' + lity_data[first] + '</span></div>';
+                additional_row += '<div class="col-12 col-sm-6"><span>' + second.toTitleCase() + ': ' + lity_data[second] + '</span></div></div>';
             }
 
             if (is_odd) {
@@ -857,6 +869,8 @@ var GridPanel = undefined;
                 </div>`);
 
             pop_opening = true;
+
+            // console.log(lity_data)
         });
         $(document).on('click', '.lity-container #play', function () {
             audio_element = document.createElement('audio');
@@ -865,7 +879,7 @@ var GridPanel = undefined;
           </svg>Playing  (Call Name: '+ lity_data.call_type + ')');
             $(this).removeClass('btn-primary').addClass('btn-success');
             audio_element.setAttribute('src', '');
-            audio_element.setAttribute('src', LIBRARY + '/' + lity_data.wav_file);
+            audio_element.setAttribute('src', LIBRARY + '/' + lity_data.audio_file);
             audio_element.setAttribute('autoplay', 'autoplay');
             audio_element.load();
             audio_element.addEventListener('ended', function () {
@@ -874,6 +888,7 @@ var GridPanel = undefined;
               </svg>Play  (Call Name: '+ lity_data.call_type + ')').addClass('btn-primary').removeClass('btn-success');
 
             })
+            // console.log(lity_data)
         });
         $(document).on('lity:close', function (event, instance) {
             if (audio_element !== undefined && audio_element.setAttribute !== undefined) {

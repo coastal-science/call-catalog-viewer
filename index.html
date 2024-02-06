@@ -3,32 +3,25 @@
 
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" charset="UTF-8">
-    <title>SRKW Call Catalogue</title>
+    <title>Orca Sound Call Catalogue and Annotations</title>
     <link rel="icon" type="image/x-icon" href="./favicon.jpg">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-    <link href="./css/lity.min.css" rel="stylesheet">
-    <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.14.0-beta2/css/bootstrap-select.min.css"
-        integrity="sha512-mR/b5Y7FRsKqrYZou7uysnOdCIJib/7r5QeJMFvLNHNhtye3xJp1TdJVPLtetkukFn227nKpXD9OjUc09lx97Q=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="./css/w3.css">
-    <link rel="stylesheet" href="./css/css">
-    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.14.0-beta2/css/bootstrap-select.min.css" integrity="sha512-mR/b5Y7FRsKqrYZou7uysnOdCIJib/7r5QeJMFvLNHNhtye3xJp1TdJVPLtetkukFn227nKpXD9OjUc09lx97Q==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lity/2.4.1/lity.min.css" integrity="sha512-UiVP2uTd2EwFRqPM4IzVXuSFAzw+Vo84jxICHVbOA1VZFUyr4a6giD9O3uvGPFIuB2p3iTnfDVLnkdY7D/SJJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/w3-css/4.1.0/3/w3.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato&display=swap">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
+    <link rel="stylesheet" href="./css/css">
+    
     <link rel="preconnect" href="./catalogs/">
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
-        crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.14.0-beta2/js/bootstrap-select.min.js"
-        integrity="sha512-FHZVRMUW9FsXobt+ONiix6Z0tIkxvQfxtCSirkKc5Sb4TKHmqq1dZa8DphF0XqKb3ldLu/wgMa8mT6uXiLlRlw=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="./js/lity.min.js"></script>
-    <script type="module" src="https://cdn.jsdelivr.net/gh/zerodevx/zero-md@2/dist/zero-md.min.js">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.14.0-beta2/js/bootstrap-select.min.js" integrity="sha512-FHZVRMUW9FsXobt+ONiix6Z0tIkxvQfxtCSirkKc5Sb4TKHmqq1dZa8DphF0XqKb3ldLu/wgMa8mT6uXiLlRlw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lity/2.4.1/lity.min.js" integrity="sha512-UU0D/t+4/SgJpOeBYkY+lG16MaNF8aqmermRIz8dlmQhOlBnw6iQrnt4Ijty513WB3w+q4JO75IX03lDj6qQNA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script
+        type="module"
+        src="https://cdn.jsdelivr.net/gh/zerodevx/zero-md@2/dist/zero-md.min.js">
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/js-yaml/4.1.0/js-yaml.js"></script>
     <script src="./js/SearchPanel.js"></script>
@@ -45,61 +38,53 @@
         display: none !important;
     }
 
-    .btn-feedback {
-        background-color: silver;
-        border-color: silver;
-        color: white;
-    }
+        .btn-feedback {background-color:silver;border-color:silver;color:white;}
 
-    .btn-feedback a:hover {
-        color: transparent;
-    }
+        .btn-feedback a:hover {color:transparent;}
 
-    .btn-filter {
-        background-color: darkgray;
-        border-color: darkgray;
-        color: white;
-    }
+        .btn-filter {background-color:darkgray;border-color:darkgray;color:white;}
 
-    .btn-filter a:hover {
-        color: transparent;
-    }
+        .btn-filter a:hover {color:transparent;}
 
-    .form-check-input:checked {
-        background-color: darkgray;
-        border-color: darkgray;
-    }
+        #btn-back-to-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: none;
+        }
+        div.sticky {
+            position: -webkit-sticky;
+            position: sticky;
+            top: 0;
+            /* background-color: white; */
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(8px);
+        }
+        .form-check-input:checked {background-color: darkgray;border-color:darkgray;}
+        .itemblock > div{
+            height:100%;
+        }
 
-    .itemblock>div {
-        height: 100%;
-    }
-
-    .page-link {
-        color: darkgray;
-    }
-
-    .page-link:focus {
-        box-shadow: none !important;
-        background-color: #fff !important;
-    }
-
-    .page-item.active .page-link {
-        color: #fff !important;
-        background-color: darkgray !important;
-        border-color: darkgray !important;
-    }
-
-    .card-img-top {
-        aspect-ratio: 198/205;
-    }
-
-    .row {
-        padding-top: 5px;
-    }
-
-    .image_pop_source {
-        display: table-cell;
-    }
+        .page-link {color:darkgray;}
+        .page-link:focus {
+            box-shadow: none !important;
+            background-color: #fff !important;
+        }
+        .page-item.active .page-link {
+            z-index: auto;
+            color: #fff !important;
+            background-color: darkgray !important;
+            border-color: darkgray !important;
+        }
+        .card-img-top{
+            aspect-ratio: 198/205;
+        }
+        .row{
+            padding-top: 5px;
+        }
+        .image_pop_source{
+            display: table-cell;
+        }
 
     .lity-container {
         overflow: auto;
@@ -160,28 +145,23 @@
             height: auto;
         }
 
-    }
-
-    .lity {
-        overflow: auto;
-    }
-
-    .selecting {
-        outline: .4rem solid;
-        outline-color: silver;
-    }
-
-    .retrieve-data {
-        color: black;
-        padding: 14px 25px;
-        text-align: center;
-        display: inline-block;
-    }
-
-    kbd {
-        font-size: 1.2rem;
-    }
-</style>
+        }
+        .lity {
+            overflow: auto;
+        }
+        .selecting{
+            outline: .4rem solid;
+            outline-color:silver;
+        }
+        
+    
+        kbd{
+            font-size: 1.2rem;
+        }
+        html {
+            scroll-padding-top: 100px; /* manually set to navbar height? */
+        }
+    </style>
 
 
 
@@ -190,16 +170,14 @@
 
 <body>
     <!-- Navbar -->
-    <div class="w3-top">
-        <div class="w3-bar w3-black w3-card">
-            <a class="w3-bar-item w3-button w3-padding-large w3-hide-medium w3-hide-large w3-right"
-                href="javascript:void(0)" onclick="myFunction()" title="Toggle Navigation Menu"><i
-                    class="fa fa-bars"></i></a>
-            <a href="home.html#" class="w3-bar-item w3-button w3-padding-large">HOME</a>
-            <a href="index.html" class="w3-bar-item w3-button w3-padding-large w3-hide-small">CATALOGUE</a>
-            <a href="license.html" class="w3-bar-item w3-button w3-padding-large w3-hide-small">LICENSE</a>
-            <a href="faq.html" class="w3-bar-item w3-button w3-padding-large w3-hide-small">FAQ</a>
-            <!-- <div class="w3-dropdown-hover w3-hide-small">
+    <div class="w3-top" style="position:relative;">
+    <div class="w3-bar w3-black w3-card">
+      <a class="w3-bar-item w3-button w3-padding-large w3-hide-medium w3-hide-large w3-right" href="javascript:void(0)" onclick="myFunction()" title="Toggle Navigation Menu"><i class="fa fa-bars"></i></a>
+      <a href="home.html#" class="w3-bar-item w3-button w3-padding-large">HOME</a>
+       <a href="index.html" class="w3-bar-item w3-button w3-padding-large w3-hide-small">CATALOGUE</a>
+       <a href="license.html" class="w3-bar-item w3-button w3-padding-large w3-hide-small">LICENCE</a>
+       <a href="faq.html" class="w3-bar-item w3-button w3-padding-large w3-hide-small">FAQ</a>
+     <!-- <div class="w3-dropdown-hover w3-hide-small">
         <button class="w3-padding-large w3-button" title="More">MORE <i class="fa fa-caret-down"></i></button>     
         <div class="w3-dropdown-content w3-bar-block w3-card-4">
           <a href="home.html#" class="w3-bar-item w3-button">Sub-page1</a>
@@ -209,145 +187,141 @@
       </div>
       <a href="javascript:void(0)" class="w3-padding-large w3-hover-red w3-hide-small w3-right"><i class="fa fa-search"></i></a>
     -->
-        </div>
     </div>
+  </div>
+  
+  <!-- Navbar on small screens (remove the onclick attribute if you want the navbar to always show on top of the content when clicking on the links) -->
+  <div id="navDemo" class="w3-bar-block w3-black w3-hide w3-hide-large w3-hide-medium w3-top" style="position:relative;">
+    <a href="index.html" class="w3-bar-item w3-button w3-padding-large" onclick="myFunction()">CATALOGUE</a>
+    <a href="license.html" class="w3-bar-item w3-button w3-padding-large" onclick="myFunction()">LICENCE</a>
+    <a href="faq.html" class="w3-bar-item w3-button w3-padding-large" onclick="myFunction()">FAQ</a>
+   </div>
 
-    <!-- Navbar on small screens (remove the onclick attribute if you want the navbar to always show on top of the content when clicking on the links) -->
-    <div id="navDemo" class="w3-bar-block w3-black w3-hide w3-hide-large w3-hide-medium w3-top" style="margin-top:46px">
-        <a href="index.html" class="w3-bar-item w3-button w3-padding-large" onclick="myFunction()">CATALOGUE</a>
-        <a href="license.html" class="w3-bar-item w3-button w3-padding-large" onclick="myFunction()">LICENSE</a>
-        <a href="faq.html" class="w3-bar-item w3-button w3-padding-large" onclick="myFunction()">FAQ</a>
-    </div>
 
-
-
-    <div class="container" id="listing" style="margin-top:6%">
-
-        <div class="row">
-            <span style="padding-top:1em">
-                <a class="btn btn-feedback" target="_blank"
-                    href="https://docs.google.com/document/d/15ld2tYWpc3sSIs42RlNjMchv0ICXg1fbEz3999SFijg/edit?usp=sharing"
-                    role="button">Feedback</a>
-            </span>
-            <h1 id="catalogue-title" class="text-center text-capitalize font-weight-bold"
-                style="font-family:'Segoe UI', sans-serif;letter-spacing:.1em;font-size:2rem;font-weight:400">Explore
-                Catalogue</h1>
+    
+    <div class="container" id="listing" style="">  
+      
+         <div class="row">
+            <h1 id="catalogue-title" class="text-center text-capitalize font-weight-bold" style="font-family:'Segoe UI', sans-serif;letter-spacing:.1em;font-size:2rem;font-weight:400">Explore Catalogue</h1>
         </div>
+      
+        <button
+            type="button"
+            class="btn btn-warning btn-floating btn-lg"
+            id="btn-back-to-top"
+            title="Go to top"
+        >Top
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-up" viewBox="0 0 16 16">
+            <path fill-rule="evenodd" d="M8 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L7.5 2.707V14.5a.5.5 0 0 0 .5.5z"/>
+        </svg>
+        </button>
 
-        <div class="row">
-            <div class="col">
-                <div class="panel container-fluid" id="search_panel">
-                    <div class="row justify-content-md-center" id="search_rows">
-                        <div
-                            class="col col-12 col-sm-12 col-md-12 col-lg-12 col-xl-10 col-xxl-10 align-items-center align-middle align-right d-flex flex-nowrap">
-                            <span class="col-4 text-end">Population(s): &nbsp;</span>
-                            <select id="s1" class="col-8" multiple aria-label="size 3 select">
-                            </select><br>&nbsp;
-                        </div>
+        <div class="row"><div class="col">
+        <div class="panel container-fluid" id="search_panel">
+            <div class="row justify-content-md-center" id="search_rows">
+                <div class="col col-12 col-sm-12 col-md-12 col-lg-12 col-xl-10 col-xxl-10 align-items-center align-middle align-right d-flex flex-nowrap">
+                    <span class="col-4 text-end">Population(s): &nbsp;</span>
+                    <select id="s1" class="col-8" multiple aria-label="size 3 select">
+                    </select><br>&nbsp;
+                </div>
+                
+                <div class="col col-12 col-sm-12 col-md-12 col-lg-6 col-xl-5 col-xxl-5 align-items-center align-middle d-flex flex-nowrap">
+                    <span class="col-4 text-end">Clan(s): &nbsp;</span>
+                    <select id="s2" class="col-8 align-self-center" multiple aria-label="size 3 select">
+                    </select><br>&nbsp;
+                </div>
 
-                        <div
-                            class="col col-12 col-sm-12 col-md-12 col-lg-6 col-xl-5 col-xxl-5 align-items-center align-middle d-flex flex-nowrap">
-                            <span class="col-4 text-end">Clan(s): &nbsp;</span>
-                            <select id="s2" class="col-8 align-self-center" multiple aria-label="size 3 select">
-                            </select><br>&nbsp;
-                        </div>
-
-                        <div
-                            class="col col-12 col-sm-12 col-md-12 col-lg-6 col-xl-5 col-xxl-5 align-items-center align-left d-flex flex-nowrap">
-                            <span class="col-4 text-end">Pod(s): &nbsp;</span>
-                            <select id="s3" class="col-8 align-self-center" multiple aria-label="size 3 select">
-                            </select><br>&nbsp;
+                <div class="col col-12 col-sm-12 col-md-12 col-lg-6 col-xl-5 col-xxl-5 align-items-center align-left d-flex flex-nowrap">
+                    <span class="col-4 text-end">Pod(s): &nbsp;</span>
+                    <select id="s3" class="col-8 align-self-center" multiple aria-label="size 3 select">
+                    </select><br>&nbsp;
+                </div>
+            </div>
+            <div class="row"><div class="col"><span>&nbsp;</span></div> </div>
+            <div class="row justify-content-md-center">
+                <button id="search_now" class="btn col col-12 col-sm-12 col-md-4 col-lg-2 btn-filter">Filter</button>
+            </div>
+        </div>
+        <div class="row"><div class="col"><span>
+            &nbsp;
+        </span></div> </div>
+        <div class="container-fluid" id="resultgrid">
+            <div class="container">
+                <div class="row justify-content-md-center">
+                    <div class="col col-8 col-sm-8 col-md-4 col-lg-4 col-xl-3 col-xxl-3 row align-middle d-flex flex-nowrap align-items-center">
+                        <div class="form-check form-switch align-middle d-flex flex-nowrap">
+                            <input class="form-check-input" type="checkbox" role="switch" id="show_meta">
+                            <label class="form-check-label" for="show_meta">&nbsp; Metadata</label>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col"><span>&nbsp;</span></div>
-                    </div>
-                    <div class="row justify-content-md-center">
-                        <button id="search_now"
-                            class="btn col col-12 col-sm-12 col-md-4 col-lg-2 btn-filter">Filter</button>
-                    </div>
 
-                    <div class="row justify-content-md-center">
-                        <a id="retrieve_data" href="#" class="retrieve-data">View Raw Call Data</a>
-                        <!-- <button id="retrieve_data"
-                            class="btn col col-12 col-sm-12 col-md-4 col-lg-2 btn-filter">View Raw Call Data</button> -->
+                    <!-- <div class="col col-12 col-sm-12 col-md-12 col-lg-8 col-xl-6 col-xxl-6 row align-items-center align-middle">
+                        <div class="col col-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 col-xxl-6">
+                            <label class="form-check-label" for="show-only">Show only &nbsp;</label>
+                            <input min="1" max="20" value="1" step="1" type="number" id="show-only" pattern="\d*" list="top_x"/>
+                            <!-- onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57"/> 
+                            <!-- onkeypress ensures that only whole numbers are accepted
+                        </div>
+                        <div class="col col-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 col-xxl-6 form-check form-switch">
+                            <input class="form-check-input" type="checkbox" role="switch" onclick="showAllOnly()" id="show-all">
+                            <label class="form-check-label" for="show-all">&nbsp; Show All</label>
+                        </div>
+                    </div>  -->
+                    
+                    <div class="col col-12 col-sm-12 col-md-12 col-lg-8 col-xl-6 col-xxl-6 row align-items-center align-middle">
+                        <span class="col col-4 col-sm-4 col-md-2 col-lg-2 col-xl-2 col-xxl-2">
+                            Sort By: 
+                        </span>
+                        <select id="sort" class="col col-8 col-sm-8 col-md-5 col-lg-5 col-xl-5 col-xxl-5 selectpicker" aria-label="size 3 select">
+                            <option value="clan">Clan</option>
+                            <option value="pod">Pod</option>
+                            <option value="cn">Call Name</option>
+                        </select>
+                        <select id="sort_a" class="col col-12 col-sm-12 col-md-5 col-lg-5 col-xl-5 col-xxl-5 selectpicker" aria-label="size 3 select">
+                            <option value="as">Ascending</option>
+                            <option value="de">Descending</option>
+                        </select>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col"><span>
-                            &nbsp;
-                        </span></div>
-                </div>
-                <div class="container-fluid" id="resultgrid">
-                    <div class="container">
-                        <div class="row justify-content-md-center">
-                            <div
-                                class="col col-8 col-sm-8 col-md-4 col-lg-4 col-xl-3 col-xxl-3 row align-middle d-flex flex-nowrap align-items-center">
-                                <div class="form-check form-switch align-middle d-flex flex-nowrap">
-                                    <input class="form-check-input" type="checkbox" role="switch" id="show_meta">
-                                    <label class="form-check-label" for="show_meta">&nbsp; Metadata</label>
-                                </div>
-                            </div>
-                            <div
-                                class="col col-12 col-sm-12 col-md-12 col-lg-8 col-xl-6 col-xxl-6 row align-items-center align-middle">
-                                <span class="col col-4 col-sm-4 col-md-2 col-lg-2 col-xl-2 col-xxl-2">
-                                    Sort By:
-                                </span>
-                                <select id="sort"
-                                    class="col col-8 col-sm-8 col-md-5 col-lg-5 col-xl-5 col-xxl-5 selectpicker"
-                                    aria-label="size 3 select">
-                                    <option value="clan">Clan</option>
-                                    <option value="pod">Pod</option>
-                                    <option value="cn">Call Name</option>
-                                </select>
-                                <select id="sort_a"
-                                    class="col col-12 col-sm-12 col-md-5 col-lg-5 col-xl-5 col-xxl-5 selectpicker"
-                                    aria-label="size 3 select">
-                                    <option value="as">Ascending</option>
-                                    <option value="de">Descending</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="row justify-content-md-center">
-                            <div
-                                class="col col-12 col-sm-8 col-md-8 col-lg-4 col-xl-4 col-xxl-3 row align-items-center align-middle">
-                                <select id="page_size" aria-label="size 3 select" class=" selectpicker col">
-                                    <option value="12">12 items per page</option>
-                                    <option value="24">24 items per page</option>
-                                    <option value="36">36 items per page</option>
-                                    <option value="48">48 items per page</option>
-                                    <option value="60">60 items per page</option>
-                                    <option value="120">120 items per page</option>
-                                    <option value="240">240 items per page</option>
-                                </select>
-                            </div>
-                            <div
-                                class="col col-12 col-sm-4 col-md-4 col-lg-4 col-xl-3 col-xxl-2 row align-middle d-flex flex-nowrap align-items-center">
-                                <nav id="paging" aria-label="Page navigation" class=" align-middle align-items-center">
-                                    <ul class="pagination align-middle align-items-center" style="margin:1rem 0">
-                                        <li class="page-item" data-flow="p">
-                                            <a class="page-link" href="#" aria-label="Previous">
-                                                <span aria-hidden="true">&laquo;</span>
-                                            </a>
-                                        </li>
-                                        <li class="page-item" data-flow="1"><a class="page-link" href="#">1</a></li>
-                                        <li class="page-item" data-flow="2"><a class="page-link" href="#">2</a></li>
-                                        <li class="page-item" data-flow="3"><a class="page-link" href="#">3</a></li>
-                                        <li class="page-item" data-flow="n">
-                                            <a class="page-link" href="#" aria-label="Next">
-                                                <span aria-hidden="true">&raquo;</span>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </nav>
-                            </div>
-                            <div
-                                class="col col-12 col-sm-12 col-md-12 col-lg-4 col-xl-4 col-xxl-3 row align-middle d-flex flex-nowrap align-items-center">
-                                <span>
-                                    <span>
-                                        Total Number of Results:
-                                    </span>
-                                    <span id="total">
+            </div>
+            <div class="container sticky" id="stickyDiv">
+                <div class="row justify-content-md-center">
+                    <div class="col col-12 col-sm-8 col-md-8 col-lg-4 col-xl-4 col-xxl-3 row align-items-center align-middle">
+                        <select id="page_size"  aria-label="size 3 select" class=" selectpicker col">
+                            <option value="12">12 items per page</option>
+                            <option value="24">24 items per page</option>
+                            <option value="36">36 items per page</option>
+                            <option value="48">48 items per page</option>
+                            <option value="60">60 items per page</option>
+                            <option value="120">120 items per page</option>
+                            <option value="240">240 items per page</option>
+                        </select>
+                    </div>
+                    <div class="col col-12 col-sm-4 col-md-4 col-lg-4 col-xl-3 col-xxl-2 row align-middle d-flex flex-nowrap align-items-center">
+                        <nav id="paging" aria-label="Page navigation" class=" align-middle align-items-center">
+                            <ul class="pagination align-middle align-items-center" style="margin:1rem 0">
+                            <li class="page-item" data-flow="p">
+                                <a class="page-link" href="#" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                            <li class="page-item" data-flow="1"><a class="page-link" href="#">1</a></li>
+                            <li class="page-item" data-flow="2"><a class="page-link" href="#">2</a></li>
+                            <li class="page-item" data-flow="3"><a class="page-link" href="#">3</a></li>
+                            <li class="page-item" data-flow="n">
+                                <a class="page-link" href="#" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                            </ul>
+                        </nav>
+                    </div>
+                    <div class="col col-12 col-sm-12 col-md-12 col-lg-4 col-xl-4 col-xxl-3 row align-middle d-flex flex-nowrap align-items-center">
+                        <span>
+                            <span>
+                                Total Number of Results:
+                            </span>
+                            <span id="total">
 
                                     </span>
                                 </span>
@@ -386,13 +360,61 @@
         }
     }
 
+    function showAllOnly() {
+    var show_all = document.getElementById("show-all");
+    var show_only = document.getElementById("show-only");
 
-    $(function () {
+    if (show_all.checked == true) {
+        show_only.disabled = true
+    } else { 
+        show_only.disabled = false
+    }
+    }
+
+    //Get the button
+    let buttonToTop = document.getElementById("btn-back-to-top");
+
+    // When the user scrolls down 20px from the top of the document, show the button
+    window.onscroll = function () {
+        scrollFunction();
+    };
+
+    function scrollFunction() {
+    if (
+        document.body.scrollTop > 20 ||
+        document.documentElement.scrollTop > 20
+    ) {
+        buttonToTop.style.display = "block";
+    } else {
+        buttonToTop.style.display = "none";
+    }
+    }
+    
+    // When the user clicks on the button, scroll to the top of the document
+    buttonToTop.addEventListener("click", scrollBackToTop);
+    function scrollBackToTop() {
+        document.body.scrollTop = 0;
+        document.documentElement.scrollTop = 0;
+    }
+  
+    // buttonToTop.addEventListener("click", scrollBackToResults);
+    function scrollBackToResults() {
+        $('html, body').animate({
+        scrollTop: $("#resultgrid").offset().top
+        }, 0);
+    }
+
+    // buttonToTop.addEventListener("click", scrollBackToSearch);
+    function scrollBackToSearch() {
+        $('html, body').animate({
+        scrollTop: $("#search_now").offset().top
+        }, 0);
+    }
+
+    $(function(){
         SearchPanel.init();
         GridPanel.init();
     })
-
-
 
 </script>
 

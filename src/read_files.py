@@ -39,7 +39,7 @@ class Null(ScalarValidator):
         chunk.expecting_but_found(f"when expecting any of {YAML_NULL}")
 
 
-yaml_schema = Map({"call-type": Str(), "clan": Str(), "image-file": Str(), "wav-file": Str(), "matrilines": Null() | Str(), "pod": Str(), "population": Str(), "sample": Null() | Int(), "subclan": Null() | Str(), "subpopulation": Null() | Str()})
+yaml_schema = Map({"call-type": Str(), "clan": Str(), "image-file": Str(), "audio-file": Str(), "matrilines": Null() | Str(), "pod": Str(), "population": Str(), "sample": Null() | Int(), "subclan": Null() | Str(), "subpopulation": Null() | Str()})
 """
 
 try:
@@ -96,9 +96,9 @@ def generate_yaml(data_folder, df):
     
     # TODO: Specifics in the creation of the yaml files
     #generate array
-    new_df = df.rename(columns={"thumb": "image-file", "cn": "call-type", "mar": "matrilines", "clan": "clan", "pod": "pod", "filename": "wav-file"})
+    new_df = df.rename(columns={"thumb": "image-file", "cn": "call-type", "mar": "matrilines", "clan": "clan", "pod": "pod", "filename": "audio-file"})
     new_df['population'] = "SRKW"
-    new_df['wav-file'] = data_folder + "/" + new_df['wav-file'] + ".wav" #data_folder + "/" + 
+    new_df['audio-file'] = data_folder + "/" + new_df['audio-file'] + ".wav" #data_folder + "/" + 
     new_df['image-file'] = data_folder + "/" + new_df['image-file'] #data_folder + "/" + 
     new_df = new_df.drop(['pod_cat'], axis=1)
     print("Generate yaml called")
@@ -179,6 +179,7 @@ def read_yaml(yaml_file):
             if field not in fields:
                 print(f"Field '{field}' is required")
                 exit(-1)
+        fields[fields.index('wav-file')] = "audio-file" # hack rename
 
         if len(display) != 2:
             print("Fields 'display-one' and 'display-two' must be included")
@@ -190,18 +191,21 @@ def read_yaml(yaml_file):
         #         print(f"Field '{field}' can be specified")
 
         # pre-processing and convert to original JSON format
-        # create dataframe with all of the call data and do special handling form image-file, wav-file and description-file
+        # create dataframe with all of the call data and do special handling form image-file, audio-file and description-file
         df = pd.DataFrame.from_dict(resource_list['calls'])
+        df['wav-file'] = df['wav-file'].replace({".wav":".mp3"}, regex=True)
+        df = df.rename(columns={'wav-file':'audio-file'})
 
         # need to iterate through all of the rows in DataFrame to split any values that may exist. J,L -> [J, L]
         for index, row in df.iterrows():
             for field in fields:
-                if field in ['image-file', 'wav-file']:
+                if field in ['image-file', 'audio-file']:
                     continue # don't want to change anything with the image or sound files. They could be valid commas
                 if (type(row[field]) == str and ',' in row[field]):
                     df.at[index,field] = row[field].split(',')
 
         # extract the filename from the path
+        df['image-file'] = df['image-file'].replace({".png":".webp", ".jpeg":".webp", ".jpg":".webp"}, regex=True)
         df['filename'] =  df['image-file'].str.split(".", expand=True)[0]
         df['filename'] =  [x.split("/")[-1] for x in df['filename']]
 
@@ -209,10 +213,10 @@ def read_yaml(yaml_file):
         # keeping for testing
         df['sample'] = df['sample'].apply(lambda x: 0 if np.isnan(x) else str(int(x)))
 
-        #check image-file and wav-file
+        #check image-file and audio-file
         from os.path import exists
         df['image_exists'] = df['image-file'].apply(lambda x: exists(library + '/' + x))
-        df['wav_exists'] = df['wav-file'].apply(lambda x: exists(library + '/' + x))
+        df['audio_exists'] = df['audio-file'].apply(lambda x: exists(library + '/' + x))
         #print(df)
         #output if there is case of file not found in image
         if False in df['image_exists'].unique():
@@ -222,18 +226,18 @@ def read_yaml(yaml_file):
             print("The following image files are not found:\n", no_image_df[['call-type', 'image-file']])
             
         #output if there is case of file not found in wav
-        if False in df['wav_exists'].unique():
+        if False in df['audio_exists'].unique():
             # output all files not found
             # selecting rows based on condition
-            no_wav_df = df[df['wav_exists'] == False]
-            print("The following wav files are not found:\n", no_wav_df[['call-type', 'wav-file']])
+            no_audio_df = df[df['audio_exists'] == False]
+            print("The following audio files are not found:\n", no_audio_df[['call-type', 'audio-file']])
     
         #drop 'image_exists' and 'wav_exists' columns
-        df.drop(['image_exists', 'wav_exists'], inplace=True, axis=1)
+        df.drop(['image_exists', 'audio_exists'], inplace=True, axis=1)
     
         #rename columns for better compatibility in GridPanel
         # call-type is in there for testing purposes
-        df = df.rename(columns={"image-file": "image_file", "wav-file": "wav_file", "description-file": "description_file", "call-type": "call_type"})
+        df = df.rename(columns={"image-file": "image_file", "audio-file": "audio_file", "description-file": "description_file", "call-type": "call_type"})
 
     # returns the dataframe and the filters dictionary
     return (df, filters, sortables, display, site_details)

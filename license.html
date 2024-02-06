@@ -4,11 +4,10 @@
 <title>Orca Sound Call Catalogue and Annotations</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
-<link rel="stylesheet" href="./css/w3.css">
-<link rel="stylesheet" href="./css/css">
-<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/w3-css/4.1.0/3/w3.min.css">	
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato&display=swap">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="./css/css">
 
 <script
         type="module"
@@ -23,12 +22,12 @@ body {font-family: "Lato", sans-serif}
 
 <body>
 <!-- Navbar -->
-<div class="w3-top">
+<div class="w3-top" style="position:relative;">
   <div class="w3-bar w3-black w3-card">
     <a class="w3-bar-item w3-button w3-padding-large w3-hide-medium w3-hide-large w3-right" href="javascript:void(0)" onclick="myFunction()" title="Toggle Navigation Menu"><i class="fa fa-bars"></i></a>
     <a href="home.html#" class="w3-bar-item w3-button w3-padding-large">HOME</a>
     <a href="index.html" class="w3-bar-item w3-button w3-padding-large w3-hide-small">CATALOGUE</a>
-    <a href="license.html" class="w3-bar-item w3-button w3-padding-large w3-hide-small">LICENSE</a>
+    <a href="license.html" class="w3-bar-item w3-button w3-padding-large w3-hide-small">LICENCE</a>
     <a href="faq.html" class="w3-bar-item w3-button w3-padding-large w3-hide-small">FAQ</a>
    <!-- <div class="w3-dropdown-hover w3-hide-small">
       <button class="w3-padding-large w3-button" title="More">MORE <i class="fa fa-caret-down"></i></button>     
@@ -44,32 +43,15 @@ body {font-family: "Lato", sans-serif}
 </div>
 
 <!-- Navbar on small screens (remove the onclick attribute if you want the navbar to always show on top of the content when clicking on the links) -->
-<div id="navDemo" class="w3-bar-block w3-black w3-hide w3-hide-large w3-hide-medium w3-top" style="margin-top:46px">
+<div id="navDemo" class="w3-bar-block w3-black w3-hide w3-hide-large w3-hide-medium w3-top" style="position:relative;">
   <a href="index.html" class="w3-bar-item w3-button w3-padding-large" onclick="myFunction()">CATALOGUE</a>
-  <a href="license.html" class="w3-bar-item w3-button w3-padding-large" onclick="myFunction()">LICENSE</a>
+  <a href="license.html" class="w3-bar-item w3-button w3-padding-large" onclick="myFunction()">LICENCE</a>
   <a href="faq.html" class="w3-bar-item w3-button w3-padding-large" onclick="myFunction()">FAQ</a>
 </div>
 
-<div class="w3-content" style="max-width:2000px;margin-top:46px">
+<div class="w3-content" style="max-width:2000px;">
 
-
-  <!-- License Information 
-  <div class="w3-container w3-content w3-justify w3-padding-30" style="max-width:800px;margin-top:5%">
-  <h1 class="w3-wide w3-center">License Information</h1>
-  <p>Use of information from this website is subject to terms under <a href="https://open.canada.ca/en/open-government-licence-canada" target="_blank">Open Government License &ndash; Canada</a></p>
-  
-  <p>You are free to:</p>
-  <ul>
-      <li>Copy, modify, publish, translate, adapt, distribute or otherwise use the Information in any medium, mode or format for any lawful purpose.</li></ul>
-  <p>You must, where you do any of the above:</p>
-  <ul>
-      <li>Acknowledge the source of the Information by including any attribution statement specified by the Information Provider(s) and, where possible, provide a link to this licence.</li>
-      <li>If the Information Provider does not provide a specific attribution statement, or if you are using Information from several information providers and multiple attributions are not practical for your product or application, you must use the following attribution statement:
-      <br><br><em>Contains information licensed under the Open Government Licence &ndash; Canada.</em></li></ul>
-    </div>-->
-
-
-  <!-- License Information -->
+<!-- License Information -->
   <div class="w3-container w3-content w3-justify w3-padding-30" style="max-width:800px;margin-top:5%;">  
     <!-- file = 'srkw-call-catalogue-files/LICENSE.md' -->
     <!-- TODO Generify this pass somehow. General license path outside of the srkw catalogue files? -->
@@ -84,17 +66,18 @@ body {font-family: "Lato", sans-serif}
     </zero-md>
   </div>
 </div> 
+
 <!-- Footer -->
 <!-- <footer style="position:fixed;width:100%" class="w3-display-bottommiddle w3-container w3-padding-64 w3-center w3-opacity w3-light-grey w3-xlarge"> -->
-<footer class="w3-container w3-padding-64 w3-center w3-opacity w3-light-grey w3-xlarge">
+<!-- <footer class="w3-container w3-padding-64 w3-center w3-opacity w3-light-grey w3-xlarge">
   <i class="fa fa-instagram fa-2x w3-hover-opacity"></i>
-  <!--<i class="fa fa-snapchat w3-hover-opacity"></i>
+  <i class="fa fa-snapchat w3-hover-opacity"></i>
   <i class="fa fa-facebook-official w3-hover-opacity"></i>
   <i class="fa fa-pinterest-p w3-hover-opacity"></i>
   <i class="fa fa-twitter w3-hover-opacity"></i>
-  <i class="fa fa-linkedin w3-hover-opacity"></i>-->
+  <i class="fa fa-linkedin w3-hover-opacity"></i>
   <p class="w3-medium">Powered by <a href="https://www.w3schools.com/w3css/default.asp" target="_blank">w3.css</a></p>
-</footer>
+</footer> -->
 
 <script>
 // Used to toggle the menu on small screens when clicking on the menu button

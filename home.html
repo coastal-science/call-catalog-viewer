@@ -4,11 +4,10 @@
 <title>Orca Sound Call Catalogue and Annotations</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
-<link rel="stylesheet" href="./css/w3.css">
-<link rel="stylesheet" href="./css/css">
-<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/w3-css/4.1.0/3/w3.min.css">	
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato&display=swap">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="./css/css">
 
 
 <style>
@@ -18,13 +17,13 @@ body {font-family: "Lato", sans-serif}
 </head>
 
 <!-- Navbar -->
-<div class="w3-top">
+<div class="w3-top" style="position:relative;">
   <div class="w3-bar w3-black w3-card">
     <a class="w3-bar-item w3-button w3-padding-large w3-hide-medium w3-hide-large w3-right" href="javascript:void(0)" onclick="myFunction()" title="Toggle Navigation Menu"><i class="fa fa-bars"></i></a>
     <a href="home.html#" class="w3-bar-item w3-button w3-padding-large">HOME</a>
     <!--<a href="https://orca.research.sfu.ca/annotation" class="w3-bar-item w3-button w3-padding-large w3-hide-small">ANNOTATIONS</a>-->
     <a href="index.html" class="w3-bar-item w3-button w3-padding-large w3-hide-small">CATALOGUE</a>
-    <a href="license.html" class="w3-bar-item w3-button w3-padding-large w3-hide-small">LICENSE</a>
+    <a href="license.html" class="w3-bar-item w3-button w3-padding-large w3-hide-small">LICENCE</a>
     <a href="faq.html" class="w3-bar-item w3-button w3-padding-large w3-hide-small">FAQ</a>
    <!--<div class="w3-dropdown-hover w3-hide-small">
       <button class="w3-padding-large w3-button" title="More">MORE <i class="fa fa-caret-down"></i></button>     
@@ -39,17 +38,16 @@ body {font-family: "Lato", sans-serif}
 </div>
 
 <!-- Navbar on small screens (remove the onclick attribute if you want the navbar to always show on top of the content when clicking on the links) -->
-<div id="navDemo" class="w3-bar-block w3-black w3-hide w3-hide-large w3-hide-medium w3-top" style="margin-top:46px">
-
+<div id="navDemo" class="w3-bar-block w3-black w3-hide w3-hide-large w3-hide-medium w3-top" style="position:relative;">
   <!--<a href="https://orca.research.sfu.ca/annotation" class="w3-bar-item w3-button w3-padding-large" onclick="myFunction()">ANNOTATIONS</a>-->
   <a href="index.html" class="w3-bar-item w3-button w3-padding-large" onclick="myFunction()">CATALOGUE</a>
-  <a href="license.html" class="w3-bar-item w3-button w3-padding-large" onclick="myFunction()">LICENSE</a>
+  <a href="license.html" class="w3-bar-item w3-button w3-padding-large" onclick="myFunction()">LICENCE</a>
   <a href="faq.html" class="w3-bar-item w3-button w3-padding-large" onclick="myFunction()">FAQ</a>
   <!--<a href="home.html#" class="w3-bar-item w3-button w3-padding-large" onclick="myFunction()">MORE</a>-->
 </div>
 
 <!-- Page content -->
-<div class="w3-content" style="max-width:2000px;margin-top:46px">
+<div class="w3-content" style="max-width:2000px;">
 
   <!-- Automatic Slideshow Images -->
   <div class="mySlides w3-display-container w3-center" style="display: none;">
@@ -82,10 +80,10 @@ body {font-family: "Lato", sans-serif}
     <h2 class="w3-wide">Orca Call Catalogue</h2>
     <p class="w3-opacity"><i>A Listening Gallery of Sound Recordings and Spectrographs</i></p>
     <p class="w3-justify">Researchers are currently aiming to “teach” artificial intelligence systems to recognize the sounds of resident killer whales in order to develop a warning system for preventing ships from fatally striking endangered orcas off British Columbia's coast.</p>
-    <p class="w3-justify">Data used to train artificial intelligence systems come from various sources: from hydrophone nodes located near shipping lanes, to the contributions of Citizen Scientists and projects like the <a href="https://www.orcasound.net/" target="_blank">Orcasound project.</a></p>
-    <p class="w3-justify">This website shares a curated collection of orca acoustics and annotations which represent the type of samples used in machine learning datasets. The samples here demonstrate the complexity of communication within pods.</p>
-    <p class="w3-justify">These samples have been gathered through decades of research by <a href="https://www.pac.dfo-mpo.gc.ca/science/news-nouvelles/ford-research-recherche-eng.html" target="_blank">Dr. John Ford,</a> scientist emeritus, and former head of cetacean research at Fisheries and Oceans Canada's Pacific Biological Station.</p> 
-    <p class="w3-justify">Below is a sample spectrograph and audio file from the <a href="../index.html" target="_blank">call catalogue</a>.</p><div class="w3-row w3-padding-32">
+    <p class="w3-justify">Data used to train artificial intelligence systems come from various sources: from hydrophone nodes located near shipping lanes, to the contributions of citizen scientists and projects like <a href="https://www.orcasound.net/" target="_blank">Orcasound</a> and <a href="https://whalesound.ca/" target="_blank">Whalesound.ca</a>.</p>
+    <p class="w3-justify">This website shares a curated collection of orca acoustics and annotations which represent the type of samples used in machine learning datasets. The samples here demonstrate the complexity of communication within and between pods.</p>
+    <p class="w3-justify">These samples have been gathered through decades of research by Dr. John Ford and James Pilkington (Fisheries and Oceans Canada's Pacific Biological Station) and their colleague Volker Deecke (University of Cumbria).</p> 
+    <p class="w3-justify">Below is a sample spectrograph and audio file from the <a href="index.html" target="_blank">call catalogue</a>.</p><div class="w3-row w3-padding-32">
       <!--<div class="w3-half">
         <p><a href="https://orca.research.sfu.ca/annotation">Annotations</a></p>
         <img src="./images/gregory-smith-cc.jpg" class="w3-round w3-margin-bottom" alt="Random Name" style="width:60%">
@@ -176,15 +174,15 @@ body {font-family: "Lato", sans-serif}
 -->
 
 <!-- Footer -->
-<footer class="w3-container w3-padding-64 w3-center w3-opacity w3-light-grey w3-xlarge">
+<!-- <footer class="w3-container w3-padding-64 w3-center w3-opacity w3-light-grey w3-xlarge">
   <i class="fa fa-instagram fa-2x w3-hover-opacity"></i>
-  <!--<i class="fa fa-snapchat w3-hover-opacity"></i>
+  <i class="fa fa-snapchat w3-hover-opacity"></i>
   <i class="fa fa-facebook-official w3-hover-opacity"></i>
   <i class="fa fa-pinterest-p w3-hover-opacity"></i>
   <i class="fa fa-twitter w3-hover-opacity"></i>
-  <i class="fa fa-linkedin w3-hover-opacity"></i>-->
+  <i class="fa fa-linkedin w3-hover-opacity"></i>
   <p class="w3-medium">Powered by <a href="https://www.w3schools.com/w3css/default.asp" target="_blank">w3.css</a></p>
-</footer>
+</footer> -->
 
 <script>
 // Automatic Slideshow - change image every 4 seconds
