@@ -123,7 +123,7 @@ def cli(args=None):
         '--path',
         default="default",
         required=False,
-        help='Optional paramater to override location of catalogs directory. Default will be ../../catalogs/'
+        help='Optional parameter to override location of catalogs directory. Default will be ../../catalogs/'
     )
     
     args = parser.parse_args(args)

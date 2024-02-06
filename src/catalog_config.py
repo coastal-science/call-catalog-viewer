@@ -59,11 +59,11 @@ if __name__ == "__main__":
 
     """
     The commented section below code is generic, precise, short but obscure.
-    It runs **any** python script of the form `code/*_catalog.py` with all cmd line args
+    It runs **any** python script of the form `src/*_catalog.py` with all cmd line args
     The version below the commenting is explicit but longer.
     """
 
-    # fullcmd = f"{sys.executable} code/{cmd}_catalog.py {' '.join(cmdargs)}"
+    # fullcmd = f"{sys.executable} src/{cmd}_catalog.py {' '.join(cmdargs)}"
 
     print(f"{thisfile}: {cmd} {cmdargs}")
     # print(f"{thisfile}: subprocess: {fullcmd}")
