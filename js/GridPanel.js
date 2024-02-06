@@ -212,6 +212,10 @@ var GridPanel = undefined;
             if (site_details['catalogue']['is_root'] === 'true') {
                 document.getElementById("catalogue-title").innerHTML = site_details['catalogue']['title'];
             }
+            // TODO: temporary hack for the release 1.0 of a single local root catalogue.
+            // The hack is not needed when all catalogues are remote catalogues.
+            // By design (reasoning?): local catalogues cannot be root catalogues.
+            document.getElementById("catalogue-title").innerHTML = site_details['catalogue']['title'];
 
             var filters = simple_datasource["filters"];
             var population = simple_datasource["population"];
