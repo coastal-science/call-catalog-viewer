@@ -565,8 +565,7 @@ var GridPanel = undefined;
             e.preventDefault();
             var obj_id = $(this).parents('.itemblock').attr('id').substring(3);
             var data_target_seq = id_to_seq[obj_id];
-            page_offset = (current_page - 1) * page_size
-            var data_target = resultData[data_target_seq + page_offset];
+            var data_target = currentDisplayData[data_target_seq];
             if (audio_element !== undefined && audio_element !== null && audio_element.pause !== undefined) {
                 audio_element.pause();
             }
