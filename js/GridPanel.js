@@ -77,12 +77,20 @@ var GridPanel = undefined;
     function pack_option(id, image_file, callname, d1_category, d1_value, d2_category, d2_value, full) {
         var d1 = (d1_category == undefined || d1_category == null) ? "" : d1_category.charAt(0).toUpperCase() + d1_category.slice(1) + ': ' + d1_value;
         var d2 = (d2_category == undefined || d2_category == null) ? "" : d2_category.charAt(0).toUpperCase() + d2_category.slice(1) + ': ' + d2_value;
-
+        // precede (using string replacement) the symbols (+-/) in `callname` with wordbreak element <wbr>
+        // the <table> ensures that text warping doesn't occur around the play button
         return '<div class="col-xxl-2 col-xl-2 col-lg-3 col-md-3 col-sm-4 mb-4 itemblock" id="gi-' + id + '">\
         <div class="bg-white rounded shadow-sm"><a href="'+ media_folder_path + full + '" data-toggle="lightbox" class="image_pop_source text-decoration-none"">\
                 <img src="'+ media_folder_path + image_file + '" loading="lazy" alt="" class="img-fluid card-img-top"></a>\
                     <div class="p-4">\
-                        <h5> <a class="play_btn" href="#" style="text-decoration:none">'+ play_icon + '<span class="text-dark">&nbsp;' + callname + '</span></a></h5>\
+                        <h5> <a class="play_btn" href="#" style="text-decoration:none"> \
+                        <table> \
+                            <tr> \
+                                <td>' + play_icon + '</td> \
+                                <td class="text-dark" style="word-wrap;">&nbsp;' + callname.replace(/[^\w\s]/gi, '<wbr>$&') + '</td> \
+                            </tr> \
+                        </table> \
+                        </a></h5> \
                         <p class="small mb-0 meta-p"><span class="font-weight-bold">' + d1 + '</span></p>\
                         <div class="meta-p d-flex align-items-center justify-content-between rounded-pill bg-light px-3 py-2 mt-4">\
                         <div class="badge badge-warning px-3 rounded-pill font-weight-normal"><span class="font-weight-bold  text-dark">' + d2 + '</span></div>\
