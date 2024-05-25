@@ -9,7 +9,7 @@ As long as the terms in the [Licence](license.html) page are respected, you are 
 
 When referring to the catalogue please cite the following references:
 
-> Ford, John K.B., Volker B. Deecke, and James F. Pilkington. 2023. Dialects of Killer Whales in Coastal Northeastern Pacific Waters: A Catalogue of Call Types. [https://orca.research.sfu.ca/call-library](https://orca.research.sfu.ca/call-library). Accessed 1 Aug. 2023.
+> John K.B Ford, Volker B. Deecke, and James F. Pilkington. 2023. Dialects of Killer Whales in Coastal Northeastern Pacific Waters: A Catalogue of Call Types. [https://orca.research.sfu.ca/call-library](https://orca.research.sfu.ca/call-library). Accessed 1 Aug. 2023.
 
 Bibtex
 ```
