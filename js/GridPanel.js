@@ -27,8 +27,9 @@ var GridPanel = undefined;
     var lity_data = undefined;
     var audio_element = undefined;
     var selecting = undefined;
+    const VERSION = VERSION_TAG // e.g. 'v=random'; suffix assets as `file_name + "?" + VERSION`
     const LIBRARY = 'catalogs';
-    const LIBRARY_INDEX = 'index.yaml';
+    const LIBRARY_INDEX = 'index.yaml' + "?" + VERSION; // Add suffix to all assert to manually handle caching updates without affecting the end users
     var catalog_library = {};
     const media_folder_path = ''; /* srkw-call-catalogue-files/media removed to get files locally */
     const play_icon = '<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-play" width="32" height="32" viewBox="0 0 24 24"><path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm-3 17v-10l9 5.146-9 4.854z"/></svg>';
@@ -133,7 +134,7 @@ var GridPanel = undefined;
             // Using a for() generator allows to use await inside the loop.
             // In case of yaml.forEach(name =>) with callback function, the callback
             //  would have to be async and could introduce race conditions (unexpected behaviour).
-            let response = await getCatalog(LIBRARY + "/" + name + '.json');
+            let response = await getCatalog(LIBRARY + "/" + name + '.json' + "?" + VERSION);
         }
         if (!data_initialized)
             setSortableDropdownValues();
@@ -584,7 +585,7 @@ var GridPanel = undefined;
                 var tmpid = window.crypto.getRandomValues(new Uint32Array(1))[0].toString(16) + window.crypto.getRandomValues(new Uint32Array(1))[0].toString(16);
             } while (id_to_seq[tmpid] !== undefined);
             id_to_seq[tmpid] = i;
-            var obj = pack_option(tmpid, LIBRARY + '/' + ele.image_file, ele.call_type, ele['d1'], ele[ele.d1], ele.d2, ele[ele.d2], LIBRARY + '/' + ele.image_file);
+            var obj = pack_option(tmpid, LIBRARY + '/' + ele.image_file + "?" + VERSION, ele.call_type, ele['d1'], ele[ele.d1], ele.d2, ele[ele.d2], LIBRARY + '/' + ele.image_file + "?" + VERSION);
             grid.append(obj);
         }
         selecting = 0;
@@ -627,7 +628,7 @@ var GridPanel = undefined;
             }
             audio_element = document.createElement('audio');
             audio_element.setAttribute('src', '');
-            audio_element.setAttribute('src', LIBRARY + '/' + data_target.audio_file);
+            audio_element.setAttribute('src', LIBRARY + '/' + data_target.audio_file + "?" + VERSION);
             audio_element.setAttribute('autoplay', 'autoplay');
             audio_element.load();
             // console.log(obj_id)
@@ -870,7 +871,9 @@ var GridPanel = undefined;
 
             // file = 'resources_config/sample.md'
             file = LIBRARY + '/' + media_folder_path + lity_data['description_file']
+            file = file + "?" + VERSION
             css_file = 'css/darkdown.css'
+            css_file = css_file + "?" + VERSION
             $('.lity-container').append(
                 `<div class="container-fluid litybottom"> 
                     <zero-md src='${file}'> 
@@ -891,7 +894,7 @@ var GridPanel = undefined;
           </svg>Playing  (Call Name: '+ lity_data.call_type + ')');
             $(this).removeClass('btn-primary').addClass('btn-success');
             audio_element.setAttribute('src', '');
-            audio_element.setAttribute('src', LIBRARY + '/' + lity_data.audio_file);
+            audio_element.setAttribute('src', LIBRARY + '/' + lity_data.audio_file + "?" + VERSION);
             audio_element.setAttribute('autoplay', 'autoplay');
             audio_element.load();
             audio_element.addEventListener('ended', function () {

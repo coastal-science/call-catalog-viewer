@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/w3-css/4.1.0/3/w3.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato&display=swap">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="./css/css">
+    <link rel="stylesheet" href="./css/css?v=random">
     
     <link rel="preconnect" href="./catalogs/">
 
@@ -24,9 +24,15 @@
         src="https://cdn.jsdelivr.net/gh/zerodevx/zero-md@2/dist/zero-md.min.js">
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/js-yaml/4.1.0/js-yaml.js"></script>
-    <script src="./js/SearchPanel.js"></script>
-    <script src="./js/GridPanel.js"></script>
-
+    <script>
+        // Global constant used to suffix all assets as a workaround for caching bug.
+        // Only the part after "?" is used in the js files (to add suffix to images/audio/markdown)
+        // Other instance of the placeholder string (in html) is substituted by the Nginx response.
+        // TODO: A more elegant solution is to use a web framework that handles caching updates correctly instead of manually.
+        const VERSION_TAG = '?v=random'.split("?").slice(-1)[0]
+    </script>
+    <script src="./js/SearchPanel.js?v=random"></script>
+    <script src="./js/GridPanel.js?v=random"></script>
 </head>
 
 <style>
@@ -173,16 +179,16 @@
     <div class="w3-top" style="position:relative;">
     <div class="w3-bar w3-black w3-card">
       <a class="w3-bar-item w3-button w3-padding-large w3-hide-medium w3-hide-large w3-right" href="javascript:void(0)" onclick="myFunction()" title="Toggle Navigation Menu"><i class="fa fa-bars"></i></a>
-      <a href="home.html#" class="w3-bar-item w3-button w3-padding-large">HOME</a>
-       <a href="index.html" class="w3-bar-item w3-button w3-padding-large w3-hide-small">CATALOGUE</a>
-       <a href="license.html" class="w3-bar-item w3-button w3-padding-large w3-hide-small">LICENCE</a>
-       <a href="faq.html" class="w3-bar-item w3-button w3-padding-large w3-hide-small">FAQ</a>
+      <a href="home.html?v=random" class="w3-bar-item w3-button w3-padding-large">HOME</a>
+       <a href="index.html?v=random" class="w3-bar-item w3-button w3-padding-large w3-hide-small">CATALOGUE</a>
+       <a href="license.html?v=random" class="w3-bar-item w3-button w3-padding-large w3-hide-small">LICENCE</a>
+       <a href="faq.html?v=random" class="w3-bar-item w3-button w3-padding-large w3-hide-small">FAQ</a>
      <!-- <div class="w3-dropdown-hover w3-hide-small">
         <button class="w3-padding-large w3-button" title="More">MORE <i class="fa fa-caret-down"></i></button>     
         <div class="w3-dropdown-content w3-bar-block w3-card-4">
-          <a href="home.html#" class="w3-bar-item w3-button">Sub-page1</a>
-          <a href="home.html#" class="w3-bar-item w3-button">Sub-page2</a>
-          <a href="home.html#" class="w3-bar-item w3-button">Sub-page3</a>
+          <a href="home.html?v=random" class="w3-bar-item w3-button">Sub-page1</a>
+          <a href="home.html?v=random" class="w3-bar-item w3-button">Sub-page2</a>
+          <a href="home.html?v=random" class="w3-bar-item w3-button">Sub-page3</a>
         </div>
       </div>
       <a href="javascript:void(0)" class="w3-padding-large w3-hover-red w3-hide-small w3-right"><i class="fa fa-search"></i></a>
@@ -192,9 +198,9 @@
   
   <!-- Navbar on small screens (remove the onclick attribute if you want the navbar to always show on top of the content when clicking on the links) -->
   <div id="navDemo" class="w3-bar-block w3-black w3-hide w3-hide-large w3-hide-medium w3-top" style="position:relative;">
-    <a href="index.html" class="w3-bar-item w3-button w3-padding-large" onclick="myFunction()">CATALOGUE</a>
-    <a href="license.html" class="w3-bar-item w3-button w3-padding-large" onclick="myFunction()">LICENCE</a>
-    <a href="faq.html" class="w3-bar-item w3-button w3-padding-large" onclick="myFunction()">FAQ</a>
+    <a href="index.html?v=random" class="w3-bar-item w3-button w3-padding-large" onclick="myFunction()">CATALOGUE</a>
+    <a href="license.html?v=random" class="w3-bar-item w3-button w3-padding-large" onclick="myFunction()">LICENCE</a>
+    <a href="faq.html?v=random" class="w3-bar-item w3-button w3-padding-large" onclick="myFunction()">FAQ</a>
    </div>
 
 
