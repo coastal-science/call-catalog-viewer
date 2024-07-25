@@ -516,7 +516,7 @@ var GridPanel = undefined;
                             throw new Exception('Parse Error');
                         }
                         //show details
-                        var instance = lity('./' + data.image_file);
+                        var instance = lity(LIBRARY + '/' + data.image_file);
                         var template = instance.options('template');
                     }
                 } catch (e) {
