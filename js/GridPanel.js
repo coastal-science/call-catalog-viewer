@@ -879,7 +879,8 @@ var GridPanel = undefined;
             file = file + "?" + VERSION
             css_file = 'css/darkdown.css'
             css_file = css_file + "?" + VERSION
-            $('.lity-container').append(
+            if ( lity_data['description_file'] !== undefined) {
+                $('.lity-container').append(
                 `<div class="container-fluid litybottom"> 
                     <zero-md src='${file}'> 
                         <template> 
@@ -887,7 +888,7 @@ var GridPanel = undefined;
                         </template> 
                     </zero-md>
                 </div>`);
-
+            }
             pop_opening = true;
 
             // console.log(lity_data)
