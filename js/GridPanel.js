@@ -365,6 +365,11 @@ var GridPanel = undefined;
         window.entireFilterData.sort(current_sort);
 
         currentDisplayData = window.entireFilterData.slice((current_page - 1) * page_size, (current_page) * page_size); // obtain the data to display on this page from the entireData slice
+        for (const element of currentDisplayData) {
+            element.image_file += "?" + VERSION
+            element.audio_file += "?" + VERSION
+            console.log(element)
+        }
         redraw_items(); // draws our new updated items
 
         if (!data_initialized)
@@ -585,7 +590,7 @@ var GridPanel = undefined;
                 var tmpid = window.crypto.getRandomValues(new Uint32Array(1))[0].toString(16) + window.crypto.getRandomValues(new Uint32Array(1))[0].toString(16);
             } while (id_to_seq[tmpid] !== undefined);
             id_to_seq[tmpid] = i;
-            var obj = pack_option(tmpid, LIBRARY + '/' + ele.image_file + "?" + VERSION, ele.call_type, ele['d1'], ele[ele.d1], ele.d2, ele[ele.d2], LIBRARY + '/' + ele.image_file + "?" + VERSION);
+            var obj = pack_option(tmpid, LIBRARY + '/' + ele.image_file, ele.call_type, ele['d1'], ele[ele.d1], ele.d2, ele[ele.d2], LIBRARY + '/' + ele.image_file);
             grid.append(obj);
         }
         selecting = 0;
@@ -628,7 +633,7 @@ var GridPanel = undefined;
             }
             audio_element = document.createElement('audio');
             audio_element.setAttribute('src', '');
-            audio_element.setAttribute('src', LIBRARY + '/' + data_target.audio_file + "?" + VERSION);
+            audio_element.setAttribute('src', LIBRARY + '/' + data_target.audio_file);
             audio_element.setAttribute('autoplay', 'autoplay');
             audio_element.load();
             // console.log(obj_id)
@@ -894,7 +899,7 @@ var GridPanel = undefined;
           </svg>Playing  (Call Name: '+ lity_data.call_type + ')');
             $(this).removeClass('btn-primary').addClass('btn-success');
             audio_element.setAttribute('src', '');
-            audio_element.setAttribute('src', LIBRARY + '/' + lity_data.audio_file + "?" + VERSION);
+            audio_element.setAttribute('src', LIBRARY + '/' + lity_data.audio_file);
             audio_element.setAttribute('autoplay', 'autoplay');
             audio_element.load();
             audio_element.addEventListener('ended', function () {
