@@ -259,6 +259,13 @@ var GridPanel = undefined;
                 delete simple_datasource.old_d2
 
                 resultData[data_index] = validateParameters(simple_datasource[item]);
+                if ( resultData[data_index].image_file !== undefined )
+                    resultData[data_index].image_file += "?" + VERSION
+                if ( resultData[data_index].audio_file !== undefined )
+                    resultData[data_index].audio_file += "?" + VERSION
+                if ( resultData[data_index].description_file !== undefined )
+                    resultData[data_index].description_file += "?" + VERSION
+                
                 data_index++;
             });
             await updateCurrentData(); // apply filters on resultData, populating currentFilteredData accordingly
@@ -365,11 +372,6 @@ var GridPanel = undefined;
         window.entireFilterData.sort(current_sort);
 
         currentDisplayData = window.entireFilterData.slice((current_page - 1) * page_size, (current_page) * page_size); // obtain the data to display on this page from the entireData slice
-        for (const element of currentDisplayData) {
-            element.image_file += "?" + VERSION
-            element.audio_file += "?" + VERSION
-            console.log(element)
-        }
         redraw_items(); // draws our new updated items
 
         if (!data_initialized)
@@ -876,7 +878,7 @@ var GridPanel = undefined;
 
             // file = 'resources_config/sample.md'
             file = LIBRARY + '/' + media_folder_path + lity_data['description_file']
-            file = file + "?" + VERSION
+            // file = file + "?" + VERSION
             css_file = 'css/darkdown.css'
             css_file = css_file + "?" + VERSION
             if ( lity_data['description_file'] !== undefined) {
