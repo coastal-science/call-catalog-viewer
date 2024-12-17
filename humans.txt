@@ -1,14 +1,12 @@
 /* TEAM */
-    SFU's Big Data Hub: Steven Bergner
-	Contact: hello [at] humanstxt.org
-	GitHub: @git-steb
-	From: Simon Fraser University
-
     Research scientist (emeritus): John Ford
-	Contact: hello [at] humanstxt.org
 	GitHub: @JKBF
 	From: Pacific Biological Station, Fisheries and Oceans Canada
     
+    SFU's Big Data Hub: Steven Bergner
+	GitHub: @git-steb
+	From: Simon Fraser University
+
     Prototype developer: Rovenna Chu
 	GitHub: @rovenna2021
 	From: Simon Fraser University
@@ -17,7 +15,7 @@
 	GitHub: @shh10
 	From: Simon Fraser University
 
-    SFU's Big Data Hub: Ishan Sahay
+    SFU's Research Computing Group: Ishan Sahay
 	GitHub: @VWJF
 	From: Simon Fraser University
     
@@ -27,13 +25,13 @@
 
 /* THANKS */
 
-    Hallo Lead: Ruth Joy
+    HALLO Lead: Ruth Joy
     GitHub: @rutherfordjoy
     From: Simon Fraser University and @coastal-science
 	
-    Hallo community of users, reviewers, testers for their invaluable feedback: Jen, Ruby, Amalis, Scott Veirs
+    HALLO community of users, reviewers, testers for their invaluable feedback: Jen, Ruby, Amalis, Scott Veirs
 
-    Media Queries by: SFU's Big Data Hub Communications @michael
+    Media Queries via: https://orca.research.sfu.ca/contact
 		
 
 /* SITE */
