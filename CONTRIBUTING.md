@@ -31,7 +31,7 @@ Any security issues should be reported by creating a [new draft security advisor
 - Can I disable something for other people?
 If the answer to either of those two questions are "yes", then you're probably dealing with a security issue. Note that even if you answer "no" to both questions, you may still be dealing with a security issue, so if you're unsure, go ahead and create a draft advisory.
 
-Use the _Description_ field to describe the vulnerability as best as you can. Please provide details or screenshots necessary to reprocuce the problem.
+Use the _Description_ field to describe the vulnerability as best as you can. Please provide details or screenshots necessary to reproduce the problem.
 
 If you spot a problem, [search if an issue](https://github.com/coastal-science/call-catalog-viewer/issues) already exists. If a related issue doesn't exist, you can open a new issue using a relevant issue form to submit a bug report, make a feature request or bring something to the attention of the developers.
 
