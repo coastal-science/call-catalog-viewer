@@ -111,6 +111,8 @@ def parse_yaml_to_json(path_to_catalogs_directory, yaml_file_path):
             
         # create df and process for json dump
         df = pd.DataFrame.from_dict(resources['calls'])
+        ## add it back because the front end depends on it. It expects a flat table.
+        df['population'] = population[0]
         
         from os.path import exists
         #check image-file and audio-file
