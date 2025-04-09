@@ -1,3 +1,6 @@
+
+> Thanks to **Ishan Sahay** and _SFUs Research Computing Group/IT Services_, and **Steven Bergner** and _SFUs Big Data Hub_ at Simon Fraser University for their contributions in bringing this Orca Call Catalogue online.
+
 # Frequently Asked Questions
 
 ## How to use this site?
