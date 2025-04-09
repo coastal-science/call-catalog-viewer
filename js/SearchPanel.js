@@ -72,7 +72,7 @@ var SearchPanel = undefined;
     
     /** 
      * @param {string} v value for the option in dropdown
-     * @returns an HTML represntation of the option to add
+     * @returns an HTML representation of the option to add
      */
     function pack_option(v) {
         return '<option value="' + v + '">' + v + '</option>'
@@ -88,7 +88,7 @@ var SearchPanel = undefined;
         var keys = Object.keys(filter_options);
         keys.forEach((key) => {
             // if this is 'population' then things are simple, add everything we need as array of values
-            // if it is not, then it is populatoin specific filters and we need to be more careful
+            // if it is not, then it is population specific filters and we need to be more careful
             var population_value = filter_options[key][0];
 
             if (population_value === 'population') {
@@ -117,7 +117,7 @@ var SearchPanel = undefined;
             } else {
                 // this means that we are looking at population specific filters
 
-                // get the keys for to population specific, each one represnting a dropdown that we need to create
+                // get the keys for to population specific, each one representing a dropdown that we need to create
                 var dropdown_keys = Object.keys(filter_options[key][1]);
 
                 dropdown_keys.forEach((drop_key) => {
@@ -148,7 +148,7 @@ var SearchPanel = undefined;
                 })
             } 
         });
-        // used when bidnding on changes to dropdowns
+        // used when binding on changes to dropdowns
         num_dropdowns = count;
     }
 
@@ -209,7 +209,7 @@ var SearchPanel = undefined;
             $('#s' + i).on('changed.bs.select', (e, clickedIndex, isSelected, previousValue) => { // sets the listener when dropdowns are changed
                 var title = element_id_to_title['s' + i];
 
-                // tmpResult holds the currently applied filters that are passed back to GridPanel in get_new callss
+                // tmpResult holds the currently applied filters that are passed back to GridPanel in get_new calls
                 if (tmpResult[title] === undefined)     
                     tmpResult[title] = []
                 tmpResult[element_id_to_title['s' + i]] = $('#s' + i).selectpicker('val');
