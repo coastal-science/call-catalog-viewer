@@ -24,13 +24,14 @@ var SearchPanel = undefined;
         if (!fileExists(url))
             return;
         // if the values have not already been set in url 'f' parameters, wait 300ms for them to get set, and then refresh the page 
-        if (!urlParams.has('f')) {
-            setTimeout(function() {
-                queryString = location.search;
-                urlParams = new URLSearchParams(queryString);
-                location.reload();
-            }, 500)
+        // console.log({"waiting for variable": urlParams});
+        while(!urlParams.has('f')) {// define the condition as you like
+            // console.log({'waiting': urlParams})
+            await new Promise(resolve => setTimeout(resolve, 300));
+            urlParams = new URLSearchParams(location.search);
         }
+        // console.log("waiting done. the variable is defined.");
+        
 
         // the 'f' parameters have been set, 
         if (urlParams.has('f')) {
