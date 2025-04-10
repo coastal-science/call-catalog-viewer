@@ -265,13 +265,19 @@ var SearchPanel = undefined;
 
     /**
      * build the dropdown and append it to the searching panel
+     * Duplicate `dropdown_data` or `selected_values` will be marked as 'selected'
      * @param {Object} dropdown_data data representing the dropdown to create
+     * @param {Object} selected_values array representing the values from `dropdown_data` have the attribute selected. 
      */
-    function buildDropdown(dropdown_data) {
+    function buildDropdown(dropdown_data, selected_values) {
         Panel.find('#search_rows').append(pack_dropdown(dropdown_data.title, dropdown_data.s));
 
         dropdown_data.values.forEach((value) => {
-            Panel.find('#' + dropdown_data.s).append(pack_option(value));
+            select = undefined
+            if (selected_values != undefined)
+                select = selected_values.includes(value)
+
+            Panel.find('#' + dropdown_data.s).append(pack_option(value, select));
         })
 
         $('#' + dropdown_data.s).selectpicker('refresh');
