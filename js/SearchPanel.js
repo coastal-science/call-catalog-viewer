@@ -74,11 +74,14 @@ var SearchPanel = undefined;
 
     /** 
      * @param {string} v value for the option in dropdown
+     * @param {Boolean} selected value to indicate `selected` attribute 
      * @returns an HTML representation of the option to add
      */
-    function pack_option(v) {
-        return '<option value="' + v + '">' + v + '</option>'
+    function pack_option(v, selected) {
+        selected = Boolean(selected) ? 'selected' : ''
+        return '<option value="' + v + '" ' + selected + '>' + v + '</option>'
     }
+
 
     /**
      * Update the s_options values to contain the variable data passed through url
