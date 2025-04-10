@@ -113,7 +113,7 @@ var SearchPanel = undefined;
                     arr.push(val);
                 });
                 obj.values = arr;
-    
+
                 // add to the options
                 s_options.population = obj;
                 // s_options.push(obj);
@@ -222,7 +222,7 @@ var SearchPanel = undefined;
                     tmpResult = {};
                     tmpResult['population'] = selected_population;
                     // Copy pre-saved selections
-                    if (selected_storage[selected_population] != undefined){
+                    if (selected_storage[selected_population] != undefined) {
                         for (const [key, value] of Object.entries(selected_storage[selected_population])) {
                             tmpResult[key] = value;
                         }
