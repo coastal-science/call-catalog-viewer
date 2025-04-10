@@ -284,17 +284,14 @@ var SearchPanel = undefined;
     }
 
     /**
-     * @param {string} selected_value population value to construct all of the required dropdowns for
+     * @param {string} population population value to construct all of the required dropdowns for
      */
-    function buildPopulationSpecificDropdown(selected_value) {
+    function buildPopulationSpecificDropdown(population) {
         Panel.find('#search_rows').empty();
-
-        buildPopulationDropdown(selected_value);
-        console.log(JSON.stringify(selected_value));
-
-        if (s_options[selected_value] !== undefined) {
-            s_options[selected_value].forEach((dropdown) => {
-                buildDropdown(dropdown);
+        buildPopulationDropdown(population);
+        console.log(JSON.stringify(population));
+        if (s_options[population] !== undefined) {
+            s_options[population].forEach((dropdown) => {
             })
         }
 
