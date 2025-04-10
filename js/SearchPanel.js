@@ -213,8 +213,11 @@ var SearchPanel = undefined;
                 tmpResult[element_id_to_title['s' + i]] = $('#s' + i).selectpicker('val');
 
                 if (element_id_to_title['s' + i] === 'population') {
-                    tmpResult['population'] = $('#s' + i).val();
-                    buildPopulationSpecificDropdown($('#s' + i).val());
+                    selected_id = '#s' + i;
+                    selected_population = $(selected_id).val();
+                    tmpResult = {};
+                    tmpResult['population'] = selected_population;
+                    buildPopulationSpecificDropdown(selected_population);
                     GridPanel.get_new(tmpResult);
                 }
             });
