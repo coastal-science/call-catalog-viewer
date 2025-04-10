@@ -292,6 +292,8 @@ var SearchPanel = undefined;
         console.log(JSON.stringify(population));
         if (s_options[population] !== undefined) {
             s_options[population].forEach((dropdown) => {
+                dropdown_selected_value = get_population_selection_from_storage(population, dropdown);
+                buildDropdown(dropdown, dropdown_selected_values);
             })
         }
 
