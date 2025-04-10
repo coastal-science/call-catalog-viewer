@@ -298,4 +298,22 @@ var SearchPanel = undefined;
 
         bindEvents();
     }
+
+    /**
+     * @param {string} population Title of the population dropdown.
+     * @param {string} dropdown Corresponding dropdown (single) entry from `s_options[population]`.
+     * @returns Array of already user-selected options (values only) from `selected_storage[population]` if it exists, otherwise an empty array.
+     */
+    function get_population_selection_from_storage(population, dropdown) {
+        dropdown_selected_values = [];
+        if (selected_storage[population]) {
+            dropdown_selected_values = selected_storage[population][dropdown.title];
+            dropdown.s;
+            dropdown.title;
+            console.log({ dropdown, dropdown_selected_values });
+            // $('#' + dropdown_data.s).attr("selected","selected");
+        }
+        return dropdown_selected_values;
+    }
+
 }(SearchPanel || (SearchPanel = {})));
