@@ -2,8 +2,8 @@ var SearchPanel = undefined;
 (function (panel) {
     var Panel = undefined;
     var originalData = undefined;
-    var tmpResult = undefined;
-    var selected_storage = {} // Store the last selection options used for filtering. Save for each population.
+    var tmpResult = undefined; // Variable to store dropdown selections for dynamic updates. As the user clicks.
+    var selected_storage = {}; // Store the last selection options used for filtering. Save for each population.
     var s_options = {};
     var num_dropdowns;
     var dirty = false;
