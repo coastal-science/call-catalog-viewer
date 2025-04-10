@@ -53,9 +53,9 @@ var GridPanel = undefined;
     */
 
     String.prototype.toTitleCase = function () {
-        return this.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.slice(1).toLowerCase();});
+        return this.replace(/\w\S*/g, function (txt) { return txt.charAt(0).toUpperCase() + txt.slice(1).toLowerCase(); });
     };
-                    
+
     function num_of_item_per_row() {
         if (window.matchMedia('(min-width: 1400px)').matches) {
             return 6;
@@ -259,13 +259,13 @@ var GridPanel = undefined;
                 delete simple_datasource.old_d2
 
                 resultData[data_index] = validateParameters(simple_datasource[item]);
-                if ( resultData[data_index].image_file !== undefined )
+                if (resultData[data_index].image_file !== undefined)
                     resultData[data_index].image_file += "?" + VERSION
-                if ( resultData[data_index].audio_file !== undefined )
+                if (resultData[data_index].audio_file !== undefined)
                     resultData[data_index].audio_file += "?" + VERSION
-                if ( resultData[data_index].description_file !== undefined )
+                if (resultData[data_index].description_file !== undefined)
                     resultData[data_index].description_file += "?" + VERSION
-                
+
                 data_index++;
             });
             await updateCurrentData(); // apply filters on resultData, populating currentFilteredData accordingly
@@ -435,10 +435,10 @@ var GridPanel = undefined;
             // // ensure that the 'Unknown' field is at the bottom of the dropdown
             // var index = searching_para[filterable].indexOf("Unknown");
             // if (index != -1) {
-                //     searching_para[filterable].splice(index, 1);
-                //     searching_para[filterable].push('Unknown');
-                // }
-            });
+            //     searching_para[filterable].splice(index, 1);
+            //     searching_para[filterable].push('Unknown');
+            // }
+        });
     }
 
 
@@ -700,7 +700,7 @@ var GridPanel = undefined;
                     if (target.length >= 0) {
                         $(target).siblings().removeClass('selecting');
                         $(target).addClass('selecting');
-                        if (target[0]) { 
+                        if (target[0]) {
                             // handle exception when navigating with arrow keys past the items on the page pagination, 
                             // the additional items are on the next page
                             target[0].scrollIntoView({ block: "end" });
@@ -881,9 +881,9 @@ var GridPanel = undefined;
             // file = file + "?" + VERSION
             css_file = 'css/darkdown.css'
             css_file = css_file + "?" + VERSION
-            if ( lity_data['description_file'] !== undefined) {
+            if (lity_data['description_file'] !== undefined) {
                 $('.lity-container').append(
-                `<div class="container-fluid litybottom"> 
+                    `<div class="container-fluid litybottom"> 
                     <zero-md src='${file}'> 
                         <template> 
                             <link href='${css_file}' rel="stylesheet"> </link>  

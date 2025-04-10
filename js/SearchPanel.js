@@ -8,7 +8,7 @@ var SearchPanel = undefined;
     var dirty = false;
     var s_index = 1;
     var element_id_to_title = {};
-    
+
     const LIBRARY = 'catalogs';
     const LIBRARY_INDEX = 'index.yaml';
 
@@ -25,13 +25,13 @@ var SearchPanel = undefined;
             return;
         // if the values have not already been set in url 'f' parameters, wait 300ms for them to get set, and then refresh the page 
         // console.log({"waiting for variable": urlParams});
-        while(!urlParams.has('f')) {// define the condition as you like
+        while (!urlParams.has('f')) {// define the condition as you like
             // console.log({'waiting': urlParams})
             await new Promise(resolve => setTimeout(resolve, 300));
             urlParams = new URLSearchParams(location.search);
         }
         // console.log("waiting done. the variable is defined.");
-        
+
 
         // the 'f' parameters have been set, 
         if (urlParams.has('f')) {
@@ -59,7 +59,7 @@ var SearchPanel = undefined;
 
         // originalData is our filters that we want to translate into dropdowns
         updateFilterOptions(originalData);
-        
+
         tmpResult = {}
         // find the panel and clear the search rows so that we can rebuild from fresh
         Panel = $('.panel');
@@ -70,7 +70,7 @@ var SearchPanel = undefined;
         // buildPopulationSpecificDropdown(selected_value);
     };
     panel.init = init;
-    
+
     /** 
      * @param {string} v value for the option in dropdown
      * @returns an HTML representation of the option to add
@@ -94,7 +94,6 @@ var SearchPanel = undefined;
 
             if (population_value === 'population') {
                 var obj = {};
-
                 // set all of the values that we need
                 obj.s = "s" + count;
                 obj.b = "b" + count;
@@ -143,11 +142,11 @@ var SearchPanel = undefined;
                     // add the object to the population specific section of the s_options
                     if (!(s_options[population_value]))
                         s_options[population_value] = [];
-                    
+
                     s_options[population_value].push(obj);
                     count++;
                 })
-            } 
+            }
         });
         // used when binding on changes to dropdowns
         num_dropdowns = count;
@@ -162,18 +161,18 @@ var SearchPanel = undefined;
         title = title.charAt(0).toUpperCase() + title.slice(1);
 
         if (title === 'Population') {
-            return '<div class="col col-12 col-sm-12 col-md-12 col-lg-12 col-xl-10 col-xxl-10 align-items-center align-middle align-right d-flex flex-nowrap">' + 
-                    '<span class="col-4 text-end">' + title  + ': &nbsp;</span>' +
-                    '<select id="' + id + '" class="col-8" aria-label="size 3 select">' +
-                    '</select><br>&nbsp;' +
+            return '<div class="col col-12 col-sm-12 col-md-12 col-lg-12 col-xl-10 col-xxl-10 align-items-center align-middle align-right d-flex flex-nowrap">' +
+                '<span class="col-4 text-end">' + title + ': &nbsp;</span>' +
+                '<select id="' + id + '" class="col-8" aria-label="size 3 select">' +
+                '</select><br>&nbsp;' +
                 '</div>'
         }
 
-        return '<div class="col col-12 col-sm-12 col-md-12 col-lg-12 col-xl-10 col-xxl-10 align-items-center align-middle align-right d-flex flex-nowrap">' + 
-                    '<span class="col-4 text-end">' + title  + ': &nbsp;</span>' +
-                    '<select id="' + id + '" class="col-8" multiple aria-label="size 3 select">' +
-                    '</select><br>&nbsp;' +
-                '</div>'
+        return '<div class="col col-12 col-sm-12 col-md-12 col-lg-12 col-xl-10 col-xxl-10 align-items-center align-middle align-right d-flex flex-nowrap">' +
+            '<span class="col-4 text-end">' + title + ': &nbsp;</span>' +
+            '<select id="' + id + '" class="col-8" multiple aria-label="size 3 select">' +
+            '</select><br>&nbsp;' +
+            '</div>'
     }
 
     /**
@@ -185,14 +184,12 @@ var SearchPanel = undefined;
 
         $.ajax({
             url: url,
-            type:'HEAD',
+            type: 'HEAD',
             async: false,
-            error: function() 
-            {
+            error: function () {
                 exists = false;
             },
-            success: function()
-            {
+            success: function () {
                 exists = true;
             }
         });
@@ -206,19 +203,19 @@ var SearchPanel = undefined;
     function bindEvents() {
         // for the number of values, in s_options, do this thing
         for (let i = 1; i <= num_dropdowns; i++) {
-            var object = s_options[i-1];
+            var object = s_options[i - 1];
             $('#s' + i).on('changed.bs.select', (e, clickedIndex, isSelected, previousValue) => { // sets the listener when dropdowns are changed
                 var title = element_id_to_title['s' + i];
 
                 // tmpResult holds the currently applied filters that are passed back to GridPanel in get_new calls
-                if (tmpResult[title] === undefined)     
+                if (tmpResult[title] === undefined)
                     tmpResult[title] = []
                 tmpResult[element_id_to_title['s' + i]] = $('#s' + i).selectpicker('val');
 
-                if (element_id_to_title['s' + i] === 'population'){
+                if (element_id_to_title['s' + i] === 'population') {
                     tmpResult['population'] = $('#s' + i).val();
                     buildPopulationSpecificDropdown($('#s' + i).val());
-                    GridPanel.get_new(tmpResult);   
+                    GridPanel.get_new(tmpResult);
                 }
             });
         }
@@ -240,9 +237,9 @@ var SearchPanel = undefined;
      */
     function buildPopulationDropdown(last_value) {
         var population_data = s_options['population'];
-        
+
         Panel.find('#search_rows').append(pack_dropdown(population_data.title, population_data.s));
-         
+
         population_data.values.forEach((value) => {
             Panel.find("#" + population_data.s).append(pack_option(value));
         });
@@ -275,11 +272,11 @@ var SearchPanel = undefined;
         console.log(JSON.stringify(selected_value));
 
         if (s_options[selected_value] !== undefined) {
-            s_options[selected_value].forEach((dropdown)=> {
+            s_options[selected_value].forEach((dropdown) => {
                 buildDropdown(dropdown);
             })
         }
-            
+
 
         bindEvents();
     }
