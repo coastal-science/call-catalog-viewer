@@ -3,6 +3,7 @@ var SearchPanel = undefined;
     var Panel = undefined;
     var originalData = undefined;
     var tmpResult = undefined;
+    var selected_storage = {} // Store the last selection options used for filtering. Save for each population.
     var s_options = {};
     var num_dropdowns;
     var dirty = false;
@@ -217,6 +218,12 @@ var SearchPanel = undefined;
                     selected_population = $(selected_id).val();
                     tmpResult = {};
                     tmpResult['population'] = selected_population;
+                    // Copy pre-saved selections
+                    if (selected_storage[selected_population] != undefined){
+                        for (const [key, value] of Object.entries(selected_storage[selected_population])) {
+                            tmpResult[key] = value;
+                        }
+                    }
                     buildPopulationSpecificDropdown(selected_population);
                     GridPanel.get_new(tmpResult);
                 }
@@ -225,6 +232,8 @@ var SearchPanel = undefined;
         Panel.find('#search_now').off('click').click(function (e) { // function that is called when the filter button is clicked. 
             dirty = false;
             originalData = $.extend(true, {}, tmpResult);
+            // Copy the current filter selections for saving state
+            selected_storage[tmpResult['population']] = structuredClone(tmpResult)
             GridPanel.get_new(tmpResult);
         });
 
