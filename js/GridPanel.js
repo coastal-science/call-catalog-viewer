@@ -22,7 +22,7 @@ var GridPanel = undefined;
 
     var encoded = undefined;
 
-    var poped = undefined;
+    var popped = undefined;
     var pop_opening = undefined;
     var lity_data = undefined;
     var audio_element = undefined;
@@ -499,7 +499,7 @@ var GridPanel = undefined;
             }
         }
 
-        poped = false;
+        popped = false;
         Panel = $('#resultgrid');
 
         total_result = 1;
@@ -606,7 +606,7 @@ var GridPanel = undefined;
     function redraw_items() {
         id_to_seq = {};
         next_drawn = 0;
-        poped = false;
+        popped = false;
         append_items();
     };
     panel.redraw_items = redraw_items;
@@ -617,8 +617,8 @@ var GridPanel = undefined;
             let parent_itemblock = $(this).parents('.itemblock');
             $(parent_itemblock).click();
             var obj_id = $(this).parents('.itemblock').attr('id').substring(3);
-            poped = obj_id;
-            //var data_target_seq = id_to_seq[poped];
+            popped = obj_id;
+            //var data_target_seq = id_to_seq[popped];
             //var data_target = resultData[data_target_seq];
 
             var instance = lity($(this).attr('href'));
@@ -705,7 +705,7 @@ var GridPanel = undefined;
                             // the additional items are on the next page
                             target[0].scrollIntoView({ block: "end" });
                         }
-                        if (poped) {
+                        if (popped) {
                             if (delayed_pop !== undefined) {
                                 clearTimeout(delayed_pop);
                             }
@@ -760,8 +760,8 @@ var GridPanel = undefined;
             lity_data = [];
             const queryString = window.location.search;
             const urlParams = new URLSearchParams(queryString);
-            if (poped != undefined && !urlParams.has('popup')) {
-                var data_target_seq = id_to_seq[poped];
+            if (popped != undefined && !urlParams.has('popup')) {
+                var data_target_seq = id_to_seq[popped];
                 var data_target = currentDisplayData[data_target_seq];
                 validateParameters(data_target);
                 lity_data = data_target;
@@ -919,7 +919,7 @@ var GridPanel = undefined;
                 audio_element.setAttribute('src', '');
                 audio_element.pause();
             }
-            poped = undefined;
+            popped = undefined;
             pop_opening = false;
             var encoded = btoa(JSON.stringify(searching_para));
             const state = { 'f': encoded, 'p': current_page, 's': sort_by, 'sa': sort_asc };
