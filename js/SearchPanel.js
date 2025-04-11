@@ -3,7 +3,7 @@ var SearchPanel = undefined;
     var Panel = undefined;
     var originalData = undefined;
     var tmpResult = undefined; // Variable to store dropdown selections for dynamic updates. As the user clicks.
-    var selected_storage = {}; // Store the last selection options used for filtering. Save for each population.
+    var selection_storage = {}; // Store the last selection options used for filtering. Save for each population.
     var selected_population = undefined // Variable to store the current population selection
     var s_options = {};
     var num_dropdowns;
@@ -223,8 +223,8 @@ var SearchPanel = undefined;
                     tmpResult = {};
                     tmpResult['population'] = selected_population;
                     // Copy pre-saved selections
-                    if (selected_storage[selected_population] != undefined) {
-                        for (const [key, value] of Object.entries(selected_storage[selected_population])) {
+                    if (selection_storage[selected_population] != undefined) {
+                        for (const [key, value] of Object.entries(selection_storage[selected_population])) {
                             tmpResult[key] = value;
                         }
                     }
@@ -237,7 +237,7 @@ var SearchPanel = undefined;
             dirty = false;
             originalData = $.extend(true, {}, tmpResult);
             // Copy the current filter selections for saving state
-            selected_storage[tmpResult['population']] = structuredClone(tmpResult)
+            selection_storage[tmpResult['population']] = structuredClone(tmpResult)
             GridPanel.get_new(tmpResult);
         });
 
@@ -300,17 +300,17 @@ var SearchPanel = undefined;
 
 
         bindEvents();
-    }
+    };
 
     /**
      * @param {string} population Title of the population dropdown.
      * @param {string} dropdown Corresponding dropdown (single) entry from `s_options[population]`.
-     * @returns Array of already user-selected options (values only) from `selected_storage[population]` if it exists, otherwise an empty array.
+     * @returns Array of already user-selected options (values only) from `selection_storage[population]` if it exists, otherwise an empty array.
      */
     function get_population_selection_from_storage(population, dropdown) {
         dropdown_selected_values = [];
-        if (selected_storage[population]) {
-            dropdown_selected_values = selected_storage[population][dropdown.title];
+        if (selection_storage[population]) {
+            dropdown_selected_values = selection_storage[population][dropdown.title];
             dropdown.s;
             dropdown.title;
             console.log({ dropdown, dropdown_selected_values });
@@ -321,13 +321,13 @@ var SearchPanel = undefined;
     
     /**
      * Clears the displayed filter options for the currently selected_population. 
-     * Clears from the selected_storage, and triggers to `buildPopulationSpecificDropdown()`.
+     * Clears from the selection_storage, and triggers to `buildPopulationSpecificDropdown()`.
      */
     function clearFilter() {
-        console.log({selected_population, selected_storage})
-        if (selected_population != undefined && selected_storage != undefined ){
-            delete selected_storage[selected_population]
-            console.log({selected_population, selected_storage})
+        console.log({selected_population, selection_storage})
+        if (selected_population != undefined && selection_storage != undefined ){
+            delete selection_storage[selected_population]
+            console.log({selected_population, selection_storage})
             buildPopulationSpecificDropdown(selected_population)
         }
     };
