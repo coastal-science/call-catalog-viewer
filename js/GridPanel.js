@@ -200,8 +200,8 @@ var GridPanel = undefined;
     }
 
     /**
-     * Initialize data on the first call from getData
-     * Obtain correct data to display and assign to currentDisplayData and perform correct pagination and URL parameterizing
+     * Initialize data on the first call from getData 
+     * Obtain correct data to display and assign to currentDisplayData and perform correct pagination and URL parametrization
      * @param {Object} catalog_json path to JSON file
      * @returns 
      */
@@ -538,7 +538,7 @@ var GridPanel = undefined;
     /**
      * Updates searching_params based on the filters passed through URL
      * Called on filter button clicked
-     * @param {Object} params new paramaters to filter on
+     * @param {Object} params new parameters to filter on
      */
     function updateFiltersFromURLParams(params) {
         Object.keys(params).forEach((key) => {
