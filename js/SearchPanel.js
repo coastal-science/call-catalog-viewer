@@ -220,6 +220,19 @@ var SearchPanel = undefined;
                 if (element_id_to_title['s' + i] === 'population') {
                     selected_id = '#s' + i;
                     selected_population = $(selected_id).val();
+                    
+                    // TODO: DESIGN CHOICE.
+                    // By default, all filters cleared when population changes. 
+                    // A storage feature is implemented `selection_storage` where you
+                    // can change `populations` and your last filter setting restored (per population).
+                    // These are two design choices.
+                    // To clear all filters when the population changes, remove the Trash can button 
+                    // (and all related listeners and helper functions). Or call the helper function 
+                    // and retain the functionality of both (button to clear filter manually) and
+                    // automatically when changing populations.
+
+                    // clearFilter(); 
+
                     tmpResult = {};
                     tmpResult['population'] = selected_population;
                     // Copy pre-saved selections
@@ -327,7 +340,8 @@ var SearchPanel = undefined;
         console.log({selected_population, selection_storage})
         if (selected_population != undefined && selection_storage != undefined ){
             delete selection_storage[selected_population]
-            console.log({selected_population, selection_storage})
+            tmpResult = {}
+            tmpResult['population'] = selected_population
             buildPopulationSpecificDropdown(selected_population)
         }
     };
