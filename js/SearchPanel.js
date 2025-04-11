@@ -4,6 +4,7 @@ var SearchPanel = undefined;
     var originalData = undefined;
     var tmpResult = undefined; // Variable to store dropdown selections for dynamic updates. As the user clicks.
     var selected_storage = {}; // Store the last selection options used for filtering. Save for each population.
+    var selected_population = undefined // Variable to store the current population selection
     var s_options = {};
     var num_dropdowns;
     var dirty = false;
@@ -317,5 +318,19 @@ var SearchPanel = undefined;
         }
         return dropdown_selected_values;
     }
+    
+    /**
+     * Clears the displayed filter options for the currently selected_population. 
+     * Clears from the selected_storage, and triggers to `buildPopulationSpecificDropdown()`.
+     */
+    function clearFilter() {
+        console.log({selected_population, selected_storage})
+        if (selected_population != undefined && selected_storage != undefined ){
+            delete selected_storage[selected_population]
+            console.log({selected_population, selected_storage})
+            buildPopulationSpecificDropdown(selected_population)
+        }
+    };
+    panel.clearFilter = clearFilter;
 
 }(SearchPanel || (SearchPanel = {})));
