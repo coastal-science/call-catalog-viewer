@@ -331,10 +331,10 @@
                 <!-- <div class="row justify-content-md-center"> -->
                 <div class="row justify-content-center">
                     <div class="btn-group col col-12 col-sm-12 col-md-4 col-lg-2" role="group">
-                        <button id="search_now" aria-label="Filter" class="btn btn-filter">
+                        <button id="search_now" type='submit' aria-label="Filter" class="btn btn-filter">
                             Filter
                         </button>
-                        <button id="clear_filter" aria-label="Clear Filter" onclick="clearFilter()"
+                        <button id="clear_filter" type='submit' aria-label="Clear Filter"
                             class="btn btn-filter">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                 class="bi bi-trash3" viewBox="0 0 16 16">
@@ -525,11 +525,30 @@
         GridPanel.init();
         SearchPanel.init();
     })
+    
+    //Get the button
+    let clear_filter = document.getElementById("clear_filter");
 
-    function clearFilter() {
-        var x = document.getElementById("clear_filter");
-        console.log("Click clear filter");
+    // When the user clicks on the button, clear the selected filters options
+    clear_filter.addEventListener("click", clearFilter);
+    function clearFilter(event) {
+        event.preventDefault(); // To prevent following the link (optional)
         SearchPanel.clearFilter();
+        toggle_button(this, 100);
+    }
+
+    /* Bootstrap buttons are being used for user input without a <form>. This is a tightly coupled design choice.
+     * Bootstrap buttons are focused (css) when clicked. The css restores when you click on another item. This 
+     * does not give the appearance of submitting and resubmitting input.
+     * The Bootstrap-safe and accessibly-safe way is to .blur() the button after a click event. 
+     *
+     * @param button The HTML button object on which `.blur()` will be called after timeout_delay milliseconds,
+     * @param timeout_delay milliseconds timeout delay for fluctuating the button.
+     */
+    function toggle_button(button, timeout_delay) {
+        setTimeout(function() {
+            button.blur() // The bootstrap-safe way to disable the highlighted css
+        }.bind(button), timeout_delay);
     }
 
 </script>

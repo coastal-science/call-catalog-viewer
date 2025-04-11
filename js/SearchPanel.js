@@ -252,6 +252,7 @@ var SearchPanel = undefined;
             // Copy the current filter selections for saving state
             selection_storage[tmpResult['population']] = structuredClone(tmpResult)
             GridPanel.get_new(tmpResult);
+            toggle_button(this, 100);
         });
 
         Panel.find('#retrieve_data').off('click').click(function (e) {
