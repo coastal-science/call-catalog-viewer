@@ -6,6 +6,7 @@ var GridPanel = undefined;
     var currentDisplayData = undefined; // this is the data that has the filters applied to it and we want to use
     window.entireFilterData = undefined;
     var searching_para = undefined;
+    panel.searching_para = searching_para;
     var all_fields = [];
     var sortable_fields = [];
     var metadata_show = undefined;

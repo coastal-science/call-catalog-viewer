@@ -2,7 +2,7 @@ var SearchPanel = undefined;
 (function (panel) {
     var Panel = undefined;
     var originalData = undefined;
-    var tmpResult = undefined; // Variable to store dropdown selections for dynamic updates. As the user clicks.
+    var tmpResult = {}; // Variable to store dropdown selections for dynamic updates. As the user clicks.
     var selection_storage = {}; // Store the last selection options used for filtering. Save for each population.
     var selected_population = undefined // Variable to store the current population selection
     var s_options = {};
@@ -14,6 +14,7 @@ var SearchPanel = undefined;
     const LIBRARY = 'catalogs';
     const LIBRARY_INDEX = 'index.yaml';
 
+    panel.tmpResult = tmpResult;
 
     async function init() {
         originalData = {};
@@ -62,7 +63,6 @@ var SearchPanel = undefined;
         // originalData is our filters that we want to translate into dropdowns
         updateFilterOptions(originalData);
 
-        tmpResult = {}
         // find the panel and clear the search rows so that we can rebuild from fresh
         Panel = $('.panel');
         Panel.find("#search_rows").empty();
