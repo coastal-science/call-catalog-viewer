@@ -377,15 +377,15 @@ var GridPanel = undefined;
 
         if (!data_initialized)
             encoded = btoa(JSON.stringify(searching_para));
-        const state = { 'f': encoded, 'p': current_page, 's': sort_by, 'sa': sort_asc };
+        const state = { 'p': current_page, 's': sort_by, 'sa': sort_asc, 'f': encoded };
         const title = '';
         const queryString = window.location.search;
         const params = new URLSearchParams('');
-        params.set('f', encoded);
         params.set('p', current_page);
         params.set('s', sort_by);
         params.set('sa', sort_asc);
         params.set('ps', page_size.toString());
+        params.set('f', encoded);
         const urlParams = new URLSearchParams(queryString);
         if (urlParams.has('popup')) {
             params.set('popup', urlParams.get('popup'));
@@ -768,15 +768,16 @@ var GridPanel = undefined;
                 lity_data = data_target;
                 var encoded_data = btoa(JSON.stringify(data_target));
                 var encoded = btoa(JSON.stringify(searching_para));
-                const state = { 'f': encoded, 'p': current_page, 's': sort_by, 'sa': sort_asc, 'popup': encoded_data };
+                
+                const state = { 'p': current_page, 's': sort_by, 'sa': sort_asc, 'popup': encoded_data, 'f': encoded, };
                 const title = 'Details: ' + lity_data.cn + ' (Call Name)';//For Safari only
                 const params = new URLSearchParams('');
-                params.set('f', encoded);
                 params.set('p', current_page);
                 params.set('s', sort_by);
                 params.set('sa', sort_asc);
                 params.set('ps', page_size.toString());
                 params.set('popup', encoded_data);
+                params.set('f', encoded);
 
                 history.pushState(state, title, `${window.location.pathname}?${params}`);
             }
@@ -923,14 +924,14 @@ var GridPanel = undefined;
             popped = undefined;
             pop_opening = false;
             var encoded = btoa(JSON.stringify(searching_para));
-            const state = { 'f': encoded, 'p': current_page, 's': sort_by, 'sa': sort_asc };
+            const state = { 'p': current_page, 's': sort_by, 'sa': sort_asc, 'f': encoded, };
             const title = '';
             const params = new URLSearchParams('');
-            params.set('f', encoded);
             params.set('p', current_page);
             params.set('s', sort_by);
             params.set('sa', sort_asc);
             params.set('ps', page_size.toString());
+            params.set('f', encoded);
             history.pushState(state, title, `${window.location.pathname}?${params}`);
             if ($('.selecting').length <= 0) {
                 $('#gi-area .itemblock:nth(0)').addClass('selecting');
