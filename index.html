@@ -78,13 +78,26 @@
         display: none !important;
     }
 
-        .btn-feedback {background-color:silver;border-color:silver;color:white;}
+    .btn-feedback {
+        background-color: silver;
+        border-color: silver;
+        color: white;
+    }
 
-        .btn-feedback a:hover {color:transparent;}
-
-        .btn-filter {background-color:darkgray;border-color:darkgray;color:white;}
-
-        .btn-filter a:hover {color:transparent;}
+    .btn-feedback a:hover {
+        color: transparent;
+    }
+    /* Not recommended approach to override Bootstrap css. 
+       The recommended approach is to build a custom Bootstrap CSS with SASS*/
+    .btn-filter, .btn-filter:active, .btn-filter:visited {
+        background-color: darkgray !important;
+        border-color: darkgray !important;
+    }
+    .btn-filter:hover {
+        background-color: #6c757d !important;
+        /* from btn-secondary no hover */
+        border-color: #6c757d !important;
+    }
 
         #btn-back-to-top {
             position: fixed;
