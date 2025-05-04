@@ -129,7 +129,7 @@ var GridPanel = undefined;
         if (yaml[LIBRARY] === undefined)
             return;
 
-        yaml = yaml[LIBRARY].reverse(); // reverse() ensures that the catalog added first is the most recent loaded
+        yaml = yaml[LIBRARY]; // .reverse() would ensures that the catalog added last is the loaded first.
 
         // 2. for each catalog in yaml (in reverse order): getCatalog(catalog)
         for (const name of yaml) {
