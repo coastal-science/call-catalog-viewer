@@ -51,6 +51,8 @@ var SearchPanel = undefined;
             });
         }
 
+        // the 'sel' parameters, containing the user selections, has been set, 
+        user_selection = get_params_to_obj(urlParams, 'sel');
 
         // originalData is our filters that we want to translate into dropdowns
         updateFilterOptions(originalData);
@@ -61,6 +63,39 @@ var SearchPanel = undefined;
 
         buildPopulationDropdown();
         bindEvents();
+        
+        if (user_selection && !jQuery.isEmptyObject(user_selection)){
+            selected_population = user_selection['population'];
+
+            population_selector_element = $('#s1');
+            
+            // Update and trigger a change. Setting the value and triggering a change will 
+            // trigger the same steps as a user interaction selecting the choice.
+            population_selector_element.val(selected_population).change();
+            //  containing the cascading steps...
+            //     ...
+            //     buildPopulationSpecificDropdown(selected_population)...
+            //     updateURL('sel', user_selection) ...
+            //     GridPanel.get_new(...)...
+            
+            // extract all key for dropdowns id pattern 's#' and set their corresponding value/selected choice.
+            new_filters = Object.fromEntries(
+                Object.entries(user_selection).
+                    filter(([k,v]) => 
+                        k.search(/s\d/) == 0 // must match pattern the 's#' at the beginning of the key
+                    )
+                )                
+            for (const [key, value] of Object.entries(new_filters)) {
+                console.log({key, value});
+                $('#' + key).selectpicker('val', value);  // .change() is triggered automatically by bootstrap-select
+            }
+
+            // Update the url in the address bar and browser history. 
+            // updateURL('sel', user_selection);
+            // Trigger user interaction via the the Filter button.
+            filter_btn = $('#search_now'); // filter button
+            filter_btn.click();
+        }
         // buildPopulationSpecificDropdown(selected_value);
     };
     panel.init = init;
@@ -285,6 +320,7 @@ var SearchPanel = undefined;
                         }
                     }
                     buildPopulationSpecificDropdown(selected_population);
+                    updateURL('sel', liveDropdownChoices);
                     GridPanel.get_new(liveDropdownChoices);
                 }
             });
@@ -294,6 +330,7 @@ var SearchPanel = undefined;
             originalData = $.extend(true, {}, liveDropdownChoices);
             // Copy the current filter selections for saving state
             selected_options[liveDropdownChoices['population']] = structuredClone(liveDropdownChoices)
+            updateURL('sel', liveDropdownChoices);
             GridPanel.get_new(liveDropdownChoices);
             toggle_button(this, 100);
         });
