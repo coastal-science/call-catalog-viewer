@@ -392,6 +392,10 @@ var GridPanel = undefined;
             params.set('popup', urlParams.get('popup'));
             $('.selecting').removeClass('selecting');
         }
+        if (urlParams.has('sel')) { // user selection
+            params.set('sel', urlParams.get('sel'));
+            state['sel'] = urlParams.get('sel');
+        }
 
         catalog_library[catalog_json] = resultData;
         console.log("added to library", catalog_library);
@@ -769,8 +773,9 @@ var GridPanel = undefined;
                 lity_data = data_target;
                 var encoded_data = btoa(JSON.stringify(data_target));
                 var encoded = btoa(JSON.stringify(searching_para));
+                var user_selection = urlParams.get('sel'); // the param value is already atob encoded
                 
-                const state = { 'p': current_page, 's': sort_by, 'sa': sort_asc, 'popup': encoded_data, 'f': encoded, };
+                const state = { 'p': current_page, 's': sort_by, 'sa': sort_asc, 'popup': encoded_data, 'f': encoded, 'sel': user_selection};
                 const title = 'Details: ' + lity_data.cn + ' (Call Name)';//For Safari only
                 const params = new URLSearchParams('');
                 params.set('p', current_page);
@@ -779,6 +784,7 @@ var GridPanel = undefined;
                 params.set('ps', page_size.toString());
                 params.set('popup', encoded_data);
                 params.set('f', encoded);
+                params.set('sel', user_selection);
 
                 history.pushState(state, title, `${window.location.pathname}?${params}`);
             }
@@ -925,7 +931,9 @@ var GridPanel = undefined;
             popped = undefined;
             pop_opening = false;
             var encoded = btoa(JSON.stringify(searching_para));
-            const state = { 'p': current_page, 's': sort_by, 'sa': sort_asc, 'f': encoded, };
+            var user_selection = urlParams.get('sel'); // the param value is already atob encoded
+
+            const state = { 'p': current_page, 's': sort_by, 'sa': sort_asc, 'f': encoded, 'sel': user_selection};
             const title = '';
             const params = new URLSearchParams('');
             params.set('p', current_page);
@@ -933,6 +941,7 @@ var GridPanel = undefined;
             params.set('sa', sort_asc);
             params.set('ps', page_size.toString());
             params.set('f', encoded);
+            params.set('sel', urlParams.get('sel'));
             history.pushState(state, title, `${window.location.pathname}?${params}`);
             if ($('.selecting').length <= 0) {
                 $('#gi-area .itemblock:nth(0)').addClass('selecting');
