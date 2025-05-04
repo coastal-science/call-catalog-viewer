@@ -1,6 +1,7 @@
 var GridPanel = undefined;
 (function (panel) {
     var Panel = undefined;
+    const page_link = 'index.html'
     var resultData = undefined; // this is all of the data read from catalogs initially
     var data_index = 0;
     var currentDisplayData = undefined; // this is the data that has the filters applied to it and we want to use
