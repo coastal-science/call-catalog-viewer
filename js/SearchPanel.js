@@ -39,15 +39,18 @@ var SearchPanel = undefined;
         // the 'f' parameters have been set, 
         ev = get_params_to_obj(urlParams, 'f');
         let count = 1;
-        Object.keys(ev).forEach((item) => {
-            if (!['s1', 's2', 's3'].includes(item)) {
-                var list = [item];
-                list = list.concat(ev[item]);
-                originalData['s' + count] = list; // set data using s1, s2, s3.... notation for easier access later
-                element_id_to_title['s' + count] = item; // update lookup table for accessible lookup
-                count++;
-            }
-        });
+        if (ev){
+            Object.keys(ev).forEach((item) => {
+                if (!['s1', 's2', 's3'].includes(item)) {
+                    var list = [item];
+                    list = list.concat(ev[item]);
+                    originalData['s' + count] = list; // set data using s1, s2, s3.... notation for easier access later
+                    element_id_to_title['s' + count] = item; // update lookup table for accessible lookup
+                    count++;
+                }
+            });
+        }
+
 
         // originalData is our filters that we want to translate into dropdowns
         updateFilterOptions(originalData);
