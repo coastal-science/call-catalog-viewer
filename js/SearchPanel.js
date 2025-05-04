@@ -37,28 +37,17 @@ var SearchPanel = undefined;
 
 
         // the 'f' parameters have been set, 
-        if (urlParams.has('f')) {
-            const filter = urlParams.get('f');
-            const obj = atob(filter);
-
-            if (obj !== undefined) {
-                try {
-                    const ev = eval('(' + obj + ')');
-                    let count = 1;
-                    Object.keys(ev).forEach((item) => {
-                        if (!['s1', 's2', 's3'].includes(item)) {
-                            var list = [item];
-                            list = list.concat(ev[item]);
-                            originalData['s' + count] = list; // set data using s1, s2, s3.... notation for easier access later
-                            element_id_to_title['s' + count] = item; // update lookup table for accessible lookup
-                            count++;
-                        }
-                    });
-                } catch (e) {
-                    console.log(e);
-                }
+        ev = get_params_to_obj(urlParams, 'f');
+        let count = 1;
+        Object.keys(ev).forEach((item) => {
+            if (!['s1', 's2', 's3'].includes(item)) {
+                var list = [item];
+                list = list.concat(ev[item]);
+                originalData['s' + count] = list; // set data using s1, s2, s3.... notation for easier access later
+                element_id_to_title['s' + count] = item; // update lookup table for accessible lookup
+                count++;
             }
-        }
+        });
 
         // originalData is our filters that we want to translate into dropdowns
         updateFilterOptions(originalData);
@@ -72,6 +61,35 @@ var SearchPanel = undefined;
         // buildPopulationSpecificDropdown(selected_value);
     };
     panel.init = init;
+    
+
+    /**
+     * URL Search parameters may contain encoded object. This function
+     * extracts and decodes (`atob`) the previously stringified and encoded (`btoa`) object in the url parameter. 
+     * Use `atob` to decode to a stringified object. Convert to object using `eval('(' + obj + ')')`
+     * @param {urlParams} `URLSearchParams(queryString)` object
+     * @param {param_name} name of parameter in the url string containing the encoded object.
+     * @returns the `param_name` as an javascript object
+     */
+    function get_params_to_obj(urlParams, param_name) {
+
+        if (urlParams.has(param_name)) {
+            const filter = urlParams.get(param_name);
+            const obj = atob(filter);
+
+            if (obj !== undefined) {
+                try {
+                    const ev = eval('(' + obj + ')');
+                    return ev;
+                } catch (e) {
+                    console.log(e);
+                }
+            }
+        }
+    }
+    panel.get_params_to_obj = get_params_to_obj;
+
+
 
     /** 
      * @param {string} v value for the option in dropdown
