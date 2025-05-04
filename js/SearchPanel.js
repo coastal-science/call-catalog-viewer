@@ -258,6 +258,7 @@ var SearchPanel = undefined;
                 if (liveDropdownChoices[title] === undefined)
                     liveDropdownChoices[title] = []
                 liveDropdownChoices[element_id_to_title['s' + i]] = $('#s' + i).selectpicker('val');
+                liveDropdownChoices['s' + i] = $('#s' + i).selectpicker('val');
 
                 if (element_id_to_title['s' + i] === 'population') {
                     selected_id = '#s' + i;
