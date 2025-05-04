@@ -34,7 +34,7 @@ def parse_yaml_to_json(path_to_catalogs_directory, yaml_file_path):
         
         # will only be true on the first time
         site_details = resources['site-details']
-        if is_root_catalog(path_to_repo_root):
+        if is_root_catalog(path_to_repo_root) or site_details['catalogue'].get('is_root'):
             site_details['catalogue']['is_root'] = 'true'
         else:
             site_details['catalogue']['is_root'] = 'false'
