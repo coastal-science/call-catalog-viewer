@@ -931,6 +931,8 @@ var GridPanel = undefined;
             popped = undefined;
             pop_opening = false;
             var encoded = btoa(JSON.stringify(searching_para));
+            const queryString = window.location.search;
+            const urlParams = new URLSearchParams(queryString);
             var user_selection = urlParams.get('sel'); // the param value is already atob encoded
 
             const state = { 'p': current_page, 's': sort_by, 'sa': sort_asc, 'f': encoded, 'sel': user_selection};
