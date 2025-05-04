@@ -2,8 +2,8 @@ var SearchPanel = undefined;
 (function (panel) {
     var Panel = undefined;
     var originalData = undefined;
-    var tmpResult = {}; // Variable to store dropdown selections for dynamic updates. As the user clicks.
-    var selection_storage = {}; // Store the last selection options used for filtering. Save for each population.
+    var liveDropdownChoices = {}; // Variable to store dropdown selections for dynamic updates. As the user clicks but has not yet filtered.
+    var selected_options = {}; // Store the last selection options used for filtering. Save options for each population.
     var selected_population = undefined // Variable to store the current population selection
     var s_options = {};
     var num_dropdowns;
@@ -14,7 +14,7 @@ var SearchPanel = undefined;
     const LIBRARY = 'catalogs';
     const LIBRARY_INDEX = 'index.yaml';
 
-    panel.tmpResult = tmpResult;
+    panel.liveDropdownChoices = liveDropdownChoices;
 
     async function init() {
         originalData = {};
@@ -251,11 +251,10 @@ var SearchPanel = undefined;
             var object = s_options[i - 1];
             $('#s' + i).on('changed.bs.select', (e, clickedIndex, isSelected, previousValue) => { // sets the listener when dropdowns are changed
                 var title = element_id_to_title['s' + i];
-
-                // tmpResult holds the currently applied filters that are passed back to GridPanel in get_new calls
-                if (tmpResult[title] === undefined)
-                    tmpResult[title] = []
-                tmpResult[element_id_to_title['s' + i]] = $('#s' + i).selectpicker('val');
+                // liveDropdownChoices holds the currently applied filters that are passed back to GridPanel in get_new calls
+                if (liveDropdownChoices[title] === undefined)
+                    liveDropdownChoices[title] = []
+                liveDropdownChoices[element_id_to_title['s' + i]] = $('#s' + i).selectpicker('val');
 
                 if (element_id_to_title['s' + i] === 'population') {
                     selected_id = '#s' + i;
@@ -273,25 +272,25 @@ var SearchPanel = undefined;
 
                     // clearFilter(); 
 
-                    tmpResult = {};
-                    tmpResult['population'] = selected_population;
+                    liveDropdownChoices = {};
+                    liveDropdownChoices['population'] = selected_population;
                     // Copy pre-saved selections
-                    if (selection_storage[selected_population] != undefined) {
-                        for (const [key, value] of Object.entries(selection_storage[selected_population])) {
-                            tmpResult[key] = value;
+                    if (selected_options[selected_population] != undefined) {
+                        for (const [key, value] of Object.entries(selected_options[selected_population])) {
+                            liveDropdownChoices[key] = value;
                         }
                     }
                     buildPopulationSpecificDropdown(selected_population);
-                    GridPanel.get_new(tmpResult);
+                    GridPanel.get_new(liveDropdownChoices);
                 }
             });
         }
         Panel.find('#search_now').off('click').click(function (e) { // function that is called when the filter button is clicked. 
             dirty = false;
-            originalData = $.extend(true, {}, tmpResult);
+            originalData = $.extend(true, {}, liveDropdownChoices);
             // Copy the current filter selections for saving state
-            selection_storage[tmpResult['population']] = structuredClone(tmpResult)
-            GridPanel.get_new(tmpResult);
+            selected_options[liveDropdownChoices['population']] = structuredClone(liveDropdownChoices)
+            GridPanel.get_new(liveDropdownChoices);
             toggle_button(this, 100);
         });
 
@@ -367,8 +366,8 @@ var SearchPanel = undefined;
      */
     function get_population_selection_from_storage(population, dropdown) {
         dropdown_selected_values = [];
-        if (selection_storage[population]) {
-            dropdown_selected_values = selection_storage[population][dropdown.title];
+        if (selected_options[population]) {
+            dropdown_selected_values = selected_options[population][dropdown.title];
             dropdown.s;
             dropdown.title;
             console.log({ dropdown, dropdown_selected_values });
@@ -382,11 +381,11 @@ var SearchPanel = undefined;
      * Clears from the selection_storage, and triggers to `buildPopulationSpecificDropdown()`.
      */
     function clearFilter() {
-        console.log({selected_population, selection_storage})
-        if (selected_population != undefined && selection_storage != undefined ){
-            delete selection_storage[selected_population]
-            tmpResult = {}
-            tmpResult['population'] = selected_population
+        console.log({selected_population, selected_options})
+        if (selected_population != undefined && selected_options != undefined ){
+            delete selected_options[selected_population]
+            liveDropdownChoices = {}
+            liveDropdownChoices['population'] = selected_population
             buildPopulationSpecificDropdown(selected_population)
         }
     };
