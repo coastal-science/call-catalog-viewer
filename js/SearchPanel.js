@@ -342,6 +342,10 @@ var SearchPanel = undefined;
      * @param {string} population population value to construct all of the required dropdowns for
      */
     function buildPopulationSpecificDropdown(population) {
+        if (population === undefined){
+            console.error("buildPopulationSpecificDropdown attempting to build `population=undefined`");
+            return
+        }
         Panel.find('#search_rows').empty();
         buildPopulationDropdown(population);
         console.log(JSON.stringify(population));
