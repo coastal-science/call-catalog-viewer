@@ -141,6 +141,8 @@ var GridPanel = undefined;
         if (!data_initialized)
             setSortableDropdownValues();
         data_initialized = true;
+
+        redraw_items(); // draws our new updated items
     }
     panel.getData = getData;
 
@@ -374,9 +376,10 @@ var GridPanel = undefined;
         window.entireFilterData.sort(current_sort);
 
         currentDisplayData = window.entireFilterData.slice((current_page - 1) * page_size, (current_page) * page_size); // obtain the data to display on this page from the entireData slice
-        redraw_items(); // draws our new updated items
+        // when loading multiple catalogues, 
+        // redrawing should be deferred until after catalogues are loaded.
+        // redraw_items(); // draws our new updated items
 
-        if (!data_initialized)
             encoded = btoa(JSON.stringify(searching_para));
         const state = { 'p': current_page, 's': sort_by, 'sa': sort_asc, 'f': encoded };
         const title = '';
