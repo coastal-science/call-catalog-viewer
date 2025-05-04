@@ -90,6 +90,28 @@ var SearchPanel = undefined;
     panel.get_params_to_obj = get_params_to_obj;
 
 
+    /**
+     * Update the URL search parameter `param_name` with the object `new_data`
+     * stringify and encode (`bota`) the object `new_data` before updating the URL Search parameter
+     * Update the browser `history` accordingly.
+     * @param {param_name} name of the url parameter
+     * @param {new_data} object to encode and store
+     * @modifies {history}
+     */
+    function updateURL(param_name, new_data){
+        const params = new URLSearchParams(window.location.search);
+        var encoded = btoa(JSON.stringify(new_data));
+        params.set(param_name, encoded);
+        const state = {};
+        for (const [key, value] of params.entries()) {
+            state[key] = value; // recreate state for history and url
+        }
+        console.log({new_data, state});
+        debugger
+        const title = ''; //For Safari only
+        history.pushState(state, title, `${window.location.pathname}?${params}`);
+    }
+
 
     /** 
      * @param {string} v value for the option in dropdown
