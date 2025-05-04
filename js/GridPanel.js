@@ -444,7 +444,7 @@ var GridPanel = undefined;
     }
 
 
-    function init() {
+    async function init() {
         resultData = [];
         lity_data = [];
         id_to_seq = {};
@@ -533,7 +533,7 @@ var GridPanel = undefined;
                 }
             }
         }
-        getData();
+        await getData();
     };
     panel.init = init;
 

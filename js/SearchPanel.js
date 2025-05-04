@@ -28,11 +28,11 @@ var SearchPanel = undefined;
             return;
         // if the values have not already been set in url 'f' parameters, wait 300ms for them to get set, and then refresh the page 
         // console.log({"waiting for variable": urlParams});
-        while (!urlParams.has('f')) {// define the condition as you like
-            // console.log({'waiting': urlParams})
-            await new Promise(resolve => setTimeout(resolve, 300));
-            urlParams = new URLSearchParams(location.search);
-        }
+        // while (!urlParams.has('f')) {// define the condition as you like
+        //     // console.log({'waiting': urlParams})
+        //     await new Promise(resolve => setTimeout(resolve, 300));
+        //     urlParams = new URLSearchParams(location.search);
+        // }
         // console.log("waiting done. the variable is defined.");
 
 
