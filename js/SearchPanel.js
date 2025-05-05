@@ -112,7 +112,9 @@ var SearchPanel = undefined;
     function get_params_to_obj(urlParams, param_name) {
 
         if (urlParams.has(param_name)) {
-            const filter = urlParams.get(param_name);
+            let filter = urlParams.get(param_name);
+            if (!filter || ['null', 'undefined', 'nan'].includes(filter.toLowerCase())) // null, undefined, false, NaN, 0, ""
+                filter = btoa(JSON.stringify({}))
             const obj = atob(filter);
 
             if (obj !== undefined) {
