@@ -793,6 +793,9 @@ var GridPanel = undefined;
                 params.set('s', sort_by);
                 params.set('sa', sort_asc);
                 params.set('ps', page_size.toString());
+                params.set('catalogue', lity_data['population']); // s1/catalogue 'population' is the legacy name.
+                
+                state['catalogue'] = lity_data['population'];
                 params.set('popup', encoded_data);
                 params.set('f', encoded);
                 params.set('sel', user_selection);
@@ -951,6 +954,7 @@ var GridPanel = undefined;
             const title = '';
             
             const params = new URLSearchParams(urlParams.toString()); // Create a deep copy
+            catalogue_name = urlParams.get('catalogue');
             
             params.forEach((value, key) => {
                 console.log(key, value);
