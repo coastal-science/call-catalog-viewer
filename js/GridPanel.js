@@ -646,11 +646,12 @@ var GridPanel = undefined;
     panel.redraw_items = redraw_items;
 
     function individual_entry_to_params(individual_data, state, params) {
-        if (!params.has('catalogue')) // 'population' is the legacy name, the generic name is 'catalogue'
+
+        if (!individual_data['population']) // s1/catalogue. 'population' is the legacy name, the generic name is 'catalogue'
             return {state:state, params:params}
         
-        catalogue_name = params.get('catalogue').toUpperCase();
         catalogue_name = individual_data['population']
+        params.set('catalogue', catalogue_name);
         state['catalogue'] = catalogue_name;
         
         catalog_library[catalogue_name]['id'].forEach(id_field => {
