@@ -136,7 +136,7 @@ var GridPanel = undefined;
             // Using a for() generator allows to use await inside the loop.
             // In case of yaml.forEach(name =>) with callback function, the callback
             //  would have to be async and could introduce race conditions (unexpected behaviour).
-            let response = await getCatalog(LIBRARY + "/" + name + '.json' + "?" + VERSION);
+            let response = await getCatalog(name);
         }
         if (!data_initialized)
             setSortableDropdownValues();
@@ -213,7 +213,7 @@ var GridPanel = undefined;
         if (!data_initialized) { // if this is our first time setting params, use filters from JSON
 
             // await response of fetch call
-            let response = await fetch(catalog_json);
+            let response = await fetch(LIBRARY + "/" + catalog_json + '.json' + "?" + VERSION);
             // only proceed once promise is resolved
             let data = await response.text();
             // only proceed once second promise is resolved
