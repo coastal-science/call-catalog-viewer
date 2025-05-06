@@ -142,7 +142,9 @@ var SearchPanel = undefined;
      */
     function updateURL(param_name, new_data){
         const params = new URLSearchParams(window.location.search);
-        var encoded = btoa(JSON.stringify(new_data));
+        var encoded = new_data
+        if (typeof(new_data) != 'string')
+            encoded = btoa(JSON.stringify(new_data));
         params.set(param_name, encoded);
         const state = {};
         for (const [key, value] of params.entries()) {
