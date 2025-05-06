@@ -805,6 +805,12 @@ var GridPanel = undefined;
                 var encoded_data = btoa(JSON.stringify(data_target));
                 var encoded = btoa(JSON.stringify(searching_para));
                 var user_selection = urlParams.get('sel'); // the param value is already btoa encoded
+
+                if (!user_selection || ['null', 'undefined', 'nan'].includes(user_selection.toUpperCase())) {
+                    // null, undefined, false, NaN, 0, ""
+                    user_selection = btoa(JSON.stringify({}))
+                }
+                
                 const state = { 'p': current_page, 's': sort_by, 'sa': sort_asc, 'popup': encoded_data, 'f': encoded, 'sel': user_selection};
                 const title = 'Details: ' + lity_data.cn + ' (Call Name)';//For Safari only
                 const params = new URLSearchParams('');
