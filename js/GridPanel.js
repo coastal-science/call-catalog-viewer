@@ -645,6 +645,16 @@ var GridPanel = undefined;
     };
     panel.redraw_items = redraw_items;
 
+    /**
+     * Helper function to dynamically extract the `catalogue` and `id_fields` and values from @param individual_data and inject into @param state and @param params.
+     * @param {dict} individual_data object with keys/values that contains the entire entry information to be able to render a popup.
+     * @param {dict} state dictionary to be used for browser history and url search parameters update
+     * @param {URLSearchParams} params for the new URL
+     * @returns {
+     *              state: state
+     *              params: params
+     *          }
+     */
     function individual_entry_to_params(individual_data, state, params) {
 
         if (!individual_data['population']) // s1/catalogue. 'population' is the legacy name, the generic name is 'catalogue'
