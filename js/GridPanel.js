@@ -229,7 +229,9 @@ var GridPanel = undefined;
             // The hack is not needed when all catalogues are remote catalogues.
             // By design (reasoning?): local catalogues cannot be root catalogues.
             // document.getElementById("catalogue-title").innerHTML = site_details['catalogue']['title'];
-
+            
+            catalog_library[catalog_json] = site_details;
+            
             var filters = simple_datasource["filters"];
             var population = simple_datasource["population"];
             var searchable = simple_datasource["sortable"];
@@ -400,9 +402,7 @@ var GridPanel = undefined;
             state['sel'] = urlParams.get('sel');
         }
 
-        catalog_library[catalog_json] = resultData;
-        console.log("added to library", catalog_library);
-
+        // catalog_library[catalog_json] = resultData;
         history.pushState(state, title, `${window.location.pathname}?${params}`);
         return;
     }
