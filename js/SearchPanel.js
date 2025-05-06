@@ -327,6 +327,7 @@ var SearchPanel = undefined;
                     }
                     buildPopulationSpecificDropdown(selected_population);
                     updateURL('sel', liveDropdownChoices);
+                    updateURL('catalogue', selected_population)
                     GridPanel.get_new(liveDropdownChoices);
                 }
             });
