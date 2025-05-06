@@ -382,17 +382,26 @@ var GridPanel = undefined;
         // redrawing should be deferred until after catalogues are loaded.
         // redraw_items(); // draws our new updated items
 
-            encoded = btoa(JSON.stringify(searching_para));
-        const state = { 'p': current_page, 's': sort_by, 'sa': sort_asc, 'f': encoded };
+        const state = { 'p': current_page, 's': sort_by, 'sa': sort_asc };
         const title = '';
+        
         const queryString = window.location.search;
         const params = new URLSearchParams('');
+        
         params.set('p', current_page);
         params.set('s', sort_by);
         params.set('sa', sort_asc);
         params.set('ps', page_size.toString());
         params.set('f', encoded);
+        
         const urlParams = new URLSearchParams(queryString);
+
+        // if (!urlParams.has('f')) {
+            encoded = btoa(JSON.stringify(searching_para));
+        // }
+        state['f'] = encoded;
+        params.set('f', encoded);
+        
         if (urlParams.has('popup')) {
             params.set('popup', urlParams.get('popup'));
             $('.selecting').removeClass('selecting');
@@ -776,8 +785,7 @@ var GridPanel = undefined;
                 lity_data = data_target;
                 var encoded_data = btoa(JSON.stringify(data_target));
                 var encoded = btoa(JSON.stringify(searching_para));
-                var user_selection = urlParams.get('sel'); // the param value is already atob encoded
-                
+                var user_selection = urlParams.get('sel'); // the param value is already btoa encoded
                 const state = { 'p': current_page, 's': sort_by, 'sa': sort_asc, 'popup': encoded_data, 'f': encoded, 'sel': user_selection};
                 const title = 'Details: ' + lity_data.cn + ' (Call Name)';//For Safari only
                 const params = new URLSearchParams('');
