@@ -645,11 +645,11 @@ var GridPanel = undefined;
     };
     panel.redraw_items = redraw_items;
 
-    function individual_entry_to_params(individual_data, urlParams, state, params) {
-        if (!urlParams.has('catalogue')) // 'population' is the legacy name, the generic name is 'catalogue'
+    function individual_entry_to_params(individual_data, state, params) {
+        if (!params.has('catalogue')) // 'population' is the legacy name, the generic name is 'catalogue'
             return {state:state, params:params}
         
-        catalogue_name = urlParams.get('catalogue').toUpperCase();
+        catalogue_name = params.get('catalogue').toUpperCase();
         catalogue_name = individual_data['population']
         state['catalogue'] = catalogue_name;
         
@@ -834,12 +834,10 @@ var GridPanel = undefined;
                 params.set('s', sort_by);
                 params.set('sa', sort_asc);
                 params.set('ps', page_size.toString());
-                params.set('catalogue', lity_data['population']); // s1/catalogue 'population' is the legacy name.
                 
-                state['catalogue'] = lity_data['population'];
                 // Add unique fields to uniquely identify an entry
                 // modifies the `state` and `params` in place.
-                individual_params = individual_entry_to_params(lity_data, urlParams, state, params);
+                individual_params = individual_entry_to_params(lity_data, state, params);
                 params.set('popup', encoded_data);
                 params.set('f', encoded);
                 params.set('sel', user_selection);
