@@ -944,17 +944,21 @@ var GridPanel = undefined;
             var encoded = btoa(JSON.stringify(searching_para));
             const queryString = window.location.search;
             const urlParams = new URLSearchParams(queryString);
-            var user_selection = urlParams.get('sel'); // the param value is already atob encoded
-
-            const state = { 'p': current_page, 's': sort_by, 'sa': sort_asc, 'f': encoded, 'sel': user_selection};
+            
+            
+            // urlparams & state = { 'p': current_page, 's': sort_by, 'sa': sort_asc, 'f': encoded, 'sel': user_selection};
+            const state = {};
             const title = '';
-            const params = new URLSearchParams('');
-            params.set('p', current_page);
-            params.set('s', sort_by);
-            params.set('sa', sort_asc);
-            params.set('ps', page_size.toString());
+            
+            const params = new URLSearchParams(urlParams.toString()); // Create a deep copy
+            
+            params.forEach((value, key) => {
+                console.log(key, value);
+                state[key] = value;
+            });
             params.set('f', encoded);
-            params.set('sel', urlParams.get('sel'));
+            params.delete('popup');
+            
             history.pushState(state, title, `${window.location.pathname}?${params}`);
             if ($('.selecting').length <= 0) {
                 $('#gi-area .itemblock:nth(0)').addClass('selecting');
