@@ -628,6 +628,25 @@ var GridPanel = undefined;
         append_items();
     };
     panel.redraw_items = redraw_items;
+
+    function individual_entry_to_params(individual_data, urlParams, state, params) {
+        if (!urlParams.has('catalogue')) // 'population' is the legacy name, the generic name is 'catalogue'
+            return {state:state, params:params}
+        
+        catalogue_name = urlParams.get('catalogue').toUpperCase();
+        catalogue_name = individual_data['population']
+        state['catalogue'] = catalogue_name;
+                
+        catalog_library[catalogue_name]['id'].forEach(id_field => {
+            id_field_clean = id_field.replace('-', '_'); // Convert hyphenated word to camel case
+           
+            params.set(id_field_clean, individual_data[id_field_clean]); 
+            state[id_field_clean] = individual_data[id_field_clean];
+        });
+
+        return {state:state, params:params}
+    }
+
     function bindEvents() {
         $('#gi-area').off('click').on('click', '.itemblock .image_pop_source', function (e) {
             e.stopPropagation();
@@ -796,6 +815,9 @@ var GridPanel = undefined;
                 params.set('catalogue', lity_data['population']); // s1/catalogue 'population' is the legacy name.
                 
                 state['catalogue'] = lity_data['population'];
+                // Add unique fields to uniquely identify an entry
+                // modifies the `state` and `params` in place.
+                individual_params = individual_entry_to_params(lity_data, urlParams, state, params);
                 params.set('popup', encoded_data);
                 params.set('f', encoded);
                 params.set('sel', user_selection);
