@@ -978,6 +978,13 @@ var GridPanel = undefined;
             const params = new URLSearchParams(urlParams.toString()); // Create a deep copy
             catalogue_name = urlParams.get('catalogue');
             
+            // Remove `id_fields` dynamically from the `catalog_library` definitions
+            catalog_library[catalogue_name]['id'].forEach(id_item => {
+                id_item_clean = id_item.replace('-', '_'); // convert hyphenated word to camel case
+                params.delete(id_item_clean);
+            });    
+            
+            // Dynamically add all search parameters from the url params to the new history `state`
             params.forEach((value, key) => {
                 console.log(key, value);
                 state[key] = value;
