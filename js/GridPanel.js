@@ -395,6 +395,22 @@ var GridPanel = undefined;
         params.set('f', encoded);
         
         const urlParams = new URLSearchParams(queryString);
+        
+        if (urlParams.has('catalogue')) {
+            catalogue_name = urlParams.get('catalogue');
+            params.set('catalogue', catalogue_name);
+            state['catalogue'] = catalogue_name;
+
+            if (catalog_library[catalogue_name]) { // If all catalogues are read and loaded, then the `catalogue_name` key must exist. Otherwise, that catalogue has not been read yet.
+                id_fields = catalog_library[catalogue_name]['id'].map(id_item => {
+                    return id_item.replace('-', '_'); // Convert hyphenated word to camel case
+                });
+
+                id_fields = id_fields.join(",");
+                params.set('id_fields', id_fields);
+                state['id_fields'] = id_fields;
+            }
+        }
 
         // if (!urlParams.has('f')) {
             encoded = btoa(JSON.stringify(searching_para));
@@ -636,7 +652,7 @@ var GridPanel = undefined;
         catalogue_name = urlParams.get('catalogue').toUpperCase();
         catalogue_name = individual_data['population']
         state['catalogue'] = catalogue_name;
-                
+        
         catalog_library[catalogue_name]['id'].forEach(id_field => {
             id_field_clean = id_field.replace('-', '_'); // Convert hyphenated word to camel case
            
