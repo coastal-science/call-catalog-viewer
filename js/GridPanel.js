@@ -641,18 +641,14 @@ var GridPanel = undefined;
     panel.redraw_items = redraw_items;
 
     /**
-     * Helper function that attached to @global catalogue_library. From a catalog entry/record, 
-     * extract the 'population` as the catalogue name. Extract the id_fields from the @global `catalogue_library` dictionary. Extract the values for those fields to construct the primary key. Insert into @global `catalogue_library` the @param entry for the catalogue.
+     * Helper function that attached to `catalogue_library`. 
+     * - From a catalog entry/record, extract the 'population` as the catalogue name. 
+     * - Extract the id_fields from the `catalogue_library` dictionary. 
+     * - Extract the values for those fields to construct the primary key. 
+     * - Insert into `catalogue_library` the `entry` for the catalogue.
      * @param {*} primary_key 
      * @param {Object} entry 
-     * @returns Boolean True of the @param entry was inserted into @global `dbkey_to_entry`. False otherwise.
-     */
-    /**
-     * Helper function that attached to @global catalogue_library. From a catalog entry/record, 
-     * extract the 'population` as the catalogue name. Extract the id_fields from the @global `catalogue_library` dictionary. Extract the values for those fields to construct the primary key. Insert into @global `catalogue_library` the @param entry for the catalogue.
-     * @param {*} primary_key 
-     * @param {Object} entry 
-     * @returns Boolean True of the @param entry was inserted into @global `dbkey_to_entry`. False otherwise.
+     * @returns Boolean True of the `entry` was inserted into `dbkey_to_entry`. False otherwise.
      */
     function db_add(primary_key, entry){
 
@@ -703,8 +699,9 @@ var GridPanel = undefined;
     /**
      * Generic helper function to extract url params from a list of field names.
      * @param {*} primary_keys A list containing the search parameters in the url (to treat as primary keys)
-     * @param {*} urlParams from which to extract search parameter values using the @param primary_keys as field names.
-     * @returns A list containing the values from @param urlParam using the filed in @param primary_keys; if the keys do not exist, then it wont be extracted. If no keys exist, then returns false.
+     * @param {*} urlParams from which to extract search parameter values using the `primary_keys` as field names.
+     * @returns A list containing the values from `urlParam` using the filed in `param` primary_keys; 
+     *          if the keys do not exist, then it wont be extracted. If no keys exist, then returns false.
      */
     function primary_keys_from_url(primary_keys, urlParams){
 
@@ -721,8 +718,12 @@ var GridPanel = undefined;
     }
 
     /**
-     * Helper function that attaches to  @global call_library and return an entry from @global dbkey_to_entry.
-     * From the url search parameters, using a combination of `catalogue_name=zzzz&id_fields=xx,yy` and `xx=abc&yy=123`, construct the primary key `[zzzz, abc, 123]` to lookup and return the corresponding entry from `dbkey_to_entry{}`.
+     * Helper function that attaches to `call_library` and 
+     * return an entry from `dbkey_to_entry`.
+     * From the url search parameters, using a combination of 
+     * `catalogue_name=zzzz&id_fields=xx,yy` and `xx=abc&yy=123`, 
+     * construct the primary key `[zzzz, abc, 123]` to lookup and 
+     * return the corresponding entry from `dbkey_to_entry{}`.
      * @param {URLSearchParams} params 
      * @returns The catalogue entry for [zzzz, abc, 123] if it exists, `undefined` otherwise.
      */
@@ -749,7 +750,9 @@ var GridPanel = undefined;
     catalogue_library.popup_from_url = popup_from_url;
 
     /**
-     * Helper function to dynamically extract the `catalogue` and `id_fields` and values from @param individual_data and inject into @param state and @param params.
+     * Helper function to dynamically extract the `catalogue` 
+     * and `id_fields` and values from `individual_data` and 
+     * inject into `state` and `params`.
      * @param {dict} individual_data object with keys/values that contains the entire entry information to be able to render a popup.
      * @param {dict} state dictionary to be used for browser history and url search parameters update
      * @param {URLSearchParams} params for the new URL
