@@ -434,7 +434,8 @@ var GridPanel = undefined;
                         }
                     });
                 } catch (e) {
-                    throw new Error("init:reading 'f' from url params.");
+                    debugger
+                    throw new Error("init:reading 'f' from url params. " + e.msg);
                 }
             }
         }
@@ -485,7 +486,7 @@ var GridPanel = undefined;
                     }
                 } catch (e) {
                     debugger
-                    throw new Error("init:reading popup from url params.");
+                    throw new Error("init:reading popup from url params. " + e.msg());
                     document.location.href = page_link;
                 }
         }
@@ -982,7 +983,7 @@ var GridPanel = undefined;
                     $('.selecting').removeClass('selecting');
                 } catch (e) {
                     debugger
-                    throw new Error("init:reading popup from url params.");
+                    throw new Error("lity:open reading popup from url params." + e.msg());
                     document.location.href = page_link;
                 }
             }
