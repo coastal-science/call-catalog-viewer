@@ -387,14 +387,10 @@ var GridPanel = undefined;
         // }
         // state['f'] = encoded;
         params.set('f', encoded);
-        
-        if (urlParams.has('popup')) {
-            params.set('popup', urlParams.get('popup'));
+
+        if (urlParams.get('popup')) {
+            // params.set('popup', urlParams.get('popup'));
             $('.selecting').removeClass('selecting');
-        }
-        if (urlParams.has('sel')) { // user selection
-            params.set('sel', urlParams.get('sel'));
-            state['sel'] = urlParams.get('sel');
         }
 
         // catalog_library[catalog_json] = resultData;
