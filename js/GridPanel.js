@@ -630,6 +630,27 @@ var GridPanel = undefined;
     panel.redraw_items = redraw_items;
 
     /**
+     * Generic helper function to extract url params from a list of field names.
+     * @param {*} primary_keys A list containing the search parameters in the url (to treat as primary keys)
+     * @param {*} urlParams from which to extract search parameter values using the @param primary_keys as field names.
+     * @returns A list containing the values from @param urlParam using the filed in @param primary_keys; if the keys do not exist, then it wont be extracted. If no keys exist, then returns false.
+     */
+    function primary_keys_from_url(primary_keys, urlParams){
+
+        primary_key_values = primary_keys.map(key => {
+            if (urlParams.has(key)){
+                return urlParams.get(key)
+            }
+        });
+        if (!primary_key_values.some(element => Boolean(element))){
+            return false
+        }
+        console.log(primary_key_values);
+        return primary_key_values
+    }
+
+
+    /**
      * Helper function to dynamically extract the `catalogue` and `id_fields` and values from @param individual_data and inject into @param state and @param params.
      * @param {dict} individual_data object with keys/values that contains the entire entry information to be able to render a popup.
      * @param {dict} state dictionary to be used for browser history and url search parameters update
