@@ -1,11 +1,11 @@
 var GridPanel = undefined;
 (function (panel) {
     var Panel = undefined;
-    const page_link = 'index.html'
+    const page_link = 'index.html';
     var resultData = undefined; // this is all of the data read from catalogs initially
     var data_index = 0;
-    var currentDisplayData = undefined; // this is the data that has the filters applied to it and we want to use
-    window.entireFilterData = undefined;
+    var currentDisplayData = undefined; // this is the data that has the dropdown filters and pagination applied to and we want to use it to display/update the entries in the current page/
+    window.entireFilterData = undefined; // this is the entire catalog data combined into a flat structure
     var searching_para = undefined;
     panel.searching_para = searching_para;
     var all_fields = [];
@@ -31,8 +31,9 @@ var GridPanel = undefined;
     var selecting = undefined;
     const VERSION = VERSION_TAG // e.g. 'v=random'; suffix assets as `file_name + "?" + VERSION`
     const LIBRARY = 'catalogs';
-    const LIBRARY_INDEX = 'index.yaml' + "?" + VERSION; // Add suffix to all assert to manually handle caching updates without affecting the end users
-    var catalog_library = {};
+    const LIBRARY_INDEX = 'index.yaml' + "?" + VERSION; // Add suffix to all assets to manually handle caching updates without affecting the end users
+    
+    var catalog_library = {}; // dictionary with site-details for each catalog (key=catalog name, value= site-details + id)
     const media_folder_path = ''; /* srkw-call-catalogue-files/media removed to get files locally */
     const play_icon = '<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-play" width="32" height="32" viewBox="0 0 24 24"><path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm-3 17v-10l9 5.146-9 4.854z"/></svg>';
     /*
@@ -406,9 +407,10 @@ var GridPanel = undefined;
                     return id_item.replace('-', '_'); // Convert hyphenated word to camel case
                 });
 
-                id_fields = id_fields.join(",");
-                params.set('id_fields', id_fields);
-                state['id_fields'] = id_fields;
+                id_fields_csv = id_fields.join(',');
+                // assert (urlParams.get('id_fields') === id_fields_csv);
+                params.set('id_fields', id_fields_csv);
+                state['id_fields'] = id_fields_csv;
             }
         }
 
@@ -510,7 +512,7 @@ var GridPanel = undefined;
                         }
                     });
                 } catch (e) {
-
+                    throw new Error("init:reading 'f' from url params.");
                 }
             }
         }
@@ -666,9 +668,9 @@ var GridPanel = undefined;
         
         catalog_library[catalogue_name]['id'].forEach(id_field => {
             id_field_clean = id_field.replace('-', '_'); // Convert hyphenated word to camel case
-           
-            params.set(id_field_clean, individual_data[id_field_clean]); 
-            state[id_field_clean] = individual_data[id_field_clean];
+            id_val = individual_data[id_field_clean];
+            params.set(id_field_clean, id_val); 
+            state[id_field_clean] = id_val;
         });
 
         return {state:state, params:params}

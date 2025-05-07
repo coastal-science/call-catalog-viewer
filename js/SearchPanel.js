@@ -39,7 +39,7 @@ var SearchPanel = undefined;
         // the 'f' parameters have been set, 
         ev = get_params_to_obj(urlParams, 'f');
         let count = 1;
-        if (ev){
+        if (ev) {
             Object.keys(ev).forEach((item) => {
                 if (!['s1', 's2', 's3'].includes(item)) {
                     var list = [item];
@@ -64,7 +64,7 @@ var SearchPanel = undefined;
         buildPopulationDropdown();
         bindEvents();
         
-        if (user_selection && !jQuery.isEmptyObject(user_selection)){
+        if (user_selection && !jQuery.isEmptyObject(user_selection)) {
             selected_population = user_selection['population'];
 
             population_selector_element = $('#s1');
@@ -140,7 +140,7 @@ var SearchPanel = undefined;
      * @param {new_data} object to encode and store
      * @modifies {history}
      */
-    function updateURL(param_name, new_data){
+    function updateURL(param_name, new_data) {
         const params = new URLSearchParams(window.location.search);
         var encoded = new_data
         if (typeof(new_data) != 'string')
@@ -389,7 +389,7 @@ var SearchPanel = undefined;
      * @param {string} population population value to construct all of the required dropdowns for
      */
     function buildPopulationSpecificDropdown(population) {
-        if (population === undefined){
+        if (population === undefined) {
             console.error("buildPopulationSpecificDropdown attempting to build `population=undefined`");
             return
         }
@@ -430,7 +430,7 @@ var SearchPanel = undefined;
      */
     function clearFilter() {
         console.log({selected_population, selected_options})
-        if (selected_population != undefined && selected_options != undefined ){
+        if (selected_population != undefined && selected_options != undefined) {
             delete selected_options[selected_population]
             liveDropdownChoices = {}
             liveDropdownChoices['population'] = selected_population
