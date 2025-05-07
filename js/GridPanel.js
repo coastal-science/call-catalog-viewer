@@ -637,6 +637,20 @@ var GridPanel = undefined;
     };
     panel.redraw_items = redraw_items;
 
+    /**
+     * Helper function that attached to @global catalog_library. From a catalog entry/record, 
+     * extract the 'population` as the catalogue name. Extract the id_fields from the @global `catalog_library` dictionary. Extract the values for those fields to construct the primary key. Insert into @global `catalog_library` the @param entry for the catalogue.
+     * @param {*} primary_key 
+     * @param {Object} entry 
+     * @returns Boolean True of the @param entry was inserted into @glboal `dbkey_to_entry`. False otherwise.
+     */
+    /**
+     * Helper function that attached to @global catalog_library. From a catalog entry/record, 
+     * extract the 'population` as the catalogue name. Extract the id_fields from the @global `catalog_library` dictionary. Extract the values for those fields to construct the primary key. Insert into @global `catalog_library` the @param entry for the catalogue.
+     * @param {*} primary_key 
+     * @param {Object} entry 
+     * @returns Boolean True of the @param entry was inserted into @glboal `dbkey_to_entry`. False otherwise.
+     */
     function db_add(primary_key, entry){
 
         catalogue_name = entry['population'];
