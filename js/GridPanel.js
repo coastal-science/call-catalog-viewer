@@ -471,11 +471,20 @@ var GridPanel = undefined;
         
         await getData();
         // redraw_items(); // draws our new updated items
+
         if (urlParams.has('popup')) {
                 data = catalog_library.popup_from_url(urlParams);
                 
-                var instance = lity(LIBRARY + '/' + data.image_file); // trigger lity:open event
-                var template = instance.options('template');
+                try{
+                    if (data){
+                        var instance = lity(LIBRARY + '/' + data.image_file); // trigger lity:open event
+                        var template = instance.options('template');
+                    }
+                } catch (e) {
+                    debugger
+                    throw new Error("init:reading popup from url params.");
+                    document.location.href = page_link;
+                }
         }
     };
     panel.init = init;
