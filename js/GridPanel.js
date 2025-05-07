@@ -702,6 +702,33 @@ var GridPanel = undefined;
         return primary_key_values
     }
 
+    /**
+     * Helper function that attaches to  @global call_library and return an entry from @global dbkey_to_entry.
+     * From the url search parameters, using a combination of `catalogue_name=zzzz&id_fields=xx,yy` and `xx=abc&yy=123`, construct the primary key `[zzzz, abc, 123]` to lookup and return the corresponding entry from `dbkey_to_entry{}`.
+     * @param {URLSearchParams} params 
+     * @returns The catalogue entry for [zzzz, abc, 123] if it exists, `undefined` otherwise.
+     */
+    function popup_from_url(urlParams) {
+        // const queryString = window.location.search;
+        // const urlParams = new URLSearchParams(queryString);
+        if (urlParams.has('catalogue')){
+            catalogue_name = urlParams.get('catalogue')
+            
+            id_fields = catalog_library.get_id_fields(catalogue_name);
+            if (!id_fields){
+                console.error("URL Search params is not the expected schema. Mandatory fields may be missing: " + urlParams.toString());
+            }
+            
+            primary_key = ['catalogue'].concat(id_fields);
+            primary_key_values = primary_keys_from_url(primary_key, urlParams);
+            if (primary_key_values){
+                data = dbkey_to_entry[primary_key_values];
+                return data;
+            }
+        }
+        return undefined;
+    }
+    catalog_library.popup_from_url = popup_from_url;
 
     /**
      * Helper function to dynamically extract the `catalogue` and `id_fields` and values from @param individual_data and inject into @param state and @param params.
