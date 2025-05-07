@@ -342,16 +342,20 @@ var GridPanel = undefined;
         const title = '';
         
         const queryString = window.location.search;
-        const params = new URLSearchParams('');
+        const params = new URLSearchParams(queryString); // configure new parameters. deep copy
         
-        params.set('p', current_page);
-        params.set('s', sort_by);
-        params.set('sa', sort_asc);
-        params.set('ps', page_size.toString());
-        params.set('f', encoded);
+        // params.set('p', current_page);
+        // params.set('s', sort_by);
+        // params.set('sa', sort_asc);
+        // params.set('ps', page_size.toString());
+
+        const urlParams = new URLSearchParams(queryString); // existing parameters. for reference.
         
-        const urlParams = new URLSearchParams(queryString);
-        
+        // copy all url params for browser history
+        urlParams.forEach((value, key) => {
+            state[key] = value;
+        });
+
         if (urlParams.has('catalogue')) {
             catalogue_name = urlParams.get('catalogue');
             params.set('catalogue', catalogue_name);
@@ -372,7 +376,7 @@ var GridPanel = undefined;
         // if (!urlParams.has('f')) {
             encoded = btoa(JSON.stringify(searching_para));
         // }
-        state['f'] = encoded;
+        // state['f'] = encoded;
         params.set('f', encoded);
         
         if (urlParams.has('popup')) {
