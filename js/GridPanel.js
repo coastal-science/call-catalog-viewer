@@ -372,6 +372,13 @@ var GridPanel = undefined;
                 // assert (urlParams.get('id_fields') === id_fields_csv);
                 params.set('id_fields', id_fields_csv);
                 state['id_fields'] = id_fields_csv;
+
+                id_fields.forEach(field => {
+                    if (urlParams.has(field)){
+                        params.set(field, urlParams.get(field));
+                        state[field] = urlParams.get(field);
+                    }
+                });
             }
         }
 
