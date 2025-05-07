@@ -915,8 +915,8 @@ var GridPanel = undefined;
                     user_selection = btoa(JSON.stringify({}))
                 }
                 
-                const state = { 'p': current_page, 's': sort_by, 'sa': sort_asc, 'popup': encoded_data, 'f': encoded, 'sel': user_selection};
-                const title = 'Details: ' + lity_data.cn + ' (Call Name)';//For Safari only
+                const state = { 'p': current_page, 's': sort_by, 'sa': sort_asc, 'f': encoded, 'sel': user_selection};
+                const title = 'Details: ' + lity_data.cn + ' (Call Name)'; // For Safari only
                 const params = new URLSearchParams('');
                 params.set('p', current_page);
                 params.set('s', sort_by);
@@ -926,7 +926,8 @@ var GridPanel = undefined;
                 // Add unique fields to uniquely identify an entry
                 // modifies the `state` and `params` in place.
                 individual_params = individual_entry_to_params(lity_data, state, params);
-                params.set('popup', encoded_data);
+                
+                params.set('popup', true);
                 params.set('f', encoded);
                 params.set('sel', user_selection);
 
@@ -934,20 +935,14 @@ var GridPanel = undefined;
             }
             else if (urlParams.has('popup')) {
                 //may be generated from link
-                const filter = urlParams.get('popup');
-                const obj = atob(filter);
-                if (obj !== undefined) {
-                    try {
-                        lity_data = eval('(' + obj + ')');
-                        $('.selecting').removeClass('selecting');
-                    } catch (e) {
-                        document.location.href = page_link;
-                    }
-                }
-                else {
+                try {
+                    lity_data = catalog_library.popup_from_url(urlParams); // We can lookup catalogue entries with a combination of the url params `catalogue_name=zzzz&id_fields=xx,yy` and `xx=abc&yy=123`
+                    $('.selecting').removeClass('selecting');
+                } catch (e) {
+                    debugger
+                    throw new Error("init:reading popup from url params.");
                     document.location.href = page_link;
                 }
-                // console.log(lity_data);
             }
             else {
                 //something went wrong
