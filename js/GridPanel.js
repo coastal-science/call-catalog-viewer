@@ -59,51 +59,6 @@ var GridPanel = undefined;
         return this.replace(/\w\S*/g, function (txt) { return txt.charAt(0).toUpperCase() + txt.slice(1).toLowerCase(); });
     };
 
-    function num_of_item_per_row() {
-        if (window.matchMedia('(min-width: 1400px)').matches) {
-            return 6;
-        }
-        if (window.matchMedia('(min-width: 1200px)').matches) {
-            return 6;
-        }
-        if (window.matchMedia('(min-width: 992px)').matches) {
-            return 4;
-        }
-        if (window.matchMedia('(min-width: 768px)').matches) {
-            return 4;
-        }
-        if (window.matchMedia('(min-width: 576px)').matches) {
-            return 3;
-        }
-        return 1;
-    }
-
-    function pack_option(id, image_file, callname, d1_category, d1_value, d2_category, d2_value, full) {
-        var d1 = (d1_category == undefined || d1_category == null) ? "" : d1_category.charAt(0).toUpperCase() + d1_category.slice(1) + ': ' + d1_value;
-        var d2 = (d2_category == undefined || d2_category == null) ? "" : d2_category.charAt(0).toUpperCase() + d2_category.slice(1) + ': ' + d2_value;
-        // precede (using string replacement) the symbols (+-/) in `callname` with wordbreak element <wbr>
-        // the <table> ensures that text warping doesn't occur around the play button
-        return '<div class="col-xxl-2 col-xl-2 col-lg-3 col-md-3 col-sm-4 mb-4 itemblock" id="gi-' + id + '">\
-        <div class="bg-white rounded shadow-sm"><a href="'+ media_folder_path + full + '" data-toggle="lightbox" class="image_pop_source text-decoration-none"">\
-                <img src="'+ media_folder_path + image_file + '" loading="lazy" alt="" class="img-fluid card-img-top"></a>\
-                    <div class="p-4">\
-                        <h5> <a class="play_btn" href="#" style="text-decoration:none"> \
-                        <table> \
-                            <tr> \
-                                <td>' + play_icon + '</td> \
-                                <td class="text-dark" style="word-wrap;">&nbsp;' + callname.replace(/[^\w\s]/gi, '<wbr>$&') + '</td> \
-                            </tr> \
-                        </table> \
-                        </a></h5> \
-                        <p class="small mb-0 meta-p"><span class="font-weight-bold">' + d1 + '</span></p>\
-                        <div class="meta-p d-flex align-items-center justify-content-between rounded-pill bg-light px-3 py-2 mt-4 badge badge-pill badge-warning px-3 rounded-pill font-weight-normal font-weight-bold text-dark">\
-                        ' + d2 + ' \
-                    </div>\
-                </div>\
-            </div>\
-        </div>';
-    }
-
     async function getData(catalog_json) {
         // let catalog_json = "catalogs/srkw-call-catalogue-files.json";
         // let response = getCatalog(catalog_json)
@@ -435,48 +390,6 @@ var GridPanel = undefined;
     }
     panel.getCatalog = getCatalog;
 
-    /**
-     * Update the current filters to include the new ones from given catalogue
-     * @param {JSON} filters JSON representation of filters for given catalogue
-     */
-    function updateFiltersFromJSON(population, filters) {
-        filters.forEach(element => {
-            var filterable = element[0];
-            // population will be a global filterable, other ones will be nested inside of the population
-            if (filterable === 'population') {
-                if (!(filterable in searching_para)) { // filterable is not already in the searchable
-                    searching_para[filterable] = element.slice(1); // add the filterable param to the searching_params
-                } else { // filterable is already in the parameters. Add all the elements that are not already in it
-                    element.slice(1).forEach(val => {
-                        if (val && !searching_para[filterable].includes(val)) { // not an empty string and doesn't already exist.
-                            searching_para[filterable].push(val);
-                        }
-                    });
-                }
-            } else {
-                if (!(population in searching_para)) {
-                    searching_para[population] = {}
-                }
-
-                if (!(filterable in searching_para[population])) { // filterable is not already in the searchable
-                    searching_para[population][filterable] = element.slice(1); // add the filterable param to the searching_params //Unknown deprecated with empty string.
-                } else { // filterable is already in the parameters. Add all the elements that are not already in it
-                    element.slice(1).forEach(val => {
-                        if (!searching_para[population][filterable].includes(val)) {
-                            searching_para[population][filterable].push(val);
-                        }
-                    });
-                }
-            }
-            // // ensure that the 'Unknown' field is at the bottom of the dropdown
-            // var index = searching_para[filterable].indexOf("Unknown");
-            // if (index != -1) {
-            //     searching_para[filterable].splice(index, 1);
-            //     searching_para[filterable].push('Unknown');
-            // }
-        });
-    }
-
 
     async function init() {
         resultData = [];
@@ -571,6 +484,63 @@ var GridPanel = undefined;
     };
     panel.init = init;
 
+
+    /**
+     * receive new filters, update searching_para, apply filters to update currentDisplayData, call getData to refresh page
+     * @param {Object} para search filters selected in search panel
+     */
+    function get_new(para) {
+        searching_para = {}; // reset searching params as we are going to entirely rebuild them
+        updateFiltersFromURLParams(para); // updates searching_para with the filters passed through url
+        updateCurrentData(); // applies the now updated filters on the resultData, giving us the currentDisplayData that should be displayed
+        total_result = undefined;
+        current_page = 1;
+        getData();
+    };
+    panel.get_new = get_new;
+
+    /**
+     * Update the current filters to include the new ones from given catalogue
+     * @param {JSON} filters JSON representation of filters for given catalogue
+     */
+    function updateFiltersFromJSON(population, filters) {
+        filters.forEach(element => {
+            var filterable = element[0];
+            // population will be a global filterable, other ones will be nested inside of the population
+            if (filterable === 'population') {
+                if (!(filterable in searching_para)) { // filterable is not already in the searchable
+                    searching_para[filterable] = element.slice(1); // add the filterable param to the searching_params
+                } else { // filterable is already in the parameters. Add all the elements that are not already in it
+                    element.slice(1).forEach(val => {
+                        if (val && !searching_para[filterable].includes(val)) { // not an empty string and doesn't already exist.
+                            searching_para[filterable].push(val);
+                        }
+                    });
+                }
+            } else {
+                if (!(population in searching_para)) {
+                    searching_para[population] = {}
+                }
+
+                if (!(filterable in searching_para[population])) { // filterable is not already in the searchable
+                    searching_para[population][filterable] = element.slice(1); // add the filterable param to the searching_params //Unknown deprecated with empty string.
+                } else { // filterable is already in the parameters. Add all the elements that are not already in it
+                    element.slice(1).forEach(val => {
+                        if (!searching_para[population][filterable].includes(val)) {
+                            searching_para[population][filterable].push(val);
+                        }
+                    });
+                }
+            }
+            // // ensure that the 'Unknown' field is at the bottom of the dropdown
+            // var index = searching_para[filterable].indexOf("Unknown");
+            // if (index != -1) {
+            //     searching_para[filterable].splice(index, 1);
+            //     searching_para[filterable].push('Unknown');
+            // }
+        });
+    }
+    
     /**
      * Updates searching_params based on the filters passed through URL
      * Called on filter button clicked
@@ -592,20 +562,32 @@ var GridPanel = undefined;
             }
         });
     }
-
-    /**
-     * receive new filters, update searching_para, apply filters to update currentDisplayData, call getData to refresh page
-     * @param {Object} para search filters selected in search panel
-     */
-    function get_new(para) {
-        searching_para = {}; // reset searching params as we are going to entirely rebuild them
-        updateFiltersFromURLParams(para); // updates searching_para with the filters passed through url
-        updateCurrentData(); // applies the now updated filters on the resultData, giving us the currentDisplayData that should be displayed
-        total_result = undefined;
-        current_page = 1;
-        getData();
-    };
-    panel.get_new = get_new;
+    
+    function pack_option(id, image_file, callname, d1_category, d1_value, d2_category, d2_value, full) {
+        var d1 = (d1_category == undefined || d1_category == null) ? "" : d1_category.charAt(0).toUpperCase() + d1_category.slice(1) + ': ' + d1_value;
+        var d2 = (d2_category == undefined || d2_category == null) ? "" : d2_category.charAt(0).toUpperCase() + d2_category.slice(1) + ': ' + d2_value;
+        // precede (using string replacement) the symbols (+-/) in `callname` with wordbreak element <wbr>
+        // the <table> ensures that text warping doesn't occur around the play button
+        return '<div class="col-xxl-2 col-xl-2 col-lg-3 col-md-3 col-sm-4 mb-4 itemblock" id="gi-' + id + '">\
+        <div class="bg-white rounded shadow-sm"><a href="'+ media_folder_path + full + '" data-toggle="lightbox" class="image_pop_source text-decoration-none"">\
+                <img src="'+ media_folder_path + image_file + '" loading="lazy" alt="" class="img-fluid card-img-top"></a>\
+                    <div class="p-4">\
+                        <h5> <a class="play_btn" href="#" style="text-decoration:none"> \
+                        <table> \
+                            <tr> \
+                                <td>' + play_icon + '</td> \
+                                <td class="text-dark" style="word-wrap;">&nbsp;' + callname.replace(/[^\w\s]/gi, '<wbr>$&') + '</td> \
+                            </tr> \
+                        </table> \
+                        </a></h5> \
+                        <p class="small mb-0 meta-p"><span class="font-weight-bold">' + d1 + '</span></p>\
+                        <div class="meta-p d-flex align-items-center justify-content-between rounded-pill bg-light px-3 py-2 mt-4 badge badge-pill badge-warning px-3 rounded-pill font-weight-normal font-weight-bold text-dark">\
+                        ' + d2 + ' \
+                    </div>\
+                </div>\
+            </div>\
+        </div>';
+    }
 
     function propagate_meta() {
         if (metadata_show) {
@@ -674,6 +656,25 @@ var GridPanel = undefined;
         });
 
         return {state:state, params:params}
+    }
+
+    function num_of_item_per_row() {
+        if (window.matchMedia('(min-width: 1400px)').matches) {
+            return 6;
+        }
+        if (window.matchMedia('(min-width: 1200px)').matches) {
+            return 6;
+        }
+        if (window.matchMedia('(min-width: 992px)').matches) {
+            return 4;
+        }
+        if (window.matchMedia('(min-width: 768px)').matches) {
+            return 4;
+        }
+        if (window.matchMedia('(min-width: 576px)').matches) {
+            return 3;
+        }
+        return 1;
     }
 
     function bindEvents() {
