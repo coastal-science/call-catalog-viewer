@@ -472,7 +472,7 @@ var GridPanel = undefined;
         await getData();
         // redraw_items(); // draws our new updated items
 
-        if (urlParams.has('popup')) {
+        if (urlParams.get('popup')) {
                 data = catalog_library.popup_from_url(urlParams);
                 
                 try{
