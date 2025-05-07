@@ -33,7 +33,8 @@ var GridPanel = undefined;
     const LIBRARY = 'catalogs';
     const LIBRARY_INDEX = 'index.yaml' + "?" + VERSION; // Add suffix to all assets to manually handle caching updates without affecting the end users
     
-    var catalog_library = {}; // dictionary with site-details for each catalog (key=catalog name, value= site-details + id)
+    // helper functions are attached to `catalogue_library` and `dbkey_to_entry`
+    var catalogue_library = {}; // dictionary with site-details for each catalog (key=catalog name, value= site-details + id)
     var dbkey_to_entry = {}; // mapping primary key to object with an entry(record/call) in the catalog
 
     const media_folder_path = ''; /* srkw-call-catalogue-files/media removed to get files locally */
@@ -188,7 +189,7 @@ var GridPanel = undefined;
             // By design (reasoning?): local catalogues cannot be root catalogues.
             // document.getElementById("catalogue-title").innerHTML = site_details['catalogue']['title'];
             
-            catalog_library[catalog_json] = site_details;
+            catalogue_library[catalog_json] = site_details;
             
             var filters = simple_datasource["filters"];
             var population = simple_datasource["population"];
@@ -363,8 +364,8 @@ var GridPanel = undefined;
             params.set('catalogue', catalogue_name);
             state['catalogue'] = catalogue_name;
 
-            if (catalog_library[catalogue_name]) { // If all catalogues are read and loaded, then the `catalogue_name` key must exist. Otherwise, that catalogue has not been read yet.
-                id_fields = catalog_library[catalogue_name]['id'].map(id_item => {
+            if (catalogue_library[catalogue_name]) { // If all catalogues are read and loaded, then the `catalogue_name` key must exist. Otherwise, that catalogue has not been read yet.
+                id_fields = catalogue_library[catalogue_name]['id'].map(id_item => {
                     return id_item.replace('-', '_'); // Convert hyphenated word to camel case
                 });
 
@@ -393,7 +394,7 @@ var GridPanel = undefined;
             $('.selecting').removeClass('selecting');
         }
 
-        // catalog_library[catalog_json] = resultData;
+        // catalogue_library[catalog_json] = resultData;
         history.pushState(state, title, `${window.location.pathname}?${params}`);
         return;
     }
@@ -473,11 +474,11 @@ var GridPanel = undefined;
         await getData();
         // redraw_items(); // draws our new updated items
         window.entireFilterData.forEach(catalog_entry => {
-            catalog_library.db_add("", catalog_entry);
+            catalogue_library.db_add("", catalog_entry);
         });
 
         if (urlParams.get('popup')) {
-                data = catalog_library.popup_from_url(urlParams);
+                data = catalogue_library.popup_from_url(urlParams);
                 
                 try{
                     if (data){
@@ -640,15 +641,15 @@ var GridPanel = undefined;
     panel.redraw_items = redraw_items;
 
     /**
-     * Helper function that attached to @global catalog_library. From a catalog entry/record, 
-     * extract the 'population` as the catalogue name. Extract the id_fields from the @global `catalog_library` dictionary. Extract the values for those fields to construct the primary key. Insert into @global `catalog_library` the @param entry for the catalogue.
+     * Helper function that attached to @global catalogue_library. From a catalog entry/record, 
+     * extract the 'population` as the catalogue name. Extract the id_fields from the @global `catalogue_library` dictionary. Extract the values for those fields to construct the primary key. Insert into @global `catalogue_library` the @param entry for the catalogue.
      * @param {*} primary_key 
      * @param {Object} entry 
      * @returns Boolean True of the @param entry was inserted into @global `dbkey_to_entry`. False otherwise.
      */
     /**
-     * Helper function that attached to @global catalog_library. From a catalog entry/record, 
-     * extract the 'population` as the catalogue name. Extract the id_fields from the @global `catalog_library` dictionary. Extract the values for those fields to construct the primary key. Insert into @global `catalog_library` the @param entry for the catalogue.
+     * Helper function that attached to @global catalogue_library. From a catalog entry/record, 
+     * extract the 'population` as the catalogue name. Extract the id_fields from the @global `catalogue_library` dictionary. Extract the values for those fields to construct the primary key. Insert into @global `catalogue_library` the @param entry for the catalogue.
      * @param {*} primary_key 
      * @param {Object} entry 
      * @returns Boolean True of the @param entry was inserted into @global `dbkey_to_entry`. False otherwise.
@@ -661,7 +662,7 @@ var GridPanel = undefined;
             return false;
         }        
         
-        id_fields = catalog_library.get_id_fields(catalogue_name);
+        id_fields = catalogue_library.get_id_fields(catalogue_name);
         
         if (!id_fields){
             console.error(entry, "is not the expected schema. Mandatory fields may be missing.");
@@ -682,21 +683,22 @@ var GridPanel = undefined;
         dbkey_to_entry[primary_key_values] = entry;
         return true;
     }
-    catalog_library.db_add = db_add;
+    catalogue_library.db_add = db_add;
 
     function get_id_fields(catalogue_name){
         if (!catalogue_name){
             console.log("The `catalogue` name/`population` " + catalogue_name + " was not found.");
             return false;
         }
-        id_fields = catalog_library[catalogue_name]['id']
+        id_fields = catalogue_library[catalogue_name]['id']
+        id_fields = catalogue_library[catalogue_name]['id']
         
         id_fields = id_fields.map(id_field => {
             return id_field.replace('-', '_'); // Convert hyphenated word to camel case
         });
         return id_fields
     }
-    catalog_library.get_id_fields = get_id_fields;
+    catalogue_library.get_id_fields = get_id_fields;
 
     /**
      * Generic helper function to extract url params from a list of field names.
@@ -730,7 +732,7 @@ var GridPanel = undefined;
         if (urlParams.has('catalogue')){
             catalogue_name = urlParams.get('catalogue')
             
-            id_fields = catalog_library.get_id_fields(catalogue_name);
+            id_fields = catalogue_library.get_id_fields(catalogue_name);
             if (!id_fields){
                 console.error("URL Search params is not the expected schema. Mandatory fields may be missing: " + urlParams.toString());
             }
@@ -744,7 +746,7 @@ var GridPanel = undefined;
         }
         return undefined;
     }
-    catalog_library.popup_from_url = popup_from_url;
+    catalogue_library.popup_from_url = popup_from_url;
 
     /**
      * Helper function to dynamically extract the `catalogue` and `id_fields` and values from @param individual_data and inject into @param state and @param params.
@@ -765,7 +767,7 @@ var GridPanel = undefined;
         params.set('catalogue', catalogue_name);
         state['catalogue'] = catalogue_name;
         
-        catalog_library[catalogue_name]['id'].forEach(id_field => {
+        catalogue_library[catalogue_name]['id'].forEach(id_field => {
             id_field_clean = id_field.replace('-', '_'); // Convert hyphenated word to camel case
             id_val = individual_data[id_field_clean];
             params.set(id_field_clean, id_val); 
@@ -979,7 +981,7 @@ var GridPanel = undefined;
             else if (urlParams.has('popup')) {
                 //may be generated from link
                 try {
-                    lity_data = catalog_library.popup_from_url(urlParams); // We can lookup catalogue entries with a combination of the url params `catalogue_name=zzzz&id_fields=xx,yy` and `xx=abc&yy=123`
+                    lity_data = catalogue_library.popup_from_url(urlParams); // We can lookup catalogue entries with a combination of the url params `catalogue_name=zzzz&id_fields=xx,yy` and `xx=abc&yy=123`
                     $('.selecting').removeClass('selecting');
                 } catch (e) {
                     debugger
@@ -1124,8 +1126,8 @@ var GridPanel = undefined;
             const params = new URLSearchParams(urlParams.toString()); // Create a deep copy
             catalogue_name = urlParams.get('catalogue');
             
-            // Remove `id_fields` dynamically from the `catalog_library` definitions
-            catalog_library[catalogue_name]['id'].forEach(id_item => {
+            // Remove `id_fields` dynamically from the `catalogue_library` definitions
+            catalogue_library[catalogue_name]['id'].forEach(id_item => {
                 id_item_clean = id_item.replace('-', '_'); // convert hyphenated word to camel case
                 params.delete(id_item_clean);
             });    
