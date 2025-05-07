@@ -465,28 +465,15 @@ var GridPanel = undefined;
         $('#page_size').selectpicker('val', "" + page_size);
         $('#show_meta').prop('checked', metadata_show);
         bindEvents();
-        if (urlParams.has('popup')) {
-            const queryString = window.location.search;
-            const urlParams = new URLSearchParams(queryString);
-            if (urlParams.has('popup')) {
-                const filter = urlParams.get('popup');
-                try {
-                    const obj = atob(filter);
-                    if (obj !== undefined) {
-                        const data = eval('(' + obj + ')');
-                        if (data['filename'] == undefined) {
-                            throw new Exception('Parse Error');
-                        }
-                        //show details
-                        var instance = lity(LIBRARY + '/' + data.image_file);
-                        var template = instance.options('template');
-                    }
-                } catch (e) {
-                    document.location.href = page_link;
-                }
-            }
-        }
+        
         await getData();
+        // redraw_items(); // draws our new updated items
+        if (urlParams.has('popup')) {
+                data = catalog_library.popup_from_url(urlParams);
+                
+                var instance = lity(LIBRARY + '/' + data.image_file); // trigger lity:open event
+                var template = instance.options('template');
+        }
     };
     panel.init = init;
 
