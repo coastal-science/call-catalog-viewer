@@ -471,6 +471,9 @@ var GridPanel = undefined;
         
         await getData();
         // redraw_items(); // draws our new updated items
+        window.entireFilterData.forEach(catalog_entry => {
+            catalog_library.db_add("", catalog_entry);
+        });
 
         if (urlParams.get('popup')) {
                 data = catalog_library.popup_from_url(urlParams);
@@ -615,7 +618,6 @@ var GridPanel = undefined;
                 var tmpid = window.crypto.getRandomValues(new Uint32Array(1))[0].toString(16) + window.crypto.getRandomValues(new Uint32Array(1))[0].toString(16);
             } while (id_to_seq[tmpid] !== undefined);
             id_to_seq[tmpid] = i;
-            catalog_library.db_add("", ele);
             
             var obj = pack_option(tmpid, LIBRARY + '/' + ele.image_file, ele.call_type, ele['d1'], ele[ele.d1], ele.d2, ele[ele.d2], LIBRARY + '/' + ele.image_file);
             grid.append(obj);
