@@ -654,14 +654,20 @@ var GridPanel = undefined;
 
         catalogue_name = entry['population'];
         if (!catalogue_name) { // s1/catalogue. 'population' is the legacy name, the generic name is 'catalogue'
-            console.error(entry, "is not the expected schema. Mandatory fields may be missing.");
+            msg = Object.keys(entry).toString() + " is not the expected schema. Mandatory fields may be missing."
+            console.error(msg);
+            debugger
+            throw new Error(msg);
             return false;
         }        
         
         id_fields = catalogue_library.get_id_fields(catalogue_name);
         
         if (!id_fields){
-            console.error(entry, "is not the expected schema. Mandatory fields may be missing.");
+            msg = Object.keys(entry).toString() + " is not the expected schema. Mandatory fields may be missing."
+            console.error(msg);
+            debugger
+            throw new Error(msg);
         }
         
         primary_key_fields = ['population'].concat(id_fields);
@@ -674,6 +680,11 @@ var GridPanel = undefined;
 
         if (!primary_key_values.some(element => Boolean(element))){
             return false
+        }
+        if (dbkey_to_entry[primary_key_values]) {
+            msg = "The entry for "+ primary_key_values + " is duplicated. All catalogue entries must be unique."
+            debugger
+            throw new Error(msg);
         }
         
         dbkey_to_entry[primary_key_values] = entry;
@@ -734,8 +745,11 @@ var GridPanel = undefined;
             catalogue_name = urlParams.get('catalogue')
             
             id_fields = catalogue_library.get_id_fields(catalogue_name);
-            if (!id_fields){
-                console.error("URL Search params is not the expected schema. Mandatory fields may be missing: " + urlParams.toString());
+            if (!id_fields || JSON.stringify(urlParams.get('id_fields')) === JSON.stringify(id_fields)){
+                msg = "URL Search params is not the expected schema. Mandatory fields (" + id_fields + ") may be missing: " + urlParams.toString();
+                console.error(msg);
+                debugger
+                throw new Error(msg);
             }
             
             primary_key = ['catalogue'].concat(id_fields);
