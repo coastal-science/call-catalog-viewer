@@ -34,6 +34,8 @@ var GridPanel = undefined;
     const LIBRARY_INDEX = 'index.yaml' + "?" + VERSION; // Add suffix to all assets to manually handle caching updates without affecting the end users
     
     var catalog_library = {}; // dictionary with site-details for each catalog (key=catalog name, value= site-details + id)
+    var dbkey_to_entry = {}; // mapping primary key to object with an entry(record/call) in the catalog
+
     const media_folder_path = ''; /* srkw-call-catalogue-files/media removed to get files locally */
     const play_icon = '<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-play" width="32" height="32" viewBox="0 0 24 24"><path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm-3 17v-10l9 5.146-9 4.854z"/></svg>';
     /*
@@ -614,6 +616,8 @@ var GridPanel = undefined;
                 var tmpid = window.crypto.getRandomValues(new Uint32Array(1))[0].toString(16) + window.crypto.getRandomValues(new Uint32Array(1))[0].toString(16);
             } while (id_to_seq[tmpid] !== undefined);
             id_to_seq[tmpid] = i;
+            catalog_library.db_add("", ele);
+            
             var obj = pack_option(tmpid, LIBRARY + '/' + ele.image_file, ele.call_type, ele['d1'], ele[ele.d1], ele.d2, ele[ele.d2], LIBRARY + '/' + ele.image_file);
             grid.append(obj);
         }
@@ -633,6 +637,51 @@ var GridPanel = undefined;
     };
     panel.redraw_items = redraw_items;
 
+    function db_add(primary_key, entry){
+
+        catalogue_name = entry['population'];
+        if (!catalogue_name) { // s1/catalogue. 'population' is the legacy name, the generic name is 'catalogue'
+            console.error(entry, "is not the expected schema. Mandatory fields may be missing.");
+            return false;
+        }        
+        
+        id_fields = catalog_library.get_id_fields(catalogue_name);
+        
+        if (!id_fields){
+            console.error(entry, "is not the expected schema. Mandatory fields may be missing.");
+        }
+        
+        primary_key_fields = ['population'].concat(id_fields);
+        
+        primary_key_values = primary_key_fields.map(item => {
+            return entry[item];
+            id_value = entry[item];
+            return id_value ? id_to_seq: undefined;
+        });
+
+        if (!primary_key_values.some(element => Boolean(element))){
+            return false
+        }
+        
+        dbkey_to_entry[primary_key_values] = entry;
+        return true;
+    }
+    catalog_library.db_add = db_add;
+
+    function get_id_fields(catalogue_name){
+        if (!catalogue_name){
+            console.log("The `catalogue` name/`population` " + catalogue_name + " was not found.");
+            return false;
+        }
+        id_fields = catalog_library[catalogue_name]['id']
+        
+        id_fields = id_fields.map(id_field => {
+            return id_field.replace('-', '_'); // Convert hyphenated word to camel case
+        });
+        return id_fields
+    }
+    catalog_library.get_id_fields = get_id_fields;
+
     /**
      * Generic helper function to extract url params from a list of field names.
      * @param {*} primary_keys A list containing the search parameters in the url (to treat as primary keys)
@@ -649,7 +698,7 @@ var GridPanel = undefined;
         if (!primary_key_values.some(element => Boolean(element))){
             return false
         }
-        console.log(primary_key_values);
+        
         return primary_key_values
     }
 
