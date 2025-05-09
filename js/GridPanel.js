@@ -648,7 +648,7 @@ var GridPanel = undefined;
      * - Insert into `catalogue_library` the `entry` for the catalogue.
      * @param {*} primary_key 
      * @param {Object} entry 
-     * @returns Boolean True of the `entry` was inserted into `dbkey_to_entry`. False otherwise.
+     * @returns Boolean True if the `entry` was inserted into `dbkey_to_entry`. False otherwise.
      */
     function db_add(primary_key, entry){
 
@@ -697,7 +697,7 @@ var GridPanel = undefined;
             console.log("The `catalogue` name/`population` " + catalogue_name + " was not found.");
             return false;
         }
-        id_fields = catalogue_library[catalogue_name]['id']
+        
         id_fields = catalogue_library[catalogue_name]['id']
         
         id_fields = id_fields.map(id_field => {
