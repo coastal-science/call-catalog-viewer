@@ -38,7 +38,7 @@ If you spot a problem, [search if an issue](https://github.com/coastal-science/c
 When filing an issue, make sure to answer the questions in the templates.
 
 
-Refereneces:
+References:
 
 https://github.com/nayafia/contributing-template/blob/HEAD/CONTRIBUTING-template.md
 
