@@ -6,7 +6,7 @@ Please take a moment to review this document in order to make the contribution p
 
 Following these guidelines helps to communicate that you respect the time of the developers managing and developing this open source project. In return, they should reciprocate that respect in addressing your issue, assessing changes, and helping you finalize your pull requests.
 
-As for everything else in the project, the contributions to Hoodie are governed by our [Code of Conduct](CODE-OF-CONDUCT.md). Everyone interacting in this project and issue tracker is expected to follow the Code of Conduct.
+As for everything else in the project, the contributions to the project are governed by our [Code of Conduct](CODE-OF-CONDUCT.md). Everyone interacting in this project and issue tracker is expected to follow the Code of Conduct.
 
 ## How can I contribute?
 
