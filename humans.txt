@@ -1,0 +1,39 @@
+/* TEAM */
+	Research scientist (emeritus): John Ford
+	GitHub: @JKBF
+	From: Pacific Biological Station, Fisheries and Oceans Canada
+
+	SFU's Big Data Hub: Steven Bergner
+	GitHub: @git-steb
+	From: Simon Fraser University
+
+	Prototype developer: Rovenna Chu
+	GitHub: @rovenna2021
+	From: Simon Fraser University
+
+	Student Developer: Sophia Han
+	GitHub: @shh10
+	From: Simon Fraser University
+
+	SFU's Research Computing Group: Ishan Sahay
+	GitHub: @VWJF
+	From: Simon Fraser University
+    
+	Student Developer: Evan Dyce
+	GitHub: @EvanDyce
+	From: Simon Fraser University
+
+/* THANKS */
+
+    HALLO Lead: Ruth Joy
+    GitHub: @rutherfordjoy
+    From: Simon Fraser University and @coastal-science
+	
+    HALLO community of users, reviewers, testers for their invaluable feedback: Jen, Ruby, Amalis, Scott Veirs (GitHub @scottveirs)
+
+    Media Queries via: https://orca.research.sfu.ca/contact
+		
+
+/* SITE */
+	Last update: 2025/05/10
+	Language: English

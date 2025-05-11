@@ -1,15 +1,5 @@
-# License Information
+# License
 
-Use of information from this website is subject to terms under [Open Government License &ndash; Canada](https://open.canada.ca/en/open-government-licence-canada)
+The source code in this repository is licensed under the [MIT license](https://opensource.org/license/mit).
 
-You are free to:
-- Copy, modify, publish, translate, adapt, distribute or otherwise use the Information in any medium, mode or format for any lawful purpose.
-
-You must, where you do any of the above:
-- Acknowledge the source of the Information by including any attribution statement specified by the Information Provider(s) and, where possible, provide a link to this license.
-- If the Information Provider does not provide a specific attribution statement, or if you are using Information from several information providers and multiple attributions are not practical for your product or application, you must use the following attribution statement:
-
-
-> *Contains information licensed under the Open Government License &ndash; Canada.*
-
-
+However, the content of catalogs may contain information licensed under the [Open Government Licence - Canada 2.0](https://open.canada.ca/en/open-government-licence-canada), or licensed under the respective agreements for each catalog. 
