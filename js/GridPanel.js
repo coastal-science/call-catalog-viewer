@@ -111,7 +111,7 @@ var GridPanel = undefined;
         sortable_fields.forEach(field => {
             $dropdown.append($('<option>', {
                 value: field,
-                text: field.charAt(0).toUpperCase() + field.slice(1)
+                text: field.toTitleCase()
             }))
         });
 
@@ -985,7 +985,7 @@ var GridPanel = undefined;
                 params.set('sa', sort_asc);
                 params.set('ps', page_size.toString());
                 
-                // Add unique fields to uniquely identify an entry
+                // Add unique id fields to uniquely identify an entry
                 // modifies the `state` and `params` in place.
                 individual_params = individual_entry_to_params(lity_data, state, params);
                 
