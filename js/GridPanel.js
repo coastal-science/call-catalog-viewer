@@ -197,10 +197,15 @@ var GridPanel = undefined;
             var display_data = simple_datasource["display"];
             simple_datasource = simple_datasource["calls"];
 
-            searchable.slice(1).forEach(field => {
-                if (!sortable_fields.includes(field))
-                    sortable_fields.push(field);
-            })
+            // // Accumulate searchable filters across all catalogues.
+            // searchable.slice(1).forEach(field => {
+            //     if (!sortable_fields.includes(field))
+            //         sortable_fields.push(field);
+            // })
+            sortable_fields = searchable.slice(1); // extract sortable filters of this catalogue
+            catalogue_library[catalog_json]['sortable'] = sortable_fields;
+
+
             updateFiltersFromJSON(population, filters);
 
             var keys = Object.keys(simple_datasource);
@@ -381,6 +386,14 @@ var GridPanel = undefined;
                     }
                 });
             }
+            if (searching_para[catalogue_name]) { // If all catalogues are read and loaded, then the `catalogue_name` key must exist. Otherwise, that catalogue has not been read yet.
+                id_fields = Object.keys(searching_para[catalogue_name])
+                
+                id_fields_csv = id_fields.join(',');
+                // assert (urlParams.get('sort_fields') === id_fields_csv);
+                params.set('sort_fields', id_fields_csv);
+                state['sort_fields'] = id_fields_csv;
+            }
         }
 
         // if (!urlParams.has('f')) {
@@ -501,8 +514,16 @@ var GridPanel = undefined;
      */
     function get_new(para) {
         searching_para = {}; // reset searching params as we are going to entirely rebuild them
+        
+        if (para['population']) {
+            sortable_fields = catalogue_library[para['population']]['sortable'];
+        }
+        
         updateFiltersFromURLParams(para); // updates searching_para with the filters passed through url
         updateCurrentData(); // applies the now updated filters on the resultData, giving us the currentDisplayData that should be displayed
+        
+        setSortableDropdownValues();
+
         total_result = undefined;
         current_page = 1;
         getData();
@@ -988,7 +1009,11 @@ var GridPanel = undefined;
                 // Add unique id fields to uniquely identify an entry
                 // modifies the `state` and `params` in place.
                 individual_params = individual_entry_to_params(lity_data, state, params);
-                
+                if (urlParams.has('sort_fields')){
+                    sort_fields = urlParams.get('sort_fields');
+                    params.set('sort_fields', sort_fields);
+                    state['sort_fields'] = sort_fields;
+                }
                 params.set('popup', true);
                 params.set('f', encoded);
                 params.set('sel', user_selection);
