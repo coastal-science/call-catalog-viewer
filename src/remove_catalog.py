@@ -65,7 +65,7 @@ def remove(
             all_catalogs = yaml.safe_load(f)
             logger.debug(f"In {library_index} found: {all_catalogs}")
     except FileNotFoundError:
-        logger.debug(f"Is {library_index} not found, there will be nothing to remove.")
+        logger.debug(f"Is {library_index} not found, there will be nothing to remove. Creating a placeholder file.")
         all_catalogs={"catalogs":[]}
 
     if catalog_name not in all_catalogs["catalogs"]:
