@@ -330,7 +330,9 @@ var SearchPanel = undefined;
                         }
                     }
                     buildPopulationSpecificDropdown(selected_population);
-                    updateURL('sel', liveDropdownChoices);
+                    
+                    // updateURL('sel', liveDropdownChoices);
+                    
                     if (selected_population){
                         updateURL('catalogue', selected_population)
                     }
@@ -343,7 +345,8 @@ var SearchPanel = undefined;
             originalData = $.extend(true, {}, liveDropdownChoices);
             // Copy the current filter selections for saving state
             selected_options[liveDropdownChoices['population']] = structuredClone(liveDropdownChoices)
-            updateURL('sel', liveDropdownChoices);
+            // updateURL('sel', liveDropdownChoices);
+            
             GridPanel.get_new(liveDropdownChoices);
             toggle_button(this, 100);
         });
