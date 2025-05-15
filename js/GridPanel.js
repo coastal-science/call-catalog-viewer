@@ -777,6 +777,8 @@ var GridPanel = undefined;
             
             primary_key = ['catalogue'].concat(id_fields);
             primary_key_values = primary_keys_from_url(primary_key, urlParams);
+            console.log(primary_key, primary_key_values)
+            
             if (primary_key_values){
                 data = dbkey_to_entry[primary_key_values];
                 return data;
