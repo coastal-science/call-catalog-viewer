@@ -66,6 +66,7 @@ def remove(
             logger.debug(f"In {library_index} found: {all_catalogs}")
     except FileNotFoundError:
         logger.debug(f"Is {library_index} not found, there will be nothing to remove. Creating a placeholder file.")
+        listings.touch()
         all_catalogs={"catalogs":[]}
 
     if catalog_name not in all_catalogs["catalogs"]:
