@@ -54,7 +54,10 @@ var SearchPanel = undefined;
 
         // the 'sel' parameters, containing the user selections, has been set, 
         user_selection = get_params_to_obj(urlParams, 'sel');
-
+        if(!user_selection || jQuery.isEmptyObject(user_selection)){
+            user_selection = {}
+            user_selection['population'] = urlParams.get('catalogue')
+        }
         // originalData is our filters that we want to translate into dropdowns
         updateFilterOptions(originalData);
 
