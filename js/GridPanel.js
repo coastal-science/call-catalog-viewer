@@ -398,9 +398,10 @@ var GridPanel = undefined;
 
         // if (!urlParams.has('f')) {
             encoded = btoa(JSON.stringify(searching_para));
+            sessionStorage.setItem('f', JSON.stringify(searching_para));
         // }
         // state['f'] = encoded;
-        params.set('f', encoded);
+        // params.set('f', encoded);
 
         if (urlParams.get('popup')) {
             // params.set('popup', urlParams.get('popup'));
@@ -436,23 +437,24 @@ var GridPanel = undefined;
 
         const queryString = window.location.search;
         const urlParams = new URLSearchParams(queryString);
-        if (urlParams.has('f')) {
-            const filter = urlParams.get('f');
-            const obj = atob(filter);
-            if (obj !== undefined) {
-                try {
-                    const ev = eval('(' + obj + ')');
-                    ['s1', 's2', 's3'].forEach((v) => {
-                        if (ev[v] !== undefined) {
-                            searching_para[v] = ev[v];
-                        }
-                    });
-                } catch (e) {
-                    debugger
-                    throw new Error("init:reading 'f' from url params. " + e.msg);
-                }
-            }
-        }
+        //
+        // if (urlParams.has('f')) {
+        //     const filter = urlParams.get('f');
+        //     const obj = atob(filter);
+        //     if (obj !== undefined) {
+        //         try {
+        //             const ev = eval('(' + obj + ')');
+        //             ['s1', 's2', 's3'].forEach((v) => {
+        //                 if (ev[v] !== undefined) {
+        //                     searching_para[v] = ev[v];
+        //                 }
+        //             });
+        //         } catch (e) {
+        //             debugger
+        //             throw new Error("init:reading 'f' from url params. " + e.msg);
+        //         }
+        //     }
+        // }
         current_page = 1;
         if (urlParams.has('p')) {
             const filter = urlParams.get('p');
@@ -998,13 +1000,14 @@ var GridPanel = undefined;
                     user_selection = btoa(JSON.stringify({}))
                 }
                 
-                const state = { 'p': current_page, 's': sort_by, 'sa': sort_asc, 'f': encoded, 'sel': user_selection};
+                const state = { 'p': current_page, 's': sort_by, 'sa': sort_asc, 'sel': user_selection};
                 const title = 'Details: ' + lity_data.cn + ' (Call Name)'; // For Safari only
                 const params = new URLSearchParams('');
                 params.set('p', current_page);
                 params.set('s', sort_by);
                 params.set('sa', sort_asc);
                 params.set('ps', page_size.toString());
+                sessionStorage.setItem('f', JSON.stringify(searching_para));
                 
                 // Add unique id fields to uniquely identify an entry
                 // modifies the `state` and `params` in place.
@@ -1015,7 +1018,8 @@ var GridPanel = undefined;
                     state['sort_fields'] = sort_fields;
                 }
                 params.set('popup', true);
-                params.set('f', encoded);
+                // params.set('f', encoded);
+                
                 params.set('sel', user_selection);
 
                 history.pushState(state, title, `${window.location.pathname}?${params}`);
@@ -1179,8 +1183,9 @@ var GridPanel = undefined;
                 console.log(key, value);
                 state[key] = value;
             });
-            params.set('f', encoded);
+            // params.set('f', encoded);
             params.delete('popup');
+            sessionStorage.setItem('f', JSON.stringify(searching_para))
             
             history.pushState(state, title, `${window.location.pathname}?${params}`);
             if ($('.selecting').length <= 0) {

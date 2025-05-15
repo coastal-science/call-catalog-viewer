@@ -37,7 +37,8 @@ var SearchPanel = undefined;
 
 
         // the 'f' parameters have been set, 
-        ev = get_params_to_obj(urlParams, 'f');
+        ev = sessionStorage.getItem('f');
+        ev = JSON.parse(ev);
         let count = 1;
         if (ev) {
             Object.keys(ev).forEach((item) => {
