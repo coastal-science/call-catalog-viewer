@@ -855,19 +855,32 @@ var GridPanel = undefined;
         $('#gi-area').on('click', '.play_btn', function (e) {
             e.stopPropagation();
             e.preventDefault();
-            var obj_id = $(this).parents('.itemblock').attr('id').substring(3);
+            
+            $(this).addClass('play_btn_active');
+            
+            var selected_call = $(this).parents('.itemblock');
+            var obj_id = selected_call.attr('id').substring(3); // 'gi-900dcfc7de0f9d18'
             var data_target_seq = id_to_seq[obj_id];
             var data_target = currentDisplayData[data_target_seq];
             if (audio_element !== undefined && audio_element !== null && audio_element.pause !== undefined) {
                 audio_element.pause();
             }
             audio_element = document.createElement('audio');
+            audio_element.setAttribute('id', obj_id);
             audio_element.setAttribute('src', '');
             audio_element.setAttribute('src', LIBRARY + '/' + data_target.audio_file);
             audio_element.setAttribute('autoplay', 'autoplay');
             audio_element.load();
             // console.log(obj_id)
             // console.log(audio_element)
+            
+            audio_element.addEventListener('ended', function () {
+                var play_btn_activated = $('#gi-' + audio_element.getAttribute('id').toString())
+                play_btn_activated = play_btn_activated.find('.play_btn_active') // lookup the specific class within a specific 'gi-id'
+                // var play_btn_activated = $('.play_btn_active') // lookup the specific class
+
+                play_btn_activated.removeClass('play_btn_active');
+            });
         });
         $('#gi-area').on('click', '.itemblock', function (e) {
             $(this).siblings('.itemblock').removeClass('selecting');
