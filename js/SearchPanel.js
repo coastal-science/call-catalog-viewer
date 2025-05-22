@@ -336,8 +336,8 @@ var SearchPanel = undefined;
                     if (selected_population){
                         updateURL('catalogue', selected_population)
                     }
-                    GridPanel.get_new(liveDropdownChoices);
                 }
+                GridPanel.get_new(liveDropdownChoices);
             });
         }
         Panel.find('#search_now').off('click').click(function (e) { // function that is called when the filter button is clicked. 
