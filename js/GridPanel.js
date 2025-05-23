@@ -1150,11 +1150,21 @@ var GridPanel = undefined;
             // console.log(lity_data)
         });
         $(document).on('click', '.lity-container #play', function () {
+            if (!audio_element) {
+                var play_btn_activated = $('#audio-popup');
+                // audio_element = play_btn_activated;
+            }
+            if (audio_element !== undefined && audio_element !== null && audio_element.pause !== undefined) {
+                audio_element.pause();
+            }
+            
             audio_element = document.createElement('audio');
             $(this).html('<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-play" viewBox="0 0 16 16">\
             <path d="M10.804 8 5 4.633v6.734L10.804 8zm.792-.696a.802.802 0 0 1 0 1.392l-6.363 3.692C4.713 12.69 4 12.345 4 11.692V4.308c0-.653.713-.998 1.233-.696l6.363 3.692z"/>\
           </svg>Playing  (Call Name: '+ lity_data.call_type + ')');
             $(this).removeClass('btn-primary').addClass('btn-success');
+            
+            audio_element.setAttribute('id', 'audio-popup');
             audio_element.setAttribute('src', '');
             audio_element.setAttribute('src', LIBRARY + '/' + lity_data.audio_file);
             audio_element.setAttribute('autoplay', 'autoplay');
