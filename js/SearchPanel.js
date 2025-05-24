@@ -263,7 +263,7 @@ var SearchPanel = undefined;
 
         return '<div class="col col-12 col-sm-12 col-md-12 col-lg-12 col-xl-10 col-xxl-10 align-items-center align-middle align-right d-flex flex-nowrap">' +
             '<span class="col-4 text-end">' + title + ': &nbsp;</span>' +
-            '<select id="' + id + '" class="col-8" multiple aria-label="size 3 select">' +
+            '<select id="' + id + '" class="col-8" multiple placeholder="Select to filter..." aria-label="size 3 select">' +
             '</select><br>&nbsp;' +
             '</div>'
     }
