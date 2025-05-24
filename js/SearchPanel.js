@@ -339,6 +339,9 @@ var SearchPanel = undefined;
                 }
                 GridPanel.get_new(liveDropdownChoices);
             });
+            $('#s' + i).on('hide.bs.select', (e, clickedIndex, isSelected, previousValue) => { // listener when dropdowns close
+                $('#gi-area .itemblock:nth(0)').click(); // select the first grid area item so that key press actions functionality is restored.
+            });
         }
         Panel.find('#search_now').off('click').click(function (e) { // function that is called when the filter button is clicked. 
             dirty = false;

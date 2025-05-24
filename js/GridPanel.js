@@ -649,7 +649,14 @@ var GridPanel = undefined;
         }
         selecting = 0;
         propagate_meta();
-        $('#gi-area .itemblock:nth(0)').click();
+        
+        // After every dropdown selection, the items in the result grid are updated and redrawn.
+        // Since all items may change, clicking on the first displayed result brings it to focus 
+        // and enables the key press actions to function.
+        // Changing the focus while the dropdown is open triggers the dropdown to close.
+        // Which hinders the ability to update the results immediately after clicking an option.
+        // Move the focus until after the dropdown has closed. 
+        // $('#gi-area .itemblock:nth(0)').click();
 
         if (i !== 0) {
             next_drawn = i;
