@@ -162,16 +162,16 @@ var SearchPanel = undefined;
         title = title.charAt(0).toUpperCase() + title.slice(1);
 
         if (title === 'Population') {
-            return '<div class="col col-12 col-sm-12 col-md-12 col-lg-12 col-xl-10 col-xxl-10 align-items-center align-middle align-right d-flex flex-nowrap">' +
+            return '<div class="row col align-items-center align-middle align-right d-flex flex-nowrap">' +
                 '<span class="col-4 text-end">' + title + ': &nbsp;</span>' +
-                '<select id="' + id + '" class="col-8" aria-label="size 3 select">' +
+                '<select id="' + id + '" class="col-8 selectpicker" aria-label="size 3 select">' +
                 '</select><br>&nbsp;' +
                 '</div>'
         }
 
-        return '<div class="col col-12 col-sm-12 col-md-12 col-lg-12 col-xl-10 col-xxl-10 align-items-center align-middle align-right d-flex flex-nowrap">' +
+        return '<div class="row col align-items-center align-middle d-flex flex-nowrap">' +
             '<span class="col-4 text-end">' + title + ': &nbsp;</span>' +
-            '<select id="' + id + '" class="col-8" multiple aria-label="size 3 select">' +
+            '<select id="' + id + '" class="col-8 selectpicker" data-live-search="true" multiple aria-label="size 3 select" data-selected-text-format="count > 6">' +
             '</select><br>&nbsp;' +
             '</div>'
     }

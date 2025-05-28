@@ -78,13 +78,26 @@
         display: none !important;
     }
 
-        .btn-feedback {background-color:silver;border-color:silver;color:white;}
+    .btn-feedback {
+        background-color: silver;
+        border-color: silver;
+        color: white;
+    }
 
-        .btn-feedback a:hover {color:transparent;}
-
-        .btn-filter {background-color:darkgray;border-color:darkgray;color:white;}
-
-        .btn-filter a:hover {color:transparent;}
+    .btn-feedback a:hover {
+        color: transparent;
+    }
+    /* Not recommended approach to override Bootstrap css. 
+       The recommended approach is to build a custom Bootstrap CSS with SASS*/
+    .btn-filter, .btn-filter:active, .btn-filter:visited {
+        background-color: darkgray !important;
+        border-color: darkgray !important;
+    }
+    .btn-filter:hover {
+        background-color: #6c757d !important;
+        /* from btn-secondary no hover */
+        border-color: #6c757d !important;
+    }
 
         #btn-back-to-top {
             position: fixed;
@@ -139,6 +152,12 @@
         margin: auto;
     }
 
+    .lity-close {
+        /* This value is the OPPOSITE colour of our background. */
+        color: white;
+        mix-blend-mode: difference;
+    }
+    
     .litybottom {
         max-height: 20vh;
         position: relative;
@@ -279,7 +298,11 @@
             </div>
             <div class="row"><div class="col"><span>&nbsp;</span></div> </div>
             <div class="row justify-content-md-center">
-                <button id="search_now" class="btn col col-12 col-sm-12 col-md-4 col-lg-2 btn-filter">Filter</button>
+            <div class="row justify-content-center" >
+                <div class="col text-center">
+                <button id="search_now" type='submit' aria-label="Filter" class="btn btn-secondary btn-filter">&emsp;&emsp;Filter&emsp;&emsp;</button>
+                </div>
+            </div>
             </div>
         </div>
         <div class="row"><div class="col"><span>
