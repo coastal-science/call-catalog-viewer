@@ -330,7 +330,9 @@ var SearchPanel = undefined;
                         }
                     }
                     buildPopulationSpecificDropdown(selected_population);
-                    
+                    // reveal the grid area with search results, these were hidden when a population is not selected.
+                    $('#gi-area').removeAttr('hidden');
+
                     // updateURL('sel', liveDropdownChoices);
                     
                     if (selected_population){
@@ -343,6 +345,13 @@ var SearchPanel = undefined;
                 $('#gi-area .itemblock:nth(0)').click(); // select the first grid area item so that key press actions functionality is restored.
             });
         }
+        $('#s' + '1').on('loaded.bs.select', function() { // sets the listener when population dropdown is first loaded, when user selections are not yet made.
+            selected_population = $('#s' + '1').selectpicker('val');
+            if (!selected_population){
+                $('#gi-area').attr('hidden', 'true');
+            }
+        });
+
         Panel.find('#search_now').off('click').click(function (e) { // function that is called when the filter button is clicked. 
             dirty = false;
             originalData = $.extend(true, {}, liveDropdownChoices);
