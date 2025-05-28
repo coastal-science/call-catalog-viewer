@@ -8,7 +8,7 @@ var SearchPanel = undefined;
     var dirty = false;
     var s_index = 1;
     var element_id_to_title = {};
-    
+
     const LIBRARY = 'catalogs';
     const LIBRARY_INDEX = 'index.yaml';
 
@@ -24,13 +24,14 @@ var SearchPanel = undefined;
         if (!fileExists(url))
             return;
         // if the values have not already been set in url 'f' parameters, wait 300ms for them to get set, and then refresh the page 
-        if (!urlParams.has('f')) {
-            setTimeout(function() {
-                queryString = location.search;
-                urlParams = new URLSearchParams(queryString);
-                location.reload();
-            }, 500)
+        // console.log({"waiting for variable": urlParams});
+        while (!urlParams.has('f')) {// define the condition as you like
+            // console.log({'waiting': urlParams})
+            await new Promise(resolve => setTimeout(resolve, 300));
+            urlParams = new URLSearchParams(location.search);
         }
+        // console.log("waiting done. the variable is defined.");
+
 
         // the 'f' parameters have been set, 
         if (urlParams.has('f')) {
@@ -58,7 +59,7 @@ var SearchPanel = undefined;
 
         // originalData is our filters that we want to translate into dropdowns
         updateFilterOptions(originalData);
-        
+
         tmpResult = {}
         // find the panel and clear the search rows so that we can rebuild from fresh
         Panel = $('.panel');
@@ -69,10 +70,10 @@ var SearchPanel = undefined;
         // buildPopulationSpecificDropdown(selected_value);
     };
     panel.init = init;
-    
+
     /** 
      * @param {string} v value for the option in dropdown
-     * @returns an HTML represntation of the option to add
+     * @returns an HTML representation of the option to add
      */
     function pack_option(v) {
         return '<option value="' + v + '">' + v + '</option>'
@@ -88,12 +89,11 @@ var SearchPanel = undefined;
         var keys = Object.keys(filter_options);
         keys.forEach((key) => {
             // if this is 'population' then things are simple, add everything we need as array of values
-            // if it is not, then it is populatoin specific filters and we need to be more careful
+            // if it is not, then it is population specific filters and we need to be more careful
             var population_value = filter_options[key][0];
 
             if (population_value === 'population') {
                 var obj = {};
-
                 // set all of the values that we need
                 obj.s = "s" + count;
                 obj.b = "b" + count;
@@ -117,7 +117,7 @@ var SearchPanel = undefined;
             } else {
                 // this means that we are looking at population specific filters
 
-                // get the keys for to population specific, each one represnting a dropdown that we need to create
+                // get the keys for to population specific, each one representing a dropdown that we need to create
                 var dropdown_keys = Object.keys(filter_options[key][1]);
 
                 dropdown_keys.forEach((drop_key) => {
@@ -142,13 +142,13 @@ var SearchPanel = undefined;
                     // add the object to the population specific section of the s_options
                     if (!(s_options[population_value]))
                         s_options[population_value] = [];
-                    
+
                     s_options[population_value].push(obj);
                     count++;
                 })
-            } 
+            }
         });
-        // used when bidnding on changes to dropdowns
+        // used when binding on changes to dropdowns
         num_dropdowns = count;
     }
 
@@ -161,18 +161,18 @@ var SearchPanel = undefined;
         title = title.charAt(0).toUpperCase() + title.slice(1);
 
         if (title === 'Population') {
-            return '<div class="col col-12 col-sm-12 col-md-12 col-lg-12 col-xl-10 col-xxl-10 align-items-center align-middle align-right d-flex flex-nowrap">' + 
-                    '<span class="col-4 text-end">' + title  + ': &nbsp;</span>' +
-                    '<select id="' + id + '" class="col-8" aria-label="size 3 select">' +
-                    '</select><br>&nbsp;' +
+            return '<div class="row col align-items-center align-middle align-right d-flex flex-nowrap">' +
+                '<span class="col-4 text-end">' + title + ': &nbsp;</span>' +
+                '<select id="' + id + '" class="col-8 selectpicker" aria-label="size 3 select">' +
+                '</select><br>&nbsp;' +
                 '</div>'
         }
 
-        return '<div class="col col-12 col-sm-12 col-md-12 col-lg-12 col-xl-10 col-xxl-10 align-items-center align-middle align-right d-flex flex-nowrap">' + 
-                    '<span class="col-4 text-end">' + title  + ': &nbsp;</span>' +
-                    '<select id="' + id + '" class="col-8" multiple aria-label="size 3 select">' +
-                    '</select><br>&nbsp;' +
-                '</div>'
+        return '<div class="row col align-items-center align-middle d-flex flex-nowrap">' +
+            '<span class="col-4 text-end">' + title + ': &nbsp;</span>' +
+            '<select id="' + id + '" class="col-8 selectpicker" data-live-search="true" multiple aria-label="size 3 select" data-selected-text-format="count > 6">' +
+            '</select><br>&nbsp;' +
+            '</div>'
     }
 
     /**
@@ -184,14 +184,12 @@ var SearchPanel = undefined;
 
         $.ajax({
             url: url,
-            type:'HEAD',
+            type: 'HEAD',
             async: false,
-            error: function() 
-            {
+            error: function () {
                 exists = false;
             },
-            success: function()
-            {
+            success: function () {
                 exists = true;
             }
         });
@@ -205,19 +203,22 @@ var SearchPanel = undefined;
     function bindEvents() {
         // for the number of values, in s_options, do this thing
         for (let i = 1; i <= num_dropdowns; i++) {
-            var object = s_options[i-1];
+            var object = s_options[i - 1];
             $('#s' + i).on('changed.bs.select', (e, clickedIndex, isSelected, previousValue) => { // sets the listener when dropdowns are changed
                 var title = element_id_to_title['s' + i];
 
-                // tmpResult holds the currently applied filters that are passed back to GridPanel in get_new callss
-                if (tmpResult[title] === undefined)     
+                // tmpResult holds the currently applied filters that are passed back to GridPanel in get_new calls
+                if (tmpResult[title] === undefined)
                     tmpResult[title] = []
                 tmpResult[element_id_to_title['s' + i]] = $('#s' + i).selectpicker('val');
 
-                if (element_id_to_title['s' + i] === 'population'){
-                    tmpResult['population'] = $('#s' + i).val();
-                    buildPopulationSpecificDropdown($('#s' + i).val());
-                    GridPanel.get_new(tmpResult);   
+                if (element_id_to_title['s' + i] === 'population') {
+                    selected_id = '#s' + i;
+                    selected_population = $(selected_id).val();
+                    tmpResult = {};
+                    tmpResult['population'] = selected_population;
+                    buildPopulationSpecificDropdown(selected_population);
+                    GridPanel.get_new(tmpResult);
                 }
             });
         }
@@ -239,9 +240,9 @@ var SearchPanel = undefined;
      */
     function buildPopulationDropdown(last_value) {
         var population_data = s_options['population'];
-        
+
         Panel.find('#search_rows').append(pack_dropdown(population_data.title, population_data.s));
-         
+
         population_data.values.forEach((value) => {
             Panel.find("#" + population_data.s).append(pack_option(value));
         });
@@ -274,11 +275,11 @@ var SearchPanel = undefined;
         console.log(JSON.stringify(selected_value));
 
         if (s_options[selected_value] !== undefined) {
-            s_options[selected_value].forEach((dropdown)=> {
+            s_options[selected_value].forEach((dropdown) => {
                 buildDropdown(dropdown);
             })
         }
-            
+
 
         bindEvents();
     }

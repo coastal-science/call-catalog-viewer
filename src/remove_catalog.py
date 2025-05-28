@@ -60,9 +60,13 @@ def remove(
 
     listings = Path(library, library_index).resolve()
 
-    with open(listings) as f:
-        all_catalogs = yaml.safe_load(f)
-        logger.debug(f"In {library_index} found: {all_catalogs}")
+    try:
+        with open(listings) as f:
+            all_catalogs = yaml.safe_load(f)
+            logger.debug(f"In {library_index} found: {all_catalogs}")
+    except FileNotFoundError:
+        logger.debug(f"Is {library_index} not found, there will be nothing to remove.")
+        all_catalogs={"catalogs":[]}
 
     if catalog_name not in all_catalogs["catalogs"]:
         logger.warning(f"Catalog named '{catalog_name}' is not part of {library_index}, nothing to remove here.")

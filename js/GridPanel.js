@@ -15,7 +15,7 @@ var GridPanel = undefined;
     var next_drawn = undefined;
 
     var current_page = undefined;
-    var page_size = 120;
+    var page_size = 24;
     var total_result = undefined;
     var total_page = undefined;
     var data_initialized = false;
@@ -27,8 +27,9 @@ var GridPanel = undefined;
     var lity_data = undefined;
     var audio_element = undefined;
     var selecting = undefined;
+    const VERSION = VERSION_TAG // e.g. 'v=random'; suffix assets as `file_name + "?" + VERSION`
     const LIBRARY = 'catalogs';
-    const LIBRARY_INDEX = 'index.yaml';
+    const LIBRARY_INDEX = 'index.yaml' + "?" + VERSION; // Add suffix to all assert to manually handle caching updates without affecting the end users
     var catalog_library = {};
     const media_folder_path = ''; /* srkw-call-catalogue-files/media removed to get files locally */
     const play_icon = '<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-play" width="32" height="32" viewBox="0 0 24 24"><path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm-3 17v-10l9 5.146-9 4.854z"/></svg>';
@@ -50,6 +51,11 @@ var GridPanel = undefined;
                         </g>\
                     </svg>
     */
+
+    String.prototype.toTitleCase = function () {
+        return this.replace(/\w\S*/g, function (txt) { return txt.charAt(0).toUpperCase() + txt.slice(1).toLowerCase(); });
+    };
+
     function num_of_item_per_row() {
         if (window.matchMedia('(min-width: 1400px)').matches) {
             return 6;
@@ -72,15 +78,23 @@ var GridPanel = undefined;
     function pack_option(id, image_file, callname, d1_category, d1_value, d2_category, d2_value, full) {
         var d1 = (d1_category == undefined || d1_category == null) ? "" : d1_category.charAt(0).toUpperCase() + d1_category.slice(1) + ': ' + d1_value;
         var d2 = (d2_category == undefined || d2_category == null) ? "" : d2_category.charAt(0).toUpperCase() + d2_category.slice(1) + ': ' + d2_value;
-
+        // precede (using string replacement) the symbols (+-/) in `callname` with wordbreak element <wbr>
+        // the <table> ensures that text warping doesn't occur around the play button
         return '<div class="col-xxl-2 col-xl-2 col-lg-3 col-md-3 col-sm-4 mb-4 itemblock" id="gi-' + id + '">\
         <div class="bg-white rounded shadow-sm"><a href="'+ media_folder_path + full + '" data-toggle="lightbox" class="image_pop_source text-decoration-none"">\
                 <img src="'+ media_folder_path + image_file + '" loading="lazy" alt="" class="img-fluid card-img-top"></a>\
                     <div class="p-4">\
-                        <h5> <a class="play_btn" href="#" style="text-decoration:none">'+ play_icon + '<span class="text-dark">&nbsp;' + callname + '</span></a></h5>\
+                        <h5> <a class="play_btn" href="#" style="text-decoration:none"> \
+                        <table> \
+                            <tr> \
+                                <td>' + play_icon + '</td> \
+                                <td class="text-dark" style="word-wrap;">&nbsp;' + callname.replace(/[^\w\s]/gi, '<wbr>$&') + '</td> \
+                            </tr> \
+                        </table> \
+                        </a></h5> \
                         <p class="small mb-0 meta-p"><span class="font-weight-bold">' + d1 + '</span></p>\
-                        <div class="meta-p d-flex align-items-center justify-content-between rounded-pill bg-light px-3 py-2 mt-4">\
-                        <div class="badge badge-warning px-3 rounded-pill font-weight-normal"><span class="font-weight-bold  text-dark">' + d2 + '</span></div>\
+                        <div class="meta-p d-flex align-items-center justify-content-between rounded-pill bg-light px-3 py-2 mt-4 badge badge-pill badge-warning px-3 rounded-pill font-weight-normal font-weight-bold text-dark">\
+                        ' + d2 + ' \
                     </div>\
                 </div>\
             </div>\
@@ -120,7 +134,7 @@ var GridPanel = undefined;
             // Using a for() generator allows to use await inside the loop.
             // In case of yaml.forEach(name =>) with callback function, the callback
             //  would have to be async and could introduce race conditions (unexpected behaviour).
-            let response = await getCatalog(LIBRARY + "/" + name + '.json');
+            let response = await getCatalog(LIBRARY + "/" + name + '.json' + "?" + VERSION);
         }
         if (!data_initialized)
             setSortableDropdownValues();
@@ -179,7 +193,7 @@ var GridPanel = undefined;
         var keys = Object.keys(data);
         keys.forEach(p => {
             if (data[p] == undefined || data[p] == null) {
-                data[p] = ""; //"Unknown"
+                delete data[p];
             }
         })
         return data;
@@ -200,13 +214,17 @@ var GridPanel = undefined;
             let data = await response.text();
             // only proceed once second promise is resolved
 
-            var simple_datasource = JSON.parse(data); // json representation the catalogue.json file
+            var simple_datasource = JSON.parse(data.replace(/\bNaN\b/g, "null")); // json representation the catalogue.json file
 
             // get the filter data and set simple_datasource so it is just calls
             var site_details = simple_datasource["site-details"];
             if (site_details['catalogue']['is_root'] === 'true') {
                 document.getElementById("catalogue-title").innerHTML = site_details['catalogue']['title'];
             }
+            // TODO: temporary hack for the release 1.0 of a single local root catalogue.
+            // The hack is not needed when all catalogues are remote catalogues.
+            // By design (reasoning?): local catalogues cannot be root catalogues.
+            document.getElementById("catalogue-title").innerHTML = site_details['catalogue']['title'];
 
             var filters = simple_datasource["filters"];
             var population = simple_datasource["population"];
@@ -241,6 +259,13 @@ var GridPanel = undefined;
                 delete simple_datasource.old_d2
 
                 resultData[data_index] = validateParameters(simple_datasource[item]);
+                if (resultData[data_index].image_file !== undefined)
+                    resultData[data_index].image_file += "?" + VERSION
+                if (resultData[data_index].audio_file !== undefined)
+                    resultData[data_index].audio_file += "?" + VERSION
+                if (resultData[data_index].description_file !== undefined)
+                    resultData[data_index].description_file += "?" + VERSION
+
                 data_index++;
             });
             await updateCurrentData(); // apply filters on resultData, populating currentFilteredData accordingly
@@ -410,10 +435,10 @@ var GridPanel = undefined;
             // // ensure that the 'Unknown' field is at the bottom of the dropdown
             // var index = searching_para[filterable].indexOf("Unknown");
             // if (index != -1) {
-                //     searching_para[filterable].splice(index, 1);
-                //     searching_para[filterable].push('Unknown');
-                // }
-            });
+            //     searching_para[filterable].splice(index, 1);
+            //     searching_para[filterable].push('Unknown');
+            // }
+        });
     }
 
 
@@ -498,7 +523,7 @@ var GridPanel = undefined;
                             throw new Exception('Parse Error');
                         }
                         //show details
-                        var instance = lity('./' + data.image_file);
+                        var instance = lity(LIBRARY + '/' + data.image_file);
                         var template = instance.options('template');
                     }
                 } catch (e) {
@@ -604,15 +629,17 @@ var GridPanel = undefined;
             e.preventDefault();
             var obj_id = $(this).parents('.itemblock').attr('id').substring(3);
             var data_target_seq = id_to_seq[obj_id];
-            var data_target = resultData[data_target_seq];
+            var data_target = currentDisplayData[data_target_seq];
             if (audio_element !== undefined && audio_element !== null && audio_element.pause !== undefined) {
                 audio_element.pause();
             }
             audio_element = document.createElement('audio');
             audio_element.setAttribute('src', '');
-            audio_element.setAttribute('src', LIBRARY + '/' + data_target.wav_file);
+            audio_element.setAttribute('src', LIBRARY + '/' + data_target.audio_file);
             audio_element.setAttribute('autoplay', 'autoplay');
             audio_element.load();
+            // console.log(obj_id)
+            // console.log(audio_element)
         });
         $('#gi-area').on('click', '.itemblock', function (e) {
             $(this).siblings('.itemblock').removeClass('selecting');
@@ -673,7 +700,11 @@ var GridPanel = undefined;
                     if (target.length >= 0) {
                         $(target).siblings().removeClass('selecting');
                         $(target).addClass('selecting');
-                        target[0].scrollIntoView({ block: "end" });
+                        if (target[0]) {
+                            // handle exception when navigating with arrow keys past the items on the page pagination, 
+                            // the additional items are on the next page
+                            target[0].scrollIntoView({ block: "end" });
+                        }
                         if (poped) {
                             if (delayed_pop !== undefined) {
                                 clearTimeout(delayed_pop);
@@ -721,6 +752,7 @@ var GridPanel = undefined;
                 }
             }
             $('#resultgrid > div.container > div.row.justify-content-md-center > div.col.col-12.col-sm-12.col-md-12.col-lg-8.col-xl-6.col-xxl-6.row.align-items-center.align-middle > span').focus();
+            scrollBackToResults()
             getData();
         });
 
@@ -776,7 +808,7 @@ var GridPanel = undefined;
 
             var temp = Object.keys(lity_data);
             const fields = temp.filter(item => {
-                return (!['image_file', 'wav_file', 'description_file', 'call_type', 'filename', 'd1', 'd2'].includes(item));
+                return (!['image_file', 'audio_file', 'description_file', 'call_type', 'filename', 'd1', 'd2'].includes(item));
             })
             var count = fields.length;
             var is_odd = count % 2;
@@ -785,8 +817,8 @@ var GridPanel = undefined;
                 var first = fields[i];
                 var second = fields[i + 1];
 
-                additional_row += '<div class="row text-sm-center text-start text-info border-2 border-light border-bottom"><div class="col-12 col-sm-6"><span>' + first + ': ' + lity_data[first] + '</span></div>';
-                additional_row += '<div class="col-12 col-sm-6"><span>' + second + ': ' + lity_data[second] + '</span></div></div>';
+                additional_row += '<div class="row text-sm-center text-start text-info border-2 border-light border-bottom"><div class="col-12 col-sm-6"><span>' + first.toTitleCase() + ': ' + lity_data[first] + '</span></div>';
+                additional_row += '<div class="col-12 col-sm-6"><span>' + second.toTitleCase() + ': ' + lity_data[second] + '</span></div></div>';
             }
 
             if (is_odd) {
@@ -846,17 +878,22 @@ var GridPanel = undefined;
 
             // file = 'resources_config/sample.md'
             file = LIBRARY + '/' + media_folder_path + lity_data['description_file']
+            // file = file + "?" + VERSION
             css_file = 'css/darkdown.css'
-            $('.lity-container').append(
-                `<div class="container-fluid litybottom"> 
+            css_file = css_file + "?" + VERSION
+            if (lity_data['description_file'] !== undefined) {
+                $('.lity-container').append(
+                    `<div class="container-fluid litybottom"> 
                     <zero-md src='${file}'> 
                         <template> 
                             <link href='${css_file}' rel="stylesheet"> </link>  
                         </template> 
                     </zero-md>
                 </div>`);
-
+            }
             pop_opening = true;
+
+            // console.log(lity_data)
         });
         $(document).on('click', '.lity-container #play', function () {
             audio_element = document.createElement('audio');
@@ -865,7 +902,7 @@ var GridPanel = undefined;
           </svg>Playing  (Call Name: '+ lity_data.call_type + ')');
             $(this).removeClass('btn-primary').addClass('btn-success');
             audio_element.setAttribute('src', '');
-            audio_element.setAttribute('src', LIBRARY + '/' + lity_data.wav_file);
+            audio_element.setAttribute('src', LIBRARY + '/' + lity_data.audio_file);
             audio_element.setAttribute('autoplay', 'autoplay');
             audio_element.load();
             audio_element.addEventListener('ended', function () {
@@ -874,6 +911,7 @@ var GridPanel = undefined;
               </svg>Play  (Call Name: '+ lity_data.call_type + ')').addClass('btn-primary').removeClass('btn-success');
 
             })
+            // console.log(lity_data)
         });
         $(document).on('lity:close', function (event, instance) {
             if (audio_element !== undefined && audio_element.setAttribute !== undefined) {

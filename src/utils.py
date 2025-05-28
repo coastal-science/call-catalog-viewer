@@ -61,7 +61,10 @@ def parse_yaml_to_json(path_to_catalogs_directory, yaml_file_path):
         # create a list of lists with the param name as 0th element for easier handling in json
         f = resources['fields']
         fields, filters, sortables = [], [], []
-        
+        population = site_details['catalogue']['population']
+        if isinstance(population, list) and len(population) > 1:
+                        print("There are multiple populations specified in one catalog, please only use one")
+                        exit(-1)
         for val in f:
             # if type is dict then it is key in key, value pair and thus is filterable
             if type(val) == dict:
@@ -83,12 +86,12 @@ def parse_yaml_to_json(path_to_catalogs_directory, yaml_file_path):
                 for x in params[0]:
                     arr.append(x)
                     
-                if key == 'population':
-                    population = params[0]
+                # if key == 'population':
+                #     population = params[0]
 
-                    if type(population) == list and len(population) > 1:
-                        print("There are multiple populations specified in one catalog, please only use one")
-                        exit(-1)
+                #     if type(population) == list and len(population) > 1:
+                #         print("There are multiple populations specified in one catalog, please only use one")
+                #         exit(-1)
                     
                 filters.append(arr)
                 fields.append(key)
@@ -101,23 +104,34 @@ def parse_yaml_to_json(path_to_catalogs_directory, yaml_file_path):
             if field not in fields:
                 print(f"Field '{field}' is required")
                 exit(-1)
-            
+
         if len(display) != 2:
             print("The fields 'display-one' and 'display-two' must both be included")
             exit(-1)
             
-        
         # create df and process for json dump
         df = pd.DataFrame.from_dict(resources['calls'])
+        ## add it back because the front end depends on it. It expects a flat table.
+        df['population'] = population[0]
         
-        # split any comma seperated values, excluding files
+        from os.path import exists
+        #check image-file and audio-file
+        df['audio_exists'] = df['wav-file'].apply(lambda x: exists(path_to_catalogs_directory + '/' + x))
+        df['wav-file'] = df['wav-file'].replace({".wav":".mp3"}, regex=True) # assumption that all wav files will be converted to mp3 in a later step
+        df = df.rename(columns={'wav-file':'audio-file'})
+        fields[fields.index('wav-file')] = "audio-file" # hack rename
+        
+        # split any comma separated values, excluding files
         for index, row in df.iterrows():
             for field in fields:
-                if field in ['image-file', 'wav-file', 'description-file']:
+                if field in ['image-file', 'audio-file', 'description-file']:
                     continue
                 if (type(row[field]) == str and ',' in row[field]):
                     df.at[index, field] = row[field].split(',')
         
+        df['image_exists'] = df['image-file'].apply(lambda x: exists(path_to_catalogs_directory + '/' + x))
+        df['image-file'] = df['image-file'].replace({".png":".webp", ".jpeg":".webp", ".jpg":".webp"}, regex=True) # assumption that all images will be converted to webp format in a later step
+    
         # extract the filename from the path
         df['filename'] =  df['image-file'].str.split(".", expand=True)[0]
         df['filename'] =  [x.split("/")[-1] for x in df['filename']]
@@ -125,31 +139,26 @@ def parse_yaml_to_json(path_to_catalogs_directory, yaml_file_path):
         # keeping for testing
         df['sample'] = df['sample'].apply(lambda x: 0 if np.isnan(x) else str(int(x)))
 
-        #check image-file and wav-file
-        from os.path import exists
-        df['image_exists'] = df['image-file'].apply(lambda x: exists(path_to_catalogs_directory + '/' + x))
-        df['wav_exists'] = df['wav-file'].apply(lambda x: exists(path_to_catalogs_directory + '/' + x))
-    
         if False in df['image_exists'].unique():
             # output all files not found
             no_image_df = df[df['image_exists'] == False]
             print("The following image files are not found:\n", no_image_df[['call-type', 'image-file']])
             
         #output if there is case of file not found in wav
-        if False in df['wav_exists'].unique():
+        if False in df['audio_exists'].unique():
             # output all files not found
-            no_wav_df = df[df['wav_exists'] == False]
-            print("The following wav files are not found:\n", no_wav_df[['call-type', 'wav-file']])
+            no_wav_df = df[df['audio_exists'] == False]
+            print("The following wav files are not found:\n", no_wav_df[['call-type', 'audio-file']])
     
-        #drop 'image_exists' and 'wav_exists' columns
-        df.drop(['image_exists', 'wav_exists'], inplace=True, axis=1)
+        #drop 'image_exists' and 'audio_exists' columns
+        df = df.drop(['image_exists', 'audio_exists'], axis=1)
     
         #rename columns for better compatibility in GridPanel
         # call-type is in there for testing purposes
-        df = df.rename(columns={"image-file": "image_file", "wav-file": "wav_file", "description-file": "description_file", "call-type": "call_type"})
+        df = df.rename(columns={"image-file": "image_file", "audio-file": "audio_file", "description-file": "description_file", "call-type": "call_type"})
 
         # returns the dataframe and the filters dictionary
-        print('Succesfuly parsed yaml file', end='\n\n')
+        print('Successfully parsed yaml file', end='\n\n')
         return (df, population, filters, sortables, display, site_details)
     
 def export_to_json(path_to_catalogs_directory, df, population, filters, sortables, display, site_details, file_name, yaml_file):
@@ -160,14 +169,15 @@ def export_to_json(path_to_catalogs_directory, df, population, filters, sortable
         # this allows for much easier access to them
         data['yaml-file'] = yaml_file
         data['site-details'] = site_details 
-        data['population'] = population           
+        # since each catalogue belongs to one population, population is not filterable at this point and can be removed
+        data['population'] = population
         data['filters'] = filters
         data['sortable'] = sortables
         data['display'] = display
         data['calls'] = df.to_dict('records')
         json.dump(data, f)
             
-    print(f'Successfuly exported call data to catalogs/{file_name}.json', end='\n\n')
+    print(f'Successfully exported call data to catalogs/{file_name}.json', end='\n\n')
 
 def add_index_yaml(logger, path_to_catalogs_dir, repo_name):
     logger.info(f'Adding {repo_name} to catalogs/index.yaml')

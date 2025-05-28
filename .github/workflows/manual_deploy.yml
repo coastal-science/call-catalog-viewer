@@ -26,12 +26,15 @@ on:
         - main
         - develop
         - front-end
+        - johnford
         
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   input_sha:
     name: Get SHA of selected branch
     runs-on: ubuntu-latest
+    permissions: 
+      contents: read
     #if: ${GITHUB_REF#refs/heads/} != ${{ inputs.branch }}
     outputs:
       ref: ${{ steps.commits.outputs.ref }}
@@ -68,6 +71,10 @@ jobs:
     runs-on: ubuntu-latest
     # dependent jobs
     needs: input_sha 
+    permissions:
+      checks: write
+      contents: read
+      statuses: write
     if: "always()&&(needs.input_sha.outputs.ref != null)" 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:

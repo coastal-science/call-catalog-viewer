@@ -8,10 +8,13 @@ on:
        - develop
        - front-end
        - actions-patch-1
+       - johnford
 jobs:
   get_pushed_branch:
     name: Get relevant branch
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     outputs:
       branch-name: ${{ steps.set-name.outputs.ref_branch }}
     steps:
@@ -30,6 +33,7 @@ jobs:
     name: Deploy
     # dependent jobs
     needs: get_pushed_branch 
+    permissions: {}
     if: "always()&&(needs.get_pushed_branch.outputs.branch-name != null)" 
     uses: ./.github/workflows/manual_deploy.yml
     with:
@@ -42,6 +46,7 @@ jobs:
     name: See outputs
     runs-on: ubuntu-latest
     needs: get_pushed_branch 
+    permissions: {}
     # if: "always()&&(needs.get_pushed_branch.outputs.branch-name != null)" 
     steps:
       - name: See
