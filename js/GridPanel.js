@@ -1,11 +1,13 @@
 var GridPanel = undefined;
 (function (panel) {
     var Panel = undefined;
+    const page_link = 'index.html';
     var resultData = undefined; // this is all of the data read from catalogs initially
     var data_index = 0;
-    var currentDisplayData = undefined; // this is the data that has the filters applied to it and we want to use
-    window.entireFilterData = undefined;
+    var currentDisplayData = undefined; // this is the data that has the dropdown filters and pagination applied to and we want to use it to display/update the entries in the current page/
+    window.entireFilterData = undefined; // this is the entire catalog data combined into a flat structure
     var searching_para = undefined;
+    panel.searching_para = searching_para;
     var all_fields = [];
     var sortable_fields = [];
     var metadata_show = undefined;
@@ -22,15 +24,19 @@ var GridPanel = undefined;
 
     var encoded = undefined;
 
-    var poped = undefined;
+    var popped = undefined;
     var pop_opening = undefined;
     var lity_data = undefined;
     var audio_element = undefined;
     var selecting = undefined;
     const VERSION = VERSION_TAG // e.g. 'v=random'; suffix assets as `file_name + "?" + VERSION`
     const LIBRARY = 'catalogs';
-    const LIBRARY_INDEX = 'index.yaml' + "?" + VERSION; // Add suffix to all assert to manually handle caching updates without affecting the end users
-    var catalog_library = {};
+    const LIBRARY_INDEX = 'index.yaml' + "?" + VERSION; // Add suffix to all assets to manually handle caching updates without affecting the end users
+    
+    // helper functions are attached to `catalogue_library` and `dbkey_to_entry`
+    var catalogue_library = {}; // dictionary with site-details for each catalog (key=catalog name, value= site-details + id)
+    var dbkey_to_entry = {}; // mapping primary key to object with an entry(record/call) in the catalog
+
     const media_folder_path = ''; /* srkw-call-catalogue-files/media removed to get files locally */
     const play_icon = '<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-play" width="32" height="32" viewBox="0 0 24 24"><path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm-3 17v-10l9 5.146-9 4.854z"/></svg>';
     /*
@@ -55,51 +61,6 @@ var GridPanel = undefined;
     String.prototype.toTitleCase = function () {
         return this.replace(/\w\S*/g, function (txt) { return txt.charAt(0).toUpperCase() + txt.slice(1).toLowerCase(); });
     };
-
-    function num_of_item_per_row() {
-        if (window.matchMedia('(min-width: 1400px)').matches) {
-            return 6;
-        }
-        if (window.matchMedia('(min-width: 1200px)').matches) {
-            return 6;
-        }
-        if (window.matchMedia('(min-width: 992px)').matches) {
-            return 4;
-        }
-        if (window.matchMedia('(min-width: 768px)').matches) {
-            return 4;
-        }
-        if (window.matchMedia('(min-width: 576px)').matches) {
-            return 3;
-        }
-        return 1;
-    }
-
-    function pack_option(id, image_file, callname, d1_category, d1_value, d2_category, d2_value, full) {
-        var d1 = (d1_category == undefined || d1_category == null) ? "" : d1_category.charAt(0).toUpperCase() + d1_category.slice(1) + ': ' + d1_value;
-        var d2 = (d2_category == undefined || d2_category == null) ? "" : d2_category.charAt(0).toUpperCase() + d2_category.slice(1) + ': ' + d2_value;
-        // precede (using string replacement) the symbols (+-/) in `callname` with wordbreak element <wbr>
-        // the <table> ensures that text warping doesn't occur around the play button
-        return '<div class="col-xxl-2 col-xl-2 col-lg-3 col-md-3 col-sm-4 mb-4 itemblock" id="gi-' + id + '">\
-        <div class="bg-white rounded shadow-sm"><a href="'+ media_folder_path + full + '" data-toggle="lightbox" class="image_pop_source text-decoration-none"">\
-                <img src="'+ media_folder_path + image_file + '" loading="lazy" alt="" class="img-fluid card-img-top"></a>\
-                    <div class="p-4">\
-                        <h5> <a class="play_btn" href="#" style="text-decoration:none"> \
-                        <table> \
-                            <tr> \
-                                <td>' + play_icon + '</td> \
-                                <td class="text-dark" style="word-wrap;">&nbsp;' + callname.replace(/[^\w\s]/gi, '<wbr>$&') + '</td> \
-                            </tr> \
-                        </table> \
-                        </a></h5> \
-                        <p class="small mb-0 meta-p"><span class="font-weight-bold">' + d1 + '</span></p>\
-                        <div class="meta-p d-flex align-items-center justify-content-between rounded-pill bg-light px-3 py-2 mt-4 badge badge-pill badge-warning px-3 rounded-pill font-weight-normal font-weight-bold text-dark">\
-                        ' + d2 + ' \
-                    </div>\
-                </div>\
-            </div>\
-        </div>';
-    }
 
     async function getData(catalog_json) {
         // let catalog_json = "catalogs/srkw-call-catalogue-files.json";
@@ -127,18 +88,20 @@ var GridPanel = undefined;
         if (yaml[LIBRARY] === undefined)
             return;
 
-        yaml = yaml[LIBRARY].reverse(); // reverse() ensures that the catalog added first is the most recent loaded
+        yaml = yaml[LIBRARY]; // .reverse() would ensures that the catalog added last is the loaded first.
 
         // 2. for each catalog in yaml (in reverse order): getCatalog(catalog)
         for (const name of yaml) {
             // Using a for() generator allows to use await inside the loop.
             // In case of yaml.forEach(name =>) with callback function, the callback
             //  would have to be async and could introduce race conditions (unexpected behaviour).
-            let response = await getCatalog(LIBRARY + "/" + name + '.json' + "?" + VERSION);
+            let response = await getCatalog(name);
         }
         if (!data_initialized)
             setSortableDropdownValues();
         data_initialized = true;
+
+        redraw_items(); // draws our new updated items
     }
     panel.getData = getData;
 
@@ -148,7 +111,7 @@ var GridPanel = undefined;
         sortable_fields.forEach(field => {
             $dropdown.append($('<option>', {
                 value: field,
-                text: field.charAt(0).toUpperCase() + field.slice(1)
+                text: field.toTitleCase()
             }))
         });
 
@@ -165,7 +128,7 @@ var GridPanel = undefined;
         params.forEach(p => {
             if (!(["s1", "s2", "s3"].includes(p))) {
                 window.entireFilterData = window.entireFilterData.filter(item => { // item is all of the calls in the catalogs
-                    if (searching_para[p].length == 0) // if it is empty then it is just true for all
+                    if (!searching_para[p] || searching_para[p].length == 0) // if it is empty then it is just true for all
                         return true;
 
                     if (!(p in item)) // filtering on a different catalog data
@@ -200,8 +163,8 @@ var GridPanel = undefined;
     }
 
     /**
-     * Initialize data on the first call from getData
-     * Obtain correct data to display and assign to currentDisplayData and perform correct pagination and URL parameterizing
+     * Initialize data on the first call from getData 
+     * Obtain correct data to display and assign to currentDisplayData and perform correct pagination and URL parametrization
      * @param {Object} catalog_json path to JSON file
      * @returns 
      */
@@ -209,7 +172,7 @@ var GridPanel = undefined;
         if (!data_initialized) { // if this is our first time setting params, use filters from JSON
 
             // await response of fetch call
-            let response = await fetch(catalog_json);
+            let response = await fetch(LIBRARY + "/" + catalog_json + '.json' + "?" + VERSION);
             // only proceed once promise is resolved
             let data = await response.text();
             // only proceed once second promise is resolved
@@ -221,21 +184,28 @@ var GridPanel = undefined;
             if (site_details['catalogue']['is_root'] === 'true') {
                 document.getElementById("catalogue-title").innerHTML = site_details['catalogue']['title'];
             }
-            // TODO: temporary hack for the release 1.0 of a single local root catalogue.
+            // TODO: FIXME: temporary hack for the release 1.0 of a single local root catalogue.
             // The hack is not needed when all catalogues are remote catalogues.
             // By design (reasoning?): local catalogues cannot be root catalogues.
-            document.getElementById("catalogue-title").innerHTML = site_details['catalogue']['title'];
-
+            // document.getElementById("catalogue-title").innerHTML = site_details['catalogue']['title'];
+            
+            catalogue_library[catalog_json] = site_details;
+            
             var filters = simple_datasource["filters"];
             var population = simple_datasource["population"];
             var searchable = simple_datasource["sortable"];
             var display_data = simple_datasource["display"];
             simple_datasource = simple_datasource["calls"];
 
-            searchable.slice(1).forEach(field => {
-                if (!sortable_fields.includes(field))
-                    sortable_fields.push(field);
-            })
+            // // Accumulate searchable filters across all catalogues.
+            // searchable.slice(1).forEach(field => {
+            //     if (!sortable_fields.includes(field))
+            //         sortable_fields.push(field);
+            // })
+            sortable_fields = searchable.slice(1); // extract sortable filters of this catalogue
+            catalogue_library[catalog_json]['sortable'] = sortable_fields;
+
+
             updateFiltersFromJSON(population, filters);
 
             var keys = Object.keys(simple_datasource);
@@ -372,32 +342,195 @@ var GridPanel = undefined;
         window.entireFilterData.sort(current_sort);
 
         currentDisplayData = window.entireFilterData.slice((current_page - 1) * page_size, (current_page) * page_size); // obtain the data to display on this page from the entireData slice
-        redraw_items(); // draws our new updated items
+        // when loading multiple catalogues, 
+        // redrawing should be deferred until after catalogues are loaded.
+        // redraw_items(); // draws our new updated items
 
-        if (!data_initialized)
-            encoded = btoa(JSON.stringify(searching_para));
-        const state = { 'f': encoded, 'p': current_page, 's': sort_by, 'sa': sort_asc };
+        const state = { 'p': current_page, 's': sort_by, 'sa': sort_asc };
         const title = '';
+        
         const queryString = window.location.search;
-        const params = new URLSearchParams('');
-        params.set('f', encoded);
-        params.set('p', current_page);
-        params.set('s', sort_by);
-        params.set('sa', sort_asc);
-        params.set('ps', page_size.toString());
-        const urlParams = new URLSearchParams(queryString);
-        if (urlParams.has('popup')) {
-            params.set('popup', urlParams.get('popup'));
+        const params = new URLSearchParams(queryString); // configure new parameters. deep copy
+        
+        // params.set('p', current_page);
+        // params.set('s', sort_by);
+        // params.set('sa', sort_asc);
+        // params.set('ps', page_size.toString());
+
+        const urlParams = new URLSearchParams(queryString); // existing parameters. for reference.
+        
+        // copy all url params for browser history
+        urlParams.forEach((value, key) => {
+            state[key] = value;
+        });
+
+        if (urlParams.has('catalogue')) {
+            catalogue_name = urlParams.get('catalogue');
+            params.set('catalogue', catalogue_name);
+            state['catalogue'] = catalogue_name;
+
+            if (catalogue_library[catalogue_name]) { // If all catalogues are read and loaded, then the `catalogue_name` key must exist. Otherwise, that catalogue has not been read yet.
+                id_fields = catalogue_library[catalogue_name]['id'].map(id_item => {
+                    return id_item.replace('-', '_'); // Convert hyphenated word to camel case
+                });
+
+                id_fields_csv = id_fields.join(',');
+                // assert (urlParams.get('id_fields') === id_fields_csv);
+                params.set('id_fields', id_fields_csv);
+                state['id_fields'] = id_fields_csv;
+
+                id_fields.forEach(field => {
+                    if (urlParams.has(field)){
+                        params.set(field, urlParams.get(field));
+                        state[field] = urlParams.get(field);
+                    }
+                });
+            }
+            if (searching_para[catalogue_name]) { // If all catalogues are read and loaded, then the `catalogue_name` key must exist. Otherwise, that catalogue has not been read yet.
+                id_fields = Object.keys(searching_para[catalogue_name])
+                
+                id_fields_csv = id_fields.join(',');
+                // assert (urlParams.get('sort_fields') === id_fields_csv);
+                params.set('sort_fields', id_fields_csv);
+                state['sort_fields'] = id_fields_csv;
+            }
+        }
+
+        // if (!urlParams.has('f')) {
+            encoded = btoa(JSON.stringify(searching_para));
+            sessionStorage.setItem('f', JSON.stringify(searching_para));
+        // }
+        // state['f'] = encoded;
+        // params.set('f', encoded);
+
+        if (urlParams.get('popup')) {
+            // params.set('popup', urlParams.get('popup'));
             $('.selecting').removeClass('selecting');
         }
 
-        catalog_library[catalog_json] = resultData;
-        console.log("added to library", catalog_library);
-
+        // catalogue_library[catalog_json] = resultData;
         history.pushState(state, title, `${window.location.pathname}?${params}`);
         return;
     }
     panel.getCatalog = getCatalog;
+
+
+    async function init() {
+        resultData = [];
+        lity_data = [];
+        id_to_seq = {};
+        next_drawn = 0;
+        selecting = 0;
+        pop_opening = false;
+        metadata_show = true;
+
+        // TODO: How can this be altered to allow for searching parameters to be picked from the yaml?
+        // Does this even matter?? Update params is called on teh loading anyway
+        // these are passed through the url to the searching params. Can update these first and then send them to the fellas over there
+        searching_para = {
+            // s1: ["SRKW", "NRKW"],
+            // s2: ["J"],
+            // s3: ["J", "K", "L"],
+        };
+        sort_by = 'call_type';
+        sort_asc = 'as';
+
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+        //
+        // if (urlParams.has('f')) {
+        //     const filter = urlParams.get('f');
+        //     const obj = atob(filter);
+        //     if (obj !== undefined) {
+        //         try {
+        //             const ev = eval('(' + obj + ')');
+        //             ['s1', 's2', 's3'].forEach((v) => {
+        //                 if (ev[v] !== undefined) {
+        //                     searching_para[v] = ev[v];
+        //                 }
+        //             });
+        //         } catch (e) {
+        //             debugger
+        //             throw new Error("init:reading 'f' from url params. " + e.msg);
+        //         }
+        //     }
+        // }
+        current_page = 1;
+        if (urlParams.has('p')) {
+            const filter = urlParams.get('p');
+            current_page = parseInt(filter);
+        }
+        if (urlParams.has('s') && urlParams.has('sa')) {
+            const filter = urlParams.get('s');
+            sort_by = filter;
+            const as = urlParams.get('sa');
+            sort_asc = as;
+        }
+        if (urlParams.has('ps')) {
+            const filter = urlParams.get('ps');
+            const tmp_ps = parseInt(filter);
+            if (tmp_ps > 0 && tmp_ps % 12 === 0) {
+                page_size = tmp_ps;
+            }
+        }
+
+        popped = false;
+        Panel = $('#resultgrid');
+
+        total_result = 1;
+        total_page = 1;
+
+        $('#sort').selectpicker('val', sort_by);
+        $('#sort_a').selectpicker('val', sort_asc);
+        $('#page_size').selectpicker('val', "" + page_size);
+        $('#show_meta').prop('checked', metadata_show);
+        bindEvents();
+        
+        await getData();
+        // redraw_items(); // draws our new updated items
+        window.entireFilterData.forEach(catalog_entry => {
+            catalogue_library.db_add("", catalog_entry);
+        });
+
+        if (urlParams.get('popup')) {
+                data = catalogue_library.popup_from_url(urlParams);
+                
+                try{
+                    if (data){
+                        var instance = lity(LIBRARY + '/' + data.image_file); // trigger lity:open event
+                        var template = instance.options('template');
+                    }
+                } catch (e) {
+                    debugger
+                    throw new Error("init:reading popup from url params. " + e.msg());
+                    document.location.href = page_link;
+                }
+        }
+    };
+    panel.init = init;
+
+
+    /**
+     * receive new filters, update searching_para, apply filters to update currentDisplayData, call getData to refresh page
+     * @param {Object} para search filters selected in search panel
+     */
+    function get_new(para) {
+        searching_para = {}; // reset searching params as we are going to entirely rebuild them
+        
+        if (para['population']) {
+            sortable_fields = catalogue_library[para['population']]['sortable'];
+        }
+        
+        updateFiltersFromURLParams(para); // updates searching_para with the filters passed through url
+        updateCurrentData(); // applies the now updated filters on the resultData, giving us the currentDisplayData that should be displayed
+        
+        setSortableDropdownValues();
+
+        total_result = undefined;
+        current_page = 1;
+        getData();
+    };
+    panel.get_new = get_new;
 
     /**
      * Update the current filters to include the new ones from given catalogue
@@ -440,105 +573,11 @@ var GridPanel = undefined;
             // }
         });
     }
-
-
-    function init() {
-        resultData = [];
-        lity_data = [];
-        id_to_seq = {};
-        next_drawn = 0;
-        selecting = 0;
-        pop_opening = false;
-        metadata_show = true;
-
-        // TODO: How can this be altered to allow for searching parameters to be picked from the yaml?
-        // Does this even matter?? Update params is called on teh loading anyway
-        // these are passed through the url to the searching params. Can update these first and then send them to the fellas over there
-        searching_para = {
-            // s1: ["SRKW", "NRKW"],
-            // s2: ["J"],
-            // s3: ["J", "K", "L"],
-        };
-        sort_by = 'call_type';
-        sort_asc = 'as';
-
-        const queryString = window.location.search;
-        const urlParams = new URLSearchParams(queryString);
-        if (urlParams.has('f')) {
-            const filter = urlParams.get('f');
-            const obj = atob(filter);
-            if (obj !== undefined) {
-                try {
-                    const ev = eval('(' + obj + ')');
-                    ['s1', 's2', 's3'].forEach((v) => {
-                        if (ev[v] !== undefined) {
-                            searching_para[v] = ev[v];
-                        }
-                    });
-                } catch (e) {
-
-                }
-            }
-        }
-        current_page = 1;
-        if (urlParams.has('p')) {
-            const filter = urlParams.get('p');
-            current_page = parseInt(filter);
-        }
-        if (urlParams.has('s') && urlParams.has('sa')) {
-            const filter = urlParams.get('s');
-            sort_by = filter;
-            const as = urlParams.get('sa');
-            sort_asc = as;
-        }
-        if (urlParams.has('ps')) {
-            const filter = urlParams.get('ps');
-            const tmp_ps = parseInt(filter);
-            if (tmp_ps > 0 && tmp_ps % 12 === 0) {
-                page_size = tmp_ps;
-            }
-        }
-
-        poped = false;
-        Panel = $('#resultgrid');
-
-        total_result = 1;
-        total_page = 1;
-
-        $('#sort').selectpicker('val', sort_by);
-        $('#sort_a').selectpicker('val', sort_asc);
-        $('#page_size').selectpicker('val', "" + page_size);
-        $('#show_meta').prop('checked', metadata_show);
-        bindEvents();
-        if (urlParams.has('popup')) {
-            const queryString = window.location.search;
-            const urlParams = new URLSearchParams(queryString);
-            if (urlParams.has('popup')) {
-                const filter = urlParams.get('popup');
-                try {
-                    const obj = atob(filter);
-                    if (obj !== undefined) {
-                        const data = eval('(' + obj + ')');
-                        if (data['filename'] == undefined) {
-                            throw new Exception('Parse Error');
-                        }
-                        //show details
-                        var instance = lity(LIBRARY + '/' + data.image_file);
-                        var template = instance.options('template');
-                    }
-                } catch (e) {
-                    document.location.href = page_link;
-                }
-            }
-        }
-        getData();
-    };
-    panel.init = init;
-
+    
     /**
      * Updates searching_params based on the filters passed through URL
      * Called on filter button clicked
-     * @param {Object} params new paramaters to filter on
+     * @param {Object} params new parameters to filter on
      */
     function updateFiltersFromURLParams(params) {
         Object.keys(params).forEach((key) => {
@@ -556,20 +595,32 @@ var GridPanel = undefined;
             }
         });
     }
-
-    /**
-     * receive new filters, update searching_para, apply filters to update currentDisplayData, call getData to refresh page
-     * @param {Object} para search filters selected in search panel
-     */
-    function get_new(para) {
-        searching_para = {}; // reset searching params as we are going to entirely rebuild them
-        updateFiltersFromURLParams(para); // updates searching_para with the filters passed through url
-        updateCurrentData(); // applies the now updated filters on the resultData, giving us the currentDisplayData that should be displayed
-        total_result = undefined;
-        current_page = 1;
-        getData();
-    };
-    panel.get_new = get_new;
+    
+    function pack_option(id, image_file, callname, d1_category, d1_value, d2_category, d2_value, full) {
+        var d1 = (d1_category == undefined || d1_category == null) ? "" : d1_category.charAt(0).toUpperCase() + d1_category.slice(1) + ': ' + d1_value;
+        var d2 = (d2_category == undefined || d2_category == null) ? "" : d2_category.charAt(0).toUpperCase() + d2_category.slice(1) + ': ' + d2_value;
+        // precede (using string replacement) the symbols (+-/) in `callname` with wordbreak element <wbr>
+        // the <table> ensures that text warping doesn't occur around the play button
+        return '<div class="col-xxl-2 col-xl-2 col-lg-3 col-md-3 col-sm-4 mb-4 itemblock" id="gi-' + id + '">\
+        <div class="bg-white rounded shadow-sm"><a href="'+ media_folder_path + full + '" data-toggle="lightbox" class="image_pop_source text-decoration-none"">\
+                <img src="'+ media_folder_path + image_file + '" loading="lazy" alt="" class="img-fluid card-img-top"></a>\
+                    <div class="p-4">\
+                        <h5> <a class="play_btn" href="#" style="text-decoration:none"> \
+                        <table> \
+                            <tr> \
+                                <td>' + play_icon + '</td> \
+                                <td class="text-dark" style="word-wrap;">&nbsp;' + callname.replace(/[^\w\s]/gi, '<wbr>$&') + '</td> \
+                            </tr> \
+                        </table> \
+                        </a></h5> \
+                        <p class="small mb-0 meta-p"><span class="font-weight-bold">' + d1 + '</span></p>\
+                        <div class="meta-p d-flex align-items-center justify-content-between rounded-pill bg-light px-3 py-2 mt-4 badge badge-pill badge-warning px-3 rounded-pill font-weight-normal font-weight-bold text-dark">\
+                        ' + d2 + ' \
+                    </div>\
+                </div>\
+            </div>\
+        </div>';
+    }
 
     function propagate_meta() {
         if (metadata_show) {
@@ -592,12 +643,20 @@ var GridPanel = undefined;
                 var tmpid = window.crypto.getRandomValues(new Uint32Array(1))[0].toString(16) + window.crypto.getRandomValues(new Uint32Array(1))[0].toString(16);
             } while (id_to_seq[tmpid] !== undefined);
             id_to_seq[tmpid] = i;
+            
             var obj = pack_option(tmpid, LIBRARY + '/' + ele.image_file, ele.call_type, ele['d1'], ele[ele.d1], ele.d2, ele[ele.d2], LIBRARY + '/' + ele.image_file);
             grid.append(obj);
         }
         selecting = 0;
         propagate_meta();
-        $('#gi-area .itemblock:nth(0)').click();
+        
+        // After every dropdown selection, the items in the result grid are updated and redrawn.
+        // Since all items may change, clicking on the first displayed result brings it to focus 
+        // and enables the key press actions to function.
+        // Changing the focus while the dropdown is open triggers the dropdown to close.
+        // Which hinders the ability to update the results immediately after clicking an option.
+        // Move the focus until after the dropdown has closed. 
+        // $('#gi-area .itemblock:nth(0)').click();
 
         if (i !== 0) {
             next_drawn = i;
@@ -606,10 +665,186 @@ var GridPanel = undefined;
     function redraw_items() {
         id_to_seq = {};
         next_drawn = 0;
-        poped = false;
+        popped = false;
         append_items();
     };
     panel.redraw_items = redraw_items;
+
+    /**
+     * Helper function that attached to `catalogue_library`. 
+     * - From a catalog entry/record, extract the 'population` as the catalogue name. 
+     * - Extract the id_fields from the `catalogue_library` dictionary. 
+     * - Extract the values for those fields to construct the primary key. 
+     * - Insert into `catalogue_library` the `entry` for the catalogue.
+     * @param {*} primary_key 
+     * @param {Object} entry 
+     * @returns Boolean True if the `entry` was inserted into `dbkey_to_entry`. False otherwise.
+     */
+    function db_add(primary_key, entry){
+
+        catalogue_name = entry['population'];
+        if (!catalogue_name) { // s1/catalogue. 'population' is the legacy name, the generic name is 'catalogue'
+            msg = Object.keys(entry).toString() + " is not the expected schema. Mandatory fields may be missing."
+            console.error(msg);
+            debugger
+            throw new Error(msg);
+            return false;
+        }        
+        
+        id_fields = catalogue_library.get_id_fields(catalogue_name);
+        
+        if (!id_fields){
+            msg = Object.keys(entry).toString() + " is not the expected schema. Mandatory fields may be missing."
+            console.error(msg);
+            debugger
+            throw new Error(msg);
+        }
+        
+        primary_key_fields = ['population'].concat(id_fields);
+        
+        primary_key_values = primary_key_fields.map(item => {
+            return entry[item];
+            id_value = entry[item];
+            return id_value ? id_to_seq: undefined;
+        });
+
+        if (!primary_key_values.some(element => Boolean(element))){
+            return false
+        }
+        if (dbkey_to_entry[primary_key_values]) {
+            msg = "The entry for "+ primary_key_values + " is duplicated. All catalogue entries must be unique."
+            debugger
+            throw new Error(msg);
+        }
+        
+        dbkey_to_entry[primary_key_values] = entry;
+        return true;
+    }
+    catalogue_library.db_add = db_add;
+
+    function get_id_fields(catalogue_name){
+        if (!catalogue_name){
+            console.log("The `catalogue` name/`population` " + catalogue_name + " was not found.");
+            return false;
+        }
+        
+        id_fields = catalogue_library[catalogue_name]['id']
+        
+        id_fields = id_fields.map(id_field => {
+            return id_field.replace('-', '_'); // Convert hyphenated word to camel case
+        });
+        return id_fields
+    }
+    catalogue_library.get_id_fields = get_id_fields;
+
+    /**
+     * Generic helper function to extract url params from a list of field names.
+     * @param {*} primary_keys A list containing the search parameters in the url (to treat as primary keys)
+     * @param {*} urlParams from which to extract search parameter values using the `primary_keys` as field names.
+     * @returns A list containing the values from `urlParam` using the filed in `param` primary_keys; 
+     *          if the keys do not exist, then it wont be extracted. If no keys exist, then returns false.
+     */
+    function primary_keys_from_url(primary_keys, urlParams){
+
+        primary_key_values = primary_keys.map(key => {
+            if (urlParams.has(key)){
+                return urlParams.get(key)
+            }
+        });
+        if (!primary_key_values.some(element => Boolean(element))){
+            return false
+        }
+        
+        return primary_key_values
+    }
+
+    /**
+     * Helper function that attaches to `call_library` and 
+     * return an entry from `dbkey_to_entry`.
+     * From the url search parameters, using a combination of 
+     * `catalogue_name=zzzz&id_fields=xx,yy` and `xx=abc&yy=123`, 
+     * construct the primary key `[zzzz, abc, 123]` to lookup and 
+     * return the corresponding entry from `dbkey_to_entry{}`.
+     * @param {URLSearchParams} params 
+     * @returns The catalogue entry for [zzzz, abc, 123] if it exists, `undefined` otherwise.
+     */
+    function popup_from_url(urlParams) {
+        // const queryString = window.location.search;
+        // const urlParams = new URLSearchParams(queryString);
+        if (urlParams.has('catalogue')){
+            catalogue_name = urlParams.get('catalogue')
+            
+            id_fields = catalogue_library.get_id_fields(catalogue_name);
+            if (!id_fields || JSON.stringify(urlParams.get('id_fields')) === JSON.stringify(id_fields)){
+                msg = "URL Search params is not the expected schema. Mandatory fields (" + id_fields + ") may be missing: " + urlParams.toString();
+                console.error(msg);
+                debugger
+                throw new Error(msg);
+            }
+            
+            primary_key = ['catalogue'].concat(id_fields);
+            primary_key_values = primary_keys_from_url(primary_key, urlParams);
+            console.log(primary_key, primary_key_values)
+            
+            if (primary_key_values){
+                data = dbkey_to_entry[primary_key_values];
+                return data;
+            }
+        }
+        return undefined;
+    }
+    catalogue_library.popup_from_url = popup_from_url;
+
+    /**
+     * Helper function to dynamically extract the `catalogue` 
+     * and `id_fields` and values from `individual_data` and 
+     * inject into `state` and `params`.
+     * @param {dict} individual_data object with keys/values that contains the entire entry information to be able to render a popup.
+     * @param {dict} state dictionary to be used for browser history and url search parameters update
+     * @param {URLSearchParams} params for the new URL
+     * @returns {
+     *              state: state
+     *              params: params
+     *          }
+     */
+    function individual_entry_to_params(individual_data, state, params) {
+
+        if (!individual_data['population']) // s1/catalogue. 'population' is the legacy name, the generic name is 'catalogue'
+            return {state:state, params:params}
+        
+        catalogue_name = individual_data['population']
+        params.set('catalogue', catalogue_name);
+        state['catalogue'] = catalogue_name;
+        
+        catalogue_library[catalogue_name]['id'].forEach(id_field => {
+            id_field_clean = id_field.replace('-', '_'); // Convert hyphenated word to camel case
+            id_val = individual_data[id_field_clean];
+            params.set(id_field_clean, id_val); 
+            state[id_field_clean] = id_val;
+        });
+
+        return {state:state, params:params}
+    }
+
+    function num_of_item_per_row() {
+        if (window.matchMedia('(min-width: 1400px)').matches) {
+            return 6;
+        }
+        if (window.matchMedia('(min-width: 1200px)').matches) {
+            return 6;
+        }
+        if (window.matchMedia('(min-width: 992px)').matches) {
+            return 4;
+        }
+        if (window.matchMedia('(min-width: 768px)').matches) {
+            return 4;
+        }
+        if (window.matchMedia('(min-width: 576px)').matches) {
+            return 3;
+        }
+        return 1;
+    }
+
     function bindEvents() {
         $('#gi-area').off('click').on('click', '.itemblock .image_pop_source', function (e) {
             e.stopPropagation();
@@ -617,8 +852,8 @@ var GridPanel = undefined;
             let parent_itemblock = $(this).parents('.itemblock');
             $(parent_itemblock).click();
             var obj_id = $(this).parents('.itemblock').attr('id').substring(3);
-            poped = obj_id;
-            //var data_target_seq = id_to_seq[poped];
+            popped = obj_id;
+            //var data_target_seq = id_to_seq[popped];
             //var data_target = resultData[data_target_seq];
 
             var instance = lity($(this).attr('href'));
@@ -627,19 +862,32 @@ var GridPanel = undefined;
         $('#gi-area').on('click', '.play_btn', function (e) {
             e.stopPropagation();
             e.preventDefault();
-            var obj_id = $(this).parents('.itemblock').attr('id').substring(3);
+            
+            $(this).addClass('play_btn_active');
+            
+            var selected_call = $(this).parents('.itemblock');
+            var obj_id = selected_call.attr('id').substring(3); // 'gi-900dcfc7de0f9d18'
             var data_target_seq = id_to_seq[obj_id];
             var data_target = currentDisplayData[data_target_seq];
             if (audio_element !== undefined && audio_element !== null && audio_element.pause !== undefined) {
                 audio_element.pause();
             }
             audio_element = document.createElement('audio');
+            audio_element.setAttribute('id', obj_id);
             audio_element.setAttribute('src', '');
             audio_element.setAttribute('src', LIBRARY + '/' + data_target.audio_file);
             audio_element.setAttribute('autoplay', 'autoplay');
             audio_element.load();
             // console.log(obj_id)
             // console.log(audio_element)
+            
+            audio_element.addEventListener('ended', function () {
+                var play_btn_activated = $('#gi-' + audio_element.getAttribute('id').toString())
+                play_btn_activated = play_btn_activated.find('.play_btn_active') // lookup the specific class within a specific 'gi-id'
+                // var play_btn_activated = $('.play_btn_active') // lookup the specific class
+
+                play_btn_activated.removeClass('play_btn_active');
+            });
         });
         $('#gi-area').on('click', '.itemblock', function (e) {
             $(this).siblings('.itemblock').removeClass('selecting');
@@ -705,7 +953,7 @@ var GridPanel = undefined;
                             // the additional items are on the next page
                             target[0].scrollIntoView({ block: "end" });
                         }
-                        if (poped) {
+                        if (popped) {
                             if (delayed_pop !== undefined) {
                                 clearTimeout(delayed_pop);
                             }
@@ -760,41 +1008,54 @@ var GridPanel = undefined;
             lity_data = [];
             const queryString = window.location.search;
             const urlParams = new URLSearchParams(queryString);
-            if (poped != undefined && !urlParams.has('popup')) {
-                var data_target_seq = id_to_seq[poped];
+            if (popped != undefined && !urlParams.has('popup')) {
+                var data_target_seq = id_to_seq[popped];
                 var data_target = currentDisplayData[data_target_seq];
                 validateParameters(data_target);
                 lity_data = data_target;
                 var encoded_data = btoa(JSON.stringify(data_target));
                 var encoded = btoa(JSON.stringify(searching_para));
-                const state = { 'f': encoded, 'p': current_page, 's': sort_by, 'sa': sort_asc, 'popup': encoded_data };
-                const title = 'Details: ' + lity_data.cn + ' (Call Name)';//For Safari only
+                // var user_selection = urlParams.get('sel'); // the param value is already btoa encoded
+
+                // if (!user_selection || ['null', 'undefined', 'nan'].includes(user_selection.toLowerCase())) {
+                //     // null, undefined, false, NaN, 0, ""
+                //     user_selection = btoa(JSON.stringify({}))
+                // }
+                
+                const state = { 'p': current_page, 's': sort_by, 'sa': sort_asc}; // , 'sel': user_selection};
+                const title = 'Details: ' + lity_data.cn + ' (Call Name)'; // For Safari only
                 const params = new URLSearchParams('');
-                params.set('f', encoded);
                 params.set('p', current_page);
                 params.set('s', sort_by);
                 params.set('sa', sort_asc);
                 params.set('ps', page_size.toString());
-                params.set('popup', encoded_data);
+                sessionStorage.setItem('f', JSON.stringify(searching_para));
+                
+                // Add unique id fields to uniquely identify an entry
+                // modifies the `state` and `params` in place.
+                individual_params = individual_entry_to_params(lity_data, state, params);
+                if (urlParams.has('sort_fields')){
+                    sort_fields = urlParams.get('sort_fields');
+                    params.set('sort_fields', sort_fields);
+                    state['sort_fields'] = sort_fields;
+                }
+                params.set('popup', true);
+                // params.set('f', encoded);
+                
+                // params.set('sel', user_selection);
 
                 history.pushState(state, title, `${window.location.pathname}?${params}`);
             }
             else if (urlParams.has('popup')) {
                 //may be generated from link
-                const filter = urlParams.get('popup');
-                const obj = atob(filter);
-                if (obj !== undefined) {
-                    try {
-                        lity_data = eval('(' + obj + ')');
-                        $('.selecting').removeClass('selecting');
-                    } catch (e) {
-                        document.location.href = page_link;
-                    }
-                }
-                else {
+                try {
+                    lity_data = catalogue_library.popup_from_url(urlParams); // We can lookup catalogue entries with a combination of the url params `catalogue_name=zzzz&id_fields=xx,yy` and `xx=abc&yy=123`
+                    $('.selecting').removeClass('selecting');
+                } catch (e) {
+                    debugger
+                    throw new Error("lity:open reading popup from url params." + e.msg());
                     document.location.href = page_link;
                 }
-                // console.log(lity_data);
             }
             else {
                 //something went wrong
@@ -896,11 +1157,21 @@ var GridPanel = undefined;
             // console.log(lity_data)
         });
         $(document).on('click', '.lity-container #play', function () {
+            if (!audio_element) {
+                var play_btn_activated = $('#audio-popup');
+                // audio_element = play_btn_activated;
+            }
+            if (audio_element !== undefined && audio_element !== null && audio_element.pause !== undefined) {
+                audio_element.pause();
+            }
+            
             audio_element = document.createElement('audio');
             $(this).html('<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-play" viewBox="0 0 16 16">\
             <path d="M10.804 8 5 4.633v6.734L10.804 8zm.792-.696a.802.802 0 0 1 0 1.392l-6.363 3.692C4.713 12.69 4 12.345 4 11.692V4.308c0-.653.713-.998 1.233-.696l6.363 3.692z"/>\
           </svg>Playing  (Call Name: '+ lity_data.call_type + ')');
             $(this).removeClass('btn-primary').addClass('btn-success');
+            
+            audio_element.setAttribute('id', 'audio-popup');
             audio_element.setAttribute('src', '');
             audio_element.setAttribute('src', LIBRARY + '/' + lity_data.audio_file);
             audio_element.setAttribute('autoplay', 'autoplay');
@@ -919,17 +1190,35 @@ var GridPanel = undefined;
                 audio_element.setAttribute('src', '');
                 audio_element.pause();
             }
-            poped = undefined;
+            popped = undefined;
             pop_opening = false;
             var encoded = btoa(JSON.stringify(searching_para));
-            const state = { 'f': encoded, 'p': current_page, 's': sort_by, 'sa': sort_asc };
+            const queryString = window.location.search;
+            const urlParams = new URLSearchParams(queryString);
+            
+            
+            // urlparams & state = { 'p': current_page, 's': sort_by, 'sa': sort_asc, 'f': encoded, 'sel': user_selection};
+            const state = {};
             const title = '';
-            const params = new URLSearchParams('');
-            params.set('f', encoded);
-            params.set('p', current_page);
-            params.set('s', sort_by);
-            params.set('sa', sort_asc);
-            params.set('ps', page_size.toString());
+            
+            const params = new URLSearchParams(urlParams.toString()); // Create a deep copy
+            catalogue_name = urlParams.get('catalogue');
+            
+            // Remove `id_fields` dynamically from the `catalogue_library` definitions
+            catalogue_library[catalogue_name]['id'].forEach(id_item => {
+                id_item_clean = id_item.replace('-', '_'); // convert hyphenated word to camel case
+                params.delete(id_item_clean);
+            });    
+            
+            // Dynamically add all search parameters from the url params to the new history `state`
+            params.forEach((value, key) => {
+                console.log(key, value);
+                state[key] = value;
+            });
+            // params.set('f', encoded);
+            params.delete('popup');
+            sessionStorage.setItem('f', JSON.stringify(searching_para))
+            
             history.pushState(state, title, `${window.location.pathname}?${params}`);
             if ($('.selecting').length <= 0) {
                 $('#gi-area .itemblock:nth(0)').addClass('selecting');

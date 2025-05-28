@@ -107,13 +107,15 @@ def cli(args=None):
     logger.info(f'Generating files for the repo {repo_name}')
     try: 
         df, population, filters, sortables, display, site_details = utils.parse_yaml_to_json(path_to_catalog_dir, str(path_to_repo_dir) + '/' + yaml_data_file_name)
-    except FileNotFoundError:
+    except FileNotFoundError as err:
+        logger.error(f"{err}")
         logger.error(f'The yaml file {yaml_data_file_name} does not exist in {repo_name}. Could not complete add operation')
         return ADD_CATALOG_ERROR
     
     try:
         utils.export_to_json(path_to_catalog_dir, df, population, filters, sortables, display, site_details, repo_name, yaml_data_file_name)
-    except:
+    except Exception as err:
+        logger.error(f"{err}")
         logger.error(f'Error exporting data to json file for repo {repo_name}. Add operation could not be completed')
         return ADD_CATALOG_ERROR
     

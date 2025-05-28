@@ -34,7 +34,8 @@ def parse_yaml_to_json(path_to_catalogs_directory, yaml_file_path):
         
         # will only be true on the first time
         site_details = resources['site-details']
-        if is_root_catalog(path_to_repo_root):
+        site_details['id'] = resources['id']
+        if is_root_catalog(path_to_repo_root) or site_details['catalogue'].get('is_root'):
             site_details['catalogue']['is_root'] = 'true'
         else:
             site_details['catalogue']['is_root'] = 'false'
@@ -114,10 +115,13 @@ def parse_yaml_to_json(path_to_catalogs_directory, yaml_file_path):
         ## add it back because the front end depends on it. It expects a flat table.
         df['population'] = population[0]
         
-        from os.path import exists
+        from os.path import exists, basename
         #check image-file and audio-file
+        repo_name = basename(path_to_repo_root) # prefix the name of repo to all files
+        
         df['audio_exists'] = df['wav-file'].apply(lambda x: exists(path_to_catalogs_directory + '/' + x))
         df['wav-file'] = df['wav-file'].replace({".wav":".mp3"}, regex=True) # assumption that all wav files will be converted to mp3 in a later step
+        df['wav-file'] = repo_name + '/' + df['wav-file']
         df = df.rename(columns={'wav-file':'audio-file'})
         fields[fields.index('wav-file')] = "audio-file" # hack rename
         
@@ -131,7 +135,11 @@ def parse_yaml_to_json(path_to_catalogs_directory, yaml_file_path):
         
         df['image_exists'] = df['image-file'].apply(lambda x: exists(path_to_catalogs_directory + '/' + x))
         df['image-file'] = df['image-file'].replace({".png":".webp", ".jpeg":".webp", ".jpg":".webp"}, regex=True) # assumption that all images will be converted to webp format in a later step
-    
+        
+        # prefix the name of repo to all files
+        df['image-file'] = repo_name + '/' + df['image-file']
+        df['description-file'] = repo_name + '/' + df['description-file']
+        
         # extract the filename from the path
         df['filename'] =  df['image-file'].str.split(".", expand=True)[0]
         df['filename'] =  [x.split("/")[-1] for x in df['filename']]

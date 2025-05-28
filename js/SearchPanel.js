@@ -2,8 +2,9 @@ var SearchPanel = undefined;
 (function (panel) {
     var Panel = undefined;
     var originalData = undefined;
-    var tmpResult = undefined;
-    var selected_storage = {} // Store the last selection options used for filtering. Save for each population.
+    var liveDropdownChoices = {}; // Variable to store dropdown selections for dynamic updates. As the user clicks but has not yet filtered.
+    var selected_options = {}; // Store the last selection options used for filtering. Save options for each population.
+    var selected_population = undefined // Variable to store the current population selection
     var s_options = {};
     var num_dropdowns;
     var dirty = false;
@@ -13,6 +14,7 @@ var SearchPanel = undefined;
     const LIBRARY = 'catalogs';
     const LIBRARY_INDEX = 'index.yaml';
 
+    panel.liveDropdownChoices = liveDropdownChoices;
 
     async function init() {
         originalData = {};
@@ -26,59 +28,149 @@ var SearchPanel = undefined;
             return;
         // if the values have not already been set in url 'f' parameters, wait 300ms for them to get set, and then refresh the page 
         // console.log({"waiting for variable": urlParams});
-        while (!urlParams.has('f')) {// define the condition as you like
-            // console.log({'waiting': urlParams})
-            await new Promise(resolve => setTimeout(resolve, 300));
-            urlParams = new URLSearchParams(location.search);
-        }
+        // while (!urlParams.has('f')) {// define the condition as you like
+        //     // console.log({'waiting': urlParams})
+        //     await new Promise(resolve => setTimeout(resolve, 300));
+        //     urlParams = new URLSearchParams(location.search);
+        // }
         // console.log("waiting done. the variable is defined.");
 
 
         // the 'f' parameters have been set, 
-        if (urlParams.has('f')) {
-            const filter = urlParams.get('f');
-            const obj = atob(filter);
-
-            if (obj !== undefined) {
-                try {
-                    const ev = eval('(' + obj + ')');
-                    let count = 1;
-                    Object.keys(ev).forEach((item) => {
-                        if (!['s1', 's2', 's3'].includes(item)) {
-                            var list = [item];
-                            list = list.concat(ev[item]);
-                            originalData['s' + count] = list; // set data using s1, s2, s3.... notation for easier access later
-                            element_id_to_title['s' + count] = item; // update lookup table for accessible lookup
-                            count++;
-                        }
-                    });
-                } catch (e) {
-                    console.log(e);
+        ev = sessionStorage.getItem('f');
+        ev = JSON.parse(ev);
+        let count = 1;
+        if (ev) {
+            Object.keys(ev).forEach((item) => {
+                if (!['s1', 's2', 's3'].includes(item)) {
+                    var list = [item];
+                    list = list.concat(ev[item]);
+                    originalData['s' + count] = list; // set data using s1, s2, s3.... notation for easier access later
+                    element_id_to_title['s' + count] = item; // update lookup table for accessible lookup
+                    count++;
                 }
-            }
+            });
         }
 
+        // the 'sel' parameters, containing the user selections, has been set, 
+        user_selection = get_params_to_obj(urlParams, 'sel');
+        if(!user_selection || jQuery.isEmptyObject(user_selection)){
+            user_selection = {}
+            user_selection['population'] = urlParams.get('catalogue')
+        }
         // originalData is our filters that we want to translate into dropdowns
         updateFilterOptions(originalData);
 
-        tmpResult = {}
         // find the panel and clear the search rows so that we can rebuild from fresh
         Panel = $('.panel');
         Panel.find("#search_rows").empty();
 
         buildPopulationDropdown();
         bindEvents();
+        
+        if (user_selection && !jQuery.isEmptyObject(user_selection)) {
+            selected_population = user_selection['population'];
+
+            population_selector_element = $('#s1');
+            
+            // Update and trigger a change. Setting the value and triggering a change will 
+            // trigger the same steps as a user interaction selecting the choice.
+            population_selector_element.val(selected_population).change();
+            //  containing the cascading steps...
+            //     ...
+            //     buildPopulationSpecificDropdown(selected_population)...
+            //     updateURL('sel', user_selection) ...
+            //     GridPanel.get_new(...)...
+            
+            // extract all key for dropdowns id pattern 's#' and set their corresponding value/selected choice.
+            new_filters = Object.fromEntries(
+                Object.entries(user_selection).
+                    filter(([k,v]) => 
+                        k.search(/s\d/) == 0 // must match pattern the 's#' at the beginning of the key
+                    )
+                )                
+            for (const [key, value] of Object.entries(new_filters)) {
+                console.log({key, value});
+                $('#' + key).selectpicker('val', value);  // .change() is triggered automatically by bootstrap-select
+            }
+
+            // Update the url in the address bar and browser history. 
+            // updateURL('sel', user_selection);
+            // Trigger user interaction via the the Filter button.
+            filter_btn = $('#search_now'); // filter button
+            filter_btn.click();
+        }
         // buildPopulationSpecificDropdown(selected_value);
     };
     panel.init = init;
+    
+
+    /**
+     * URL Search parameters may contain encoded object. This function
+     * extracts and decodes (`atob`) the previously stringified and encoded (`btoa`) object in the url parameter. 
+     * Use `atob` to decode to a stringified object. Convert to object using `eval('(' + obj + ')')`
+     * @param {urlParams} `URLSearchParams(queryString)` object
+     * @param {param_name} name of parameter in the url string containing the encoded object.
+     * @returns the `param_name` as an javascript object
+     */
+    function get_params_to_obj(urlParams, param_name) {
+
+        if (urlParams.has(param_name)) {
+            let param_value = urlParams.get(param_name);
+            if (!param_value || ['null', 'undefined', 'nan'].includes(param_value.toLowerCase())) {
+                // null, undefined, false, NaN, 0, ""
+                param_value = btoa(JSON.stringify({}))
+            }
+            const obj_str = atob(param_value);
+
+            if (obj_str !== undefined) {
+                try {
+                    const obj_ev = eval('(' + obj_str + ')');
+                    return obj_ev;
+                } catch (e) {
+                    console.log(e);
+                }
+            }
+        }
+    }
+    panel.get_params_to_obj = get_params_to_obj;
+
+
+    /**
+     * Update the URL search parameter `param_name` with the object `new_data`
+     * stringify and encode (`bota`) the object `new_data` before updating the URL Search parameter
+     * Update the browser `history` accordingly.
+     * @param {param_name} name of the url parameter
+     * @param {new_data} object to encode and store
+     * @modifies {history}
+     */
+    function updateURL(param_name, new_data) {
+        const params = new URLSearchParams(window.location.search);
+        var encoded = new_data
+        if (typeof(new_data) != 'string')
+            encoded = btoa(JSON.stringify(new_data));
+        params.set(param_name, encoded);
+        const state = {};
+        for (const [key, value] of params.entries()) {
+            state[key] = value; // recreate state for history and url
+        }
+        console.log({new_data, state});
+        debugger
+        const title = ''; //For Safari only
+        history.pushState(state, title, `${window.location.pathname}?${params}`);
+    }
+
 
     /** 
      * @param {string} v value for the option in dropdown
+     * @param {Boolean} selected value to indicate `selected` attribute 
      * @returns an HTML representation of the option to add
      */
-    function pack_option(v) {
-        return '<option value="' + v + '">' + v + '</option>'
+    function pack_option(v, selected) {
+        selected = Boolean(selected) ? 'selected' : ''
+        return '<option value="' + v + '" ' + selected + '>' + v + '</option>'
     }
+
 
     /**
      * Update the s_options values to contain the variable data passed through url
@@ -110,7 +202,7 @@ var SearchPanel = undefined;
                     arr.push(val);
                 });
                 obj.values = arr;
-    
+
                 // add to the options
                 s_options.population = obj;
                 // s_options.push(obj);
@@ -171,7 +263,7 @@ var SearchPanel = undefined;
 
         return '<div class="row col align-items-center align-middle d-flex flex-nowrap">' +
             '<span class="col-4 text-end">' + title + ': &nbsp;</span>' +
-            '<select id="' + id + '" class="col-8 selectpicker" data-live-search="true" multiple aria-label="size 3 select" data-selected-text-format="count > 6">' +
+            '<select id="' + id + '" class="col-8 selectpicker" data-live-search="true" multiple placeholder="Select to filter..." aria-label="size 3 select" data-selected-text-format="count > 6">' +
             '</select><br>&nbsp;' +
             '</div>'
     }
@@ -207,34 +299,59 @@ var SearchPanel = undefined;
             var object = s_options[i - 1];
             $('#s' + i).on('changed.bs.select', (e, clickedIndex, isSelected, previousValue) => { // sets the listener when dropdowns are changed
                 var title = element_id_to_title['s' + i];
-
-                // tmpResult holds the currently applied filters that are passed back to GridPanel in get_new calls
-                if (tmpResult[title] === undefined)
-                    tmpResult[title] = []
-                tmpResult[element_id_to_title['s' + i]] = $('#s' + i).selectpicker('val');
+                // liveDropdownChoices holds the currently applied filters that are passed back to GridPanel in get_new calls
+                if (liveDropdownChoices[title] === undefined)
+                    liveDropdownChoices[title] = []
+                liveDropdownChoices[element_id_to_title['s' + i]] = $('#s' + i).selectpicker('val');
+                liveDropdownChoices['s' + i] = $('#s' + i).selectpicker('val');
 
                 if (element_id_to_title['s' + i] === 'population') {
                     selected_id = '#s' + i;
                     selected_population = $(selected_id).val();
-                    tmpResult = {};
-                    tmpResult['population'] = selected_population;
+                    
+                    // TODO: DESIGN CHOICE.
+                    // By default, all filters cleared when population changes. 
+                    // A storage feature is implemented `selection_storage` where you
+                    // can change `populations` and your last filter setting restored (per population).
+                    // These are two design choices.
+                    // To clear all filters when the population changes, remove the Trash can button 
+                    // (and all related listeners and helper functions). Or call the helper function 
+                    // and retain the functionality of both (button to clear filter manually) and
+                    // automatically when changing populations.
+
+                    // clearFilter(); 
+
+                    liveDropdownChoices = {};
+                    liveDropdownChoices['population'] = selected_population;
                     // Copy pre-saved selections
-                    if (selected_storage[selected_population] != undefined){
-                        for (const [key, value] of Object.entries(selected_storage[selected_population])) {
-                            tmpResult[key] = value;
+                    if (selected_options[selected_population] != undefined) {
+                        for (const [key, value] of Object.entries(selected_options[selected_population])) {
+                            liveDropdownChoices[key] = value;
                         }
                     }
                     buildPopulationSpecificDropdown(selected_population);
-                    GridPanel.get_new(tmpResult);
+                    
+                    // updateURL('sel', liveDropdownChoices);
+                    
+                    if (selected_population){
+                        updateURL('catalogue', selected_population)
+                    }
                 }
+                GridPanel.get_new(liveDropdownChoices);
+            });
+            $('#s' + i).on('hide.bs.select', (e, clickedIndex, isSelected, previousValue) => { // listener when dropdowns close
+                $('#gi-area .itemblock:nth(0)').click(); // select the first grid area item so that key press actions functionality is restored.
             });
         }
         Panel.find('#search_now').off('click').click(function (e) { // function that is called when the filter button is clicked. 
             dirty = false;
-            originalData = $.extend(true, {}, tmpResult);
+            originalData = $.extend(true, {}, liveDropdownChoices);
             // Copy the current filter selections for saving state
-            selected_storage[tmpResult['population']] = structuredClone(tmpResult)
-            GridPanel.get_new(tmpResult);
+            selected_options[liveDropdownChoices['population']] = structuredClone(liveDropdownChoices)
+            // updateURL('sel', liveDropdownChoices);
+            
+            GridPanel.get_new(liveDropdownChoices);
+            toggle_button(this, 100);
         });
 
         Panel.find('#retrieve_data').off('click').click(function (e) {
@@ -262,34 +379,76 @@ var SearchPanel = undefined;
 
     /**
      * build the dropdown and append it to the searching panel
+     * Duplicate `dropdown_data` or `selected_values` will be marked as 'selected'
      * @param {Object} dropdown_data data representing the dropdown to create
+     * @param {Object} selected_values array representing the values from `dropdown_data` have the attribute selected. 
      */
-    function buildDropdown(dropdown_data) {
+    function buildDropdown(dropdown_data, selected_values) {
         Panel.find('#search_rows').append(pack_dropdown(dropdown_data.title, dropdown_data.s));
 
         dropdown_data.values.forEach((value) => {
-            Panel.find('#' + dropdown_data.s).append(pack_option(value));
+            select = undefined
+            if (selected_values != undefined)
+                select = selected_values.includes(value)
+
+            Panel.find('#' + dropdown_data.s).append(pack_option(value, select));
         })
 
         $('#' + dropdown_data.s).selectpicker('refresh');
     }
 
     /**
-     * @param {string} selected_value population value to construct all of the required dropdowns for
+     * @param {string} population population value to construct all of the required dropdowns for
      */
-    function buildPopulationSpecificDropdown(selected_value) {
+    function buildPopulationSpecificDropdown(population) {
+        if (population === undefined) {
+            console.error("buildPopulationSpecificDropdown attempting to build `population=undefined`");
+            return
+        }
         Panel.find('#search_rows').empty();
-
-        buildPopulationDropdown(selected_value);
-        console.log(JSON.stringify(selected_value));
-
-        if (s_options[selected_value] !== undefined) {
-            s_options[selected_value].forEach((dropdown) => {
-                buildDropdown(dropdown);
+        buildPopulationDropdown(population);
+        console.log(JSON.stringify(population));
+        if (s_options[population] !== undefined) {
+            s_options[population].forEach((dropdown) => {
+                dropdown_selected_value = get_population_selection_from_storage(population, dropdown);
+                buildDropdown(dropdown, dropdown_selected_values);
             })
         }
 
 
         bindEvents();
+    };
+
+    /**
+     * @param {string} population Title of the population dropdown.
+     * @param {string} dropdown Corresponding dropdown (single) entry from `s_options[population]`.
+     * @returns Array of already user-selected options (values only) from `selection_storage[population]` if it exists, otherwise an empty array.
+     */
+    function get_population_selection_from_storage(population, dropdown) {
+        dropdown_selected_values = [];
+        if (selected_options[population]) {
+            dropdown_selected_values = selected_options[population][dropdown.title];
+            dropdown.s;
+            dropdown.title;
+            console.log({ dropdown, dropdown_selected_values });
+            // $('#' + dropdown_data.s).attr("selected","selected");
+        }
+        return dropdown_selected_values;
     }
+    
+    /**
+     * Clears the displayed filter options for the currently selected_population. 
+     * Clears from the selection_storage, and triggers to `buildPopulationSpecificDropdown()`.
+     */
+    function clearFilter() {
+        console.log({selected_population, selected_options})
+        if (selected_population != undefined && selected_options != undefined) {
+            delete selected_options[selected_population]
+            liveDropdownChoices = {}
+            liveDropdownChoices['population'] = selected_population
+            buildPopulationSpecificDropdown(selected_population)
+        }
+    };
+    panel.clearFilter = clearFilter;
+
 }(SearchPanel || (SearchPanel = {})));
