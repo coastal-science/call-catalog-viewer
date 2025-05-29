@@ -375,7 +375,7 @@ var GridPanel = undefined;
                 });
 
                 id_fields_csv = id_fields.join(',');
-                // assert (urlParams.get('id_fields') === id_fields_csv);
+                // console.assert (urlParams.get('id_fields') === id_fields_csv);
                 params.set('id_fields', id_fields_csv);
                 state['id_fields'] = id_fields_csv;
 
@@ -390,7 +390,7 @@ var GridPanel = undefined;
                 id_fields = Object.keys(searching_para[catalogue_name])
                 
                 id_fields_csv = id_fields.join(',');
-                // assert (urlParams.get('sort_fields') === id_fields_csv);
+                // console.assert (urlParams.get('sort_fields') === id_fields_csv);
                 params.set('sort_fields', id_fields_csv);
                 state['sort_fields'] = id_fields_csv;
             }
