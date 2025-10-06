@@ -1,0 +1,31 @@
+name: Trigger Target Repo
+on:
+  push:
+    branches:
+      - main # Trigger this workflow on pushes to main branch
+      - johnford
+      - release2.0
+      
+  workflow_dispatch:
+
+jobs:
+  trigger-workflow:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Repo name
+        run: |
+            REPO_NAME=${GITHUB_REPOSITORY#$GITHUB_REPOSITORY_OWNER/}
+            echo "REPO_NAME=$REPO_NAME"
+            echo "REPO_NAME=$REPO_NAME" >> $GITHUB_ENV
+          
+      - name: Dispatch repository_dispatch event
+        run: |         
+          curl -X POST \
+          -H "Accept: application/vnd.github.v3+json" \
+          -H "Authorization: token ${{ secrets.PAT_FOR_TARGET_REPO }}" \
+          https://api.github.com/repos/${{ github.repository_owner }}/${{ vars.TARGET_REPO_NAME }}/dispatches \
+          -d '{"event_type": "${{ env.REPO_NAME }}", "client_payload": {"message": "Hello from source repo!"}}'
+        env:
+          OWNER: ${{ github.repository_owner }}
+          TARGET_REPO_NAME: ${{ vars.TARGET_REPO_NAME }}
+          REPO_NAME: ${{ env.REPO_NAME }}
