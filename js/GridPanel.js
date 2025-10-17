@@ -611,7 +611,8 @@ var GridPanel = undefined;
                         </table> \
                         </a></h5> \
                         <p class="small mb-0 meta-p"><span class="font-weight-bold">' + d1 + '</span></p>\
-                        <div class="meta-p d-flex align-items-center justify-content-between rounded-pill bg-light px-3 py-2 mt-4 badge badge-pill badge-warning px-3 rounded-pill font-weight-normal font-weight-bold text-dark">\
+                        <div class="meta-p d-flex align-items-center justify-content-between rounded-pill bg-light px-3 py-2 mt-4 badge badge-pill badge-warning px-3 rounded-pill font-weight-normal font-weight-bold text-dark" \
+                          style="text-wrap-mode: wrap; text-align: center;">\
                         ' + d2 + ' \
                     </div>\
                 </div>\
