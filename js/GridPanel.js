@@ -687,9 +687,13 @@ var GridPanel = undefined;
             debugger
             throw new Error(msg);
             return false;
-        }        
+        }
         
-        id_fields = catalogue_library.get_id_fields(catalogue_name);
+        try {
+            id_fields = catalogue_library.get_id_fields(catalogue_name);
+        } catch (error) {
+            debugger
+        }
         
         if (!id_fields){
             msg = Object.keys(entry).toString() + " is not the expected schema. Mandatory fields may be missing."
@@ -724,7 +728,7 @@ var GridPanel = undefined;
         if (!catalogue_name){
             console.log("The `catalogue` name/`population` " + catalogue_name + " was not found.");
             return false;
-        }
+        }        
         
         id_fields = catalogue_library[catalogue_name]['id']
         
