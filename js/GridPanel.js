@@ -58,9 +58,6 @@ var GridPanel = undefined;
                     </svg>
     */
 
-    String.prototype.toTitleCase = function () {
-        return this.replace(/\w\S*/g, function (txt) { return txt.charAt(0).toUpperCase() + txt.slice(1).toLowerCase(); });
-    };
 
     async function getData(catalog_json) {
         // let catalog_json = "catalogs/srkw-call-catalogue-files.json";
