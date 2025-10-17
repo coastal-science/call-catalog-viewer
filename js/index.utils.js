@@ -131,7 +131,7 @@
     }
 
     function find_object_value_match(search_str){
-        if (search_str === undefined){
+        if(!search_str || jQuery.isEmptyObject(search_str) ){
             return null
         }
 
@@ -160,7 +160,7 @@
         });
 
         console.log({results})
-        if(!results || jQuery.isEmptyObject(results)){
+        if(!results || jQuery.isEmptyObject(results)) {
             return {'': ''}
             // return {'': 'Nothing is selected'}
         }
