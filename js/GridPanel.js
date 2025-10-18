@@ -58,9 +58,6 @@ var GridPanel = undefined;
                     </svg>
     */
 
-    String.prototype.toTitleCase = function () {
-        return this.replace(/\w\S*/g, function (txt) { return txt.charAt(0).toUpperCase() + txt.slice(1).toLowerCase(); });
-    };
 
     async function getData(catalog_json) {
         // let catalog_json = "catalogs/srkw-call-catalogue-files.json";
@@ -375,7 +372,7 @@ var GridPanel = undefined;
                 });
 
                 id_fields_csv = id_fields.join(',');
-                // assert (urlParams.get('id_fields') === id_fields_csv);
+                // console.assert (urlParams.get('id_fields') === id_fields_csv);
                 params.set('id_fields', id_fields_csv);
                 state['id_fields'] = id_fields_csv;
 
@@ -390,7 +387,7 @@ var GridPanel = undefined;
                 id_fields = Object.keys(searching_para[catalogue_name])
                 
                 id_fields_csv = id_fields.join(',');
-                // assert (urlParams.get('sort_fields') === id_fields_csv);
+                // console.assert (urlParams.get('sort_fields') === id_fields_csv);
                 params.set('sort_fields', id_fields_csv);
                 state['sort_fields'] = id_fields_csv;
             }
@@ -614,7 +611,8 @@ var GridPanel = undefined;
                         </table> \
                         </a></h5> \
                         <p class="small mb-0 meta-p"><span class="font-weight-bold">' + d1 + '</span></p>\
-                        <div class="meta-p d-flex align-items-center justify-content-between rounded-pill bg-light px-3 py-2 mt-4 badge badge-pill badge-warning px-3 rounded-pill font-weight-normal font-weight-bold text-dark">\
+                        <div class="meta-p d-flex align-items-center justify-content-between rounded-pill bg-light px-3 py-2 mt-4 badge badge-pill badge-warning px-3 rounded-pill font-weight-normal font-weight-bold text-dark" \
+                          style="text-wrap-mode: wrap; text-align: center;">\
                         ' + d2 + ' \
                     </div>\
                 </div>\
@@ -689,9 +687,13 @@ var GridPanel = undefined;
             debugger
             throw new Error(msg);
             return false;
-        }        
+        }
         
-        id_fields = catalogue_library.get_id_fields(catalogue_name);
+        try {
+            id_fields = catalogue_library.get_id_fields(catalogue_name);
+        } catch (error) {
+            debugger
+        }
         
         if (!id_fields){
             msg = Object.keys(entry).toString() + " is not the expected schema. Mandatory fields may be missing."
@@ -726,7 +728,7 @@ var GridPanel = undefined;
         if (!catalogue_name){
             console.log("The `catalogue` name/`population` " + catalogue_name + " was not found.");
             return false;
-        }
+        }        
         
         id_fields = catalogue_library[catalogue_name]['id']
         

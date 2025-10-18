@@ -88,3 +88,81 @@
             button.blur() // The bootstrap-safe way to disable the highlighted css
         }.bind(button), timeout_delay);
     }
+    
+    String.prototype.toTitleCase = function () {
+        return this.replace(/\w\S*/g, function (txt) { return txt.charAt(0).toUpperCase() + txt.slice(1).toLowerCase(); });
+    };
+    
+    function flattenObj(obj) {
+        // https://medium.com/@vickdayaram/flatten-a-dictionary-a5fa4426bf9d
+        let flat = {}
+            for(let i in obj) {
+                if(typeof obj[i] == 'object') {
+                    let flatObj = flattenObj(obj[i])
+                    for(let x in flatObj){
+                        flat[i + "." + x] = flatObj[x]
+                    }
+                } else {
+                    flat[i] = obj[i]
+                }
+            }
+        return flat
+    }
+
+    Object.filter = (obj, predicate) => 
+                Object.fromEntries(Object.entries(obj).filter(predicate));
+
+    function find_object_key_match(search_str){
+        
+        if (this[search_str]) {
+            // `str.match(search_str="")` is the same as matching regex `search_str="*"`, 
+            // which will match with any value,
+            // handle this case and exact keys without searching.
+            return {search_str: this[search_str]}
+        }
+        
+        results = Object.filter(this, ([key, value]) => key.match(search_str));
+        
+        if(!results || jQuery.isEmptyObject(results)){
+            return {'': ''}
+            // return {'': 'Nothing is selected'}
+        }
+        return results
+    }
+
+    function find_object_value_match(search_str){
+        if(!search_str || jQuery.isEmptyObject(search_str) ){
+            return null
+        }
+
+        // if (this[search_str]) {
+        //     // `str.match(search_str="")` is the same as matching regex `search_str="*"`, 
+        //     // which will match with any value,
+        //     // handle this case and exact keys without searching.
+        //     return {search_str: this[search_str]}
+        // }
+        
+        // results = Object.filter(Object.values(this), ([value]) => value ? JSON.stringify(value).match("/"
+        //     + search_str +"/") : null);
+
+        results = Object.filter(Object.entries(this), ([key, value]) => {
+        // results = Object.filter(Object.entries(this), ([k,v]) => {
+            console.log({search_str, 'obj': JSON.stringify(value), key});
+            // value[0] is the key from taxonomy dictionary
+            // value[1] is the value
+            // key is the sequential index
+            debugger
+            if (typeof(value[1]) == 'string' && value[1].toLowerCase() === search_str.toLowerCase() ){
+                return true;
+            }
+            return false;
+               
+        });
+
+        console.log({results})
+        if(!results || jQuery.isEmptyObject(results)) {
+            return {'': ''}
+            // return {'': 'Nothing is selected'}
+        }
+        return results
+    }
