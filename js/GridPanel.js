@@ -1147,7 +1147,7 @@ var GridPanel = undefined;
             if (lity_data['description_file'] !== undefined) {
                 $('.lity-container').append(
                     `<div class="container-fluid litybottom"> 
-                    <zero-md src='${file}'> 
+                    <zero-md src="${file}"> 
                         <template> 
                             <link href='${css_file}' rel="stylesheet"> </link>  
                         </template> 
