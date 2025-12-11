@@ -1,4 +1,3 @@
-
 ---
 name: 🌟 General Feedback
 about: Share feedback, report usability issues, or suggest improvements.
