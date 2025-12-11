@@ -2,7 +2,7 @@
 name: 🌟 General Feedback
 about: Share feedback, report usability issues, or suggest improvements.
 title: "[Feedback]: "
-labels: ["feedback", "website", "public"]
+labels: ["feedback", "public"]
 assignees: []
 ---
 
