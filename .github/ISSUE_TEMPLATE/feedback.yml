@@ -1,0 +1,123 @@
+
+name: 🌟 General Feedback
+description: Share feedback, report usability issues, or suggest improvements.
+title: "[Feedback]: "
+labels:
+  - feedback
+  - public
+assignees: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to help us improve! Please provide as much detail as you can.
+        _Tip: If you came from the website’s “Report an Issue” button, the page URL may already be filled in._
+
+  - type: input
+    id: page_url
+    attributes:
+      label: Page URL
+      description: Paste the exact page where you experienced the issue (e.g., https://example.com/path).
+      placeholder: https://orca.research.sfu.ca/call-library
+    validations:
+      required: true
+
+  - type: textarea
+    id: how_happened
+    attributes:
+      label: Page options?
+      description: Describe the selected page / dropdown options
+      placeholder: e.g., Population, clan, search.
+    validations:
+      required: false
+
+  - type: textarea
+    id: what_happened
+    attributes:
+      label: What happened?
+      description: Briefly describe the problem or feedback.
+      placeholder: e.g., The search felt slow; the sidebar overlaps content on mobile; confusing wording on the homepage.
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps (optional)
+      description: If it’s a usability or bug issue, list the steps you took.
+      placeholder: |
+        1. Went to ...
+        2. Clicked ...
+        3. Expected ...
+        4. Saw ...
+    validations:
+      required: false
+
+  - type: dropdown
+    id: severity
+    attributes:
+      label: Impact / Severity
+      description: How much does this affect your experience?
+      options:
+        - Low (minor inconvenience)
+        - Medium (affects normal use)
+        - High (blocks or severely impairs use)
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: type
+    attributes:
+      label: Type of feedback
+      options:
+        - label: Usability / UX
+        - label: Design / Layout
+        - label: Content / Copy
+        - label: Performance / Speed
+        - label: Accessibility
+        - label: Bug
+        - label: Other
+
+  - type: input
+    id: browser
+    attributes:
+      label: Browser
+      description: Example: Chrome 120, Firefox 122, Safari 17
+      placeholder: Chrome 120
+    validations:
+      required: false
+
+  - type: input
+    id: device
+    attributes:
+      label: Device & OS
+      description: Example: Windows 11, macOS 14, iPhone 14 (iOS 18), Pixel 6 (Android 14)
+      placeholder: macOS 14 (Safari)
+    validations:
+      required: false
+
+  - type: textarea
+    id: attachments
+    attributes:
+      label: Screenshots or notes (optional)
+      description: Drag-and-drop images, or paste links for context.
+    validations:
+      required: false
+
+  - type: input
+    id: contact
+    attributes:
+      label: Contact (optional)
+      description: If you’d like us to follow up, leave an email or GitHub username.
+      placeholder: your@email.com
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: consent
+    attributes:
+      label: Consent
+      description: Please confirm you understand how we use feedback.
+      options:
+        - label: I understand this feedback will be public in this repository.
+          required: true
