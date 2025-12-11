@@ -15,6 +15,9 @@ https://orca.research.sfu.ca/call-library
 ### What happened?
 Describe the issue or feedback in a sentence or two.
 
+### How did it happen?
+Describe the options selected in the page/dropdown, e.g., Population, clan, sorting, pagination, etc.
+
 ### Steps (optional)
 If applicable, list how you encountered this:
 1.
