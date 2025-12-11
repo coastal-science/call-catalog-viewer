@@ -91,7 +91,7 @@ body:
     id: device
     attributes:
       label: Device & OS
-      description: Example: Windows 11, macOS 14, iPhone 14 (iOS 18), Pixel 6 (Android 14)
+      description: "Example: Windows 11, macOS 14, iPhone 14 (iOS 18), Pixel 6 (Android 14)"
       placeholder: macOS 14 (Safari)
     validations:
       required: false
