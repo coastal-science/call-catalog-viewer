@@ -82,7 +82,7 @@ body:
     id: browser
     attributes:
       label: Browser
-      description: Example: Chrome 120, Firefox 122, Safari 17
+      description: "Example: Chrome 120, Firefox 122, Safari 17"
       placeholder: Chrome 120
     validations:
       required: false
