@@ -3,14 +3,15 @@
 name: 🌟 General Feedback
 about: Share feedback, report usability issues, or suggest improvements.
 title: "[Feedback]: "
-labels: ["feedback"]
+labels: ["feedback", "website", "public"]
 assignees: []
 ---
 
 Thanks for helping us improve! Please fill out whatever you can.
 
 ### Page URL
-(e.g., https://your-site/page)
+
+https://orca.research.sfu.ca/call-library
 
 ### What happened?
 Describe the issue or feedback in a sentence or two.
