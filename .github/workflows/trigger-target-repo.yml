@@ -24,7 +24,8 @@ jobs:
           -H "Accept: application/vnd.github.v3+json" \
           -H "Authorization: token ${{ secrets.PAT_FOR_TARGET_REPO }}" \
           https://api.github.com/repos/${{ github.repository_owner }}/${{ vars.TARGET_REPO_NAME }}/dispatches \
-          -d '{"event_type": "${{ env.REPO_NAME }}", "client_payload": {"message": "Hello from source repo!"}}'
+          -d '{"event_type": "${{ env.REPO_NAME }}", "client_payload": {"message": "Hello from source repo!"}}' \
+          -w "%{http_code}\\n"
         env:
           OWNER: ${{ github.repository_owner }}
           TARGET_REPO_NAME: ${{ vars.TARGET_REPO_NAME }}
