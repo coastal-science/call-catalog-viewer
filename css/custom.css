@@ -17,3 +17,41 @@
   font-display: swap;
 }
 
+/* Hide dropdown content by default */
+.w3-dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+/* On large screens (min-width: 769px), use hover to show content */
+@media screen and (min-width: 769px) {
+  .w3-dropdown-hover:hover .w3-dropdown-content {
+    display: block;
+  }
+  .w3-dropdown-click .w3-dropdown-content:not(.w3-show) {
+      display: none !important; /* Hide JS-toggled content unless w3-show class is present */
+  }
+  .w3-dropdown-click .w3-dropdown-content.w3-show {
+      display: block !important; /* Show when w3-show class is present */
+  }
+}
+
+/* On small screens (max-width: 768px), override hover and rely on JS toggle */
+@media screen and (max-width: 768px) {
+  .w3-dropdown-hover:hover .w3-dropdown-content {
+    display: none; /* Disable hover effect */
+  }
+  /* The w3-show class will be toggled by JS on click */
+  .w3-show {
+    display: block !important;
+  }
+}
+
+/* Ensure nested mobile menu items show when w3-show is added */
+.w3-hide.w3-show {
+  display: block !important;
+}
