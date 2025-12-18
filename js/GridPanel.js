@@ -309,6 +309,14 @@ var GridPanel = undefined;
             $('#paging > ul > li:nth-child(5)').addClass('disabled');
         }
 
+        // Remove sticky class if all items fit on one page (no pagination needed)
+        const stickyDiv = $('#stickyDiv');
+        if (filter_result <= page_size) {
+            stickyDiv.removeClass('sticky');
+        } else {
+            stickyDiv.addClass('sticky');
+        }
+
         current_sort = (a, b) => {
             if (Array.isArray(a)) {
                 a = a.join(', ');
