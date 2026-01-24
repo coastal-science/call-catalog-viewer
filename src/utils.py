@@ -162,11 +162,19 @@ def parse_yaml_to_json(path_to_catalogs_directory, yaml_file_path):
         fields[fields.index('wav-file')] = "audio-file" # hack rename
         
         # split any comma separated values, excluding files
+        # Track which columns need object dtype conversion (pandas 3.0+ uses str dtype by default)
+        columns_to_convert = set()
+        
         for index, row in df.iterrows():
             for field in fields:
                 if field in ['image-file', 'audio-file', 'description-file']:
                     continue
                 if (type(row[field]) == str and ',' in row[field]):
+                    # Convert column to object dtype if not already (needed for list assignment in pandas 3.0+)
+                    if field not in columns_to_convert:
+                        if df[field].dtype != 'object':
+                            df[field] = df[field].astype('object')
+                        columns_to_convert.add(field)
                     df.at[index, field] = row[field].split(',')
         
         df['image_exists'] = df['image-file'].apply(lambda x: exists(path_to_catalogs_directory + '/' + x))
