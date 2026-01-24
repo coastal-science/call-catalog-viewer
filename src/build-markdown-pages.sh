@@ -8,7 +8,12 @@
 # Usage: ./src/build-markdown-pages.sh (from project root)
 #        or cd src && ./build-markdown-pages.sh
 #
-# To add a new page, add a build_page call at the bottom with:
+# Pages are configured in markdown-pages.yaml (project root)
+# To add a new page:
+#   1. Create the markdown file in project root
+#   2. Add an entry to markdown-pages.yaml
+#   3. Run: src/build-markdown-pages.sh
+# markdown-pages.yaml should contain:
 #   - output_file: HTML filename to generate
 #   - markdown_file: Path to the markdown file
 #   - page_description: Meta description for the page
@@ -24,6 +29,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 
 TEMPLATE="$PROJECT_ROOT/markdown-page.template.html"
+CONFIG_FILE="$PROJECT_ROOT/markdown-pages.yaml"
 
 # Function to build a page
 build_page() {
@@ -34,7 +40,7 @@ build_page() {
     local include_code_styles=${5:-false}
     local zero_md_attributes=${6:-""}
     
-    # Build ZERO_MD_CONFIG (only for FAQ which needs Prism)
+    # Build ZERO_MD_CONFIG (for pages that need Prism code highlighting)
     local zero_md_config=""
     if [ "$include_code_styles" = "true" ]; then
         read -r -d '' zero_md_config << 'ZERO_MD_CONFIG_EOF' || true
@@ -115,23 +121,75 @@ ANCHOR_STYLES_EOF
     echo "Generated: $PROJECT_ROOT/$output_file"
 }
 
-# Build FAQ page
-FAQ_DESC="Have questions about the Orca Call Catalogue Library at SFU's HALLO project? Check out our FAQ page for answers on accessing resources and materials for effective learning, teaching, and more."
-build_page "faq.html" \
-    "FAQ.md" \
-    "$FAQ_DESC" \
-    "true" \
-    "true" \
-    " no-shadow"
+## Keep manual version for archive purposes
+# # Build FAQ page
+# FAQ_DESC="Have questions about the Orca Call Catalogue Library at SFU's HALLO project? Check out our FAQ page for answers on accessing resources and materials for effective learning, teaching, and more."
+# build_page "faq.html" \
+#     "FAQ.md" \
+#     "$FAQ_DESC" \
+#     "true" \
+#     "true" \
+#     " no-shadow"
 
-# Build License page
-LICENSE_DESC="Learn about the licensing agreements and terms of use for the resources available at the Call Catalogue Library, part of SFU's HALLO project. Understand your rights and responsibilities."
-build_page "license.html" \
-    "LICENSE.md" \
-    "$LICENSE_DESC" \
-    "false" \
-    "false" \
-    ""
+# # Build License page
+# LICENSE_DESC="Learn about the licensing agreements and terms of use for the resources available at the Call Catalogue Library, part of SFU's HALLO project. Understand your rights and responsibilities."
+# build_page "license.html" \
+#     "LICENSE.md" \
+#     "$LICENSE_DESC" \
+#     "false" \
+#     "false" \
+#     ""
 
+# Check if config file exists
+if [ ! -f "$CONFIG_FILE" ]; then
+    echo "Error: Configuration file not found: $CONFIG_FILE" >&2
+    exit 1
+fi
+
+# Function to parse YAML config
+parse_yaml_config() {
+    local config_file=$1
+    
+    # Check if yq is available
+    if ! command -v yq > /dev/null 2>&1; then
+        echo "Error: yq is not installed. Please install yq to parse YAML config." >&2
+        echo "Install with: brew install yq (macOS) or visit https://github.com/mikefarah/yq" >&2
+        exit 1
+    fi
+    
+    # Check if pages key exists
+    if ! yq eval '.pages' "$config_file" > /dev/null 2>&1; then
+        echo "Error: 'pages' key not found in YAML config" >&2
+        exit 1
+    fi
+    
+    # Get the number of pages
+    local page_count=$(yq eval '.pages | length' "$config_file")
+    
+    # Loop through each page and output tab-separated values
+    for ((i=0; i<page_count; i++)); do
+        local output=$(yq eval ".pages[$i].output" "$config_file")
+        local markdown=$(yq eval ".pages[$i].markdown" "$config_file")
+        local description=$(yq eval ".pages[$i].description" "$config_file")
+        local anchor=$(yq eval ".pages[$i].anchor // false" "$config_file" | tr '[:upper:]' '[:lower:]')
+        local code=$(yq eval ".pages[$i].code // false" "$config_file" | tr '[:upper:]' '[:lower:]')
+        local zero_md_attrs=$(yq eval ".pages[$i].zero_md_attrs // \"\"" "$config_file")
+        
+        printf "%s\t%s\t%s\t%s\t%s\t%s\n" "$output" "$markdown" "$description" "$anchor" "$code" "$zero_md_attrs"
+    done
+}
+
+# Build pages from YAML config
+echo "Building pages from configuration file: $CONFIG_FILE"
+while IFS=$'\t' read -r output_file markdown_file page_description include_anchor include_code zero_md_attrs; do
+    [ -z "$output_file" ] && continue
+    
+    # Add space prefix to zero_md_attrs if not empty
+    [ -n "$zero_md_attrs" ] && zero_md_attrs=" $zero_md_attrs"
+    
+    build_page "$output_file" "$markdown_file" "$page_description" "$include_anchor" "$include_code" "$zero_md_attrs"
+done < <(parse_yaml_config "$CONFIG_FILE")
+
+echo ""
 echo "All pages built successfully!"
 
