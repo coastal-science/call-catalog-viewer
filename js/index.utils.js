@@ -1,15 +1,33 @@
+    // List of all dropdown IDs (both desktop and mobile)
+    const allDropdownIds = [
+        'demoDropdown',
+        'aboutUsDropdown', 
+        'contactDropdown',
+        'learnMoreMobile',
+        'aboutUsMobile',
+        'contactMobile'
+    ];
+
+    // Helper function to close all dropdowns
+    function closeAllDropdowns() {
+        allDropdownIds.forEach(function(dropdownId) {
+            var dropdown = document.getElementById(dropdownId);
+            if (dropdown) {
+                // Remove w3-show class to close the dropdown
+                dropdown.className = dropdown.className.replace(" w3-show", "");
+            }
+        });
+    }
+
+    // Close all dropdowns when screen orientation changes (mobile device rotation)
+    // Simple implementation: just close dropdowns on orientation change
+    window.addEventListener('orientationchange', function() {
+        // Small delay to ensure orientation has fully changed
+        setTimeout(closeAllDropdowns, 100);
+    });
+    
     // Used to toggle the menu on small screens when clicking on the menu button
     function myFunction(id) {
-        // List of all dropdown IDs (both desktop and mobile)
-        const allDropdownIds = [
-            'demoDropdown',
-            'aboutUsDropdown', 
-            'contactDropdown',
-            'learnMoreMobile',
-            'aboutUsMobile',
-            'contactMobile'
-        ];
-        
         // Close all other dropdowns first
         allDropdownIds.forEach(function(dropdownId) {
             if (dropdownId !== id) {
