@@ -30,7 +30,7 @@
             .catch(error => {
                 console.error('Error loading navbar:', error);
                 // Fallback: show a message or basic navbar
-                navbarContainer.innerHTML = '<div style="padding: 10px; background: #f0f0f0; color: #333;">Navbar could not be loaded. Please refresh the page.</div>';
+                navbarContainer.innerHTML = '<div style="padding: 10px; background: #f0f0f0; color: #333;">Navigation bar could not be loaded. Please refresh the page.</div>';
             });
     }
 
