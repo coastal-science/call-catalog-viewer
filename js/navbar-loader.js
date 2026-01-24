@@ -1,6 +1,9 @@
 /**
  * Navbar Loader
  * Dynamically loads the navbar.html file and inserts it into the page
+ * 
+ * Designed for a flat directory structure where all HTML pages are in the project root.
+ * All navbar links use simple filenames (e.g., "home.html", "faq.html").
  */
 (function() {
     // Function to load navbar
@@ -11,7 +14,10 @@
             return;
         }
 
-        fetch('navbar.html?v=random')
+        // Flat structure: navbar.html is in the same directory as all pages
+        const navbarPath = 'navbar.html?v=random';
+        
+        fetch(navbarPath)
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Failed to load navbar');
