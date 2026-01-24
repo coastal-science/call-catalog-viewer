@@ -26,8 +26,8 @@
         setTimeout(closeAllDropdowns, 100);
     });
     
-    // Used to toggle the menu on small screens when clicking on the menu button
-    function myFunction(id) {
+    // Used to toggle dropdown menus (both desktop and mobile/small screens)
+    function toggleNavDropdown(id) {
         // Close all other dropdowns first
         allDropdownIds.forEach(function(dropdownId) {
             if (dropdownId !== id) {
