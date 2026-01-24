@@ -49,8 +49,8 @@ pages:
     code: false
 
   # How to Cite page
-  - output: how-to-cite.html
-    markdown: Howtocite.md
+  - output: licence-and-how-to-cite.html
+    markdown: Licenceandhowtocite.md
     description: "Learn how to properly cite the Orca Call Catalogue and understand the licensing terms under Open Government Licence Canada 2.0."
     anchor: true
     code: true
