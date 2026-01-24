@@ -3,21 +3,30 @@
 
 # Frequently Asked Questions
 
+# Licence and how to cite
+
 ## How to use this site?
 
-This website and all audio recordings it hosts are subject to the terms under [Open Government Licence &ndash; Canada 2.0](https://open.canada.ca/en/open-government-licence-canada). The complete licence is found on the [Licence](license.html) page.
+Use of information and data from this website is subject to terms under [Open Government Licence &ndash; Canada](https://open.canada.ca/en/open-government-licence-canada) 2.0
 
-As long as the terms in the [Licence](license.html) page are respected, you are free to:
+Subject to the terms, you are free to:
 - Copy, modify, publish, translate, adapt, distribute or otherwise use the Information in any medium, mode or format for any lawful purpose.
 
-When referring to the catalogue please cite the following references:
+You must, where you do any of the above, use the following attribution statement:
+
+> *Contains information licensed under the Open Government Licence &ndash; Canada 2.0.*
+
+## How to cite the catalogue
+
+When referring to the catalogue, please cite the following reference:
 
 > John K.B Ford, Volker B. Deecke, and James F. Pilkington. 2023. Dialects of Killer Whales in Coastal Northeastern Pacific Waters: A Catalogue of Call Types. [https://orca.research.sfu.ca/call-library](https://orca.research.sfu.ca/call-library). Accessed 1 Aug. 2023.
 
-Bibtex
+### BibTeX
+
 ```
 @misc{Ford_Volker_Pilkington, 
-  author = {Ford, John K.B. and Deecke, Volker B. and Pilkington, James F.}
+  author = {Ford, John K.B. and Deecke, Volker B. and Pilkington, James F.},
   title = {Dialects of Killer Whales in Coastal Northeastern Pacific Waters: A Catalogue of Call Types}, 
   howpublished = {\url{https://orca.research.sfu.ca/call-library}}, 
   year = {2023}
