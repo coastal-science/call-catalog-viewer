@@ -90,20 +90,51 @@
         document.documentElement.scrollTop = 0;
     }
 
+    // Scroll functions use both jQuery and native scrollIntoView for optimal compatibility:
+    // - jQuery: Better cross-browser support (especially older browsers), more control over animation
+    // - Native scrollIntoView: No dependencies, better performance, modern API, Modern browser support is sufficient, Simpler code (easier to maintain)
+    // Recommendation: Use jQuery when available (index.html loads it), fallback to native otherwise
+
     // buttonToTop.addEventListener("click", scrollBackToResults);
     function scrollBackToResults() {
-        $('html, body').animate({
-            scrollTop: $("#resultgrid").offset().top
-        }, 0);
+        var resultgrid = document.getElementById("resultgrid");
+        if (resultgrid && typeof $ !== 'undefined') {
+            // Use jQuery if available: better cross-browser compatibility and more control
+            // Duration 0 = instant scroll (no animation)
+            $('html, body').animate({
+                scrollTop: $("#resultgrid").offset().top
+            }, 0);
+        } else if (resultgrid) {
+            // Fallback to native scrollIntoView: no dependencies, better performance
+            // 'smooth' provides animated scrolling, 'start' aligns element to top
+            resultgrid.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
     }
 
     // buttonToTop.addEventListener("click", scrollBackToSearch);
     function scrollBackToSearch() {
-        $('html, body').animate({
-            scrollTop: $("#search_now").offset().top
-        }, 0);
+        var searchNow = document.getElementById("search_now");
+        if (searchNow && typeof $ !== 'undefined') {
+            // Use jQuery if available: better cross-browser compatibility and more control
+            // Duration 0 = instant scroll (no animation)
+            $('html, body').animate({
+                scrollTop: $("#search_now").offset().top
+            }, 0);
+        } else if (searchNow) {
+            // Fallback to native scrollIntoView: no dependencies, better performance
+            // 'smooth' provides animated scrolling, 'start' aligns element to top
+            searchNow.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
     }
 
+    // // Initialize panels when DOM is ready
+    // // GridPanel and SearchPanel are only loaded on index.html
+    // // Check if they exist before initializing
+    // if (typeof GridPanel !== 'undefined' && typeof SearchPanel !== 'undefined') {
+    //     GridPanel.init();
+    //     SearchPanel.init();
+    // }
+    
     $(async function () {
         await GridPanel.init();
         SearchPanel.init();
