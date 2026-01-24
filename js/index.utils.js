@@ -135,10 +135,16 @@
     //     SearchPanel.init();
     // }
     
-    $(async function () {
-        await GridPanel.init();
-        SearchPanel.init();
-    })
+    if (typeof $ !== 'undefined') {
+        $(async function () {
+            if (document.getElementById("gi-area")) {
+                await GridPanel.init();
+                SearchPanel.init();
+            }
+        });
+    } else {
+        console.warn('jQuery is not available. GridPanel and SearchPanel initialization skipped. Please ensure jQuery is loaded before index.utils.js');
+    }
     
     //Get the button (only exists on index.html)
     let clear_filter = document.getElementById("clear_filter");
