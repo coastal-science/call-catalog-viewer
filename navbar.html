@@ -3,7 +3,7 @@
   <div class="w3-bar w3-black w3-card">
     <a href="home.html?v=random" class="w3-bar-item w3-button w3-padding-large">HOME</a>
     <a class="w3-bar-item w3-button w3-padding-large w3-hide-medium w3-hide-large w3-right" href="javascript:void(0)"
-      onclick="toggleNavDropdown('navDemo')" title="Toggle Navigation Menu"><i class="fa fa-bars"></i></a>
+      onclick="toggleNavDropdown('navMenu')" title="Toggle Navigation Menu"><i class="fa fa-bars"></i></a>
     <!-- <a href="index.html?v=random" class="w3-bar-item w3-button w3-padding-large w3-hide-small">CATALOGUE</a> -->
     <div class="w3-dropdown-hover w3-dropdown-click w3-hide-small">
       <button class="w3-padding-large w3-button" onclick="toggleNavDropdown('aboutUsDropdown')" title="ABOUT US"><i class="fa fa-level-up" style="transform: scaleX(-1); display: inline-block;"></i> HOME</button>     
@@ -17,8 +17,8 @@
     <a href="license.html?v=random" class="w3-bar-item w3-button w3-padding-large w3-hide-small">LICENCE</a>
     <a href="faq.html?v=random" class="w3-bar-item w3-button w3-padding-large w3-hide-small">FAQ</a>
     <div class="w3-dropdown-hover w3-dropdown-click w3-hide-small">
-      <button class="w3-padding-large w3-button" onclick="toggleNavDropdown('demoDropdown')" title="LEARN MORE">LEARN MORE <i class="fa fa-caret-down"></i></button>     
-      <div id="demoDropdown" class="w3-dropdown-content w3-bar-block w3-card-4">
+      <button class="w3-padding-large w3-button" onclick="toggleNavDropdown('learnMoreDropdown')" title="LEARN MORE">LEARN MORE <i class="fa fa-caret-down"></i></button>     
+      <div id="learnMoreDropdown" class="w3-dropdown-content w3-bar-block w3-card-4">
         <a href="home.html?v=random" class="w3-bar-item w3-button">About the catalogue (from Home)</a>
         <a href="about-the-catalogue-man.html" class="w3-bar-item w3-button">About the catalogue (manual version)</a>
         <a href="about-the-catalogue.html" class="w3-bar-item w3-button">About the catalogue</a>
@@ -38,26 +38,26 @@
 </div>
 
 <!-- Navbar on small screens (remove the onclick attribute if you want the navbar to always show on top of the content when clicking on the links) -->
-<div id="navDemo" class="w3-bar-block w3-black w3-hide w3-hide-large w3-hide-medium w3-top" style="position:relative;">
+<div id="navMenu" class="w3-bar-block w3-black w3-hide w3-hide-large w3-hide-medium w3-top" style="position:relative;">
   <a href="javascript:void(0)" class="w3-bar-item w3-button w3-padding-large" onclick="toggleNavDropdown('aboutUsMobile')"><i class="fa fa-level-up" style="transform: scaleX(-1); display: inline-block;"></i> HOME</a>
   <div id="aboutUsMobile" class="w3-hide" style="background-color: #333;">
-    <a href="https://orca.research.sfu.ca" class="w3-bar-item w3-button w3-padding-large" style="padding-left: 3em !important;" onclick="toggleNavDropdown('navDemo')"><img src="https://www.google.com/s2/favicons?domain=orca.research.sfu.ca&sz=16" alt="" style="width:16px;height:16px;margin-right:8px;vertical-align:middle;">COASTAL-SCIENCE HALLO</a>
-    <a href="https://whales.research.sfu.ca" class="w3-bar-item w3-button w3-padding-large" style="padding-left: 3em !important;" onclick="toggleNavDropdown('navDemo')"><img src="https://www.google.com/s2/favicons?domain=whales.research.sfu.ca&sz=16" alt="" style="width:16px;height:16px;margin-right:8px;vertical-align:middle;">NSERC WHALES</a>
+    <a href="https://orca.research.sfu.ca" class="w3-bar-item w3-button w3-padding-large" style="padding-left: 3em !important;" onclick="toggleNavDropdown('navMenu')"><img src="https://www.google.com/s2/favicons?domain=orca.research.sfu.ca&sz=16" alt="" style="width:16px;height:16px;margin-right:8px;vertical-align:middle;">COASTAL-SCIENCE HALLO</a>
+    <a href="https://whales.research.sfu.ca" class="w3-bar-item w3-button w3-padding-large" style="padding-left: 3em !important;" onclick="toggleNavDropdown('navMenu')"><img src="https://www.google.com/s2/favicons?domain=whales.research.sfu.ca&sz=16" alt="" style="width:16px;height:16px;margin-right:8px;vertical-align:middle;">NSERC WHALES</a>
   </div>
-  <a href="index.html?v=random" class="w3-bar-item w3-button w3-padding-large" onclick="toggleNavDropdown('navDemo')">CATALOGUE</a>
-  <a href="license.html?v=random" class="w3-bar-item w3-button w3-padding-large" onclick="toggleNavDropdown('navDemo')">LICENCE</a>
-  <a href="faq.html?v=random" class="w3-bar-item w3-button w3-padding-large" onclick="toggleNavDropdown('navDemo')">FAQ</a>
+  <a href="index.html?v=random" class="w3-bar-item w3-button w3-padding-large" onclick="toggleNavDropdown('navMenu')">CATALOGUE</a>
+  <a href="license.html?v=random" class="w3-bar-item w3-button w3-padding-large" onclick="toggleNavDropdown('navMenu')">LICENCE</a>
+  <a href="faq.html?v=random" class="w3-bar-item w3-button w3-padding-large" onclick="toggleNavDropdown('navMenu')">FAQ</a>
   <a href="javascript:void(0)" class="w3-bar-item w3-button w3-padding-large" onclick="toggleNavDropdown('learnMoreMobile')">LEARN MORE <i class="fa fa-caret-down"></i></a>
   <div id="learnMoreMobile" class="w3-hide" style="background-color: #333;">
-    <a href="home.html?v=random" class="w3-bar-item w3-button w3-padding-large" style="padding-left: 3em !important;" onclick="toggleNavDropdown('navDemo')">About the catalogue (from Home)</a>
-    <a href="about-the-catalogue-man.html" class="w3-bar-item w3-button w3-padding-large" style="padding-left: 3em !important;" onclick="toggleNavDropdown('navDemo')">About the catalogue (manual version)</a>
-    <a href="about-the-catalogue.html" class="w3-bar-item w3-button w3-padding-large" style="padding-left: 3em !important;" onclick="toggleNavDropdown('navDemo')">About the catalogue</a>
-    <a href="about-killer-whale-sounds.html?v=random" class="w3-bar-item w3-button w3-padding-large" style="padding-left: 3em !important;" onclick="toggleNavDropdown('navDemo')">About Killer Whale sounds</a>
-    <a href="how-to-cite.html?v=random" class="w3-bar-item w3-button w3-padding-large" style="padding-left: 3em !important;" onclick="toggleNavDropdown('navDemo')">How to Cite</a>
+    <a href="home.html?v=random" class="w3-bar-item w3-button w3-padding-large" style="padding-left: 3em !important;" onclick="toggleNavDropdown('navMenu')">About the catalogue (from Home)</a>
+    <a href="about-the-catalogue-man.html" class="w3-bar-item w3-button w3-padding-large" style="padding-left: 3em !important;" onclick="toggleNavDropdown('navMenu')">About the catalogue (manual version)</a>
+    <a href="about-the-catalogue.html" class="w3-bar-item w3-button w3-padding-large" style="padding-left: 3em !important;" onclick="toggleNavDropdown('navMenu')">About the catalogue</a>
+    <a href="about-killer-whale-sounds.html?v=random" class="w3-bar-item w3-button w3-padding-large" style="padding-left: 3em !important;" onclick="toggleNavDropdown('navMenu')">About Killer Whale sounds</a>
+    <a href="how-to-cite.html?v=random" class="w3-bar-item w3-button w3-padding-large" style="padding-left: 3em !important;" onclick="toggleNavDropdown('navMenu')">How to Cite</a>
   </div>
   <a href="javascript:void(0)" class="w3-bar-item w3-button w3-padding-large" onclick="toggleNavDropdown('contactMobile')">CONTACT US <i class="fa fa-caret-down"></i></a>
   <div id="contactMobile" class="w3-hide" style="background-color: #333;">
-    <a href="https://orca.research.sfu.ca/contact/" class="w3-bar-item w3-button w3-padding-large" style="padding-left: 3em !important;" onclick="toggleNavDropdown('navDemo')"><img src="https://www.google.com/s2/favicons?domain=orca.research.sfu.ca&sz=16" alt="" style="width:16px;height:16px;margin-right:8px;vertical-align:middle;">HALLO CONTACT</a>
-    <a href="https://github.com/coastal-science/call-catalog-viewer/issues/new?template=feedback.yml" class="w3-bar-item w3-button w3-padding-large" style="padding-left: 3em !important;" onclick="toggleNavDropdown('navDemo')"><img src="https://www.google.com/s2/favicons?domain=github.com&sz=16" alt="" style="width:16px;height:16px;margin-right:8px;vertical-align:middle;">GITHUB ISSUES</a>
+    <a href="https://orca.research.sfu.ca/contact/" class="w3-bar-item w3-button w3-padding-large" style="padding-left: 3em !important;" onclick="toggleNavDropdown('navMenu')"><img src="https://www.google.com/s2/favicons?domain=orca.research.sfu.ca&sz=16" alt="" style="width:16px;height:16px;margin-right:8px;vertical-align:middle;">HALLO CONTACT</a>
+    <a href="https://github.com/coastal-science/call-catalog-viewer/issues/new?template=feedback.yml" class="w3-bar-item w3-button w3-padding-large" style="padding-left: 3em !important;" onclick="toggleNavDropdown('navMenu')"><img src="https://www.google.com/s2/favicons?domain=github.com&sz=16" alt="" style="width:16px;height:16px;margin-right:8px;vertical-align:middle;">GITHUB ISSUES</a>
   </div>
 </div>
