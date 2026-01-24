@@ -3,15 +3,51 @@ import re
 import json
 import pandas as pd
 import numpy as np
+import sys
+import os
 from os.path import dirname, exists
 from pathlib import Path
-import logging
-import yaml
+from loguru import logger
 
-FORMAT = '%(levelname)s - %(asctime)s - %(message)s'
-FORMAT_VERBOSE = '%(asctime)s: - %(levelname)s:%(name)s - %(module)s/%(filename)s/%(funcName)s/%(lineno)d:\t%(message)s'
+# Remove default handler
+logger.remove()
 
-logging.basicConfig(level=logging.INFO, format=FORMAT_VERBOSE)
+# Get log level from environment variable, default to "INFO"
+log_level = os.getenv("LOG_LEVEL", "INFO").upper()
+
+# Validate log level
+valid_levels = {"DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"}
+if log_level not in valid_levels:
+    log_level = "INFO"  # Fallback to INFO if invalid
+
+# Configure with specified options
+logger.add(
+    sink=sys.stdout,
+    format="<green>{time}</green> <level>[{level}] - {name}:{function}:{line} - {message}</level>",
+    backtrace=True,
+    diagnose=True,  # Caution: may leak sensitive data in production
+    colorize=True,
+    level=log_level,
+    enqueue=True,  # Asynchronous, Thread-safe, Multiprocess-safe
+)
+
+
+def set_log_level(level: str):
+    """Reconfigure logger with new level"""
+    logger.remove()
+    log_level = level.upper()
+    valid_levels = {"DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"}
+    if log_level not in valid_levels:
+        log_level = "INFO"
+    logger.add(
+        sink=sys.stdout,
+        format="<green>{time}</green> <level>[{level}] - {name}:{function}:{line} - {message}</level>",
+        backtrace=True,
+        diagnose=True,
+        colorize=True,
+        level=log_level,
+        enqueue=True,
+    )
 
 is_yaml = lambda file: re.search(r"\.ya?ml$", str(file), flags=re.IGNORECASE)  # .yaml or .yml
 is_yaml = lambda file: Path(file).resolve().suffix.lower() in [".yaml", ".yml"]  # .yaml or .yml
@@ -187,7 +223,8 @@ def export_to_json(path_to_catalogs_directory, df, population, filters, sortable
             
     print(f'Successfully exported call data to catalogs/{file_name}.json', end='\n\n')
 
-def add_index_yaml(logger, path_to_catalogs_dir, repo_name):
+def add_index_yaml(path_to_catalogs_dir, repo_name):
+    """Add catalog to index.yaml. Logger is now global from loguru."""
     logger.info(f'Adding {repo_name} to catalogs/index.yaml')
     path = path_to_catalogs_dir + '/index.yaml'
     

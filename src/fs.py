@@ -13,14 +13,10 @@ import re
 from pathlib import Path
 import filecmp
 import flatdict
-from utils import yaml, FORMAT_VERBOSE # multiline strings and None values written as empty strings.
-from utils import logging
+from utils import yaml  # multiline strings and None values written as empty strings.
+from utils import logger, set_log_level
 
 global DEBUG
-
-# logging.basicConfig(level=logging.INFO, format=FORMAT_VERBOSE)
-
-logger = logging.getLogger(__name__)
 # logger.setLevel('DEBUG')
 # console = logging.StreamHandler()
 # formatter = logging.Formatter(FORMAT_VERBOSE)
@@ -202,8 +198,9 @@ def smaller_on_left(left, right):
 
 if __name__ == '__main__':
 
-    DEBUG, LOGLEVEL = True, logging.DEBUG
-    logger.setLevel(LOGLEVEL)
+    DEBUG, LOGLEVEL = True, "DEBUG"
+    if DEBUG:
+        set_log_level("DEBUG")
 
     logger.info(f"Current directory: {Path.cwd()}")
 

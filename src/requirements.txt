@@ -4,3 +4,4 @@ numpy
 PyYAML
 gitpython
 flatdict
+loguru

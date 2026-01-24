@@ -15,9 +15,7 @@ from os.path import dirname, exists
 from git import Repo
 import utils
 import json
-import logging
-
-logger = logging.getLogger(__name__)
+from loguru import logger
 
 CATALOG_VERSIONS_ERROR = -1
 
@@ -61,6 +59,7 @@ def rebuild_files(path_to_catalogs_dir, catalog_name):
     df, population, filter, sortables, display, site_details = utils.parse_yaml_to_json(path_to_catalogs_dir, path_to_catalogs_dir + '/' + catalog_name + '/' + yaml_file)
     utils.export_to_json(path_to_catalogs_dir, df, population, filter, sortables, display, site_details, catalog_name, yaml_file)
     
+@logger.catch
 def cli(args=None):
     parser = argparse.ArgumentParser(
         description='Change the versions of a remote catalogs', 

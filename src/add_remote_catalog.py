@@ -15,10 +15,8 @@ from os.path import dirname, abspath, exists
 from os import makedirs, chmod, symlink
 from git import Repo
 import utils
-from utils import logging
+from utils import logger
 import sys
-
-logger = logging.getLogger(__name__)
 
 REMOTE_ADD_EXIT_ERROR = -1
 
@@ -78,6 +76,7 @@ def is_valid_yaml(parser, yaml):
     else:
         return yaml
     
+@logger.catch
 def cli(args=None):
     if not args:
         args = sys.argv[1:]
@@ -140,7 +139,7 @@ def cli(args=None):
         add_library_yaml(path_to_catalogs_dir, url)
     
     # create/append catalogs/index.yaml
-    utils.add_index_yaml(logger, path_to_catalogs_dir, repo_name)
+    utils.add_index_yaml(path_to_catalogs_dir, repo_name)
     
     # parse the yaml, creating the json output used by website
     try:

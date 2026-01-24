@@ -1,12 +1,10 @@
 import sys
 import argparse
 from os.path import dirname, exists, isdir
-import logging
 from pathlib import Path
+from loguru import logger
 import utils
 from remove_catalog import cli as remove_catalog
-
-logger = logging.getLogger(__name__)
 
 ADD_CATALOG_ERROR = -1
 
@@ -17,6 +15,7 @@ def is_valid_file(parser, arg):
     else:
         return arg
 
+@logger.catch
 def cli(args=None):
     if not args:
         args = sys.argv[1:]
@@ -96,7 +95,7 @@ def cli(args=None):
         return ADD_CATALOG_ERROR
     
      # create or append to index.yaml 
-    utils.add_index_yaml(logger, str(path_to_catalog_dir), repo_name)
+    utils.add_index_yaml(str(path_to_catalog_dir), repo_name)
     
     logger.info(f'add catalog named {repo_name=} with entries {yaml_data_file_name} from {path_to_data_folder}')
     

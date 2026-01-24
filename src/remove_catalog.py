@@ -30,9 +30,7 @@ import sys
 import yaml
 
 from utils import is_yaml
-from utils import logging
-
-logger = logging.getLogger(__name__)
+from utils import logger, set_log_level
 
 REMOVE_EXIT_ERROR = -1
 
@@ -121,6 +119,7 @@ def is_valid_file(parser, arg):
 
 
 # if __name__ == "__main__":
+@logger.catch
 def cli(args=None):
     if not args:
         args = sys.argv[1:]
@@ -175,6 +174,10 @@ def cli(args=None):
     library_index = args.LIBRARY_INDEX
     force = args.force  # default True
     debug = args.debug  # default False
+
+    # Set log level to DEBUG if debug flag is set
+    if debug:
+        set_log_level("DEBUG")
 
     # LIBRARY = args.LIBRARY  # LIBRARY
     # LIBRARY_INDEX = args.LIBRARY_INDEX  # LIBRARY_INDEX

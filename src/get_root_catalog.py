@@ -5,13 +5,12 @@ Usage: python src/get_root_catalog.py
 
 from os.path import dirname, exists, realpath, basename
 from pathlib import Path
-import logging
 import argparse
-
-logger = logging.getLogger(__name__)
+from loguru import logger
 
 GET_ROOT_CATALOG_ERROR = -1
 
+@logger.catch
 def cli(args=None):
     
     parser = argparse.ArgumentParser(
