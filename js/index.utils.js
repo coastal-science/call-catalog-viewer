@@ -1,12 +1,34 @@
     // Used to toggle the menu on small screens when clicking on the menu button
     function myFunction(id) {
+        // List of all dropdown IDs (both desktop and mobile)
+        const allDropdownIds = [
+            'demoDropdown',
+            'aboutUsDropdown', 
+            'contactDropdown',
+            'learnMoreMobile',
+            'aboutUsMobile',
+            'contactMobile'
+        ];
+        
+        // Close all other dropdowns first
+        allDropdownIds.forEach(function(dropdownId) {
+            if (dropdownId !== id) {
+                var dropdown = document.getElementById(dropdownId);
+                if (dropdown) {
+                    // Remove w3-show class to close the dropdown
+                    dropdown.className = dropdown.className.replace(" w3-show", "");
+                }
+            }
+        });
+        
+        // Now toggle the clicked dropdown
         var x = document.getElementById(id);
         if (x) {
-        if (x.className.indexOf("w3-show") == -1) {
-            x.className += " w3-show";
-        } else {
-            x.className = x.className.replace(" w3-show", "");
-        }
+            if (x.className.indexOf("w3-show") == -1) {
+                x.className += " w3-show";
+            } else {
+                x.className = x.className.replace(" w3-show", "");
+            }
         }
     }
 
@@ -21,27 +43,30 @@
         }
     }
 
-    //Get the button
+    //Get the button (only exists on index.html)
     let buttonToTop = document.getElementById("btn-back-to-top");
 
-    // When the user scrolls down 20px from the top of the document, show the button
-    window.onscroll = function () {
-        scrollFunction();
-    };
+    // Only set up scroll functionality if the button exists
+    if (buttonToTop) {
+        // When the user scrolls down 20px from the top of the document, show the button
+        window.onscroll = function () {
+            scrollFunction();
+        };
 
-    function scrollFunction() {
-        if (
-            document.body.scrollTop > 20 ||
-            document.documentElement.scrollTop > 20
-        ) {
-            buttonToTop.style.display = "block";
-        } else {
-            buttonToTop.style.display = "none";
+        function scrollFunction() {
+            if (
+                document.body.scrollTop > 20 ||
+                document.documentElement.scrollTop > 20
+            ) {
+                buttonToTop.style.display = "block";
+            } else {
+                buttonToTop.style.display = "none";
+            }
         }
-    }
 
-    // When the user clicks on the button, scroll to the top of the document
-    buttonToTop.addEventListener("click", scrollBackToTop);
+        // When the user clicks on the button, scroll to the top of the document
+        buttonToTop.addEventListener("click", scrollBackToTop);
+    }
     function scrollBackToTop() {
         document.body.scrollTop = 0;
         document.documentElement.scrollTop = 0;
@@ -66,11 +91,14 @@
         SearchPanel.init();
     })
     
-    //Get the button
+    //Get the button (only exists on index.html)
     let clear_filter = document.getElementById("clear_filter");
 
-    // When the user clicks on the button, clear the selected filters options
-    clear_filter.addEventListener("click", clearFilter);
+    // Only set up clear filter functionality if the button exists
+    if (clear_filter) {
+        // When the user clicks on the button, clear the selected filters options
+        clear_filter.addEventListener("click", clearFilter);
+    }
     function clearFilter(event) {
         event.preventDefault(); // To prevent following the link (optional)
         SearchPanel.clearFilter();
