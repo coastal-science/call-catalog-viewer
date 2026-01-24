@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<!-- saved from url=(0059)https://www.w3schools.com/w3css/tryw3css_templates_band.htm -->
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>Orca Sound Call Catalogue and Annotations</title>
+
+  <meta name="description" content="${PAGE_DESCRIPTION}">
+  <meta name="author" content="John K.B. Ford, Volker B. Deecke, and James F. Pilkington">
+  <meta name="keywords" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+
+  <meta property="og:locale" content="en_us">
+  <meta property="og:site_name" content="Call Catalogue">
+  <meta property="og:title" content="Orca Sound Call Catalogue and Annotations">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://orca.research.sfu.ca/call-library">
+  <meta property="og:description" content="${PAGE_DESCRIPTION}">
+  <meta property="og:image" content="https://orca.research.sfu.ca/call-library/home-media/S01-J,L-1.jpg">
+  <meta property="og:image:type" content="image/jpg">
+  <meta property="og:image:width" content="602">
+  <meta property="og:image:height" content="611">
+  <meta property="og:updated_time" content="2024-05-30T16:00:00-0700">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Orca Sound Call Catalogue and Annotations">
+  <meta name="twitter:image" content="https://orca.research.sfu.ca/call-library/home-media/S01-J,L-1.jpg">
+  <meta name="twitter:description" content="${PAGE_DESCRIPTION}">
+  <link rel="icon" type="image/jpg" href="favicon.jpg">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/w3-css/4.1.0/3/w3.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="./css/custom.css?v=random">
+  <script defer src="./js/navbar-loader.js?v=random"></script>
+
+${ZERO_MD_CONFIG}
+  <script type="module" src="https://cdn.jsdelivr.net/gh/zerodevx/zero-md@2/dist/zero-md.min.js">
+  </script>
+${ANCHOR_JS_SCRIPT}
+
+  <style>
+    body {
+      font-family: "Lato", sans-serif
+    }
+${CODE_BLOCK_STYLES}
+  </style>
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-4ZT5PMCN8Z"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'G-4ZT5PMCN8Z');
+  </script>
+
+</head>
+
+<body>
+  <!-- Navbar will be loaded here dynamically -->
+  <div id="navbar-container"></div>
+
+  <div class="w3-content" style="max-width:2000px;">
+    <div class="w3-container w3-content w3-justify w3-padding-30" style="max-width:800px;margin-top:5%;">
+      <zero-md src='${MARKDOWN_FILE}?v=random'${ZERO_MD_ATTRIBUTES}>
+        <template>
+          <style>
+            h1 {
+              text-align: center;
+              font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+              font-weight: 400;
+              letter-spacing: .1em;
+            }
+            a {
+              color: black;
+            }
+${ANCHOR_JS_STYLES}
+          </style>
+        </template>
+      </zero-md>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <!-- <footer style="position:fixed;width:100%" class="w3-display-bottommiddle w3-container w3-padding-64 w3-center w3-opacity w3-light-grey w3-xlarge"> -->
+  <!-- <footer class="w3-container w3-padding-64 w3-center w3-opacity w3-light-grey w3-xlarge">
+  <i class="fa fa-instagram fa-2x w3-hover-opacity"></i>
+  <i class="fa fa-snapchat w3-hover-opacity"></i>
+  <i class="fa fa-facebook-official w3-hover-opacity"></i>
+  <i class="fa fa-pinterest-p w3-hover-opacity"></i>
+  <i class="fa fa-twitter w3-hover-opacity"></i>
+  <i class="fa fa-linkedin w3-hover-opacity"></i>
+  <p class="w3-medium">Powered by <a href="https://www.w3schools.com/w3css/default.asp" target="_blank">w3.css</a></p>
+</footer> -->
+
+  <script>
+    // Used to toggle the menu on small screens when clicking on the menu button
+    function myFunction(id) {
+      var x = document.getElementById(id);
+      if (x) {
+        if (x.className.indexOf("w3-show") == -1) {
+          x.className += " w3-show";
+        } else {
+          x.className = x.className.replace(" w3-show", "");
+        }
+      }
+    }
+  </script>
+
+</body>
+
+</html>
+
