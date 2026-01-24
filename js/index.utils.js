@@ -2,10 +2,11 @@
     const allDropdownIds = [
         'demoDropdown',
         'aboutUsDropdown', 
+        'homeDropdownMobile',
         'contactDropdown',
         'learnMoreDropdown',
         'learnMoreMobile',
-        'aboutUsMobile',
+        // 'homeMobile',
         'contactMobile'
     ];
 
@@ -26,6 +27,40 @@
         // Small delay to ensure orientation has fully changed
         setTimeout(closeAllDropdowns, 100);
     });
+    
+    // Close dropdowns when clicking outside of them
+    // Check if click is inside any currently displayed menu item or on a dropdown button
+    document.addEventListener('click', function(event) {
+        
+        var element = event.target;
+        var onclickAttr = element.onclick ? element.onclick.toString() : element.getAttribute('onclick');
+                
+        var clickedInsideDisplayedMenu = false;
+        if (onclickAttr && onclickAttr.includes('toggleNavDropdown')) {// relevant navbar/navMenu button will use the common 'toggleNavDropdown' onclick handler to toggle the dropdown
+            clickedInsideDisplayedMenu = true;
+        }
+        
+        // Close dropdowns only if click is outside any displayed menu
+        if (!clickedInsideDisplayedMenu) {
+            closeAllDropdowns();
+        }
+    });
+    
+    // Custom wrapper function for toggling nested mobile menu items
+    // When opening: shows parent navMenu first, then toggles the child element
+    // When closing: only closes the child element (parent stays open)
+    function toggleNestedMobileMenu(childId, parentId) {
+        var childElement = document.getElementById(childId);
+        var parentElement = document.getElementById(parentId);
+        
+        if (childElement && parentElement) {
+            var isChildHidden = childElement.classList.contains("w3-hide");
+            if (!parentElement.classList.contains("w3-show")) {
+                toggleNavDropdown(parentId);
+            }
+            toggleNavDropdown(childId);
+        }
+    }
     
     // Used to toggle dropdown menus (both desktop and mobile/small screens)
     function toggleNavDropdown(id) {
