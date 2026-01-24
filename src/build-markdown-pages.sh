@@ -39,6 +39,7 @@ build_page() {
     local include_anchor_js=${4:-false}
     local include_code_styles=${5:-false}
     local zero_md_attributes=${6:-""}
+    local banner_header_html=${7:-""}
     
     # Build ZERO_MD_CONFIG (for pages that need Prism code highlighting)
     local zero_md_config=""
@@ -106,6 +107,9 @@ CODE_STYLES_EOF
             }
 ANCHOR_STYLES_EOF
     fi
+
+    # Build TOP_BANNER_HTML (use provided TOP_BANNER_HTML if available)
+    local header_html="${banner_header_html}"
     
     # Export variables for envsubst
     export MARKDOWN_FILE="$markdown_file"
@@ -115,6 +119,7 @@ ANCHOR_STYLES_EOF
     export CODE_BLOCK_STYLES="$code_block_styles"
     export ANCHOR_JS_STYLES="$anchor_js_styles"
     export ZERO_MD_ATTRIBUTES="$zero_md_attributes"
+    export TOP_BANNER_HTML="$header_html"
     
     # Generate the file in project root
     envsubst < "$TEMPLATE" > "$PROJECT_ROOT/$output_file"
@@ -146,8 +151,8 @@ if [ ! -f "$CONFIG_FILE" ]; then
     exit 1
 fi
 
-# Function to parse YAML config
-parse_yaml_config() {
+# Function to build pages from YAML config
+build_pages_from_config() {
     local config_file=$1
     
     # Check if yq is available
@@ -166,7 +171,7 @@ parse_yaml_config() {
     # Get the number of pages
     local page_count=$(yq eval '.pages | length' "$config_file")
     
-    # Loop through each page and output tab-separated values
+    # Loop through each page and build it directly
     for ((i=0; i<page_count; i++)); do
         local output=$(yq eval ".pages[$i].output" "$config_file")
         local markdown=$(yq eval ".pages[$i].markdown" "$config_file")
@@ -174,21 +179,20 @@ parse_yaml_config() {
         local anchor=$(yq eval ".pages[$i].anchor // false" "$config_file" | tr '[:upper:]' '[:lower:]')
         local code=$(yq eval ".pages[$i].code // false" "$config_file" | tr '[:upper:]' '[:lower:]')
         local zero_md_attrs=$(yq eval ".pages[$i].zero_md_attrs // \"\"" "$config_file")
+        local banner_header_html=$(yq eval ".pages[$i].TOP_BANNER_HTML // \"\"" "$config_file")
         
-        printf "%s\t%s\t%s\t%s\t%s\t%s\n" "$output" "$markdown" "$description" "$anchor" "$code" "$zero_md_attrs"
+        [ -z "$output" ] && continue
+        
+        # Add space prefix to zero_md_attrs if not empty
+        [ -n "$zero_md_attrs" ] && zero_md_attrs=" $zero_md_attrs"
+        
+        build_page "$output" "$markdown" "$description" "$anchor" "$code" "$zero_md_attrs" "$banner_header_html"
     done
 }
 
 # Build pages from YAML config
 echo "Building pages from configuration file: $CONFIG_FILE"
-while IFS=$'\t' read -r output_file markdown_file page_description include_anchor include_code zero_md_attrs; do
-    [ -z "$output_file" ] && continue
-    
-    # Add space prefix to zero_md_attrs if not empty
-    [ -n "$zero_md_attrs" ] && zero_md_attrs=" $zero_md_attrs"
-    
-    build_page "$output_file" "$markdown_file" "$page_description" "$include_anchor" "$include_code" "$zero_md_attrs"
-done < <(parse_yaml_config "$CONFIG_FILE")
+build_pages_from_config "$CONFIG_FILE"
 
 echo ""
 echo "All pages built successfully!"
