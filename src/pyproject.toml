@@ -1,0 +1,28 @@
+[project]
+name = "call-catalog-viewer"
+version = "2.0.0"
+description = ""
+readme = "README.md"
+authors = [
+]
+
+requires-python = ">=3.9,<3.15"
+# uv pip install -r src/requirements.lock  
+dependencies = [
+]
+
+[project.optional-dependencies]
+dev = []
+
+[tool.uv]
+
+
+# [build-system]
+# requires = ["uv_build>=0.8.0,<0.9"]
+# build-backend = "uv_build"
+
+# for vanilla pip
+# [build-system]
+# requires = ["setuptools >= 77.0.3"]
+# build-backend = "setuptools.build_meta"
+
