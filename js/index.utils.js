@@ -3,6 +3,7 @@
         'demoDropdown',
         'aboutUsDropdown', 
         'contactDropdown',
+        'learnMoreDropdown',
         'learnMoreMobile',
         'aboutUsMobile',
         'contactMobile'
