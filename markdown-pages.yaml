@@ -71,3 +71,9 @@ pages:
     code: true
     zero_md_attrs: "no-shadow"
 
+  # Acknowledgements page
+  - output: acknowledgements.html
+    markdown: ACKNOWLEDGEMENTS.md
+    description: "Learn about the acknowledgements for the Orca Call Catalogue, including the research contributors, website development, data sources, funding and support."
+    anchor: true
+    code: false

@@ -5,7 +5,7 @@
 
 # Licence and how to cite
 
-## How to use this site?
+## Licence Information
 
 Use of information and data from this website is subject to terms under [Open Government Licence &ndash; Canada](https://open.canada.ca/en/open-government-licence-canada) 2.0
 
@@ -32,6 +32,8 @@ When referring to the catalogue, please cite the following reference:
   year = {2023}
 } 
 ```
+
+# About Killer Whale sounds
 
 ## What kinds of sounds do killer whales make?
 
