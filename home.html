@@ -35,6 +35,8 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato&display=swap">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="./css/custom.css?v=random">
+  <script defer src="./js/navbar-loader.js?v=random"></script>
+  <script defer src="./js/index.utils.js?v=random"></script>
 
   <style>
     body {
@@ -58,46 +60,14 @@
 
 </head>
 
-<!-- Navbar -->
-<div class="w3-top" style="position:relative;">
-  <div class="w3-bar w3-black w3-card">
-            <a class="w3-bar-item w3-button w3-padding-large w3-hide-medium w3-hide-large w3-right" href="javascript:void(0)"
-      onclick="myFunction('navDemo')" title="Toggle Navigation Menu"><i class="fa fa-bars"></i></a>
-    <a href="home.html?v=random" class="w3-bar-item w3-button w3-padding-large">HOME</a>
-    <!--<a href="https://orca.research.sfu.ca/annotation" class="w3-bar-item w3-button w3-padding-large w3-hide-small">ANNOTATIONS</a>-->
-    <a href="index.html?v=random" class="w3-bar-item w3-button w3-padding-large w3-hide-small">CATALOGUE</a>
-    <a href="license.html?v=random" class="w3-bar-item w3-button w3-padding-large w3-hide-small">LICENCE</a>
-    <a href="faq.html?v=random" class="w3-bar-item w3-button w3-padding-large w3-hide-small">FAQ</a>
-    <div class="w3-dropdown-hover w3-dropdown-click w3-hide-small">
-      <button class="w3-padding-large w3-button" onclick="myFunction('demoDropdown')" title="LEARN MORE">LEARN MORE <i class="fa fa-caret-down"></i></button>     
-      <div id="demoDropdown" class="w3-dropdown-content w3-bar-block w3-card-4">
-        <a href="learn-more/Aboutthecatalogue.md" class="w3-bar-item w3-button">About the catalogue</a>
-        <a href="learn-more/AboutKillerWhalesounds.md" class="w3-bar-item w3-button">About Killer Whale sounds</a>
-        <a href="learn-more/Howtocite.md" class="w3-bar-item w3-button">How to Cite</a>
-      </div>
-    </div>
-    <!--<a href="javascript:void(0)" class="w3-padding-large w3-hover-red w3-hide-small w3-right"><i class="fa fa-search"></i></a>-->
-  </div>
-</div>
-
-<!-- Navbar on small screens (remove the onclick attribute if you want the navbar to always show on top of the content when clicking on the links) -->
-<div id="navDemo" class="w3-bar-block w3-black w3-hide w3-hide-large w3-hide-medium w3-top" style="position:relative;">
-  <a href="index.html?v=random" class="w3-bar-item w3-button w3-padding-large" onclick="myFunction('navDemo')">CATALOGUE</a>
-  <a href="license.html?v=random" class="w3-bar-item w3-button w3-padding-large" onclick="myFunction('navDemo')">LICENCE</a>
-  <a href="faq.html?v=random" class="w3-bar-item w3-button w3-padding-large" onclick="myFunction('navDemo')">FAQ</a>
-  <a href="javascript:void(0)" class="w3-bar-item w3-button w3-padding-large" onclick="myFunction('learnMoreMobile')">LEARN MORE <i class="fa fa-caret-down"></i></a>
-  <div id="learnMoreMobile" class="w3-hide" style="background-color: #333;">
-    <a href="learn-more/Aboutthecatalogue.md" class="w3-bar-item w3-button w3-padding-large" style="padding-left: 3em !important;" onclick="myFunction('navDemo')">About the catalogue</a>
-    <a href="learn-more/AboutKillerWhalesounds.md" class="w3-bar-item w3-button w3-padding-large" style="padding-left: 3em !important;" onclick="myFunction('navDemo')">About Killer Whale sounds</a>
-    <a href="learn-more/Howtocite.md" class="w3-bar-item w3-button w3-padding-large" style="padding-left: 3em !important;" onclick="myFunction('navDemo')">How to Cite</a>
-  </div>
-</div>
+<!-- Navbar will be loaded here dynamically -->
+<div id="navbar-container"></div>
 
 <!-- Page content -->
 <div class="w3-content" style="max-width:2000px;">
 
   <!-- Automatic Slideshow Images -->
-  <div class="mySlides w3-display-container w3-center" style="display: none;">
+  <div class="mySlides w3-display-container w3-center">
     <img src="./home-media/image-whale1-1.jpg?v=random" style="width:100%">
     <div class="w3-display-bottommiddle w3-container w3-text-white w3-padding-32 w3-hide-small">
       <h3>A Curated Collection of Orca Acoustics</h3>
@@ -265,17 +235,6 @@
     setTimeout(carousel, 4000);
   }
 
-  // Used to toggle the menu on small screens when clicking on the menu button
-  function myFunction(id) {
-    var x = document.getElementById(id);
-    if (x) {
-      if (x.className.indexOf("w3-show") == -1) {
-        x.className += " w3-show";
-      } else {
-        x.className = x.className.replace(" w3-show", "");
-      }
-    }
-  }
 
   // When the user clicks anywhere outside of the modal, close it
   var modal = document.getElementById('submitModal');

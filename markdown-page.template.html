@@ -6,7 +6,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <title>Orca Sound Call Catalogue and Annotations</title>
 
-  <meta name="description" content="Learn about the licensing agreements and terms of use for the resources available at the Call Catalogue Library, part of SFU's HALLO project. Understand your rights and responsibilities.">
+  <meta name="description" content="${PAGE_DESCRIPTION}">
   <meta name="author" content="John K.B. Ford, Volker B. Deecke, and James F. Pilkington">
   <meta name="keywords" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
@@ -16,7 +16,7 @@
   <meta property="og:title" content="Orca Sound Call Catalogue and Annotations">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://orca.research.sfu.ca/call-library">
-  <meta property="og:description" content="Learn about the licensing agreements and terms of use for the resources available at the Call Catalogue Library, part of SFU's HALLO project. Understand your rights and responsibilities.">
+  <meta property="og:description" content="${PAGE_DESCRIPTION}">
   <meta property="og:image" content="https://orca.research.sfu.ca/call-library/home-media/S01-J,L-1.jpg">
   <meta property="og:image:type" content="image/jpg">
   <meta property="og:image:width" content="602">
@@ -25,7 +25,7 @@
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="Orca Sound Call Catalogue and Annotations">
   <meta name="twitter:image" content="https://orca.research.sfu.ca/call-library/home-media/S01-J,L-1.jpg">
-  <meta name="twitter:description" content="Learn about the licensing agreements and terms of use for the resources available at the Call Catalogue Library, part of SFU's HALLO project. Understand your rights and responsibilities.">
+  <meta name="twitter:description" content="${PAGE_DESCRIPTION}">
   <link rel="icon" type="image/jpg" href="favicon.jpg">
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/w3-css/4.1.0/3/w3.min.css">
@@ -35,16 +35,16 @@
   <script defer src="./js/navbar-loader.js?v=random"></script>
   <script defer src="./js/index.utils.js?v=random"></script>
 
-
+${ZERO_MD_CONFIG}
   <script type="module" src="https://cdn.jsdelivr.net/gh/zerodevx/zero-md@2/dist/zero-md.min.js">
   </script>
-
+${ANCHOR_JS_SCRIPT}
 
   <style>
     body {
       font-family: "Lato", sans-serif
     }
-
+${CODE_BLOCK_STYLES}
   </style>
 
   <!-- Google tag (gtag.js) -->
@@ -64,12 +64,11 @@
   <div id="navbar-container"></div>
 
   <div class="w3-content" style="max-width:2000px;">
+    
+${TOP_BANNER_HTML}
 
-    <!-- License Information -->
-    <div class="w3-container w3-content w3-justify w3-padding-30" style="max-width:800px;margin-top:5%;">
-      <!-- file = 'srkw-call-catalogue-files/LICENSE.md' -->
-      <!-- TODO Generify this pass somehow. General license path outside of the srkw catalogue files? -->
-      <zero-md src='LICENSE.md?v=random'>
+    <div class="w3-container w3-content w3-justify w3-padding-30" style="max-width:800px;">
+      <zero-md src='${MARKDOWN_FILE}?v=random'${ZERO_MD_ATTRIBUTES}>
         <template>
           <style>
             h1 {
@@ -81,7 +80,7 @@
             a {
               color: black;
             }
-
+            ${ANCHOR_JS_STYLES}
           </style>
         </template>
       </zero-md>

@@ -27,10 +27,15 @@
   z-index: 1;
 }
 
-/* On large screens (min-width: 769px), use hover to show content */
+/* Disable hover behavior - dropdowns should only open on click */
+.w3-dropdown-hover:hover .w3-dropdown-content {
+  display: none !important;
+}
+
+/* On large screens (min-width: 769px), also disable hover */
 @media screen and (min-width: 769px) {
   .w3-dropdown-hover:hover .w3-dropdown-content {
-    display: block;
+    display: none !important;
   }
   .w3-dropdown-click .w3-dropdown-content:not(.w3-show) {
       display: none !important; /* Hide JS-toggled content unless w3-show class is present */

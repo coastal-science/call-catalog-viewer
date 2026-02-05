@@ -6,8 +6,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <title>Orca Sound Call Catalogue and Annotations</title>
 
-  <meta name="description"
-    content="Have questions about the Orca Call Catalogue Library at SFU's HALLO project? Check out our FAQ page for answers on accessing resources and materials for effective learning, teaching, and more.">
+  <meta name="description" content="Have questions about the Orca Call Catalogue Library at SFU's HALLO project? Check out our FAQ page for answers on accessing resources and materials for effective learning, teaching, and more.">
   <meta name="author" content="John K.B. Ford, Volker B. Deecke, and James F. Pilkington">
   <meta name="keywords" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
@@ -17,8 +16,7 @@
   <meta property="og:title" content="Orca Sound Call Catalogue and Annotations">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://orca.research.sfu.ca/call-library">
-  <meta property="og:description"
-    content="Have questions about the Orca Call Catalogue Library at SFU's HALLO project? Check out our FAQ page for answers on accessing resources and materials for effective learning, teaching, and more.">
+  <meta property="og:description" content="Have questions about the Orca Call Catalogue Library at SFU's HALLO project? Check out our FAQ page for answers on accessing resources and materials for effective learning, teaching, and more.">
   <meta property="og:image" content="https://orca.research.sfu.ca/call-library/home-media/S01-J,L-1.jpg">
   <meta property="og:image:type" content="image/jpg">
   <meta property="og:image:width" content="602">
@@ -27,41 +25,44 @@
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="Orca Sound Call Catalogue and Annotations">
   <meta name="twitter:image" content="https://orca.research.sfu.ca/call-library/home-media/S01-J,L-1.jpg">
-  <meta name="twitter:description"
-    content="Have questions about the Orca Call Catalogue Library at SFU's HALLO project? Check out our FAQ page for answers on accessing resources and materials for effective learning, teaching, and more.">
+  <meta name="twitter:description" content="Have questions about the Orca Call Catalogue Library at SFU's HALLO project? Check out our FAQ page for answers on accessing resources and materials for effective learning, teaching, and more.">
   <link rel="icon" type="image/jpg" href="favicon.jpg">
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/w3-css/4.1.0/3/w3.min.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato&display=swap">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="./css/custom.css?v=random">
+  <script defer src="./js/navbar-loader.js?v=random"></script>
+  <script defer src="./js/index.utils.js?v=random"></script>
 
-  <script>
+<script>
     // Make use of global config object to change default options
     window.ZeroMdConfig = {
       prismUrl: [
         // Default Prism URLs
-        ['https://cdn.jsdelivr.net/gh/PrismJS/prism@1/prism.min.js', 'data-manual'],
-        'https://cdn.jsdelivr.net/gh/PrismJS/prism@1/plugins/autoloader/prism-autoloader.min.js',
-        // Also load Prism's `toolbar` and `copy-to-clipboard` plugins
-        'https://cdn.jsdelivr.net/gh/PrismJS/prism@1/plugins/toolbar/prism-toolbar.min.js',
-        'https://cdn.jsdelivr.net/gh/PrismJS/prism@1/plugins/copy-to-clipboard/prism-copy-to-clipboard.min.js'
+        ["https://cdn.jsdelivr.net/gh/PrismJS/prism@1/prism.min.js", "data-manual"],
+        "https://cdn.jsdelivr.net/gh/PrismJS/prism@1/plugins/autoloader/prism-autoloader.min.js",
+        // Also load Prism's toolbar and copy-to-clipboard plugins
+        "https://cdn.jsdelivr.net/gh/PrismJS/prism@1/plugins/toolbar/prism-toolbar.min.js",
+        "https://cdn.jsdelivr.net/gh/PrismJS/prism@1/plugins/copy-to-clipboard/prism-copy-to-clipboard.min.js"
       ],
       cssUrls: [
         // Default stylesheets
-        'https://cdn.jsdelivr.net/gh/sindresorhus/github-markdown-css@4/github-markdown.min.css',
-        'https://cdn.jsdelivr.net/gh/PrismJS/prism@1/themes/prism.min.css',
-        // Include CSS for `toolbar` plugin
-        'https://cdn.jsdelivr.net/gh/PrismJS/prism@1/plugins/toolbar/prism-toolbar.min.css'
+        "https://cdn.jsdelivr.net/gh/sindresorhus/github-markdown-css@4/github-markdown.min.css",
+        "https://cdn.jsdelivr.net/gh/PrismJS/prism@1/themes/prism.min.css",
+        // Include CSS for toolbar plugin
+        "https://cdn.jsdelivr.net/gh/PrismJS/prism@1/plugins/toolbar/prism-toolbar.min.css"
       ]
     }
   </script>
   <script type="module" src="https://cdn.jsdelivr.net/gh/zerodevx/zero-md@2/dist/zero-md.min.js">
   </script>
-  <script type="module">
+<script type="module">
     import 'https://cdn.jsdelivr.net/npm/anchor-js/anchor.min.js'
     document.addEventListener('zero-md-rendered', function (event) {
-      anchors.add()
+      if (typeof anchors !== 'undefined') {
+        anchors.add()
+      }
     })
   </script>
 
@@ -69,8 +70,7 @@
     body {
       font-family: "Lato", sans-serif
     }
-
-    /* markdown code block */
+/* markdown code block */
     pre[class*="language-"],
     code[class*="language-"] {
       overflow: auto;
@@ -91,35 +91,8 @@
 </head>
 
 <body>
-  <!-- Navbar -->
-  <div class="w3-top" style="position:relative;">
-    <div class="w3-bar w3-black w3-card">
-      <a class="w3-bar-item w3-button w3-padding-large w3-hide-medium w3-hide-large w3-right" href="javascript:void(0)"
-        onclick="myFunction()" title="Toggle Navigation Menu"><i class="fa fa-bars"></i></a>
-      <a href="home.html?v=random" class="w3-bar-item w3-button w3-padding-large">HOME</a>
-      <a href="index.html?v=random" class="w3-bar-item w3-button w3-padding-large w3-hide-small">CATALOGUE</a>
-      <a href="license.html?v=random" class="w3-bar-item w3-button w3-padding-large w3-hide-small">LICENCE</a>
-      <a href="faq.html?v=random" class="w3-bar-item w3-button w3-padding-large w3-hide-small">FAQ</a>
-      <!-- <div class="w3-dropdown-hover w3-hide-small">
-      <button class="w3-padding-large w3-button" title="More">MORE <i class="fa fa-caret-down"></i></button>     
-      <div class="w3-dropdown-content w3-bar-block w3-card-4">
-        <a href="home.html?v=random" class="w3-bar-item w3-button">Sub-page1</a>
-        <a href="home.html?v=random" class="w3-bar-item w3-button">Sub-page2</a>
-        <a href="home.html?v=random" class="w3-bar-item w3-button">Sub-page3</a>
-      </div>
-    </div>
-    <a href="javascript:void(0)" class="w3-padding-large w3-hover-red w3-hide-small w3-right"><i class="fa fa-search"></i></a>
-  -->
-    </div>
-  </div>
-
-  <!-- Navbar on small screens (remove the onclick attribute if you want the navbar to always show on top of the content when clicking on the links) -->
-  <div id="navDemo" class="w3-bar-block w3-black w3-hide w3-hide-large w3-hide-medium w3-top"
-    style="position:relative;">
-    <a href="index.html?v=random" class="w3-bar-item w3-button w3-padding-large" onclick="myFunction()">CATALOGUE</a>
-    <a href="license.html?v=random" class="w3-bar-item w3-button w3-padding-large" onclick="myFunction()">LICENCE</a>
-    <a href="faq.html?v=random" class="w3-bar-item w3-button w3-padding-large" onclick="myFunction()">FAQ</a>
-  </div>
+  <!-- Navbar will be loaded here dynamically -->
+  <div id="navbar-container"></div>
 
   <div class="w3-content" style="max-width:2000px;">
     <!-- FAQ Information -->
@@ -128,7 +101,6 @@
       <!-- TODO Generify this pass somehow. General FAQ path outside of the srkw catalogue files? -->
       <zero-md src='FAQ.md?v=random' no-shadow>
         <template>
-
           <style>
             h1 {
               text-align: center;
@@ -136,12 +108,10 @@
               font-weight: 400;
               letter-spacing: .1em;
             }
-
             a {
               color: black;
             }
-
-            .anchorjs-link {
+.anchorjs-link {
               text-decoration: none;
             }
           </style>
@@ -162,18 +132,8 @@
   <p class="w3-medium">Powered by <a href="https://www.w3schools.com/w3css/default.asp" target="_blank">w3.css</a></p>
 </footer> -->
 
-  <script>
-    // Used to toggle the menu on small screens when clicking on the menu button
-    function myFunction() {
-      var x = document.getElementById("navDemo");
-      if (x.className.indexOf("w3-show") == -1) {
-        x.className += " w3-show";
-      } else {
-        x.className = x.className.replace(" w3-show", "");
-      }
-    }
-  </script>
 
 </body>
 
 </html>
+
