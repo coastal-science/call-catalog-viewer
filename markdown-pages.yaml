@@ -39,6 +39,7 @@ pages:
     code: false
 
   # About the Catalogue page
+  - output: about-the-catalogue.html
     markdown: ACuratedCollectionofOrcaAcoustics.md
     description: "Learn about the Orca Call Catalogue - a curated collection of orca acoustics and annotations used in machine learning datasets, gathered through decades of research."
     anchor: true
@@ -77,3 +78,7 @@ pages:
     description: "Learn about the acknowledgements for the Orca Call Catalogue, including the research contributors, website development, data sources, funding and support."
     anchor: true
     code: false
+    # TOP_BANNER_HTML: |
+    #   <div class="mySlides w3-display-container w3-center">
+    #     <img src="./home-media/image-whale1-1.jpg?v=random" style="width:100%">
+    #     <div class="w3-display-bottommiddle w3-container w3-text-white w3-padding-32 w3-hide-small">
