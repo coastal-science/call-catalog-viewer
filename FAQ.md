@@ -3,6 +3,57 @@
 
 # Frequently Asked Questions
 
+# A Curated Collection of Orca Acoustics
+
+<!-- ## A Curated Collection of Orca Acoustics -->
+
+<!-- 
+<center>
+ <figure>
+  <img src="./home-media/image-whale1-1.jpg?v=random" alt="sample waveform" class="mySlides w3-display-container w3-center" style="width:100%">
+  <figcaption><em>A double spyhop by two members of J pod of the Southern Resident killer whales photographed by Olivia Murphy on June 24, 2022 from shore on Saturna Island, BC, Canada</em></figcaption>
+</figure>
+</center> -->
+
+## Orca Call Catalogue
+
+> _A Listening Gallery of Sound Recordings and Spectrographs_
+
+Researchers are currently aiming to “teach” artificial intelligence systems to recognize the sounds of resident killer whales in order to develop a warning system for reducing acoustic disturbance and preventing ships from fatally striking endangered orcas off British Columbia's coast.
+
+Data used to train artificial intelligence systems come from various sources: from hydrophone nodes located near shipping lanes, to the contributions of citizen scientists and projects like [Orcasound](https://www.orcasound.net/) and [Whalesound.ca](https://whalesound.ca/).
+
+This website shares a curated collection of orca acoustics and annotations which represent the type of samples used in machine learning datasets. The collection serves as a teaching and training tool for ensuring consistency of labelling between listeners and annotators while demonstrating the complexity of communication within and between pods.
+
+These samples have been gathered through decades of research by Dr. John Ford and James Pilkington (Fisheries and Oceans Canada's Pacific Biological Station) and their colleague Volker Deecke (University of Cumbria).
+
+Below is a sample spectrograph and audio file from the [call catalogue](./index.html?v=random).
+
+<!-- <img src="./home-media/S01-J,L-1.jpg?v=random" class="w3-round w3-margin-bottom" alt="sample waveform"
+            style="width:45%;border-style:solid;border-width:1em;border-color:#f4f4f4"> -->
+<center>
+
+<figure>
+  <img src="./home-media/S01-J,L-1.jpg?v=random" alt="sample waveform" class="w3-round w3-margin-bottom" style="width:45%;border-style:solid;border-width:1em;border-color:#f4f4f4">
+  <figcaption><em>sample caption</em></figcaption>
+</figure>
+
+<!--HTML5 to play wav file-->
+<!-- <p><audio controls>
+    <source src="./home-media/S01-J,L-1.wav?v=random" type="audio/wav">Your browser does not support the audio
+    element.
+  </audio>
+</p> -->
+
+|   |
+|:-:|
+|<audio controls> <source type="audio/wav" src="./home-media/S01-J,L-1.wav?v=random" title="sample waveform">Your browser does not support the audio element.</audio> |
+|_sample caption_|
+
+</center>
+
+Thanks to **Ishan Sahay** and _SFUs Research Computing Group/IT Services_, and **Steven Bergner** and _SFUs Big Data Hub_ at Simon Fraser University for their contributions in bringing this Orca Call Catalogue online.
+
 # Licence and how to cite
 
 ## Licence Information
