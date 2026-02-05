@@ -2,7 +2,7 @@
 <div id="navbar" class="w3-top" style="position:relative;">
   <div class="w3-bar w3-black w3-card">
     <div class="w3-dropdown-hover w3-dropdown-click w3-hide-large w3-hide-medium">
-      <button class="w3-padding-large w3-button" onclick="toggleNestedMobileMenu('homeMobile', 'navMenu')" title="ABOUT US"><i class="fa fa-level-up" style="transform: scaleX(-1); display: inline-block;"></i> HOME ${__DRAFT_RELEASE__}</button>
+      <button class="w3-padding-large w3-button" onclick="toggleNestedMobileMenu('homeMobile', 'navMenu')" title="HOME"><i class="fa fa-level-up" style="transform: scaleX(-1); display: inline-block;"></i> HOME ${__DRAFT_RELEASE__}</button>
       <!-- <div id="homeDropdownMobile" class="w3-dropdown-content w3-bar-block w3-card-4">
         <a href="https://orca.research.sfu.ca" class="w3-bar-item w3-button"><img src="https://www.google.com/s2/favicons?domain=orca.research.sfu.ca&sz=16" alt="" style="width:16px;height:16px;margin-right:8px;vertical-align:middle;">COASTAL-SCIENCE HALLO</a>
         <a href="https://whales.research.sfu.ca" class="w3-bar-item w3-button"><img src="https://www.google.com/s2/favicons?domain=whales.research.sfu.ca&sz=16" alt="" style="width:16px;height:16px;margin-right:8px;vertical-align:middle;">NSERC WHALES</a>
@@ -11,7 +11,6 @@
     <!-- <a href="home.html?v=random" class="w3-bar-item w3-button w3-padding-large w3-hide-large w3-hide-medium">HOME &nbsp;&nbsp;&nbsp;&nbsp;<u style="color: #A6192E;">DRAFT RELEASE</u></a> -->
     <a class="w3-bar-item w3-button w3-padding-large w3-hide-large w3-hide-medium w3-right" href="javascript:void(0)"
       onclick="toggleNavDropdown('navMenu')" title="Toggle Navigation Menu"><i class="fa fa-bars"></i></a>
-    <!-- <a href="index.html?v=random" class="w3-bar-item w3-button w3-padding-large w3-hide-small">CATALOGUE</a> -->
     <div class="w3-dropdown-hover w3-dropdown-click w3-hide-small">
       <button class="w3-padding-large w3-button" onclick="toggleNavDropdown('aboutUsDropdown')" title="ABOUT US"><i class="fa fa-level-up" style="transform: scaleX(-1); display: inline-block;"></i> HOME ${__DRAFT_RELEASE__}</button>
       <div id="aboutUsDropdown" class="w3-dropdown-content w3-bar-block w3-card-4">
@@ -22,13 +21,14 @@
     <!-- <a href="home.html?v=random" class="w3-bar-item w3-button w3-padding-large w3-hide-small">HOME &nbsp;&nbsp;&nbsp;&nbsp;<u style="color: #A6192E;">DRAFT RELEASE</u></a> -->
     <!--<a href="https://orca.research.sfu.ca/annotation" class="w3-bar-item w3-button w3-padding-large w3-hide-small">ANNOTATIONS</a>-->
     <a href="index.html?v=random" class="w3-bar-item w3-button w3-padding-large w3-hide-small">CATALOGUE</a>
-    <a href="license.html?v=random" class="w3-bar-item w3-button w3-padding-large w3-hide-small">LICENCE</a>
+    <a href="acknowledgements.html?v=random" class="w3-bar-item w3-button w3-padding-large w3-hide-small" title="ACKNOWLEDGEMENTS">ACKNOWLEDGEMENTS</a>
+    <a href="license.html?v=random" class="w3-bar-item w3-button w3-padding-large w3-hide-small" title="LICENCE">LICENCE</a>
     <a href="faq.html?v=random" class="w3-bar-item w3-button w3-padding-large w3-hide-small">FAQ</a>
     <div class="w3-dropdown-hover w3-dropdown-click w3-hide-small">
       <button class="w3-padding-large w3-button" onclick="toggleNavDropdown('learnMoreDropdown')" title="LEARN MORE">LEARN MORE <i class="fa fa-caret-down"></i></button>     
       <div id="learnMoreDropdown" class="w3-dropdown-content w3-bar-block w3-card-4">
-        <a href="home.html?v=random" class="w3-bar-item w3-button">About the catalogue (from Home)</a>
-        <a href="about-the-catalogue-man.html" class="w3-bar-item w3-button">About the catalogue (manual version)</a>
+        <!-- <a href="home.html?v=random" class="w3-bar-item w3-button">About the catalogue (from Home)</a> -->
+        <!-- <a href="about-the-catalogue-man.html" class="w3-bar-item w3-button">About the catalogue (manual version)</a> -->
         <a href="about-the-catalogue.html" class="w3-bar-item w3-button">About the catalogue</a>
         <a href="about-killer-whale-sounds.html?v=random" class="w3-bar-item w3-button">About Killer Whale sounds</a>
         <a href="licence-and-how-to-cite.html?v=random" class="w3-bar-item w3-button">License and How to Cite</a>
@@ -55,12 +55,13 @@
   </div>
   <!-- <a href="home.html?v=random" class="w3-bar-item w3-button w3-padding-large" onclick="toggleNavDropdown('navMenu')" style="color: white !important;">HOME &nbsp;&nbsp;&nbsp;&nbsp;<u style="color: #A6192E;">DRAFT RELEASE</u></a> -->
   <a href="index.html?v=random" class="w3-bar-item w3-button w3-padding-large" onclick="toggleNavDropdown('navMenu')">CATALOGUE</a>
-  <a href="license.html?v=random" class="w3-bar-item w3-button w3-padding-large" onclick="toggleNavDropdown('navMenu')">LICENCE</a>
-  <a href="faq.html?v=random" class="w3-bar-item w3-button w3-padding-large" onclick="toggleNavDropdown('navMenu')">FAQ</a>
+  <a href="acknowledgements.html?v=random" class="w3-bar-item w3-button w3-padding-large w3-hide-small" title="ACKNOWLEDGEMENTS">ACKNOWLEDGEMENTS</a>
+  <!-- <a href="license.html?v=random" class="w3-bar-item w3-button w3-padding-large" onclick="toggleNavDropdown('navMenu')" title="LICENCE">LICENCE</a> -->
+  <a href="faq.html?v=random" class="w3-bar-item w3-button w3-padding-large" onclick="toggleNavDropdown('navMenu')" title="FAQ">FAQ</a>
   <a href="javascript:void(0)" class="w3-bar-item w3-button w3-padding-large" onclick="toggleNavDropdown('learnMoreMobile')">LEARN MORE <i class="fa fa-caret-down"></i></a>
   <div id="learnMoreMobile" class="w3-hide" style="background-color: #333;">
-    <a href="home.html?v=random" class="w3-bar-item w3-button w3-padding-large" style="padding-left: 3em !important;" onclick="toggleNavDropdown('navMenu')">About the catalogue (from Home)</a>
-    <a href="about-the-catalogue-man.html" class="w3-bar-item w3-button w3-padding-large" style="padding-left: 3em !important;" onclick="toggleNavDropdown('navMenu')">About the catalogue (manual version)</a>
+    <!-- <a href="home.html?v=random" class="w3-bar-item w3-button w3-padding-large" style="padding-left: 3em !important;" onclick="toggleNavDropdown('navMenu')">About the catalogue (from Home)</a> -->
+    <!-- <a href="about-the-catalogue-man.html" class="w3-bar-item w3-button w3-padding-large" style="padding-left: 3em !important;" onclick="toggleNavDropdown('navMenu')">About the catalogue (manual version)</a> -->
     <a href="about-the-catalogue.html" class="w3-bar-item w3-button w3-padding-large" style="padding-left: 3em !important;" onclick="toggleNavDropdown('navMenu')">About the catalogue</a>
     <a href="about-killer-whale-sounds.html?v=random" class="w3-bar-item w3-button w3-padding-large" style="padding-left: 3em !important;" onclick="toggleNavDropdown('navMenu')">About Killer Whale sounds</a>
     <a href="licence-and-how-to-cite.html?v=random" class="w3-bar-item w3-button w3-padding-large" style="padding-left: 3em !important;" onclick="toggleNavDropdown('navMenu')">License and How to Cite</a>
