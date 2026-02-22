@@ -6,7 +6,7 @@ readme = "README.md"
 authors = [
 ]
 
-requires-python = ">=3.9,<3.15"
+requires-python = ">=3.11,<3.15"
 # uv pip install -r src/requirements.lock  
 dependencies = [
 ]
