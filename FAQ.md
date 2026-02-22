@@ -29,8 +29,8 @@ These samples have been gathered through decades of research by Dr. John Ford an
 
 Below is a sample spectrograph and audio file from the [call catalogue](./index.html?v=random).
 
-<!-- <img src="./home-media/S01-J,L-1.jpg?v=random" class="w3-round w3-margin-bottom" alt="sample waveform"
-            style="width:45%;border-style:solid;border-width:1em;border-color:#f4f4f4"> -->
+<!-- <img src="./home-media/S01-J,L-1.jpg?v=random" class="w3-round w3-margin-bottom" alt="sample waveform" style="width:45%;border-style:solid;border-width:1em;border-color:#f4f4f4"> -->
+
 <center>
 
 <figure>
@@ -39,11 +39,14 @@ Below is a sample spectrograph and audio file from the [call catalogue](./index.
 </figure>
 
 <!--HTML5 to play wav file-->
-<!-- <p><audio controls>
+<!-- 
+<p>
+  <audio controls>
     <source src="./home-media/S01-J,L-1.wav?v=random" type="audio/wav">Your browser does not support the audio
     element.
   </audio>
-</p> -->
+</p> 
+-->
 
 |   |
 |:-:|
