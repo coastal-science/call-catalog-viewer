@@ -9,6 +9,16 @@ authors = [
 requires-python = ">=3.11,<3.15"
 # uv pip install -r src/requirements.lock  
 dependencies = [
+    "flatdict==4.0.1",
+    "gitdb==4.0.12",
+    "gitpython==3.1.46",
+    "loguru==0.7.3",
+    "numpy==2.4.1",
+    "pandas==3.0.0",
+    "python-dateutil==2.9.0.post0",
+    "pyyaml==6.0.3",
+    "six==1.17.0",
+    "smmap==5.0.2",
 ]
 
 [project.optional-dependencies]
@@ -16,6 +26,10 @@ dev = []
 
 [tool.uv]
 
+[tool.uv.extra-build-dependencies]
+# flatdict's setup.py imports pkg_resources at build time. setuptools>=82 removed pkg_resources,
+# so we constrain the build env to an older setuptools that still provides it.
+flatdict = ["setuptools>=40.8.0,<82"]
 
 # [build-system]
 # requires = ["uv_build>=0.8.0,<0.9"]
