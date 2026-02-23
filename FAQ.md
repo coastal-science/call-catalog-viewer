@@ -2,7 +2,7 @@
 > Thanks to **Ishan Sahay** and _SFUs Research Computing Group/IT Services_, and **Steven Bergner** and _SFUs Big Data Hub_ at Simon Fraser University for their contributions in bringing this Orca Call Catalogue online.
 
 # Frequently Asked Questions
-incorporate the new material I’m writing (subsections I’m working on include: Introduction and background, How call types were identified and named, How to use the catalogue, and Examples of field recordings (this last subsection will contain the additional clips from NRKW and WCT populations).<--
+
 # A Curated Collection of Orca Acoustics
 
 ## Orca Call Catalogue
