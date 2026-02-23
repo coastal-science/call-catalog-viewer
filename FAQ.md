@@ -2,18 +2,8 @@
 > Thanks to **Ishan Sahay** and _SFUs Research Computing Group/IT Services_, and **Steven Bergner** and _SFUs Big Data Hub_ at Simon Fraser University for their contributions in bringing this Orca Call Catalogue online.
 
 # Frequently Asked Questions
-
+incorporate the new material I’m writing (subsections I’m working on include: Introduction and background, How call types were identified and named, How to use the catalogue, and Examples of field recordings (this last subsection will contain the additional clips from NRKW and WCT populations).<--
 # A Curated Collection of Orca Acoustics
-
-<!-- ## A Curated Collection of Orca Acoustics -->
-
-<!-- 
-<center>
- <figure>
-  <img src="./home-media/image-whale1-1.jpg?v=random" alt="sample waveform" class="mySlides w3-display-container w3-center" style="width:100%">
-  <figcaption><em>A double spyhop by two members of J pod of the Southern Resident killer whales photographed by Olivia Murphy on June 24, 2022 from shore on Saturna Island, BC, Canada</em></figcaption>
-</figure>
-</center> -->
 
 ## Orca Call Catalogue
 
@@ -29,24 +19,12 @@ These samples have been gathered through decades of research by Dr. John Ford an
 
 Below is a sample spectrograph and audio file from the [call catalogue](./index.html?v=random).
 
-<!-- <img src="./home-media/S01-J,L-1.jpg?v=random" class="w3-round w3-margin-bottom" alt="sample waveform" style="width:45%;border-style:solid;border-width:1em;border-color:#f4f4f4"> -->
-
 <center>
 
 <figure>
   <img src="./home-media/S01-J,L-1.jpg?v=random" alt="sample waveform" class="w3-round w3-margin-bottom" style="width:45%;border-style:solid;border-width:1em;border-color:#f4f4f4">
   <figcaption><em>sample caption</em></figcaption>
 </figure>
-
-<!--HTML5 to play wav file-->
-<!-- 
-<p>
-  <audio controls>
-    <source src="./home-media/S01-J,L-1.wav?v=random" type="audio/wav">Your browser does not support the audio
-    element.
-  </audio>
-</p> 
--->
 
 |   |
 |:-:|
