@@ -49,7 +49,7 @@ Here are some clips from recordings of the different populations included in thi
 
 ### Southern Residents
 
-*	J pod (J clan)
+* J pod (J clan)
 
 ### Northern Resident
 
@@ -57,7 +57,7 @@ Here are some clips from recordings of the different populations included in thi
 
 * I11pod  (G clan)
 
-** R1 pod (R clan)
+* R1 pod (R clan)
 
 ### Bigg’s (Transient)
 
