@@ -143,7 +143,7 @@ The dialects of orcas are also a useful and important tool for studying the seas
 
 * https://simres.ca/projects/hydrophones
 
-<center>
+<!-- <center> -->
 <!-- 
 | | | | |
 |:---:|:---:|:---:|:---:|
@@ -153,7 +153,7 @@ The dialects of orcas are also a useful and important tool for studying the seas
 |:---:|:---:|:---:|:---:|:---:|:---:|
 | <a href="https://www.orcasound.net"><img src="https://www.orcasound.net/wp2017/wp-content/uploads/2018/09/orcasound-logo-horizontal-black.png" alt="Orca Sound logo" style="max-width: 180px; height: auto;"></a> | <a href="https://whalesound.ca"><img src="https://whalesound.ca/wp-content/uploads/2025/05/WhaleSound_LOGO_green-1200x720.png" alt="Whale Sound logo" style="max-width: 180px; height: auto; display: block;"></a> | <a href="https://orcalab.org/live-streams"><img src="https://whalesound.ca/wp-content/uploads/2025/05/Orcalab-Logo.png" alt="OrcaLab logo" width="180" height="60" style="max-width: 180px; height: auto; display: block;"></a> | <a href="https://orcabehaviorinstitute.org"><img src="https://cdn.prod.website-files.com/65727aed69649e5fc1f78c09/661614abfdfd314129a256fc_OBI%20Logo%20Clear-p-500.png" alt="Orca Behavior Institute" style="max-width: 180px; height: auto;"></a> | <a href="https://www.raincoast.org/station/"><img src="https://www.raincoast.org/wp-content/uploads/2017/03/raincoast-logo.png" alt="Raincoast Conservation Foundation logo" style="max-width: 180px; height: auto;"></a> | <a href="https://simres.ca/projects/hydrophones/"><img src="https://simres.ca/wp-content/uploads/2021/01/cropped-Logo_website.png" alt="SIMRES logo" style="max-width: 180px; height: auto;"></a> |
 | https://www.orcasound.net | https://whalesound.ca | https://orcalab.org/live-streams | https://www.orcabehaviorinstitute.org/orca-acoustics | https://www.raincoast.org/station | https://simres.ca/projects/hydrophones | https://www.orcasound.net | https://whalesound.ca | https://orcalab.org/live-streams | https://www.orcabehaviorinstitute.org/orca-acoustics | https://www.raincoast.org/station | https://simres.ca/projects/hydrophones | -->
-</center>
+<!-- </center> -->
 
 <center>
 | | |
