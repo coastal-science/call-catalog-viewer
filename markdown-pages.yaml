@@ -40,7 +40,7 @@ pages:
 
   # About the Catalogue page
   - output: about-the-catalogue.html
-    markdown: AboutTheCatalogue.md
+    markdown: Aboutthecatalogue.md
     description: "Learn about the Orca Call Catalogue - a curated collection of orca acoustics and annotations used in machine learning datasets, gathered through decades of research."
     anchor: true
     code: false
@@ -59,7 +59,7 @@ pages:
 
   # About Killer Whale Sounds page
   - output: about-killer-whale-sounds.html
-    markdown: AboutKillerWhalesAndTheirSounds.md
+    markdown: AboutKillerWhalesandtheirSounds.md
     description: "Discover the fascinating world of killer whale sounds - learn about call types, dialects, repertoires, and what researchers can learn from studying orca acoustics."
     anchor: true
     code: false
