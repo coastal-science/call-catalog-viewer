@@ -169,7 +169,7 @@ Ford, John K.B., Volker B. Deecke, and James F. Pilkington. 2026. Dialects of Ki
 ```
 @misc{Ford_Volker_Pilkington, 
   author = {Ford, John K.B. and Deecke, Volker B. and Pilkington, James F.},
-  title = {Dialects of Killer Whales in Coastal Northeastern Pacific Waters: A Catalogue of Call Types}, 
+  title = {Dialects of Killer Whales in Coastal Northeastern Pacific Waters: A Catalogue of Call Types of Resident and Bigg’s populations}, 
   howpublished = {\url{https://orca.research.sfu.ca/call-library}}, 
   year = {2023}
 } 
