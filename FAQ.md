@@ -78,6 +78,7 @@ There is much variation in the call repertoires of different killer whale popula
 
 Here are some clips from recordings of Southern Resident pods in action.
 
+<center>
 | |
 |-|
 |<audio controls> <source type="audio/wav" src="./featured/J pod foraging_JFord.wav?v=random" title="J pod foraging, Boundary Pass. Call types S01 and S04 are most common in this activity state.">Your browser does not support the audio element.</audio> |
@@ -104,6 +105,7 @@ Here are some clips from recordings of Southern Resident pods in action.
 |<audio controls> <source type="audio/wav" src="./catalogs/Southern Resident/media/J K L pods together_JFord.wav?v=random" title="J, K and L pods together, Juan de Fuca Strait">Your browser does not support the audio element.</audio> |
 |J, K and L pods together, Juan de Fuca Strait |
 -->
+</center>
 
 ## Insights into Killer Whales Through Acoustics
 
