@@ -156,6 +156,7 @@ The dialects of orcas are also a useful and important tool for studying the seas
 <!-- </center> -->
 
 <center>
+
 | | |
 |:---:|:---:|
 | <a href="https://www.orcasound.net"><img src="https://www.orcasound.net/wp2017/wp-content/uploads/2018/09/orcasound-logo-horizontal-black.png" alt="Orca Sound logo" style="max-width: 180px; height: auto;"></a> | <a href="https://whalesound.ca"><img src="https://whalesound.ca/wp-content/uploads/2025/05/WhaleSound_LOGO_green-1200x720.png" alt="Whale Sound logo" style="max-width: 180px; height: auto; display: block;"></a> | 
