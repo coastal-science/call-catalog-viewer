@@ -194,3 +194,5 @@ Subject to the terms, you are free to:
 You must, where you do any of the above, use the following attribution statement:
 
 > _Contains information licensed under the Open Government Licence &ndash; Canada 2.0._
+
+Test Accessed on: ?v=random
