@@ -116,7 +116,7 @@ The dialects of orcas are also a useful and important tool for studying the seas
 
 ## Additional Resources
 
-### For those wishing to take a deeper dive into killer whale dialects and how they are used to monitor the seasonal movements of the whales, the following are some relevant scientific publications.
+For those wishing to take a deeper dive into killer whale dialects and how they are used to monitor the seasonal movements of the whales, the following are some relevant scientific publications.
 
 > Deecke, V.B., Ford, J.K.B., and Slater, P.J.B. 2005. The vocal behaviour of mammal-eating killer whales: communicating with costly calls. _Animal Behaviour_, 69:395-405. https://doi.org/10.1016/j.anbehav.2004.04.014
 
@@ -132,7 +132,7 @@ The dialects of orcas are also a useful and important tool for studying the seas
 
 > Pilkington, J.F., Stredulinsky, E.H., Gavrilchuk, K., Thornton, S.J., Ford, J.K.B., and Doniol-Valcroze, T. 2023. Patterns of winter occurrence of three sympatric killer whale populations off eastern Vancouver Island, Canada, based on passive acoustic monitoring. _Frontiers in Marine Science_, 10, p.1204908. https://doi.org/10.3389/fmars.2023.1204908
 
-### The following are links to websites featuring killer whale acoustics, some with links to live hydrophones.
+#### The following are links to websites featuring killer whale acoustics, some with links to live hydrophones.
 
 
 <!-- <center> -->
@@ -161,9 +161,11 @@ The dialects of orcas are also a useful and important tool for studying the seas
 
 # Licence and How to cite
 
-## For research use of catalogue, the following citation should be used.
+### For research use of the catalogue
 
-Ford, John K.B., Volker B. Deecke, and James F. Pilkington. 2026. Dialects of Killer Whales in Coastal Northeastern Pacific Waters: A Catalogue of Call Types of Resident and Bigg’s populations. [https://orca.research.sfu.ca/call-library](https://orca.research.sfu.ca/call-library). Accessed 1 Aug. 2023.
+Use the following citation.
+
+> Ford, John K.B., Volker B. Deecke, and James F. Pilkington. 2026. Dialects of Killer Whales in Coastal Northeastern Pacific Waters: A Catalogue of Call Types of Resident and Bigg’s populations. [https://orca.research.sfu.ca/call-library](https://orca.research.sfu.ca/call-library). Accessed 1 Aug. 2023.
 
 ### BibTeX
 
