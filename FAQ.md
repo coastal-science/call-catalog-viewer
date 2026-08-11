@@ -165,7 +165,7 @@ For those wishing to take a deeper dive into killer whale dialects and how they 
 
 Use the following citation.
 
-> Ford, John K.B., Volker B. Deecke, and James F. Pilkington. 2026. Dialects of Killer Whales in Coastal Northeastern Pacific Waters: A Catalogue of Call Types of Resident and Bigg’s populations. [https://orca.research.sfu.ca/call-library](https://orca.research.sfu.ca/call-library). Accessed __ACCESSED_ON__.
+> Ford, John K.B., Volker B. Deecke, and James F. Pilkington. 2026. Dialects of Killer Whales in Coastal Northeastern Pacific Waters: A Catalogue of Call Types of Resident and Bigg’s populations. [https://orca.research.sfu.ca/call-library](https://orca.research.sfu.ca/call-library). Accessed ACCESSED_ON_PLACEHOLDER.
 
 ### BibTeX
 
