@@ -16,6 +16,16 @@ var SearchPanel = undefined;
 
     panel.liveDropdownChoices = liveDropdownChoices;
 
+    /** Clear live filter state in-place so panel.liveDropdownChoices stays the same object. */
+    function resetLiveDropdownChoices(population) {
+        Object.keys(liveDropdownChoices).forEach((key) => {
+            delete liveDropdownChoices[key];
+        });
+        if (population !== undefined) {
+            liveDropdownChoices['population'] = population;
+        }
+    }
+
     async function init() {
         originalData = {};
 
@@ -353,8 +363,7 @@ var SearchPanel = undefined;
 
                     // clearFilter(); 
 
-                    liveDropdownChoices = {};
-                    liveDropdownChoices['population'] = selected_population;
+                    resetLiveDropdownChoices(selected_population);
                     // Copy pre-saved selections
                     if (selected_options[selected_population] != undefined) {
                         for (const [key, value] of Object.entries(selected_options[selected_population])) {
@@ -492,8 +501,7 @@ var SearchPanel = undefined;
         console.log({selected_population, selected_options})
         if (selected_population != undefined && selected_options != undefined) {
             delete selected_options[selected_population]
-            liveDropdownChoices = {}
-            liveDropdownChoices['population'] = selected_population
+            resetLiveDropdownChoices(selected_population)
             buildPopulationSpecificDropdown(selected_population)
         }
     };
