@@ -333,13 +333,21 @@ var SearchPanel = undefined;
     }
 
     /**
-     * create and set listeners for all of the dropdowns 
+     * Attach listeners for filter dropdowns and action buttons.
+     *
+     * Called from init() and again after buildPopulationSpecificDropdown() rebuilds
+     * #search_rows. Dropdown handlers MUST use .off(...).on(...) (not bare .on),
+     * otherwise each rebuild stacks another changed.bs.select / hide.bs.select
+     * handler and one user change can fire get_new / rebuild multiple times.
+     * #search_now / #retrieve_data already followed that pattern.
      */
     function bindEvents() {
         // for the number of values, in s_options, do this thing
         for (let i = 1; i <= num_dropdowns; i++) {
             var object = s_options[i - 1];
-            $('#s' + i).on('changed.bs.select', (e, clickedIndex, isSelected, previousValue) => { // sets the listener when dropdowns are changed
+            // Replace prior handlers on this select (ids are reused after rebuild).
+            $('#s' + i).off('changed.bs.select hide.bs.select')
+            .on('changed.bs.select', (e, clickedIndex, isSelected, previousValue) => { // sets the listener when dropdowns are changed
                 var title = element_id_to_title['s' + i];
                 // liveDropdownChoices holds the currently applied filters that are passed back to GridPanel in get_new calls
                 if (liveDropdownChoices[title] === undefined)
@@ -381,18 +389,20 @@ var SearchPanel = undefined;
                     }
                 }
                 GridPanel.get_new(liveDropdownChoices);
-            });
-            $('#s' + i).on('hide.bs.select', (e, clickedIndex, isSelected, previousValue) => { // listener when dropdowns close
+            })
+            .on('hide.bs.select', (e, clickedIndex, isSelected, previousValue) => { // listener when dropdowns close
                 $('#gi-area .itemblock:nth(0)').click(); // select the first grid area item so that key press actions functionality is restored.
             });
         }
-        $('#s' + '1').on('loaded.bs.select', function() { // sets the listener when population dropdown is first loaded, when user selections are not yet made.
+        // Same off/on discipline: avoid stacking loaded.bs.select across rebuilds.
+        $('#s' + '1').off('loaded.bs.select').on('loaded.bs.select', function() { // sets the listener when population dropdown is first loaded, when user selections are not yet made.
             selected_population = $('#s' + '1').selectpicker('val');
             if (!selected_population){
                 $('#gi-area').attr('hidden', 'true');
             }
         });
 
+        // .off before .click so Filter / retrieve stay single-bound across rebuilds.
         Panel.find('#search_now').off('click').click(function (e) { // function that is called when the filter button is clicked. 
             dirty = false;
             originalData = $.extend(true, {}, liveDropdownChoices);
