@@ -99,6 +99,9 @@ var SearchPanel = undefined;
             // Trigger user interaction via the the Filter button.
             filter_btn = $('#search_now'); // filter button
             filter_btn.click();
+        } else {
+            // No prior selection: if population (s1) has only one catalogue, select it.
+            autoSelectIfSoleOption('s1');
         }
         // buildPopulationSpecificDropdown(selected_value);
     };
@@ -169,6 +172,35 @@ var SearchPanel = undefined;
     function pack_option(v, selected) {
         selected = Boolean(selected) ? 'selected' : ''
         return '<option value="' + v + '" ' + selected + '>' + v + '</option>'
+    }
+
+    /**
+     * If a selectpicker has exactly one option, select it.
+     * bootstrap-select fires changed.bs.select when val is set via selectpicker('val').
+     * @param {string} selectId element id (e.g. 's1', 's2')
+     * @returns {boolean} true if a sole option was selected
+     */
+    function autoSelectIfSoleOption(selectId) {
+        var $select = $('#' + selectId);
+        if (!$select.length) return false;
+
+        var options = $select.find('option').map(function () {
+            return $(this).val();
+        }).get().filter(function (v) { return v !== undefined && v !== null && v !== ''; });
+
+        if (options.length !== 1) return false;
+
+        var sole = options[0];
+        var isMultiple = $select.prop('multiple');
+        var current = $select.selectpicker('val');
+        var alreadySelected = isMultiple
+            ? (Array.isArray(current) && current.length === 1 && String(current[0]) === String(sole))
+            : String(current) === String(sole);
+
+        if (alreadySelected) return false;
+
+        $select.selectpicker('val', isMultiple ? [sole] : sole);
+        return true;
     }
 
 
@@ -426,6 +458,13 @@ var SearchPanel = undefined;
 
 
         bindEvents();
+
+        // After listeners are bound: auto-select any filter dropdown (s2, s3, ...) with a sole option.
+        if (s_options[population] !== undefined) {
+            s_options[population].forEach((dropdown) => {
+                autoSelectIfSoleOption(dropdown.s);
+            });
+        }
     };
 
     /**
