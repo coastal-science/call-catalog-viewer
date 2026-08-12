@@ -5,7 +5,7 @@
 
 # About the catalogue
 
-## Dialects of Killer Whales in Coastal Northeastern Pacific Waters: A Catalogue of Call Types of Resident and Bigg’s populations.
+## Dialects of Killer Whales in Coastal Northeastern Pacific Waters: A Catalogue of Call Types
 
 ## Introduction and Background
 
