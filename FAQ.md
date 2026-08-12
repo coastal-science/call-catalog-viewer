@@ -59,20 +59,44 @@ Here are some clips from recordings of the different populations included in thi
 ### Southern Residents
 
 * J pod (J clan)
+| |
+|:-:|
+|<audio controls> <source type="audio/wav" src="./featured/Resident KW J clan_JFord.mp3?v=random" title="J pod (J clan).">Your browser does not support the audio element.</audio> |
+| J pod (J clan) |
 
 ### Northern Resident
 
 * A1 and A5 pods (A clan)
+| |
+|:-:|
+|<audio controls> <source type="audio/wav" src="./featured/Resident KW A clan_JFord?v=random" title="A1 and A5 pods (A clan).">Your browser does not support the audio element.</audio> |
+| A1 and A5 pods (A clan) |
 
 * I11 pod (G clan)
+| |
+|:-:|
+|<audio controls> <source type="audio/wav" src="./Resident KW G clan_JFord?v=random" title="I11 pod (G clan).">Your browser does not support the audio element.</audio> |
+| I11 pod (G clan) |
 
 * R1 pod (R clan)
+| |
+|:-:|
+|<audio controls> <source type="audio/wav" src="./featured/Resident KW R clan_JFord?v=random" title="R1 pod (R clan).">Your browser does not support the audio element.</audio> |
+| R1 pod (R clan) |
 
 ### Bigg’s (Transient)
 
 * A group of the Inner Coast subclan of the West Coast Transients
+| |
+|:-:|
+|<audio controls> <source type="audio/wav" src="./featured/WCoast Transient_Inner Coast Subclan_JFord?v=random" title="A group of the Inner Coast subclan of the West Coast Transients.">Your browser does not support the audio element.</audio> |
+| A group of the Inner Coast subclan of the West Coast Transients |
 
 * A group of the Outer Coast subclan of the West Coast Transients
+| |
+|:-:|
+|<audio controls> <source type="audio/wav" src="./featured/WCoast Transient Outer Coast Subclan_JFord?v=random" title="A group of the Outer Coast subclan of the West Coast Transients.">Your browser does not support the audio element.</audio> |
+| A group of the Outer Coast subclan of the West Coast Transients |
 
 <!-- ## Featured recordings
 
@@ -121,11 +145,15 @@ For those wishing to take a deeper dive into killer whale dialects and how they 
 
 > Deecke, V.B., Ford, J.K.B., and Slater, P.J.B. 2005. The vocal behaviour of mammal-eating killer whales: communicating with costly calls. _Animal Behaviour_, 69:395-405. https://doi.org/10.1016/j.anbehav.2004.04.014
 
-> Deecke, V.B., Ford, J.K.B. and Spong, P. 2000. Dialect change in resident killer whales (Orcinus orca): Implications for vocal learning and cultural transmission. Animal Behaviour, 60 (5):629-638. https://doi.org/10.1006/anbe.2000.1454
+> Deecke, V.B., Ford, J.K.B. and Spong, P. 2000. Dialect change in resident killer whales (Orcinus orca): Implications for vocal learning and cultural transmission. _Animal Behaviour_, 60 (5):629-638. https://doi.org/10.1006/anbe.2000.1454
+
+> Emmons, C.K., Hanson, M.B. and Lammers, M.O., 2021. Passive acoustic monitoring reveals spatiotemporal segregation of two fish-eating killer whale Orcinus orca populations in proposed critical habitat. _Endangered Species Research_, 44:253-261. https://doi.org/10.3354/esr01099
 
 > Ford, J.K.B. 1989. Acoustic behaviour of resident killer whales (Orcinus orca) in British Columbia. _Canadian Journal of Zoology_, 67:727-745. https://doi.org/10.1139/z89-105
 
 > Ford, J.K.B. 1991. Vocal traditions among resident killer whales (Orcinus orca) in coastal waters of British Columbia. _Canadian Journal of Zoology_, 69:1454-1483. https://doi.org/10.1139/z91-206
+
+> Myers, H.J., Olsen, D.W., Matkin, C. O., Horstmann, L.A., and Konar, B. (2021). Passive acoustic monitoring of killer whales (Orcinus orca) reveals year-round distribution and residency patterns in the Gulf of Alaska. _Scientific Reports_, 11(1), 2024. https://doi.org/10.1038/s41598-021-99668-0
 
 > Riera, A., Pilkington, J.F., Ford, J.K.B., Stredulinsky, E.H., and Chapman, N.R. 2019. Passive acoustic monitoring off Vancouver Island reveals extensive use by at-risk Resident killer whale (Orcinus orca) populations. _Endangered Species Research_, 39:221-234. https://doi.org/10.3354/esr00966
 
