@@ -75,7 +75,7 @@ Here are some clips from recordings of the different populations included in thi
 * I11 pod (G clan)
 | |
 |:-:|
-|<audio controls> <source type="audio/wav" src="./Resident KW G clan_JFord.mp3?v=random" title="I11 pod (G clan).">Your browser does not support the audio element.</audio> |
+|<audio controls> <source type="audio/wav" src="./featured/Resident KW G clan_JFord.mp3?v=random" title="I11 pod (G clan).">Your browser does not support the audio element.</audio> |
 | I11 pod (G clan) |
 
 * R1 pod (R clan)
