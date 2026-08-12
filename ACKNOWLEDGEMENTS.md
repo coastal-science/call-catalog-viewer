@@ -18,6 +18,12 @@ The acoustic samples and annotations in this catalogue have been gathered throug
 
 Their extensive research and dedication to understanding killer whale acoustics have made this catalogue possible.
 
+This online catalogue was produced with the assistance of Ruth Joy, Steven Bergner, Ishan Sahay, Rovenna Chu, Amalis Riera, Scott Viers, and Thomas Doniol-Valcroze. [potential revisions including additional acknowledgements to be completed]
+
+This call catalogue was compiled from recordings made by or archived by John Ford, Volker Deecke, and James Pilkington. Their research on killer whale dialects has benefitted by the contributions of recordings from many friends and colleagues over the years. In particular, they thank Ken Balcomb, Lance Barrett-Lennard, Michael Bigg, Nancy Black, Jim Borrowman, Graeme Ellis, Brian Falconer, Olga Filatova, Brian Gisborne, Dawn Goley, Karen Hansen, Erich Hoyt, Stan Hutchings, Jeanne Hyde, Jeff Jacobsen, Bill Mackay, Dena Matkin, Alexandra Morton, Linda Nichol, Rich Osborne, Mayuko Otsuki, Eva Saulitis, Paul Spong, Helena Symonds, Richard Ternullo, Frank Thomsen, Jared Towers, and Harald Yurk.
+
+The acoustic research that led to this catalogue has been supported by:  Fisheries and Oceans Canada’s Species-at-Risk Program, the Vancouver Aquarium Marine Science Centre, and the University of British Columbia.
+
 ## Platform Development
 
 This online catalogue was brought to life through the technical contributions of:
