@@ -69,19 +69,19 @@ Here are some clips from recordings of the different populations included in thi
 * A1 and A5 pods (A clan)
 | |
 |:-:|
-|<audio controls> <source type="audio/wav" src="./featured/Resident KW A clan_JFord?v=random" title="A1 and A5 pods (A clan).">Your browser does not support the audio element.</audio> |
+|<audio controls> <source type="audio/wav" src="./featured/Resident KW A clan_JFord.mp3?v=random" title="A1 and A5 pods (A clan).">Your browser does not support the audio element.</audio> |
 | A1 and A5 pods (A clan) |
 
 * I11 pod (G clan)
 | |
 |:-:|
-|<audio controls> <source type="audio/wav" src="./Resident KW G clan_JFord?v=random" title="I11 pod (G clan).">Your browser does not support the audio element.</audio> |
+|<audio controls> <source type="audio/wav" src="./Resident KW G clan_JFord.mp3?v=random" title="I11 pod (G clan).">Your browser does not support the audio element.</audio> |
 | I11 pod (G clan) |
 
 * R1 pod (R clan)
 | |
 |:-:|
-|<audio controls> <source type="audio/wav" src="./featured/Resident KW R clan_JFord?v=random" title="R1 pod (R clan).">Your browser does not support the audio element.</audio> |
+|<audio controls> <source type="audio/wav" src="./featured/Resident KW R clan_JFord.mp3?v=random" title="R1 pod (R clan).">Your browser does not support the audio element.</audio> |
 | R1 pod (R clan) |
 
 ### Bigg’s (Transient)
@@ -89,13 +89,13 @@ Here are some clips from recordings of the different populations included in thi
 * A group of the Inner Coast subclan of the West Coast Transients
 | |
 |:-:|
-|<audio controls> <source type="audio/wav" src="./featured/WCoast Transient_Inner Coast Subclan_JFord?v=random" title="A group of the Inner Coast subclan of the West Coast Transients.">Your browser does not support the audio element.</audio> |
+|<audio controls> <source type="audio/wav" src="./featured/WCoast Transient_Inner Coast Subclan_JFord.mp3?v=random" title="A group of the Inner Coast subclan of the West Coast Transients.">Your browser does not support the audio element.</audio> |
 | A group of the Inner Coast subclan of the West Coast Transients |
 
 * A group of the Outer Coast subclan of the West Coast Transients
 | |
 |:-:|
-|<audio controls> <source type="audio/wav" src="./featured/WCoast Transient Outer Coast Subclan_JFord?v=random" title="A group of the Outer Coast subclan of the West Coast Transients.">Your browser does not support the audio element.</audio> |
+|<audio controls> <source type="audio/wav" src="./featured/WCoast Transient Outer Coast Subclan_JFord.mp3?v=random" title="A group of the Outer Coast subclan of the West Coast Transients.">Your browser does not support the audio element.</audio> |
 | A group of the Outer Coast subclan of the West Coast Transients |
 
 <!-- ## Featured recordings
