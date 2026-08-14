@@ -49,12 +49,18 @@ Here are some clips from recordings of the different populations included in thi
 
 ### Southern Residents
 
+<center>
+
 | |
 |:-:|
 |<audio controls> <source type="audio/wav" src="./featured/Resident KW J clan_JFord.mp3?v=random" title="J pod (J clan).">Your browser does not support the audio element.</audio> |
 | J pod (J clan) |
 
+</center>
+
 ### Northern Resident
+
+<center>
 
 | |
 |:-:|
@@ -71,8 +77,11 @@ Here are some clips from recordings of the different populations included in thi
 |<audio controls> <source type="audio/wav" src="./featured/Resident KW R clan_JFord.mp3?v=random" title="R1 pod (R clan).">Your browser does not support the audio element.</audio> |
 | R1 pod (R clan) |
 
+</center>
+
 ### Bigg’s (Transient)
 
+<center>
 | |
 |:-:|
 |<audio controls> <source type="audio/wav" src="./featured/WCoast Transient_Inner Coast Subclan_JFord.mp3?v=random" title="A group of the Inner Coast subclan of the West Coast Transients.">Your browser does not support the audio element.</audio> |
@@ -82,6 +91,8 @@ Here are some clips from recordings of the different populations included in thi
 |:-:|
 |<audio controls> <source type="audio/wav" src="./featured/WCoast Transient Outer Coast Subclan_JFord.mp3?v=random" title="A group of the Outer Coast subclan of the West Coast Transients.">Your browser does not support the audio element.</audio> |
 | A group of the Outer Coast subclan of the West Coast Transients |
+
+</center>
 
 <!-- ## Featured recordings
 
