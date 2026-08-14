@@ -197,3 +197,10 @@ build_pages_from_config "$CONFIG_FILE"
 echo ""
 echo "All pages built successfully!"
 
+# Regenerate sitemap.xml from sitemap-pages.yaml
+if [[ -x "$SCRIPT_DIR/build-sitemap.sh" ]] || [[ -f "$SCRIPT_DIR/build-sitemap.sh" ]]; then
+  echo ""
+  echo "Generating sitemap.xml..."
+  bash "$SCRIPT_DIR/build-sitemap.sh"
+fi
+
