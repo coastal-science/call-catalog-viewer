@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>Orca Sound Call Catalogue and Annotations</title>
+
+  <meta name="description" content="Contact the Orca Call Catalogue team with questions, comments, or feedback about the catalogue.">
+  <meta name="author" content="John K.B. Ford, Volker B. Deecke, and James F. Pilkington">
+  <meta name="keywords" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+
+  <meta property="og:locale" content="en_us">
+  <meta property="og:site_name" content="Call Catalogue">
+  <meta property="og:title" content="Orca Sound Call Catalogue and Annotations">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://orca.research.sfu.ca/call-library">
+  <meta property="og:description" content="Contact the Orca Call Catalogue team with questions, comments, or feedback about the catalogue.">
+  <meta property="og:image" content="https://orca.research.sfu.ca/call-library/home-media/S01-J,L-1.jpg">
+  <meta property="og:image:type" content="image/jpg">
+  <meta property="og:image:width" content="602">
+  <meta property="og:image:height" content="611">
+  <meta property="og:updated_time" content="2024-05-30T16:00:00-0700">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Orca Sound Call Catalogue and Annotations">
+  <meta name="twitter:image" content="https://orca.research.sfu.ca/call-library/home-media/S01-J,L-1.jpg">
+  <meta name="twitter:description" content="Contact the Orca Call Catalogue team with questions, comments, or feedback about the catalogue.">
+  <link rel="icon" type="image/jpg" href="favicon.jpg">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/w3-css/4.1.0/3/w3.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="./css/custom.css?v=random">
+  <script defer src="./js/navbar-loader.js?v=random"></script>
+  <script defer src="./js/index.utils.js?v=random"></script>
+
+  <style>
+    body {
+      font-family: "Lato", sans-serif
+    }
+
+    h1 {
+      text-align: center;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-weight: 400;
+      letter-spacing: .1em;
+    }
+
+    .contact-form label {
+      display: block;
+      margin-top: 1em;
+      margin-bottom: 0.35em;
+    }
+
+    .contact-form .w3-button {
+      margin-top: 1.5em;
+    }
+  </style>
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-4ZT5PMCN8Z"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'G-4ZT5PMCN8Z');
+  </script>
+
+</head>
+
+<body>
+  <!-- Navbar will be loaded here dynamically -->
+  <div id="navbar-container"></div>
+
+  <div class="w3-content" style="max-width:2000px;">
+    <div class="w3-container w3-content w3-justify w3-padding-30" style="max-width:800px;margin-top:5%;">
+      <h1>Contact us</h1>
+      <p>We would love to hear from you. Whether you are exploring the catalogue for the first time or returning with a deeper question, you are welcome to get in touch.</p>
+      <p>For questions about the whales, their calls, dialects, or any other scientific aspect of the catalogue, this form is the best way to reach us. Share what you are curious about, and we will do our best to help.</p>
+      <p>If you run into a website problem—something that will not load, looks broken, or does not work as expected—please report it through
+        <a href="https://github.com/coastal-science/call-catalog-viewer/issues/new?template=feedback.yml">GitHub Issues</a>
+        so our technical team can track and fix it.</p>
+
+      <form class="contact-form" method="POST" action="https://formsubmit.co/YOUR_EMAIL">
+        <!-- Replace YOUR_EMAIL with the Formsubmit destination address -->
+        <input type="hidden" name="_next" value="contact.html?v=random">
+        <input type="hidden" name="_captcha" value="true">
+
+        <label for="name">Your Name</label>
+        <input class="w3-input w3-border" type="text" id="name" name="name" required>
+
+        <label for="email">Your Email</label>
+        <input class="w3-input w3-border" type="email" id="email" name="email" autocomplete="email" required>
+
+        <label for="subject">Subject</label>
+        <input class="w3-input w3-border" type="text" id="subject" name="_subject" value="[Call catalogue]: " required>
+
+        <label for="message">Your Message</label>
+        <textarea class="w3-input w3-border" id="message" name="message" rows="8" required></textarea>
+
+        <button type="submit" class="w3-button w3-black w3-padding-large">
+          <i class="fa fa-envelope"></i> Send Message
+        </button>
+      </form>
+
+    </div>
+  </div>
+
+</body>
+
+</html>
