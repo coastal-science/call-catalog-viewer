@@ -59,7 +59,7 @@ pages:
 
   # About Killer Whale Sounds page
   - output: about-killer-whale-sounds.html
-    markdown: AboutKillerWhalesandtheirSounds.md
+    markdown: AboutKillerWhalesandtheirsounds.md
     description: "Discover the fascinating world of killer whale sounds - learn about call types, dialects, repertoires, and what researchers can learn from studying orca acoustics."
     anchor: true
     code: false
