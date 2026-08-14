@@ -38,6 +38,12 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://orca.research.sfu.ca/call-library/privacy.html</loc>
+    <lastmod>2026-08-14</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://orca.research.sfu.ca/call-library/faq.html</loc>
     <lastmod>2026-01-24</lastmod>
     <changefreq>monthly</changefreq>

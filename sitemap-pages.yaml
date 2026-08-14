@@ -36,6 +36,10 @@ pages:
     changefreq: yearly
     priority: 0.7
 
+  - path: privacy.html
+    changefreq: yearly
+    priority: 0.6
+
   # FAQ
   - path: faq.html
     changefreq: monthly
