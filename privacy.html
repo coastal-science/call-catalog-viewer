@@ -55,15 +55,7 @@
     }
   </style>
 
-  <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-NXV17QEMVJ"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag() { dataLayer.push(arguments); }
-    gtag('js', new Date());
-
-    gtag('config', 'G-NXV17QEMVJ');
-  </script>
+  <script src="./js/analytics.js?v=random"></script>
 
 </head>
 
@@ -100,7 +92,19 @@
         normal browsing), this site does not use advertising cookies or build a personal marketing profile. You can
         block or delete cookies in your browser settings; doing so may affect analytics but should not prevent you
         from browsing the catalogue content.</p>
-      <p>If you prefer not to be included in Google Analytics across the web, Google provides a
+      <p>You can opt out of analytics <strong>on this site only</strong> without installing anything. We store a
+        small preference cookie (<code>analytics_opt_out</code>) in your browser so we do not load Google Analytics
+        on future visits from this browser.</p>
+      <p id="analytics-opt-status" aria-live="polite"></p>
+      <p>
+        <button type="button" id="analytics-opt-out" class="w3-button w3-black w3-padding-large">
+          Opt out of analytics on this site
+        </button>
+        <button type="button" id="analytics-opt-in" class="w3-button w3-border w3-padding-large" style="margin-left:0.5em;">
+          Opt back in
+        </button>
+      </p>
+      <p>If you prefer not to be included in Google Analytics across the web, Google also provides a
         <a href="https://tools.google.com/dlpage/gaoptout" rel="noopener noreferrer" target="_blank">browser opt-out
           add-on</a>.
       </p>
@@ -130,6 +134,36 @@
       <p><em>Last updated: August 2026</em></p>
     </div>
   </div>
+
+  <script>
+    (function () {
+      var statusEl = document.getElementById('analytics-opt-status');
+      var outBtn = document.getElementById('analytics-opt-out');
+      var inBtn = document.getElementById('analytics-opt-in');
+      if (!window.CallCatalogueAnalytics || !statusEl || !outBtn || !inBtn) {
+        return;
+      }
+
+      function refresh() {
+        var optedOut = CallCatalogueAnalytics.isOptedOut();
+        statusEl.textContent = optedOut
+          ? 'Current preference: opted out of analytics on this site.'
+          : 'Current preference: analytics enabled on this site.';
+        outBtn.disabled = optedOut;
+        inBtn.disabled = !optedOut;
+      }
+
+      outBtn.addEventListener('click', function () {
+        CallCatalogueAnalytics.optOut();
+        refresh();
+      });
+      inBtn.addEventListener('click', function () {
+        CallCatalogueAnalytics.optIn();
+        refresh();
+      });
+      refresh();
+    })();
+  </script>
 
 </body>
 
