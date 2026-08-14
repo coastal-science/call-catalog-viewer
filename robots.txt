@@ -1,0 +1,42 @@
+# robots.txt for Orca Sound Call Catalogue
+# https://orca.research.sfu.ca/call-library
+
+User-agent: *
+Allow: /
+
+# Disallow large media files to save bandwidth
+# (Audio files are large and typically not needed for search indexing)
+Disallow: /*.wav$
+Disallow: /*.mp3$
+Disallow: /*.flac$
+Disallow: /*.aiff$
+
+# Disallow build and development directories
+Disallow: /src/
+Disallow: /documentation/
+Disallow: /tests/
+Disallow: /__pycache__/
+
+# Disallow backup and temporary files
+Disallow: /*.bak$
+Disallow: /*.bak.json$
+Disallow: /* copy.html$
+Disallow: /* copy.js$
+Disallow: /xx00.md
+Disallow: /xx00.md.md
+
+# Disallow configuration files that aren't meant for public access
+Disallow: /*.ini$
+Disallow: /pytest.ini
+Disallow: /resources_config/
+
+# Allow important directories
+Allow: /css/
+Allow: /js/
+Allow: /images/
+Allow: /home-media/
+Allow: /catalogs/
+
+# Sitemap location
+Sitemap: https://orca.research.sfu.ca/call-library/sitemap.xml
+
