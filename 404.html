@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Page Not Found - Orca Sound Call Catalogue</title>
+
+    <meta name="description"
+        content="The page you're looking for could not be found. Return to the Orca Sound Call Catalogue and Annotations library.">
+    <meta name="author" content="John K.B. Ford, Volker B. Deecke, and James F. Pilkington">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" charset="UTF-8">
+
+    <meta property="og:locale" content="en_us">
+    <meta property="og:site_name" content="Call Catalogue">
+    <meta property="og:title" content="Page Not Found - Orca Sound Call Catalogue">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://orca.research.sfu.ca/call-library/404.html">
+    <meta property="og:description"
+        content="The page you're looking for could not be found. Return to the Orca Sound Call Catalogue and Annotations library.">
+    <link rel="icon" type="image/jpg" href="favicon.jpg">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/w3-css/4.1.0/3/w3.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="./css/custom.css?v=random">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script defer src="./js/navbar-loader.js?v=random"></script>
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-4ZT5PMCN8Z"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-4ZT5PMCN8Z');
+    </script>
+
+    <style>
+        body {
+            font-family: "Lato", sans-serif;
+        }
+
+        .error-container {
+            max-width: 800px;
+            margin: 100px auto;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .error-code {
+            font-size: 120px;
+            font-weight: bold;
+            color: #333;
+            margin: 20px 0;
+            line-height: 1;
+        }
+
+        .error-message {
+            font-size: 24px;
+            color: #666;
+            margin: 20px 0 40px 0;
+        }
+
+        .error-description {
+            font-size: 16px;
+            color: #888;
+            margin: 20px 0;
+            line-height: 1.6;
+        }
+
+        .error-links {
+            margin-top: 40px;
+        }
+
+        .error-links a {
+            display: inline-block;
+            margin: 10px 15px;
+            padding: 12px 24px;
+            background-color: #333;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+
+        .error-links a:hover {
+            background-color: #555;
+        }
+
+        @media (max-width: 600px) {
+            .error-code {
+                font-size: 80px;
+            }
+
+            .error-message {
+                font-size: 20px;
+            }
+
+            .error-container {
+                padding: 20px;
+                margin: 50px auto;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navbar will be loaded here dynamically -->
+    <div id="navbar-container"></div>
+
+    <div class="error-container">
+        <div class="error-code">404</div>
+        <div class="error-message">Page Not Found</div>
+        <div class="error-description">
+            The page you're looking for doesn't exist or has been moved.<br>
+            It may have been deleted, renamed, or the URL may be incorrect.
+        </div>
+        <div class="error-links">
+            <a href="index.html"><i class="fa fa-home"></i> Go to Catalogue</a>
+            <a href="home.html"><i class="fa fa-info-circle"></i> About the Catalogue</a>
+            <a href="faq.html"><i class="fa fa-question-circle"></i> FAQ</a>
+        </div>
+    </div>
+
+    <script>
+        // Track 404 errors in Google Analytics
+        if (typeof gtag !== 'undefined') {
+            gtag('event', '404_error', {
+                'page_path': window.location.pathname,
+                'page_location': window.location.href
+            });
+        }
+    </script>
+</body>
+
+</html>
+
