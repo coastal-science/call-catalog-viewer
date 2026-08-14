@@ -82,6 +82,7 @@ Here are some clips from recordings of the different populations included in thi
 ### Bigg’s (Transient)
 
 <center>
+
 | |
 |:-:|
 |<audio controls> <source type="audio/wav" src="./featured/WCoast Transient_Inner Coast Subclan_JFord.mp3?v=random" title="A group of the Inner Coast subclan of the West Coast Transients.">Your browser does not support the audio element.</audio> |
