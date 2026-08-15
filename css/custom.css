@@ -72,6 +72,35 @@ body {
   line-height: 1.6;
 }
 
+/* In-content links (all pages): make clickable text obvious */
+a {
+  color: #0b5f8a;
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+
+a:hover {
+  color: #084666;
+}
+
+/* Navbar, dropdowns, W3/Bootstrap controls keep their own look */
+.w3-bar a,
+.w3-bar-block a,
+.w3-dropdown-content a,
+.w3-button,
+.btn,
+.btn-filter,
+.page-link,
+.anchorjs-link,
+.error-links a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.anchorjs-link:hover {
+  color: inherit;
+}
+
 h1, h2, h3, h4, h5, h6,
 #catalogue-title {
   font-family: "Lato", system-ui, sans-serif !important;
@@ -152,18 +181,12 @@ code[class*="language-"] {
   background-color: whitesmoke;
 }
 
-zero-md a {
-  color: #0b5f8a;
-}
-
-.anchorjs-link {
-  text-decoration: none;
-}
-
 /*
  * Markdown body (FAQ etc. with github-markdown-css + zero-md)
  * Loaded via page <link> (no-shadow / chrome) and again last in
  * ZeroMdConfig.cssUrls (shadow DOM), so these rules cover both modes.
+ * Link color repeats site-wide `a` rules at higher specificity so
+ * github-markdown.css cannot force muted/black links.
  * Layout tables (audio players, logos) should not show grid lines.
  * github-markdown sets table { display:block }, which breaks <center> /
  * align=center for audio — restore real tables and center them.
@@ -183,7 +206,8 @@ zero-md a {
   color: #084666;
 }
 
-.markdown-body .anchorjs-link {
+.markdown-body .anchorjs-link,
+.markdown-body .anchorjs-link:hover {
   color: inherit;
   text-decoration: none;
 }
