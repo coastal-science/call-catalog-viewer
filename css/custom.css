@@ -196,6 +196,13 @@ code[class*="language-"] {
   line-height: 1.6;
 }
 
+/* github-markdown.css draws a rule under h1/h2 — remove it */
+.markdown-body h1,
+.markdown-body h2 {
+  border-bottom: none !important;
+  padding-bottom: 0;
+}
+
 .markdown-body a {
   color: #0b5f8a;
   text-decoration: underline;
