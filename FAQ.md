@@ -200,7 +200,7 @@ For research use of catalogue, the following citation should be used:
 
 ### BibTeX
 
-```
+```bibtex
 @misc{Ford_Volker_Pilkington, 
   author = {Ford, John K.B. and Deecke, Volker B. and Pilkington, James F.},
   title = {Dialects of Killer Whales in Coastal Northeastern Pacific Waters: A Catalogue of Call Types of Resident and Bigg’s populations}, 
