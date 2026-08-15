@@ -61,7 +61,12 @@ build_page() {
         "https://cdn.jsdelivr.net/gh/sindresorhus/github-markdown-css@4/github-markdown.min.css",
         "https://cdn.jsdelivr.net/gh/PrismJS/prism@1/themes/prism.min.css",
         // Include CSS for toolbar plugin
-        "https://cdn.jsdelivr.net/gh/PrismJS/prism@1/plugins/toolbar/prism-toolbar.min.css"
+        "https://cdn.jsdelivr.net/gh/PrismJS/prism@1/plugins/toolbar/prism-toolbar.min.css",
+        // Site overrides — must be last.
+        // custom.css is also linked in the page <head> for chrome; it is listed
+        // again here because zero-md injects github-markdown.css after page
+        // stylesheets, and markdown overrides need to win that cascade.
+        "./css/custom.css?v=random"
       ]
     }
   </script>
@@ -83,30 +88,9 @@ ZERO_MD_CONFIG_EOF
 ANCHOR_JS_EOF
     fi
     
-    # Build CODE_BLOCK_STYLES
+    # Code / anchor visual styles live in css/custom.css (avoid duplicating in each page).
     local code_block_styles=""
-    if [ "$include_code_styles" = "true" ]; then
-        read -r -d '' code_block_styles << 'CODE_STYLES_EOF' || true
-
-    /* markdown code block */
-    pre[class*="language-"],
-    code[class*="language-"] {
-      overflow: auto;
-      background-color: whitesmoke;
-    }
-CODE_STYLES_EOF
-    fi
-    
-    # Build ANCHOR_JS_STYLES
     local anchor_js_styles=""
-    if [ "$include_anchor_js" = "true" ]; then
-        read -r -d '' anchor_js_styles << 'ANCHOR_STYLES_EOF' || true
-
-            .anchorjs-link {
-              text-decoration: none;
-            }
-ANCHOR_STYLES_EOF
-    fi
 
     # Build TOP_BANNER_HTML (use provided TOP_BANNER_HTML if available)
     local header_html="${banner_header_html}"

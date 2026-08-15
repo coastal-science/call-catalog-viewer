@@ -75,10 +75,6 @@
 </head>
 
 <style>
-    body {
-        font-family: "Lato", sans-serif
-    }
-
     .hidden {
         display: none !important;
     }
@@ -92,17 +88,9 @@
     .btn-feedback a:hover {
         color: transparent;
     }
+    /* Filter / pagination contrast: see css/custom.css */
     /* Not recommended approach to override Bootstrap css. 
        The recommended approach is to build a custom Bootstrap CSS with SASS*/
-    .btn-filter, .btn-filter:active, .btn-filter:visited {
-        background-color: darkgray !important;
-        border-color: darkgray !important;
-    }
-    .btn-filter:hover {
-        background-color: #6c757d !important;
-        /* from btn-secondary no hover */
-        border-color: #6c757d !important;
-    }
 
     #btn-back-to-top {
         position: fixed;
@@ -138,12 +126,7 @@
         background-color: #fff !important;
     }
 
-    .page-item.active .page-link {
-        z-index: auto;
-        color: #fff !important;
-        background-color: darkgray !important;
-        border-color: darkgray !important;
-    }
+    /* Active page style: see css/custom.css */
 
     .card-img-top {
         aspect-ratio: 198/205;
@@ -262,8 +245,7 @@
     <div class="container" id="listing" style="">
 
         <div class="row">
-            <h1 id="catalogue-title" class="text-center text-capitalize font-weight-bold"
-                style="font-family:'Segoe UI', sans-serif;letter-spacing:.1em;font-size:2rem;font-weight:400">Explore
+            <h1 id="catalogue-title" class="text-center text-capitalize font-weight-bold">Explore
                 Catalogue</h1>
         </div>
 

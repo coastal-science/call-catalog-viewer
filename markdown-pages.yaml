@@ -45,7 +45,7 @@ pages:
     anchor: true
     code: false
     TOP_BANNER_HTML: |
-      <div class="mySlides w3-display-container w3-center">
+      <div class="page-banner w3-display-container w3-center">
         <img src="./home-media/image-whale1-1.jpg?v=random" style="width:100%">
         <div class="w3-display-bottommiddle w3-container w3-text-white w3-padding-32 w3-hide-small">
           <h3>A Curated Collection of Orca Acoustics</h3>
@@ -54,7 +54,7 @@ pages:
         </div>
       </div>
       <div class="w3-center w3-hide-large w3-hide-medium w3-opacity">
-        <p style="font-size:2.5vw"><b><em>Photo of Southern Resident Orca whales by Olivia Murphy</em></b></p>
+        <p class="photo-credit"><b><em>Photo of Southern Resident Orca whales by Olivia Murphy</em></b></p>
       </div>
 
   # About Killer Whale Sounds page

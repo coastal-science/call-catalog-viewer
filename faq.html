@@ -31,6 +31,12 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/w3-css/4.1.0/3/w3.min.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato&display=swap">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <!--
+    custom.css is linked here for page chrome (navbar, layout).
+    It is also appended last to ZeroMdConfig.cssUrls below: zero-md injects
+    github-markdown.css after page <link>s, so without a second load our
+    markdown overrides (tables, blockquotes, etc.) lose the cascade.
+  -->
   <link rel="stylesheet" href="./css/custom.css?v=random">
   <script defer src="./js/navbar-loader.js?v=random"></script>
   <script defer src="./js/index.utils.js?v=random"></script>
@@ -51,9 +57,28 @@
         "https://cdn.jsdelivr.net/gh/sindresorhus/github-markdown-css@4/github-markdown.min.css",
         "https://cdn.jsdelivr.net/gh/PrismJS/prism@1/themes/prism.min.css",
         // Include CSS for toolbar plugin
-        "https://cdn.jsdelivr.net/gh/PrismJS/prism@1/plugins/toolbar/prism-toolbar.min.css"
+        "https://cdn.jsdelivr.net/gh/PrismJS/prism@1/plugins/toolbar/prism-toolbar.min.css",
+        // Site overrides — must be last.
+        // custom.css is also linked in the page <head> for chrome; it is listed
+        // again here because zero-md injects github-markdown.css after page
+        // stylesheets, and markdown overrides need to win that cascade.
+        "./css/custom.css?v=random"
       ]
     }
+  </script>
+  <script>
+    // Second custom.css load (via cssUrls): must run after github-markdown.css.
+    // See comment above the <link rel="stylesheet" href="./css/custom.css">.
+    (function () {
+      window.ZeroMdConfig = window.ZeroMdConfig || {};
+      var custom = "./css/custom.css?v=random";
+      var urls = window.ZeroMdConfig.cssUrls || [
+        "https://cdn.jsdelivr.net/gh/sindresorhus/github-markdown-css@4/github-markdown.min.css"
+      ];
+      urls = urls.filter(function (u) { return u.indexOf("css/custom.css") === -1; });
+      urls.push(custom);
+      window.ZeroMdConfig.cssUrls = urls;
+    })();
   </script>
   <script type="module" src="https://cdn.jsdelivr.net/gh/zerodevx/zero-md@2/dist/zero-md.min.js">
   </script>
@@ -66,18 +91,6 @@
     })
   </script>
 
-  <style>
-    body {
-      font-family: "Lato", sans-serif
-    }
-/* markdown code block */
-    pre[class*="language-"],
-    code[class*="language-"] {
-      overflow: auto;
-      background-color: whitesmoke;
-    }
-  </style>
-
   <script src="./js/analytics.js?v=random"></script>
 
 </head>
@@ -87,28 +100,15 @@
   <div id="navbar-container"></div>
 
   <div class="w3-content" style="max-width:2000px;">
-    <!-- FAQ Information -->
-    <div class="w3-container w3-content w3-justify w3-padding-30" style="max-width:800px;margin-top:5%;">
-      <!-- file = 'srkw-call-catalogue-files/LICENSE.md' -->
-      <!-- TODO Generify this pass somehow. General FAQ path outside of the srkw catalogue files? -->
-      <zero-md src='FAQ.md?v=random' no-shadow>
-        <template>
-          <style>
-            h1 {
-              text-align: center;
-              font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-              font-weight: 400;
-              letter-spacing: .1em;
-            }
-            a {
-              color: black;
-            }
-.anchorjs-link {
-              text-decoration: none;
-            }
-          </style>
-        </template>
-      </zero-md>
+    
+
+
+    <div class="w3-container w3-content w3-justify w3-padding-30" style="max-width:800px;">
+      <!--
+        Markdown typography/links: css/custom.css (page <link> + ZeroMdConfig.cssUrls).
+        No per-page <template> styles — avoids duplicating h1–h6 / link rules.
+      -->
+      <zero-md src='FAQ.md?v=random' no-shadow></zero-md>
     </div>
   </div>
 

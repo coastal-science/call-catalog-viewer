@@ -60,3 +60,194 @@
 .w3-hide.w3-show {
   display: block !important;
 }
+
+/* --- Readability (site-wide) --- */
+html {
+  font-size: 18px; /* site root; body uses 1rem (W3 defaults html to 15px) */
+}
+
+body {
+  font-family: "Lato", system-ui, sans-serif !important;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+h1, h2, h3, h4, h5, h6,
+#catalogue-title {
+  font-family: "Lato", system-ui, sans-serif !important;
+  letter-spacing: normal !important;
+  font-weight: 600;
+}
+
+#catalogue-title {
+  font-size: 2rem;
+}
+
+/* Content pages (contact, privacy, about, etc.) */
+h1 {
+  text-align: center;
+}
+
+.w3-content h2 {
+  margin-top: 1.75em;
+}
+
+/* W3 utility often used on banners/titles */
+.w3-wide {
+  letter-spacing: normal !important;
+}
+
+/* Stronger contrast for catalogue filter / pagination controls */
+.btn-filter,
+.btn-filter:active,
+.btn-filter:visited {
+  background-color: #4a4a4a !important;
+  border-color: #4a4a4a !important;
+  color: #fff !important;
+}
+
+.btn-filter:hover {
+  background-color: #333 !important;
+  border-color: #333 !important;
+}
+
+.page-item.active .page-link {
+  z-index: auto;
+  color: #fff !important;
+  background-color: #4a4a4a !important;
+  border-color: #4a4a4a !important;
+}
+
+/* Lightbox metadata: prefer near-black over Bootstrap "info" cyan */
+.litybottom .text-info {
+  color: #333 !important;
+}
+
+/* Photo credits: fixed size instead of viewport-scaled 2.5vw */
+.photo-credit,
+p[style*="2.5vw"] {
+  font-size: 0.875rem !important;
+}
+
+/* Home slideshow only — do not use .mySlides on static page banners */
+.mySlides {
+  display: none;
+}
+
+.page-banner {
+  display: block;
+  width: 100%;
+}
+
+.page-banner img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Markdown pages (FAQ etc.): code samples + links when using zero-md no-shadow */
+pre[class*="language-"],
+code[class*="language-"] {
+  overflow: auto;
+  background-color: whitesmoke;
+}
+
+zero-md a {
+  color: #000;
+}
+
+.anchorjs-link {
+  text-decoration: none;
+}
+
+/*
+ * Markdown body (FAQ etc. with github-markdown-css + zero-md)
+ * Loaded via page <link> (no-shadow / chrome) and again last in
+ * ZeroMdConfig.cssUrls (shadow DOM), so these rules cover both modes.
+ * Layout tables (audio players, logos) should not show grid lines.
+ * github-markdown sets table { display:block }, which breaks <center> /
+ * align=center for audio — restore real tables and center them.
+ * Blockquotes are thanks/quotes and citation lists — avoid muted “shadow” gray.
+ */
+.markdown-body {
+  line-height: 1.6;
+}
+
+.markdown-body a {
+  color: black;
+}
+
+.markdown-body .anchorjs-link {
+  text-decoration: none;
+}
+
+.markdown-body table {
+  display: table !important;
+  width: auto !important;
+  max-width: 100%;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  margin-bottom: 1em;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.markdown-body table tr {
+  background-color: transparent !important;
+  border-top: none !important;
+}
+
+.markdown-body table tr:nth-child(2n) {
+  background-color: transparent !important;
+}
+
+.markdown-body table th,
+.markdown-body table td {
+  border: none !important;
+  background-color: transparent !important;
+  padding: 0.35em 0.5em;
+  text-align: center !important;
+}
+
+.markdown-body center {
+  display: block;
+  text-align: center;
+}
+
+.markdown-body center table {
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+.markdown-body blockquote {
+  margin: 0.85em 0 !important;
+  padding: 0.15em 0 0.15em 1.1em !important;
+  border: none !important;
+  border-left: 3px solid #ccc !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  /* github-markdown mutes blockquote text to gray — that reads as “shadowy” */
+  color: #24292e !important;
+  font-style: normal;
+  font-size: inherit !important;
+  font-weight: inherit !important;
+}
+
+.markdown-body blockquote > :first-child {
+  margin-top: 0;
+}
+
+.markdown-body blockquote > :last-child {
+  margin-bottom: 0;
+}
+
+/* Consecutive citation blockquotes read as a reference list */
+.markdown-body blockquote + blockquote {
+  margin-top: 0.4em !important;
+}
+
+.markdown-body blockquote p {
+  margin: 0.2em 0 !important;
+  color: inherit !important;
+}
+
