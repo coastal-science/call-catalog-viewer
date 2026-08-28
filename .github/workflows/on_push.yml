@@ -20,7 +20,7 @@ jobs:
     steps:
       - name: Get branch names
         id: branch-name
-        uses: tj-actions/branch-names@7.0.7
+        uses: tj-actions/branch-names@v9.0.2
 
       - name: Get Ref brach name
         id: set-name
