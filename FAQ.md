@@ -20,14 +20,14 @@ Below is a sample spectrograph and audio file from the [call catalogue](./index.
 <center>
 
 <figure>
-  <img src="./home-media/S01-J,L-1.jpg?v=random" alt="sample waveform" class="w3-round w3-margin-bottom" style="width:45%;border-style:solid;border-width:1em;border-color:#f4f4f4">
-  <figcaption><em>sample caption</em></figcaption>
+  <img src="./home-media/S01-J,L-1.jpg?v=random" alt="Call type S1 recorded from Southern Resident J pod" class="w3-round w3-margin-bottom" style="width:45%;border-style:solid;border-width:1em;border-color:#f4f4f4">
+  <figcaption><em>Call type S1 recorded from Southern Resident J pod</em></figcaption>
 </figure>
 
 |   |
 |:-:|
 |<audio controls> <source type="audio/wav" src="./home-media/S01-J,L-1.wav?v=random" title="sample waveform">Your browser does not support the audio element.</audio> |
-|_sample caption_|
+<!-- |_sample caption_| -->
 
 </center>
 
@@ -196,14 +196,14 @@ For those wishing to take a deeper dive into killer whale dialects and how they 
 
 For research use of catalogue, the following citation should be used:
 
-> Ford, John K.B., Volker B. Deecke, and James F. Pilkington. 2026. Dialects of Killer Whales in Coastal Northeastern Pacific Waters: A Catalogue of Call Types of Resident and Bigg’s populations. [https://orca.research.sfu.ca/call-library](https://orca.research.sfu.ca/call-library). Accessed ACCESSED_ON_PLACEHOLDER.
+> Ford, John K.B., Volker B. Deecke, and James F. Pilkington. 2026. Dialects of Killer Whales in Coastal Northeastern Pacific Waters: A Catalogue of Call Types. [https://orca.research.sfu.ca/call-library](https://orca.research.sfu.ca/call-library). Accessed ACCESSED_ON_PLACEHOLDER.
 
 ### BibTeX
 
 ```bibtex
 @misc{Ford_Volker_Pilkington, 
   author = {Ford, John K.B. and Deecke, Volker B. and Pilkington, James F.},
-  title = {Dialects of Killer Whales in Coastal Northeastern Pacific Waters: A Catalogue of Call Types of Resident and Bigg’s populations}, 
+  title = {Dialects of Killer Whales in Coastal Northeastern Pacific Waters: A Catalogue of Call Types}, 
   howpublished = {\url{https://orca.research.sfu.ca/call-library}}, 
   year = {2023}
 } 
