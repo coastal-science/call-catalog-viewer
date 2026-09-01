@@ -31,15 +31,6 @@ jobs:
             ${{ vars.CATALOG_FILES_2 }}
             ${{ vars.CATALOG_FILES_3 }}
 
-      - name: Check out the other (files private) repo
-        uses: actions/checkout@v4
-        with:
-          repository: ${{ github.repository_owner }}/${{ vars.CATALOG_FILES_1 }}
-          ref: ${{ env.FILES_REPO_BRANCH }}
-          path: ${{ vars.CATALOG_FILES_1 }}
-          token: ${{ steps.generate-token.outputs.token }}
-          fetch-tags: true
-
       - name: Dispatch repository_dispatch event (using GitHub App token)
         env:
           OWNER: ${{ github.repository_owner }}
