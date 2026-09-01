@@ -18,7 +18,7 @@ The acoustic samples and annotations in this catalogue have been gathered throug
 
 Their extensive research and dedication to understanding killer whale acoustics have made this catalogue possible.
 
-This online catalogue was produced with the assistance of Ruth Joy, Steven Bergner, Ishan Sahay, Rovenna Chu, Amalis Riera, Scott Viers, and Thomas Doniol-Valcroze. [potential revisions including additional acknowledgements to be completed]
+This online catalogue was produced with the assistance of Steven Bergner, Rovenna Chu, Amalis Riera, Scott Viers, and Thomas Doniol-Valcroze. 
 
 John Ford's, Volker Deecke's, and James Pilkington’s research on killer whale acoustics has benefitted by the contributions of recordings from many friends and colleagues over the years. In particular, they thank Ken Balcomb, Lance Barrett-Lennard, Michael Bigg, Nancy Black, Jim Borrowman, Graeme Ellis, Brian Falconer, Olga Filatova, Brian Gisborne, Dawn Goley, Karen Hansen, Erich Hoyt, Stan Hutchings, Jeanne Hyde, Jeff Jacobsen, Bill Mackay, Dena Matkin, Alexandra Morton, Linda Nichol, Rich Osborne, Mayuko Otsuki, Eva Saulitis, Paul Spong, Helena Symonds, Richard Ternullo, Frank Thomsen, Jared Towers, and Harald Yurk.
 
@@ -26,13 +26,7 @@ The acoustic research that led to this catalogue has been supported by:  Fisheri
 
 ## Platform Development
 
-This online catalogue was brought to life through the technical contributions of:
-
-- Ishan Sahay — SFU's Research Computing Group (curation support, platform development, and maintenance)
-- Rovenna Chu, Sophia Han, and Evan Dyce — SFU's Big Data Hub (student developers)
-- Steven Bergner — SFU's Big Data Hub (early contributions)
-
-The Orca Call Catalogue is hosted by SFU's Research Computing Group, enabling Canadian researchers to develop groundbreaking projects, like the Orca Call Catalogue, by offering advanced research computing support and infrastructure. This includes SFU's Supercomputer Cedar, one of Canada's most powerful academic supercomputers.
+The Orca Call Catalogue is hosted by SFU's Research Computing Group, enabling Canadian researchers to develop groundbreaking projects, like the Orca Call Catalogue, by offering advanced research computing support and infrastructure. This includes SFU's Supercomputer Fir, one of Canada's most powerful academic supercomputers.
 
 We are grateful for the support of the Research Computing Group, IT Services at Simon Fraser University, for their continued support to complete this project.
 
@@ -44,11 +38,11 @@ We are grateful for the support of the Research Computing Group, IT Services at 
 
 We acknowledge the ongoing contributions of researchers, citizen scientists, and organizations working to understand and protect killer whales in the northeastern Pacific. This catalogue serves as a teaching and training tool for ensuring consistency of labelling between listeners and annotators, and would not be possible without the collective efforts of the marine acoustics research community.
 
-Special thanks to the HALLO community of users, reviewers, and testers for their invaluable feedback, including Jen, Ruby, Amalis, Olivia, Scott Veirs, and Bruno Padovese.
+Special thanks to the HALLO community of users, reviewers, and testers for their invaluable feedback, including Jen Wladichuk, Lucy Quayle, Amalis Riera Vuibert, Olivia Murphy, Scott Veirs, and Bruno Padovese.
 
 ## Funding and Support
 
-Research and development were enabled in part by support and services provided by Simon Fraser University (SFU), the BC DRI Group & the Digital Research Alliance of Canada (alliancecan.ca), and a Fisheries and Oceans Canada CNFASAR Grant awarded to the School of Environmental Science HALLO project.
+Research and development were enabled in part by support and services provided by Simon Fraser University (SFU), the BC DRI Group & the Digital Research Alliance of Canada (alliancecan.ca), and a Fisheries and Oceans Canada CNFASAR Grant awarded to the HALLO project.
 
 <center>
 <!-- 
