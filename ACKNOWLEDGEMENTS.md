@@ -22,7 +22,6 @@ This online catalogue was produced with the assistance of Steven Bergner, Rovenn
 
 John Ford's, Volker Deecke's, and James Pilkington’s research on killer whale acoustics has benefitted by the contributions of recordings from many friends and colleagues over the years. In particular, they thank Ken Balcomb, Lance Barrett-Lennard, Michael Bigg, Nancy Black, Jim Borrowman, Graeme Ellis, Brian Falconer, Olga Filatova, Brian Gisborne, Dawn Goley, Karen Hansen, Erich Hoyt, Stan Hutchings, Jeanne Hyde, Jeff Jacobsen, Bill Mackay, Dena Matkin, Alexandra Morton, Linda Nichol, Rich Osborne, Mayuko Otsuki, Eva Saulitis, Paul Spong, Helena Symonds, Richard Ternullo, Frank Thomsen, Jared Towers, and Harald Yurk.
 
-The acoustic research that led to this catalogue has been supported by:  Fisheries and Oceans Canada’s Species-at-Risk Program, the Vancouver Aquarium Marine Science Centre, and the University of British Columbia.
 
 ## Platform Development
 
@@ -42,7 +41,7 @@ Special thanks to the HALLO community of users, reviewers, and testers for their
 
 ## Funding and Support
 
-Research and development were enabled in part by support and services provided by Simon Fraser University (SFU), the BC DRI Group & the Digital Research Alliance of Canada (alliancecan.ca), and a Fisheries and Oceans Canada CNFASAR Grant awarded to the HALLO project.
+Research and development were enabled in part by support and services provided by Simon Fraser University (SFU), the BC DRI Group & the Digital Research Alliance of Canada (alliancecan.ca), and a Fisheries and Oceans Canada CNFASAR Grant awarded to the HALLO project. The acoustic research that led to this catalogue has been supported by Fisheries and Oceans Canada’s Species-at-Risk Program, the Vancouver Aquarium Marine Science Centre, and the University of British Columbia.
 
 <center>
 <!-- 
