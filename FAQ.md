@@ -31,8 +31,6 @@ Below is a sample spectrograph and audio file from the [call catalogue](./index.
 
 </center>
 
-Thanks to **Ishan Sahay** and _SFUs Research Computing Group/IT Services_, and **Steven Bergner** and _SFUs Big Data Hub_ at Simon Fraser University for their contributions in bringing this Orca Call Catalogue online.
-
 ## How call types were identified and named
 
 Calls in this catalogue are identified with an alphanumeric name. The letter indicates the population that makes the call – S for Southern Resident, N for Northern Resident, WCT for West Coast Transients (a population of Bigg’s killer whales). The number of the call type simply reflects the order in which it was initially identified and named. You may notice that there are sometimes gaps in the alphanumeric sequence of names – this is because early in the classification of calls, some provisional call types that were assigned an alphanumeric ID were later judged to be variants of other, more common call types and so were subsumed into the latter categories and the provisional names were ’retired’. Distinctive variants of calls are referred to as subtypes, which are identified by lower case Roman numerals. Calls that are shared by two or more pods of Residents often have distinctive subtypes unique to each pod.
@@ -196,7 +194,10 @@ For those wishing to take a deeper dive into killer whale dialects and how they 
 
 For research use of catalogue, the following citation should be used:
 
-> Ford, John K.B., Volker B. Deecke, and James F. Pilkington. 2026. Dialects of Killer Whales in Coastal Northeastern Pacific Waters: A Catalogue of Call Types. [https://orca.research.sfu.ca/call-library](https://orca.research.sfu.ca/call-library). Accessed ACCESSED_ON_PLACEHOLDER.
+> Ford, John K.B., Volker B. Deecke, and James F. Pilkington. 2026. Dialects of Killer Whales in Coastal Northeastern Pacific Waters: A Catalogue of Call Types (dataset). https://doi.org/DOI_PLACEHOLDER. [https://orca.research.sfu.ca/call-library](https://orca.research.sfu.ca/call-library).
+
+
+> Ford, John K.B., Volker B. Deecke, and James F. Pilkington. 2026. Dialects of Killer Whales in Coastal Northeastern Pacific Waters: A Catalogue of Call Types (interactive call library). Retrieved ACCESSED_ON_PLACEHOLDER, from [https://orca.research.sfu.ca/call-library](https://orca.research.sfu.ca/call-library)
 
 ### BibTeX
 
@@ -204,7 +205,8 @@ For research use of catalogue, the following citation should be used:
 @misc{Ford_Volker_Pilkington, 
   author = {Ford, John K.B. and Deecke, Volker B. and Pilkington, James F.},
   title = {Dialects of Killer Whales in Coastal Northeastern Pacific Waters: A Catalogue of Call Types}, 
-  howpublished = {\url{https://orca.research.sfu.ca/call-library}}, 
+  doi = {DOI_PLACEHOLDER},
+  note = {\url{https://orca.research.sfu.ca/call-library}}
   year = {2023}
 } 
 ```
