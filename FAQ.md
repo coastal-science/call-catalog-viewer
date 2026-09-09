@@ -207,7 +207,7 @@ For research use of catalogue, the following citation should be used:
   title = {Dialects of Killer Whales in Coastal Northeastern Pacific Waters: A Catalogue of Call Types}, 
   doi = {DOI_PLACEHOLDER},
   note = {\url{https://orca.research.sfu.ca/call-library}}
-  year = {2023}
+  year = {2026}
 } 
 ```
 
