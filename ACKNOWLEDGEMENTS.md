@@ -20,7 +20,7 @@ Their extensive research and dedication to understanding killer whale acoustics 
 
 This online catalogue was produced with the assistance of Steven Bergner, Rovenna Chu, Amalis Riera, Scott Viers, and Thomas Doniol-Valcroze. 
 
-John Ford's, Volker Deecke's, and James Pilkington’s research on killer whale acoustics has benefitted by the contributions of recordings from many friends and colleagues over the years. In particular, they thank Ken Balcomb, Lance Barrett-Lennard, Michael Bigg, Nancy Black, Jim Borrowman, Graeme Ellis, Brian Falconer, Olga Filatova, Brian Gisborne, Dawn Goley, Karen Hansen, Erich Hoyt, Stan Hutchings, Jeanne Hyde, Jeff Jacobsen, Bill Mackay, Dena Matkin, Alexandra Morton, Linda Nichol, Rich Osborne, Mayuko Otsuki, Eva Saulitis, Paul Spong, Helena Symonds, Richard Ternullo, Frank Thomsen, Jared Towers, and Harald Yurk.
+John Ford's, Volker Deecke's, and James Pilkington’s research on killer whale acoustics has benefitted by the contributions of recordings and other assistance from many friends and colleagues over the years. In particular, they thank Ken Balcomb, Lance Barrett-Lennard, Michael Bigg, Nancy Black, Jim Borrowman, Graeme Ellis, Brian Falconer, Olga Filatova, Brian Gisborne, Dawn Goley, Karen Hansen, Erich Hoyt, Stan Hutchings, Jeanne Hyde, Jeff Jacobsen, Bill Mackay, Craig Matkin, Dena Matkin, Alexandra Morton, Hannah Myers, Linda Nichol, Dan Olsen, Rich Osborne, Mayuko Otsuki, Eva Saulitis, Paul Spong, Helena Symonds, Richard Ternullo, Frank Thomsen, Jared Towers, Scott Veirs, and Harald Yurk.
 
 
 ## Platform Development
