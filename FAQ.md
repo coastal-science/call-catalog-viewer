@@ -207,11 +207,11 @@ For research use of catalogue, the following citation should be used:
 @misc{Ford_Volker_Pilkington, 
   author = {Ford, John K.B. and Deecke, Volker B. and Pilkington, James F.},
   title = {Dialects of Killer Whales in Coastal Northeastern Pacific Waters: A Catalogue of Call Types}, 
+  doi = {DOI_PLACEHOLDER},
   note = {\url{https://orca.research.sfu.ca/call-library}}
   year = {2026}
 } 
 ```
-  <!-- doi = {DOI_PLACEHOLDER}, -->
 
 ## Copyright Licence
 
