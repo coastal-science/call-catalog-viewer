@@ -196,7 +196,7 @@ For those wishing to take a deeper dive into killer whale dialects and how they 
 
 For research use of catalogue, the following citation should be used:
 
-<!-- > Ford, John K.B., Volker B. Deecke, and James F. Pilkington. 2026. Dialects of Killer Whales in Coastal Northeastern Pacific Waters: A Catalogue of Call Types (dataset). https://doi.org/DOI_PLACEHOLDER. [https://orca.research.sfu.ca/call-library](https://orca.research.sfu.ca/call-library). -->
+> Ford, John K.B., Volker B. Deecke, and James F. Pilkington. 2026. Dialects of Killer Whales in Coastal Northeastern Pacific Waters: A Catalogue of Call Types (dataset). https://doi.org/DOI_PLACEHOLDER. [https://orca.research.sfu.ca/call-library](https://orca.research.sfu.ca/call-library).
 
 
 > Ford, John K.B., Volker B. Deecke, and James F. Pilkington. 2026. Dialects of Killer Whales in Coastal Northeastern Pacific Waters: A Catalogue of Call Types (interactive call library). Retrieved ACCESSED_ON_PLACEHOLDER, from [https://orca.research.sfu.ca/call-library](https://orca.research.sfu.ca/call-library)
