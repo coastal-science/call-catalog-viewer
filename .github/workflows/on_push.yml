@@ -33,7 +33,10 @@ jobs:
     name: Deploy
     # dependent jobs
     needs: get_pushed_branch 
-    permissions: {}
+    permissions:
+      contents: read
+      checks: write
+      statuses: write
     if: "always()&&(needs.get_pushed_branch.outputs.branch-name != null)" 
     uses: ./.github/workflows/manual_deploy.yml
     with:
