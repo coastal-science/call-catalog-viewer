@@ -18,9 +18,7 @@ import yaml
 from os.path import dirname, exists, abspath
 from json import load
 import utils
-import logging
-
-logger = logging.getLogger(__name__)
+from loguru import logger
 
 REFRESH_REMOTE_CATALOG_ERROR = -1
 
@@ -68,6 +66,7 @@ def update_json_file(path_to_catalogs_dir, repo_name):
         df, population, filter, sortables, display, site_details = utils.parse_yaml_to_json(path_to_catalogs_dir, path_to_catalogs_dir + '/' + repo_name + '/' + yaml_file)
         utils.export_to_json(path_to_catalogs_dir, df, population, filter, sortables, display, site_details, repo_name, yaml_file)
 
+@logger.catch
 def cli(args=None):
     parser = argparse.ArgumentParser(
         description='Updating local changes from a remote repo',

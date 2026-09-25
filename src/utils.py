@@ -3,15 +3,51 @@ import re
 import json
 import pandas as pd
 import numpy as np
+import sys
+import os
 from os.path import dirname, exists
 from pathlib import Path
-import logging
-import yaml
+from loguru import logger
 
-FORMAT = '%(levelname)s - %(asctime)s - %(message)s'
-FORMAT_VERBOSE = '%(asctime)s: - %(levelname)s:%(name)s - %(module)s/%(filename)s/%(funcName)s/%(lineno)d:\t%(message)s'
+# Remove default handler
+logger.remove()
 
-logging.basicConfig(level=logging.INFO, format=FORMAT_VERBOSE)
+# Get log level from environment variable, default to "INFO"
+log_level = os.getenv("LOG_LEVEL", "INFO").upper()
+
+# Validate log level
+valid_levels = {"DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"}
+if log_level not in valid_levels:
+    log_level = "INFO"  # Fallback to INFO if invalid
+
+# Configure with specified options
+logger.add(
+    sink=sys.stdout,
+    format="<green>{time}</green> <level>[{level}] - {name}:{function}:{line} - {message}</level>",
+    backtrace=True,
+    diagnose=True,  # Caution: may leak sensitive data in production
+    colorize=True,
+    level=log_level,
+    enqueue=True,  # Asynchronous, Thread-safe, Multiprocess-safe
+)
+
+
+def set_log_level(level: str):
+    """Reconfigure logger with new level"""
+    logger.remove()
+    log_level = level.upper()
+    valid_levels = {"DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"}
+    if log_level not in valid_levels:
+        log_level = "INFO"
+    logger.add(
+        sink=sys.stdout,
+        format="<green>{time}</green> <level>[{level}] - {name}:{function}:{line} - {message}</level>",
+        backtrace=True,
+        diagnose=True,
+        colorize=True,
+        level=log_level,
+        enqueue=True,
+    )
 
 is_yaml = lambda file: re.search(r"\.ya?ml$", str(file), flags=re.IGNORECASE)  # .yaml or .yml
 is_yaml = lambda file: Path(file).resolve().suffix.lower() in [".yaml", ".yml"]  # .yaml or .yml
@@ -34,7 +70,8 @@ def parse_yaml_to_json(path_to_catalogs_directory, yaml_file_path):
         
         # will only be true on the first time
         site_details = resources['site-details']
-        if is_root_catalog(path_to_repo_root):
+        site_details['id'] = resources['id']
+        if is_root_catalog(path_to_repo_root) or site_details['catalogue'].get('is_root'):
             site_details['catalogue']['is_root'] = 'true'
         else:
             site_details['catalogue']['is_root'] = 'false'
@@ -114,24 +151,39 @@ def parse_yaml_to_json(path_to_catalogs_directory, yaml_file_path):
         ## add it back because the front end depends on it. It expects a flat table.
         df['population'] = population[0]
         
-        from os.path import exists
+        from os.path import exists, basename
         #check image-file and audio-file
+        repo_name = basename(path_to_repo_root) # prefix the name of repo to all files
+        
         df['audio_exists'] = df['wav-file'].apply(lambda x: exists(path_to_catalogs_directory + '/' + x))
         df['wav-file'] = df['wav-file'].replace({".wav":".mp3"}, regex=True) # assumption that all wav files will be converted to mp3 in a later step
+        df['wav-file'] = repo_name + '/' + df['wav-file']
         df = df.rename(columns={'wav-file':'audio-file'})
         fields[fields.index('wav-file')] = "audio-file" # hack rename
         
         # split any comma separated values, excluding files
+        # Track which columns need object dtype conversion (pandas 3.0+ uses str dtype by default)
+        columns_to_convert = set()
+        
         for index, row in df.iterrows():
             for field in fields:
                 if field in ['image-file', 'audio-file', 'description-file']:
                     continue
                 if (type(row[field]) == str and ',' in row[field]):
+                    # Convert column to object dtype if not already (needed for list assignment in pandas 3.0+)
+                    if field not in columns_to_convert:
+                        if df[field].dtype != 'object':
+                            df[field] = df[field].astype('object')
+                        columns_to_convert.add(field)
                     df.at[index, field] = row[field].split(',')
         
         df['image_exists'] = df['image-file'].apply(lambda x: exists(path_to_catalogs_directory + '/' + x))
         df['image-file'] = df['image-file'].replace({".png":".webp", ".jpeg":".webp", ".jpg":".webp"}, regex=True) # assumption that all images will be converted to webp format in a later step
-    
+        
+        # prefix the name of repo to all files
+        df['image-file'] = repo_name + '/' + df['image-file']
+        df['description-file'] = repo_name + '/' + df['description-file']
+        
         # extract the filename from the path
         df['filename'] =  df['image-file'].str.split(".", expand=True)[0]
         df['filename'] =  [x.split("/")[-1] for x in df['filename']]
@@ -179,7 +231,8 @@ def export_to_json(path_to_catalogs_directory, df, population, filters, sortable
             
     print(f'Successfully exported call data to catalogs/{file_name}.json', end='\n\n')
 
-def add_index_yaml(logger, path_to_catalogs_dir, repo_name):
+def add_index_yaml(path_to_catalogs_dir, repo_name):
+    """Add catalog to index.yaml. Logger is now global from loguru."""
     logger.info(f'Adding {repo_name} to catalogs/index.yaml')
     path = path_to_catalogs_dir + '/index.yaml'
     

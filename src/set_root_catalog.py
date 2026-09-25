@@ -14,9 +14,7 @@ import argparse
 import json
 import utils
 import sys
-from utils import logging
-
-logger = logging.getLogger(__name__)
+from utils import logger
 
 SET_ROOT_CATALOG_ERROR = -1
 
@@ -105,6 +103,7 @@ def create_new_files(repo_name, catalog_path, repo_root_path, old_library_data):
     logger.info(f'Successfully created symlink to catalogs/library.yaml')
 
 
+@logger.catch
 def cli(args=None):
     if not args:
         args = sys.argv[1:]

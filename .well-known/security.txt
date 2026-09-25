@@ -1,0 +1,14 @@
+Contact: https://orca.research.sfu.ca/call-library/contact.html
+Contact: https://github.com/coastal-science/call-catalog-viewer/security
+Expires: 2026-12-31T23:59:59.000Z
+Preferred-Languages: en
+Canonical: https://orca.research.sfu.ca/call-library/.well-known/security.txt
+
+# Security Policy
+# 
+# We appreciate responsible disclosure of security vulnerabilities.
+# Please report security issues through one of the contact methods above.
+#
+# This site is part of SFU's HALLO project (orca.research.sfu.ca)
+# and is maintained by the Coastal Science research group.
+

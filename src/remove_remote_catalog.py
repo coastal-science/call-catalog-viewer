@@ -13,9 +13,7 @@ import yaml
 import utils
 from pathlib import Path
 import sys
-import logging
-
-logger = logging.getLogger(__name__)
+from loguru import logger
 
 REMOVE_REMOTE_CATALOG_ERROR = -1
 
@@ -137,6 +135,7 @@ def remove_root_catalog(path_to_catalog_dir, repo_name):
     remove(path_to_catalog_dir + '/index.yaml')
     logger.info('Successfully removed index.yaml and library.yaml')
     
+@logger.catch
 def cli(args=None):
     if not args:
         args = sys.argv[1:]
