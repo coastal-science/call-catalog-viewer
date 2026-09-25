@@ -121,7 +121,7 @@ var SearchPanel = undefined;
     /**
      * URL Search parameters may contain encoded object. This function
      * extracts and decodes (`atob`) the previously stringified and encoded (`btoa`) object in the url parameter. 
-     * Use `atob` to decode to a stringified object. Convert to object using `eval('(' + obj + ')')`
+     * Use `atob` to decode to a stringified object. Convert to object using `JSON.parse`.
      * @param {urlParams} `URLSearchParams(queryString)` object
      * @param {param_name} name of parameter in the url string containing the encoded object.
      * @returns the `param_name` as an javascript object
@@ -138,7 +138,7 @@ var SearchPanel = undefined;
 
             if (obj_str !== undefined) {
                 try {
-                    const obj_ev = eval('(' + obj_str + ')');
+                    const obj_ev = JSON.parse(obj_str);
                     return obj_ev;
                 } catch (e) {
                     console.log(e);
