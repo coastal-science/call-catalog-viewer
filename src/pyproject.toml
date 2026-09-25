@@ -11,7 +11,7 @@ requires-python = ">=3.11,<3.15"
 dependencies = [
     "flatdict==4.0.1",
     "gitdb==4.0.12",
-    "gitpython==3.1.46",
+    "gitpython==3.1.59",
     "loguru==0.7.3",
     "numpy==2.4.1",
     "pandas==3.0.0",
