@@ -1222,7 +1222,7 @@ var GridPanel = undefined;
             
             // Dynamically add all search parameters from the url params to the new history `state`
             params.forEach((value, key) => {
-                console.log(key, value);
+                console.log({ key, value });
                 state[key] = value;
             });
             // params.set('f', encoded);
