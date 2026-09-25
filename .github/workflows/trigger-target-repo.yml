@@ -8,6 +8,11 @@ on:
 
   workflow_dispatch:
 
+permissions:
+  # Least privilege for GITHUB_TOKEN. This workflow does not use GITHUB_TOKEN
+  # for the dispatch; that uses the GitHub App token from secrets.APP_PRIVATE_KEY.
+  contents: read
+
 jobs:
   trigger-workflow:
     runs-on: ubuntu-latest
