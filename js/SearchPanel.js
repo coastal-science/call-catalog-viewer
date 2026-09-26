@@ -333,6 +333,19 @@ var SearchPanel = undefined;
     }
 
     /**
+     * Snapshot live filter choices per population, then refresh the grid.
+     * Used by dropdown changes and the Filter button so both paths stay in sync.
+     */
+    function applyLiveFilters() {
+        if (liveDropdownChoices['population']) {
+             // Copy the current filter selections for saving state
+            selected_options[liveDropdownChoices['population']] =
+                structuredClone(liveDropdownChoices);
+        }
+        GridPanel.get_new(liveDropdownChoices);
+    }
+
+    /**
      * Attach listeners for filter dropdowns and action buttons.
      *
      * Called from init() and again after buildPopulationSpecificDropdown() rebuilds
@@ -388,7 +401,7 @@ var SearchPanel = undefined;
                         updateURL('catalogue', selected_population)
                     }
                 }
-                GridPanel.get_new(liveDropdownChoices);
+                applyLiveFilters();
             })
             .on('hide.bs.select', (e, clickedIndex, isSelected, previousValue) => { // listener when dropdowns close
                 $('#gi-area .itemblock:nth(0)').click(); // select the first grid area item so that key press actions functionality is restored.
@@ -406,11 +419,8 @@ var SearchPanel = undefined;
         Panel.find('#search_now').off('click').click(function (e) { // function that is called when the filter button is clicked. 
             dirty = false;
             originalData = $.extend(true, {}, liveDropdownChoices);
-            // Copy the current filter selections for saving state
-            selected_options[liveDropdownChoices['population']] = structuredClone(liveDropdownChoices)
             // updateURL('sel', liveDropdownChoices);
-            
-            GridPanel.get_new(liveDropdownChoices);
+            applyLiveFilters();
             toggle_button(this, 100);
         });
 
