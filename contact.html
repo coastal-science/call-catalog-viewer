@@ -65,7 +65,10 @@
 
       <form class="contact-form" method="POST" action="https://formsubmit.co/YOUR_EMAIL">
         <!-- FORM_CONTACT (GitHub Actions / container env) replaces this URL at serve time -->
-        <input type="hidden" name="_next" value="contact.html?v=random">
+        <input type="hidden" name="_next" id="contact-next" value="">
+        <script>
+          document.getElementById("contact-next").value = new URL("contact.html", window.location.href).href.split("?")[0].split("#")[0];
+        </script>
         <input type="hidden" name="_captcha" value="true">
 
         <label for="name">Your Name</label>
