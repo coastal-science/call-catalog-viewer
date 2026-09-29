@@ -83,12 +83,12 @@ a:hover {
   color: #084666;
 }
 
-/* Navbar, dropdowns, W3/Bootstrap controls keep their own look */
+/* Navbar and dropdown links keep their own look. Do not include .btn:
+   that selector matches the popup play button and overrides .btn-primary. */
 .w3-bar a,
 .w3-bar-block a,
 .w3-dropdown-content a,
 .w3-button,
-.btn,
 .btn-filter,
 .page-link,
 .anchorjs-link,
