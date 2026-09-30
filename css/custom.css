@@ -147,9 +147,9 @@ h1 {
   border-color: #4a4a4a !important;
 }
 
-/* Lightbox metadata: prefer near-black over Bootstrap "info" cyan */
+/* Lightbox metadata sits on the dark overlay; match the play button label */
 .litybottom .text-info {
-  color: #333 !important;
+  color: #fff !important;
 }
 
 /* Photo credits: fixed size instead of viewport-scaled 2.5vw */
