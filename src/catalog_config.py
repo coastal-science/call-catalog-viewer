@@ -22,29 +22,21 @@ python catalog_config.py remove -h | --help
 
 
 import argparse
-import shlex
 import subprocess
 import sys
 from pathlib import Path
-
-from add_catalog import cli as add_catalog
-from remove_catalog import cli as remove_catalog
 
 LIBRARY = "catalogs"
 LIBRARY_INDEX = "index.yaml"
 
 
 if __name__ == "__main__":
-
-    # cmd, name, folder, file  = sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4]
-
     parser = argparse.ArgumentParser(
         description="Configure (add/remove) catalogs that this viewer can display",
         allow_abbrev=True,
     )
 
     parser.add_argument("cmd", choices=["add", "remove"], help="`add` or `remove`")
-
     parser.add_argument("cmdargs", nargs=argparse.REMAINDER)
 
     args = parser.parse_args()
@@ -52,44 +44,25 @@ if __name__ == "__main__":
 
     cmd = args.cmd
     cmdargs = args.cmdargs
-    cmdargs = ' '.join(cmdargs)  # to be split comprehensively with shlex.split()
-
     thisfile = Path(__file__).name
-    src = Path(__file__).parent.stem
-
-    """
-    The commented section below code is generic, precise, short but obscure.
-    It runs **any** python script of the form `src/*_catalog.py` with all cmd line args
-    The version below the commenting is explicit but longer.
-    """
-
-    # fullcmd = f"{sys.executable} src/{cmd}_catalog.py {' '.join(cmdargs)}"
-
-    print(f"{thisfile}: {cmd} {cmdargs}")
-    # print(f"{thisfile}: subprocess: {fullcmd}")
-
-    # fullcmd = shlex.split(fullcmd)
-    # output = subprocess.run(fullcmd, universal_newlines=True)
-
-    # print("\nCompleted all subprocesses")
-    # print()
-    # exit(output.returncode)
+    src = Path(__file__).parent
 
     if cmd == "add":
         print("call 'add_catalog.py'")
-        fullcmd = f"{sys.executable} {src}/add_catalog.py {cmdargs}"  # instead of call add_catalog()
-        # system call instead of method call since add_catalog.py contains extra input arguments 
-        # and file validation.
+        script = src / "add_catalog.py"
+        fullcmd = [sys.executable, str(script), *cmdargs]
 
-    if cmd == "remove":
+    elif cmd == "remove":
         print("call 'remove_catalog.py'")
-        fullcmd = f"{sys.executable} {src}/remove_catalog.py {cmdargs}"
+        script = src / "remove_catalog.py"
+        fullcmd = [sys.executable, str(script), *cmdargs]
+
+    else:
+        raise ValueError(f"Unsupported command: {cmd!r}")
 
     print(f"{thisfile}: subprocess: {fullcmd}")
-
-    fullcmd = shlex.split(fullcmd)
-    output = subprocess.run(fullcmd, universal_newlines=True)
+    output = subprocess.run(fullcmd, text=True)
 
     print("\nCompleted all subprocesses")
     print()
-    exit(output.returncode)
+    raise SystemExit(output.returncode)
